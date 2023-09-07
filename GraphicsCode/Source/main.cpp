@@ -13,16 +13,26 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static const struct
+struct sVertex
 {
     float x, y;
     float r, g, b;
-} vertices[3] =
+};
+
+const unsigned int NumOfVertices = 6;
+
+sVertex vertices[NumOfVertices] =
 {
     { -0.6f, -0.4f, 1.f, 0.f, 0.f },
     {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {   0.f,  0.6f, 0.f, 0.f, 1.f }
+    {   0.f,  0.6f, 0.f, 0.f, 1.f },
+
+    { 0.4f, -0.4f, 1.f, 0.f, 0.f },
+    {  1.6f, -0.4f, 0.f, 1.f, 0.f },
+    {   1.f,  0.6f, 0.f, 0.f, 1.f }
 };
+
+
 
 static const char* vertex_shader_text =
 "#version 110\n"
@@ -67,7 +77,7 @@ int main(void)
         exit(EXIT_FAILURE);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0); 
 
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
     if (!window)
@@ -86,7 +96,10 @@ int main(void)
 
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    unsigned int SizeOfVertex = sizeof(sVertex) * NumOfVertices;
+
+    glBufferData(GL_ARRAY_BUFFER, SizeOfVertex, vertices, GL_STATIC_DRAW);
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
@@ -157,7 +170,7 @@ int main(void)
 
         glUseProgram(program);
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
