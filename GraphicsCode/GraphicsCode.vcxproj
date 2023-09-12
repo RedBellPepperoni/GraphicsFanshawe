@@ -139,11 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Externals\glad\src\glad.c" />
     <ClCompile Include="Externals\glm\detail\glm.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
+    <ClCompile Include="Source\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Externals\glad\include\glad\glad.h" />
     <ClInclude Include="Externals\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Externals\glfw\include\GLFW\glfw3.h" />
@@ -430,6 +436,10 @@
     <ClInclude Include="Externals\glm\vec3.hpp" />
     <ClInclude Include="Externals\glm\vec4.hpp" />
     <ClInclude Include="Externals\glm\vector_relational.hpp" />
+    <ClInclude Include="Source\Math.h" />
+    <ClInclude Include="Source\Vertex.h" />
+    <ClInclude Include="Source\Window.h" />
+    <ClInclude Include="Source\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glfw\libs\glfw3.dll" />
