@@ -1,13 +1,7 @@
-#include "Application.h"
-
+#include "Engine/Core/Application/Application.h"
 
 int main(void)
 {
-   
-    Application* app = new Application();
-  
-    app->Run();
-
-
+    
    
 }
