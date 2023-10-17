@@ -2,8 +2,12 @@
 #include "Engine/Utils/Math.h"
 #include "Engine/Utils/GLUtils.h"
 
+
 namespace FanshaweGameEngine
 {
+
+	using namespace Math;
+
 	namespace Rendering
 	{
 		enum class UsageType
@@ -64,9 +68,12 @@ namespace FanshaweGameEngine
 
 			}
 
-			Math::Vector3 position;
-			Math::Vector4 color;
-			Math::Vector3 normal;
+			Vector3 position;
+			Vector4 color;
+			Vector3 normal;
+
+
+			static const size_t Stride = sizeof(Vector3) + sizeof(Vector4) + sizeof(Vector3);
 		};
 
 		struct Triangle

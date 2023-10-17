@@ -6,25 +6,27 @@ namespace FanshaweGameEngine
 
 	// Forward Delcarartions
 	class ShaderLibrary;
+	class MaterialLibrary;
+	
+
 
 
 	namespace Rendering
 	{
 
+		
+		
+	
 		class RenderManager
 		{
 		private: 
 			// The class that actually draws stuff
-			Renderer m_renderer;
-
-			// Future case when there can be multiple cameras // 
-			// "-1"  means no rendering cameras were found
-
-			int m_mainCameraIndex = -1;
-
+			UniquePtr<Renderer> m_renderer;
 
 			// The Resource Library that stores all the shaders
 			SharedPtr<ShaderLibrary> m_ShaderLibrary;
+
+			SharedPtr<MaterialLibrary> m_MaterialLibrary;
 
 		//	Camera* m_mainCamera;
 
@@ -35,16 +37,19 @@ namespace FanshaweGameEngine
 
 			void BeginScene();
 
+			
+
 		public:
 
 			void Init();
+
 			void RenderFrame();
 
 
 			SharedPtr<ShaderLibrary>& GetShaderLibrary();
 
 
-
+			SharedPtr<MaterialLibrary>& GetMaterialLibrary();
 
 		};
 	}

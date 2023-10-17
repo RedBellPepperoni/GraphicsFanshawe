@@ -32,14 +32,15 @@ namespace FanshaweGameEngine
 			m_indicies = inIndicies;
 
 			// Calculating the total number of vertices and indices
-			size_t vertexCount = m_vertices.size();
-			size_t indexCount = m_indicies.size();
+			m_vertexCount = m_vertices.size();
+			m_indiciesCount = m_indicies.size();
 
 			// Creating a new Index buffer with the processed data
-			m_IBO = Factory<IndexBuffer>::Create(indexCount, m_indicies.data(), UsageType::STATIC_DRAW);
+			m_IBO = Factory<IndexBuffer>::Create(m_indiciesCount, m_indicies.data(), UsageType::STATIC_COPY);
 
 			// Creating a new vertex buffer with the processed data
-			m_VBO = Factory<VertexBuffer>::Create(sizeof(Vertex) * vertexCount, m_vertices.data(), UsageType::STATIC_DRAW);
+			m_VBO = Factory<VertexBuffer>::Create(sizeof(Vertex) * m_vertexCount, m_vertices.data(), UsageType::STATIC_COPY);
+
 		}
 
 		// Default Constructor
@@ -63,6 +64,11 @@ namespace FanshaweGameEngine
 		const std::vector<uint32_t>& Mesh::GetIndexData() 
 		{
 			return m_indicies;
+		}
+
+		const uint32_t Mesh::GetIndexCount()
+		{
+			return m_indiciesCount;
 		}
 
 		SharedPtr<VertexBuffer>& Mesh::GetVBO() 

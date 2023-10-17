@@ -136,16 +136,7 @@ namespace FanshaweGameEngine
                   + " " + std::to_string(tempVert.position.z);*/
 
                   // Checking if we should include color data
-            if (additionalVertexData & ModelDetailMode::color)
-            {
-                // If color data is detected, we add that to our structure
-                stringStream >> tempVert.color.r;
-                stringStream >> tempVert.color.g;
-                stringStream >> tempVert.color.b;
-                stringStream >> tempVert.color.a;
-
-                // PrintData += " " + std::to_string(tempVert.color.r) + " " + std::to_string(tempVert.color.g) + " " + std::to_string(tempVert.color.b);
-            }
+        
 
             // Checking if we should include vertex normal data
             if (additionalVertexData & ModelDetailMode::normal)
@@ -158,6 +149,17 @@ namespace FanshaweGameEngine
                 // PrintData += " " + std::to_string(tempVert.normal.x) + " " + std::to_string(tempVert.normal.y) + " " + std::to_string(tempVert.normal.z);
             }
 
+
+            if (additionalVertexData & ModelDetailMode::color)
+            {
+                // If color data is detected, we add that to our structure
+                stringStream >> tempVert.color.r;   tempVert.color.r /= 255.0f;
+                stringStream >> tempVert.color.g;   tempVert.color.g /= 255.0f;
+                stringStream >> tempVert.color.b;   tempVert.color.b /= 255.0f; 
+                stringStream >> tempVert.color.a;   tempVert.color.a /= 255.0f;
+
+                // PrintData += " " + std::to_string(tempVert.color.r) + " " + std::to_string(tempVert.color.g) + " " + std::to_string(tempVert.color.b);
+            }
 
             /*  std::cout << PrintData
                   << std::endl;*/

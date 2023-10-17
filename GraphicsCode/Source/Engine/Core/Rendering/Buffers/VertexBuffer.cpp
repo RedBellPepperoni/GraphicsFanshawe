@@ -11,14 +11,14 @@ namespace FanshaweGameEngine
 		VertexBuffer::VertexBuffer(UsageType usage) : bufferUsage(usage), byteSize(0)
 		{
 			// generating a new Buffer and Storing the ID acquired from OpenGL
-			glGenBuffers(1, &bufferID);
+			GLDEBUG(glGenBuffers(1, &bufferID));
 
 		}
 
 		VertexBuffer::VertexBuffer(size_t size, const void* data, UsageType usage)
 		{
 			// generating a new Buffer and Storing the ID acquired from OpenGL
-			glGenBuffers(1, &bufferID);
+			GLDEBUG(glGenBuffers(1, &bufferID));
 
 			SetData(size, data);
 
@@ -27,19 +27,21 @@ namespace FanshaweGameEngine
 		VertexBuffer::~VertexBuffer()
 		{
 			// Deleting the buffer linked to the bufferID
-			glDeleteBuffers(1, &bufferID);
+			GLDEBUG(glDeleteBuffers(1, &bufferID));
 		}
 
 
 
 		void VertexBuffer::Bind()
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+			bufferUsage = UsageType::STATIC_DRAW;
+
+			GLDEBUG(glBindBuffer(GL_ARRAY_BUFFER, bufferID));
 		}
 
 		void VertexBuffer::UnBind()
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			GLDEBUG(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		}
 
 		void VertexBuffer::SetData(size_t size, const void* data)
@@ -48,8 +50,10 @@ namespace FanshaweGameEngine
 			byteSize = size;
 			Bind();
 
+			bufferUsage = UsageType::STATIC_COPY;
+
 			// Setting the Buffer data
-			glBufferData(GL_ARRAY_BUFFER, size, data, GetGLBufferUsage(bufferUsage));
+			GLDEBUG(glBufferData(GL_ARRAY_BUFFER, size, data, GetGLBufferUsage(bufferUsage)));
 
 		}
 
@@ -62,7 +66,7 @@ namespace FanshaweGameEngine
 			Bind();
 
 			// Updating data in a previous set buffer
-			glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+			GLDEBUG(glBufferSubData(GL_ARRAY_BUFFER, offset, size, data));
 		}
 
 

@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Material.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Renderer\RenderManager.cpp" />
     <ClCompile Include="Source\Engine\Utils\Logging\Log.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Shader\Shader.cpp" />
@@ -164,7 +165,6 @@
     <ClCompile Include="Source\Engine\Utils\GLUtils.cpp" />
     <ClCompile Include="Source\Engine\Utils\Loading\File.cpp" />
     <ClCompile Include="Source\Engine\Utils\Loading\Model.cpp" />
-    <ClCompile Include="Source\Engine\Core\Resources\RenderUnit.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\InputSystem.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Object\GameObject.cpp" />
@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Material.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Renderer\RenderManager.h" />
     <ClInclude Include="Source\Engine\Utils\Logging\Log.h" />
     <ClInclude Include="Source\Engine\Core\Macros\Macro.h" />
@@ -192,7 +193,6 @@
     <ClInclude Include="Source\GameEngine.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\File.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\Model.h" />
-    <ClInclude Include="Source\Engine\Core\Resources\RenderUnit.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\Core\Memory\Memory.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Definitions.h" />

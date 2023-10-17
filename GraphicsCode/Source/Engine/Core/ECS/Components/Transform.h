@@ -18,10 +18,10 @@ namespace FanshaweGameEngine
 		// The Local Scale of the transform
 		Vector3 m_scale;
 
-		// The parent/World Matric for the Transform
-		Matrix4 m_worldTransform;
+		// The local Matric for the Transform
+		Matrix4 m_localMatrix = Matrix4(1.0f);
 
-		
+		void UpdateMatrix(Matrix4& mat) const;
 
 	public:
 
@@ -39,12 +39,13 @@ namespace FanshaweGameEngine
 		// Get the world Rotation in Euler angles
 		const Vector3 GetEulerRotation() const;
 
+		Matrix4 GetLocalMatrix();
+
 		const Vector3 GetScale() const;
 
 		// ================= SETTERS ========================
 
-		void SetWorldMatrix(const Matrix4& parentMatrix);
-
+	
 		void SetPosition(const Vector3& newPosition);
 
 

@@ -24,6 +24,8 @@ namespace FanshaweGameEngine
 
 		public:
 
+			static uint32_t CurrentlyBindedShader;
+
 			// The type of Shader to load
 			enum ShaderType
 			{ 
@@ -37,42 +39,27 @@ namespace FanshaweGameEngine
 
 			using UniformMap = std::unordered_map<std::string, uint32_t>;
 
-			class ShaderProgram
-			{
-
-			public:
-
-				// Constructor
-				ShaderProgram(uint32_t shaderId);
-
-				// Get the GL location from the uniform name
-				int GetUniformLocation(std::string uniformName);
-
-			private:
-
-				// Storage to contain all the uniform needed for a particular shader
-				UniformMap m_uniformData;
-
-				// Id of the Shader
-				uint32_t m_shaderId;
-
-			};
-
 
 
 		private:
 
 			// The bound ID for the shader
 			uint32_t m_Id;
-			ShaderProgram m_program;
+			
+
+			// Storage to contain all the uniform needed for a particular shader
+			UniformMap m_uniformData;
 
 
 			void DeleteProgram();
+			void DeleteShader(uint32_t shaderId);
 			void SetProgramID(uint32_t newId);
 
+
+
 			//bool CheckShaderError(uint32_t programId, uint32_t errorStage);
-			
-			static uint32_t CreateShader(int glType, std::string& source, FilePath& path);
+		
+			uint32_t CreateShader(int glType, std::string& source, FilePath& path);
 
 			//bool CompileShaderFromSource(ShaderSubInfo& info);
 
@@ -82,19 +69,41 @@ namespace FanshaweGameEngine
 			~Shader();
 
 			
-			// ====================== STATIC STUFF ===============================	
-
+			
 			
 			// Loads all the shader types for a particular shaderprogram
-			uint32_t CreateShaderProgram(uint32_t* shaderIds, const ShaderSubInfo* shaderTypes, size_t shaderCount);
+			uint32_t CreateShaderProgram(const ShaderSubInfo* shaderTypes,const size_t shaderCount);
 
 			uint32_t GetProgramId() const;
+
+			void Bind();
+			void UnBind();
+
 
 			// ===================== SHADER STUFF =================================
 
 			bool Load(const std::string& vertPath, const std::string& fragPath);
 			void Load(const std::string& vertPath, const std::string& geoPath, const std::string& fragPath);
 
+
+			// Get the GL location from the uniform name
+			int GetUniformLocation(const std::string& uniformName);
+
+
+			void SetUniform(const std::string& uniformName, float invalue);
+			void SetUniform(const std::string& uniformName, int invalue);
+			void SetUniform(const std::string& uniformName, bool invalue);
+			void SetUniform(const std::string& uniformName, Vector2 invector);
+			void SetUniform(const std::string& uniformName, Vector3 invector);
+			void SetUniform(const std::string& uniformName, Vector4 invector);
+			void SetUniform(const std::string& uniformName, Vector2Int invector);
+			void SetUniform(const std::string& uniformName, Vector3Int invector);
+			void SetUniform(const std::string& uniformName, Vector4Int invector);
+			void SetUniform(const std::string& uniformName, Matrix2 inmat);
+			void SetUniform(const std::string& uniformName, Matrix3 inmat);
+			void SetUniform(const std::string& uniformName, Matrix4 inmat);
+
+			
 
 		};
 

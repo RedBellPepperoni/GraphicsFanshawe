@@ -9,14 +9,15 @@ namespace FanshaweGameEngine
 	namespace Rendering
 	{
 		class Mesh;
+		class Material;
 	}
 
 	using Rendering::Mesh;
-
+	using Rendering::Material;
 
 
 	
-	/// Temporary class to handle 
+	/// Temporary class to handle gameobjects, switching to an ECS system later
 
 	class GameObject
 	{
@@ -38,11 +39,19 @@ namespace FanshaweGameEngine
 		// For now hardcoding mesh in the gameObject
 		// TODO: Change this to a seperate component later !!
 		SharedPtr<Mesh> m_rendermesh;
-		uint32_t m_shaderID;
+
+		// The material Data
+		SharedPtr<Material> m_material;
+
+
+		bool shouldDraw = true;
 		
-		void AttachShader(const uint32_t& shaderID);
+		
 
 	};
+
+
+	// Psuedo ECS registry, need to do memory pooling for faster access
 
 	class GameObjectRegistry
 	{
@@ -55,14 +64,16 @@ namespace FanshaweGameEngine
 		GameObjectRegistry();
 		~GameObjectRegistry();
 
-		SharedPtr<GameObject> CreateObject(const SharedPtr<Mesh>& mesh, const std::string& friendlyName);
+		 SharedPtr<GameObject> CreateObject(const SharedPtr<Mesh>& mesh, const std::string& friendlyName);
 
-		ObjectRegistry Get();
+		 ObjectRegistry Get();
 		
 
 	private:
 
 		ObjectRegistry m_objectRegistry = {};
+
+		
 
 
 	};

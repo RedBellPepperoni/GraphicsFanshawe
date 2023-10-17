@@ -3,8 +3,8 @@
 
 
 
-#define LOG_TRACE(caller, ...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->trace(caller, __VA_ARGS__)
-#define LOG_INFO(caller, ...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->info(caller, __VA_ARGS__)
+#define LOG_TRACE(...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->trace(__VA_ARGS__)
+#define LOG_INFO(...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define LOG_WARN(...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define LOG_ERROR(...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define LOG_CRITICAL(...) ::FanshaweGameEngine::Debug::Log::GetCoreLogger()->critical(__VA_ARGS__)

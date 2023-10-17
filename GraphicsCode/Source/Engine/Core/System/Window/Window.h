@@ -1,6 +1,9 @@
 #pragma once
-#include "Engine/Utils/GLUtils.h"
+
 #include <string>
+
+
+struct GLFWwindow;
 
 namespace FanshaweGameEngine
 {
@@ -9,10 +12,6 @@ namespace FanshaweGameEngine
 		class Window
 		{
 		protected:
-
-
-
-			GLuint vertex_buffer, vertex_shader, fragment_shader, program;
 
 
 			int width;

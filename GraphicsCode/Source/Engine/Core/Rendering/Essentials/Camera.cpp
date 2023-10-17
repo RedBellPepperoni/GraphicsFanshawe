@@ -5,15 +5,15 @@ namespace FanshaweGameEngine
     namespace Rendering
     {
         Camera::Camera()
-            : m_aspectRatio(1.0f)
+            : m_aspectRatio(16.0f/9.0f)
             , m_near(0.1f)
-            , m_far(100.0f)
+            , m_far(1000.0f)
             , m_fov(60.0f)
             , m_orthographic(false)
         {
         }
-        Camera::Camera(float FOV, float Near, float Far, float aspect)
-            : m_aspectRatio(aspect)
+        Camera::Camera(float FOV, float Near, float Far, float Aspect)
+            : m_aspectRatio(Aspect)
             , m_fov(FOV)
             , m_near(Near)
             , m_far(Far)
@@ -21,30 +21,24 @@ namespace FanshaweGameEngine
         {
         }
         
-        Camera::Camera(float aspectRatio, float, float)
-            : m_aspectRatio(aspectRatio)
-            , m_fov(60)
-            , m_near(near)
-            , m_far(far)
-            , m_orthographic(true)
+        Camera::Camera(float Aspect, float Near, float Far)
+            : m_aspectRatio(Aspect)
+            , m_fov(60.0f)
+            , m_near(Near)
+            , m_far(Far)
+            , m_orthographic(false)
         {
         }
 
        
         const Matrix4& Camera::GetProjectionMatrix()
         {
-            if (m_shouldUpdateProjection)
-            {
-                UpdateProjectionMatrix();
-                m_shouldUpdateProjection = false;
-            }
-
+           
+            UpdateProjectionMatrix();
+  
             return m_projection;
         }
-        const Matrix4& Camera::GetViewMatrix()
-        {
-            return m_view;
-        }
+      
         
         const float Camera::GetZoom() const
         {
@@ -105,6 +99,36 @@ namespace FanshaweGameEngine
             m_shouldUpdateProjection = true;
         }
 
+        const bool Camera::IsOrthographic() const
+        {
+            return m_orthographic;
+        }
+
+        void Camera::SetDirection(const Vector3 vector)
+        {
+            m_direction = Math::Normalize(vector);
+        }
+
+        const Vector3& Camera::GetDirection() const
+        {
+            return Math::Normalize(m_direction);
+        }
+
+        const Vector3& Camera::GetUpVector() const
+        {
+            return m_upVector;
+        }
+
+        const Vector3& Camera::GetRightVector() const
+        {
+            return m_rightVector;
+        }
+
+        const Vector3& Camera::GetForwardVector() const
+        {
+            return m_forwardVector;
+        }
+
         void Camera::UpdateProjectionMatrix()
         {
             if (m_orthographic)
@@ -116,6 +140,8 @@ namespace FanshaweGameEngine
             else
             {
                 m_projection = Math::CalculatePerspectiveMatrix(m_fov, m_aspectRatio, m_near, m_far);
+
+                //m_projection = Math::CalculateReversePerspective(m_fov, m_aspectRatio, m_near, m_far);
             }
         }
     }

@@ -55,6 +55,7 @@ namespace FanshaweGameEngine
 	}
 
 	
+	
 
 	std::string File::GetFileName(const FilePath& path)
 	{
@@ -87,4 +88,15 @@ namespace FanshaweGameEngine
 	{
 		return std::filesystem::current_path();
 	}
+
+	FilePath File::GetEngineDir()
+	{
+		return GetCurrentPath() /= "Engine\\";
+	}
+
+	FilePath File::GetShaderDir()
+	{
+		return GetEngineDir() /= "Shaders\\";
+	}
+
 }

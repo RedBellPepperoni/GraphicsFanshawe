@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include "Engine/Utils/GLUtils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -87,16 +87,17 @@ namespace FanshaweGameEngine
     void Window::UpdateViewPort()
     {
 
-
-
         glfwGetFramebufferSize(windowHandle, &width, &height);
         ratio = width / (float)height;
 
-        glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GLDEBUG(glViewport(0, 0, width, height));
+        GLDEBUG(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+        GLDEBUG(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+      
 
         // While drawing a pixel, see if the pixel that's already there is closer or not?
-        glEnable(GL_DEPTH_TEST);
+        GLDEBUG(glEnable(GL_DEPTH_TEST));
 
 
 

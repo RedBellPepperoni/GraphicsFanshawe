@@ -53,18 +53,37 @@ namespace FanshaweGameEngine
         }
 
 
+
+
         // View Projection Matrix Stuff
 
-        // Calculates and returns a ViewMatrix, returns a 4x4 Matrix 
-        inline Matrix4 GetViewMatrix(const Vector3& eye, const Vector3& center, const Vector3& up)
+        // Calculates and returns a Matrix , returns a 4x4 Matrix 
+        inline Matrix4 GetLookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
         {
             return glm::lookAt(eye, center, up);
-        }
+        }   
 
         // Calculates and Returns the Perspective Matrix, returns a 4x4 Matrix 
         inline Matrix4 CalculatePerspectiveMatrix(float fov, float aspect, float znear, float zfar)
         {
             return glm::perspective(glm::radians(fov), aspect, znear, zfar);
+        }
+
+        inline Matrix4 CalculateReversePerspective(float fov, float aspect, float znear, float zfar)
+        {
+            if (fov > 120.0f) { fov = 120.0f; }
+            else if (fov < 0.10f) { fov = 0.10f; }
+
+            float const tanHalfFov = std::tan(fov / 2.0f);
+            float d = 1 / tanHalfFov;
+
+            Matrix4 reversePerspective(
+                d/aspect, 0.0f, 0.0f, 0.0f,
+                0.0f, d, 0.0f, 0.0f,
+                0.0f, 0.0f, -1.0f, 0.0f,
+                0.0f, znear, 0.0f, 0.0f);
+
+            return reversePerspective;
         }
 
         inline Matrix4 CalculateOrthoMatrix(float left, float right, float bottom, float top, float znear, float zfar)
@@ -76,6 +95,51 @@ namespace FanshaweGameEngine
         inline Quaternion LookAtRotation(const Vector3& direction, const Vector3& up)
         {
             return glm::quatLookAt(direction, up);
+        }
+
+
+        // Matrix Processing functions // Just simplified wrappers
+
+        // Returns a transpose of the give nMatrix
+        template<typename Matrix>
+        inline Matrix Transpose(const Matrix& mat)
+        {
+            return glm::transpose(mat);
+        }
+
+        // Returns a inverse of the give nMitrix
+        template<typename Matrix>
+        inline Matrix Inverse(const Matrix& mat)
+        {
+            return glm::inverse(mat);
+        }
+
+
+
+        // ===== Tranform Stuff ====
+        inline Matrix4 Translate(const Matrix4& matrix, const Vector3& vector)
+        {
+            return glm::translate(matrix, vector);
+        }
+
+        inline Matrix4 Scale(const Matrix4& matrix, const Vector3& vector)
+        {
+            return glm::scale(matrix, vector);
+        }
+
+        inline Matrix4 Scale(const Matrix4& matrix, float value)
+        {
+            return glm::scale(matrix, Vector3(value));
+        }
+
+        inline Matrix4 Rotate(const Matrix4& matrix, float angle, const Vector3& axis)
+        {
+            return glm::rotate(matrix, angle, axis);
+        }
+
+        inline Matrix4 QuatToMatrix(const Quaternion& quat)
+        {
+            return glm::toMat4(quat);
         }
 
 
@@ -91,6 +155,17 @@ namespace FanshaweGameEngine
         {
             return glm::eulerAngles(quat);
         }
+
+
+
+        template<typename T>
+
+        inline T Normalize(const T& value)
+        {
+            return glm::normalize(value);
+        }
+
+        
     }
 
     // Easily Accessible namespace to whichever class includes this .h file

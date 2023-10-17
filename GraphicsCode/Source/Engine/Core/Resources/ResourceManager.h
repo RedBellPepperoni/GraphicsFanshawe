@@ -11,12 +11,14 @@ namespace FanshaweGameEngine
 	namespace Rendering
 	{
 		class Shader;
+		class Material;
 	}
+
 	class Model;
 
 	using Rendering::Shader;
 
-
+	using Rendering::Material;
 
 
 	// generic Class to make Resource Libraries of different types of resources
@@ -131,8 +133,12 @@ namespace FanshaweGameEngine
 	class ShaderLibrary : public ResourceLibrary<Shader>
 	{
 
+		
 
 	public:
+
+		
+
 		ShaderLibrary()
 		{
 
@@ -141,12 +147,27 @@ namespace FanshaweGameEngine
 		{
 
 		}
-
 		
 		SharedPtr<Shader> LoadShader(const std::string& friendlyName,const std::string& vertexSource,const std::string& fragmentSource);
 		
 	};
 
+
+	class MaterialLibrary : public ResourceLibrary<Material>
+	{
+	public:
+
+		MaterialLibrary()
+		{
+		}
+
+		virtual ~MaterialLibrary()
+		{
+
+		}
+
+		SharedPtr<Material> CreateMaterial(const std::string& friendlyName);
+	};
 
 
 	template <typename Type>

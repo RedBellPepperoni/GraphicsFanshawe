@@ -9,20 +9,22 @@ namespace FanshaweGameEngine
 	{
 		VertexArray::VertexArray()
 		{
-			glGenVertexArrays(1, &bufferId);
+			GLDEBUG(glGenVertexArrays(1, &bufferId));
 
 		}
 		VertexArray::~VertexArray()
 		{
 			FreeArray();
 		}
+
 		void VertexArray::Bind()
 		{
-			glBindVertexArray(bufferId);
+			GLDEBUG(glBindVertexArray(bufferId));
+
 		}
 		void VertexArray::UnBind()
 		{
-			glBindVertexArray(0);
+			GLDEBUG(glBindVertexArray(0));
 
 		}
 
@@ -31,44 +33,27 @@ namespace FanshaweGameEngine
 		{
 			if (bufferId != 0)
 			{
-				glDeleteVertexArrays(1, &bufferId);
+				GLDEBUG(glDeleteVertexArrays(1, &bufferId));
 			}
 
 			bufferId = 0;
 		}
-		void VertexArray::AddVertexAttributelayout(VertexBuffer& buffer, uint32_t shaderId)
+
+
+		void VertexArray::AddVertexAttributelayout(uint32_t shaderId)
 		{
-			Bind();
-			buffer.Bind();
 
-			GLint vposlocation = glGetAttribLocation(shaderId, "vPos");	// program
-			GLint vcollocation = glGetAttribLocation(shaderId, "vCol");	// program;
-			GLint vNormallocation = glGetAttribLocation(shaderId, "vNormal");	// program;
+			// Should Make this Dynamic later on, actually store the atrribs in the shader itslef and pull data accordingly
 
-			glEnableVertexAttribArray(vposlocation);
-			glVertexAttribPointer(vposlocation,
-				4,
-				GL_FLOAT,
-				GL_FALSE,
-				sizeof(Vertex),
-				(void*)offsetof(Vertex, position));
+			GLint position = GLDEBUG(glGetAttribLocation(shaderId, "vPosition"));	// program
+			GLint color = GLDEBUG(glGetAttribLocation(shaderId, "vColor"));
 
-			glEnableVertexAttribArray(vcollocation);
-			glVertexAttribPointer(vcollocation,
-				4,
-				GL_FLOAT,
-				GL_FALSE,
-				sizeof(Vertex),
-				(void*)offsetof(Vertex, color));
+			GLDEBUG(glEnableVertexAttribArray(position));
+			GLDEBUG(glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, position)));
 
-			glEnableVertexAttribArray(vposlocation);
-			glVertexAttribPointer(vposlocation,
-				4,
-				GL_FLOAT,
-				GL_FALSE,
-				sizeof(Vertex),
-				(void*)offsetof(Vertex, normal));
 
+			GLDEBUG(glEnableVertexAttribArray(color));
+			GLDEBUG(glVertexAttribPointer(color, 4, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, color)));
 
 		}
 	}

@@ -26,7 +26,7 @@ GLenum FanshaweGameEngine::glCheckError_(const char* file, int line)
 			std::string simplePath = File::GetFileNameWithExt(file);
 
 
-			LOG_ERROR("GL ERROR {0} : | {1} (Line {2})",error, simplePath, line);
+			LOG_ERROR("GL ERROR {0} : | {1} (Line {2})", error, simplePath, line);
 
 			
 		}

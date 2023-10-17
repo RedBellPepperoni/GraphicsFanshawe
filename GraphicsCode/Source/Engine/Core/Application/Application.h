@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
-#include "Engine/Core/Rendering/Renderer/RenderManager.h"
+#include <vector>
+
 
 
 namespace FanshaweGameEngine
@@ -16,12 +17,15 @@ namespace FanshaweGameEngine
 	namespace Rendering
 	{
 		class Window;
+		class RenderManager;
+		class Camera;
     }
 
 
 
 using Rendering::RenderManager;
 using Rendering::Window;
+using Rendering::Camera;
 
 
 
@@ -34,9 +38,12 @@ using Rendering::Window;
 		static Application* m_currentApplication;
 
 		// The Manager which controls all the Rendering of the Applciation
-		RenderManager m_renderManager;
+		UniquePtr<RenderManager> m_renderManager;
 
 		UniquePtr<Window> m_window = nullptr;
+
+
+		std::vector<SharedPtr<Camera>> m_scenecameras;
 
 
 		bool m_isRunning = false;
@@ -52,8 +59,6 @@ using Rendering::Window;
 	protected:
 
 		void RenderObjects();
-
-		void LoadStuff();
 
 
 		Application();
@@ -76,11 +81,13 @@ using Rendering::Window;
 		void Initialize();
 		void Run();
 
-
+		UniquePtr<RenderManager>& GetRenderManager();
 
 		SharedPtr<ModelLibrary>& GetModelLibrary();
 		
 		SharedPtr<GameObjectRegistry>& GetObjectLibrary();
+
+		std::vector<SharedPtr<Camera>>& GetSceneCameras();
 
 	};
 }

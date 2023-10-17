@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 
 			void FreeArray();
 
-			void AddVertexAttributelayout(VertexBuffer& buffer, uint32_t shaderId);
+			void AddVertexAttributelayout(/*VertexBuffer& buffer,*/ uint32_t shaderId);
 
 
 

@@ -30,6 +30,10 @@ namespace FanshaweGameEngine
 			// The Buffers that are needed for OpenGL
 			SharedPtr<VertexBuffer> m_VBO;
 			SharedPtr<IndexBuffer> m_IBO;
+
+
+			uint32_t m_vertexCount;
+			uint32_t m_indiciesCount;
 			
 
 
@@ -51,6 +55,8 @@ namespace FanshaweGameEngine
 			// Getters for Vertex and Index data
 			const std::vector<Vertex>& GetVertexData();
 			const std::vector<uint32_t>& GetIndexData();
+
+			const uint32_t GetIndexCount();
 
 			// Getters for Vertex and Index buffers
 			SharedPtr<VertexBuffer>& GetVBO();
