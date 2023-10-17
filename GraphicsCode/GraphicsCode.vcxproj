@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,12 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)Externals\;$(ProjectDir)Externals\glad\include\;$(ProjectDir)Externals\glfw\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)Externals\;$(ProjectDir)Externals\glad\include\;$(ProjectDir)Externals\glfw\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,13 +114,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Externals\glfw\include\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>glfw3.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -128,6 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,21 +143,69 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Externals\glfw\include\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>glfw3.lib;</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Renderer.cpp" />
-    <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Externals\glad\src\glad.c" />
-    <ClCompile Include="Externals\glm\detail\glm.cpp" />
+    <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Material.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Renderer\RenderManager.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Logging\Log.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\Transform.cpp" />
+    <ClCompile Include="Source\Engine\Core\Resources\ResourceDefinitions.h" />
+    <ClCompile Include="Source\Engine\Core\Resources\ResourceManager.cpp" />
+    <ClCompile Include="Source\Engine\Utils\GLUtils.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Loading\File.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Loading\Model.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Core\System\Input\InputSystem.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Object\GameObject.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Logging\OpenGLDebug.h" />
+    <ClCompile Include="Source\FeeneyShader.cpp" />
+    <ClCompile Include="Source\ShaderManager.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Camera.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Mesh.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Loading\ModelLoader.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Engine\Core\Application\Application.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Window.cpp" />
-    <ClCompile Include="Source\VertexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Core\System\Window\Window.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Renderer.h" />
-    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Material.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Renderer\RenderManager.h" />
+    <ClInclude Include="Source\Engine\Utils\Logging\Log.h" />
+    <ClInclude Include="Source\Engine\Core\Macros\Macro.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Shader\Shader.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Entity.h" />
+    <ClInclude Include="Source\Engine\Core\Resources\ResourceManager.h" />
+    <ClInclude Include="Source\GameEngine.h" />
+    <ClInclude Include="Source\Engine\Utils\Loading\File.h" />
+    <ClInclude Include="Source\Engine\Utils\Loading\Model.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Buffers\IndexBuffer.h" />
+    <ClInclude Include="Source\Engine\Core\Memory\Memory.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Definitions.h" />
+    <ClInclude Include="Source\Engine\Core\System\Input\InputSystem.h" />
+    <ClInclude Include="Source\Engine\Core\System\Input\InputKeyCodes.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Object\GameObject.h" />
+    <ClInclude Include="Source\Engine\Utils\GLUtils.h" />
+    <ClInclude Include="Source\ShaderManager.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Camera.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Mesh.h" />
+    <ClInclude Include="Source\Engine\Utils\Loading\ModelLoader.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Engine\Core\Application\Application.h" />
     <ClInclude Include="Externals\glad\include\glad\glad.h" />
     <ClInclude Include="Externals\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Externals\glfw\include\GLFW\glfw3.h" />
@@ -436,13 +492,13 @@
     <ClInclude Include="Externals\glm\vec3.hpp" />
     <ClInclude Include="Externals\glm\vec4.hpp" />
     <ClInclude Include="Externals\glm\vector_relational.hpp" />
-    <ClInclude Include="Source\Math.h" />
-    <ClInclude Include="Source\Vertex.h" />
-    <ClInclude Include="Source\Window.h" />
-    <ClInclude Include="Source\VertexBuffer.h" />
+    <ClInclude Include="Source\Engine\Utils\Math.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\Transform.h" />
+    <ClInclude Include="Source\Engine\Core\System\Window\Window.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Externals\glfw\libs\glfw3.dll" />
     <None Include="Externals\glm\detail\func_common.inl" />
     <None Include="Externals\glm\detail\func_common_simd.inl" />
     <None Include="Externals\glm\detail\func_exponential.inl" />
@@ -579,11 +635,6 @@
     <None Include="Externals\glm\gtx\vector_angle.inl" />
     <None Include="Externals\glm\gtx\vector_query.inl" />
     <None Include="Externals\glm\gtx\wrap.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Externals\glfw\libs\glfw3.lib" />
-    <Library Include="Externals\glfw\libs\glfw3dll.lib" />
-    <Library Include="Externals\glfw\libs\glfw3_mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
