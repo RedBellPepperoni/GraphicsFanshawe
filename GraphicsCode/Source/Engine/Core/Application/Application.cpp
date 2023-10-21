@@ -82,6 +82,9 @@ namespace FanshaweGameEngine
 		
 	
 		// Calling Init on the child applications
+
+		// Add loading the scene here
+
 		OnInit();
 	}
 
