@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/Rendering/Renderer/Renderer.h"
+#include "Engine/Core/Scene/Scene.h"
 
 namespace FanshaweGameEngine
 {
@@ -8,17 +9,16 @@ namespace FanshaweGameEngine
 	class ShaderLibrary;
 	class MaterialLibrary;
 	
-
+	//class Scene;
 
 
 	namespace Rendering
 	{
-
 		
 		
-	
 		class RenderManager
 		{
+
 		private: 
 			// The class that actually draws stuff
 			UniquePtr<Renderer> m_renderer;
@@ -28,14 +28,14 @@ namespace FanshaweGameEngine
 
 			SharedPtr<MaterialLibrary> m_MaterialLibrary;
 
-		//	Camera* m_mainCamera;
+			Scene* m_currentScene;
 
 
 		private:
 
 			void LoadEngineShaders();
 
-			void BeginScene();
+			
 
 			
 
@@ -43,6 +43,8 @@ namespace FanshaweGameEngine
 
 			void Init();
 
+
+			void ProcessScene(Scene* scene);
 			void RenderFrame();
 
 

@@ -3,7 +3,13 @@
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Macros/Macro.h"
 #include "Engine/Core/Application/Application.h"
-#include "Engine/Core/ECS/Object/GameObject.h"
+
+#include "Engine/Core/Rendering/Essentials/Camera.h"
+
+#include "Engine/Core/ECS/Components/Transform.h"
+#include "Engine/Core/ECS/Components/MeshComponent.h"
+#include "Engine/Core/ECS/Components/MeshRenderer.h"
+
 #include "Engine/Core/Rendering/Essentials/Material.h"
 
 
@@ -13,6 +19,8 @@
 namespace FanshaweGameEngine
 {
 	
+	using Components::MeshComponent;
+	using Components::MeshRenderer;
 
 	namespace Rendering
 	{
@@ -25,36 +33,73 @@ namespace FanshaweGameEngine
 
 		}
 
-		void RenderManager::BeginScene()
+		void RenderManager::ProcessScene(Scene* scene)
 		{
-			// Load All object in the scene 
+			// reference of current scene
+			m_currentScene = scene;
 
-	
+			// Temporary copy of registry
+			entt::registry& registry = scene->GetRegistry();
 
-			SharedPtr<GameObjectRegistry> objRegistry = Application::GetCurrent().GetObjectLibrary();
+			
+			// Getting a view of all the cameras in the scene
+			auto cameraView = registry.view<Camera>();
+			auto transformView = registry.view<Transform>();
 
-			// Loop through all the Gameobjects in the current scene 
-			for (auto& itr : objRegistry->Get())
+
+			// No rendering cameras found since the view returned empty
+			if (cameraView.empty())
 			{
-				Transform objTransform = itr.second->m_transform; 
-				SharedPtr<Mesh> objMesh = itr.second->m_rendermesh;
-				SharedPtr<Material> objMat = itr.second->m_material;
-				std::string debugName = itr.first;
+				LOG_WARN("No cameras in the scene");
+				return;
+			}
+			
 
-				if(!itr.second->shouldDraw) 
+
+			//// Loop through all the cameras in the scene and send thier data to the pipeline 
+			for (entt::entity cameraEntity : cameraView)
+			{
+				// get the Camera Reference from te view
+				Camera& camera = cameraView.get<Camera>(cameraEntity);
+
+				// get the transform of teh camera
+				Transform& cameraTransform = transformView.get<Transform>(cameraEntity);
+
+				// Send the data to the Pipeline
+				m_renderer->SetUpCameraElement(camera, cameraTransform);
+			}
+
+
+			auto meshView = registry.view<MeshComponent>();
+			auto materialView = registry.view<MeshRenderer>();
+			
+			for (entt::entity meshEntity : meshView)
+			{
+				MeshComponent& meshComp = meshView.get<MeshComponent>(meshEntity);
+
+
+				if(!meshComp.isVisible)
 				{
-					// The Object shouldn't be submitted for rendering
+					//The mesh is not visible , so dont need to render it
 					continue;
 				}
 
-				// Push the Data to the Render Element Queue.
+				// getting the required components
+				MeshRenderer& materialComp = materialView.get<MeshRenderer>(meshEntity);
+				Transform transform = transformView.get<Transform>(meshEntity);
 
-				m_renderer->ProcessRenderElement(objMesh,objMat,objTransform,debugName);
+
+				// Getting data from teh Componenets
+				SharedPtr<Mesh> renderMesh = meshComp.GetMesh();
+				SharedPtr<Material> renderMaterial = materialComp.GetMaterial();
+
+				// Sending the mesh data for processing
+				m_renderer->ProcessRenderElement(renderMesh, renderMaterial, transform);
 
 
 			}
 
-		
+
 			
 
 		}
@@ -90,21 +135,8 @@ namespace FanshaweGameEngine
 
 		void RenderManager::RenderFrame()
 		{
-			// We gather all the Objects in the Scene and Push the mto the Render Queue
-			BeginScene();
-
-			
-			// Get al the rendering cameras in teh scene
-			std::vector<SharedPtr<Camera>> allRenderingCameras = Application::GetCurrent().GetSceneCameras();
-
-			// Send the camera data to the pipeline
-			for (size_t index = 0; index < allRenderingCameras.size(); index++)
-			{
-				m_renderer->SetUpCameraElement(allRenderingCameras[index]);
-			}
-			
-
-		
+				
+	
 			// Draw the OpaqueEleemnts
 			m_renderer->RenderElements(m_ShaderLibrary->GetResource("StandardShader"), MaterialType::Opaque);
 

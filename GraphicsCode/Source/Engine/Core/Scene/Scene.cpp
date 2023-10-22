@@ -13,16 +13,24 @@ namespace FanshaweGameEngine
 	}
 	Scene::~Scene()
 	{
-		
+		// Cleanup the manager
+		m_EntityManager->Clear();
 	}
 	void Scene::Init()
 	{
+		// Setup systems here
 	}
 	void Scene::CleanUp()
 	{
+		// Destroy all teh gameobjects in teh registry
+		DestroyAllGameObjects();
+
+		// Clear other managers if needed
+
 	}
 	void Scene::Update()
 	{
+		// Update entities transform here
 	}
 	const std::string& Scene::GetName() const
 	{
@@ -40,21 +48,29 @@ namespace FanshaweGameEngine
 
 	Entity Scene::CreateEntity()
 	{
-		return Entity();
+		return m_EntityManager->Create();
 	}
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return Entity();
+		return m_EntityManager->Create(name);
 	}
 	Entity Scene::GetEntitybyId(const uint64_t id)
 	{
-		return Entity();
+		return m_EntityManager->GetEntitybyId(id);
 	}
 	EntityManager* Scene::GetEntityManager()
 	{
-		return nullptr;
+		return m_EntityManager.get();
 	}
 	void Scene::DestroyAllGameObjects()
+	{
+		// deletes all teh entities in the registry
+		m_EntityManager->Clear();
+	}
+	void Scene::Serialize(const std::string& filename)
+	{
+	}
+	void Scene::Deserialize(const std::string filename)
 	{
 	}
 }

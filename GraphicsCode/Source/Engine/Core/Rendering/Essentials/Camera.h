@@ -16,10 +16,6 @@ namespace FanshaweGameEngine
 		{
 
 
-
-
-
-
         public:
 
             Camera();
@@ -28,7 +24,7 @@ namespace FanshaweGameEngine
             ~Camera() = default;
 
             // Temporary defining the Transforms here until I switch to ECS
-            Transform m_transform;
+            //Transform m_transform;
             std::string m_name;
 
         public:

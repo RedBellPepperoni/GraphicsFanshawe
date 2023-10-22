@@ -27,14 +27,14 @@ namespace FanshaweGameEngine
 
 		GameObject() = default;
 		GameObject(const SharedPtr<Mesh>& mesh);
-		GameObject(const Transform& transform, const SharedPtr<Mesh>& mesh);
+		//GameObject(const Transform& transform, const SharedPtr<Mesh>& mesh);
 		~GameObject();
 
 
 	public:
 		
 		// All objects should have a transform
-		Transform m_transform;
+		//Transform m_transform;
 
 		// For now hardcoding mesh in the gameObject
 		// TODO: Change this to a seperate component later !!

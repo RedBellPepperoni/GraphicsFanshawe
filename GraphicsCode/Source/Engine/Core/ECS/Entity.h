@@ -38,6 +38,8 @@ namespace FanshaweGameEngine
 
 		entt::entity m_entityHandle = entt::null;
 
+		bool m_isActive = true;
+
 		Scene* m_scene;
 
 
@@ -45,7 +47,7 @@ namespace FanshaweGameEngine
 		
 		Entity() = default;
 
-		Entity(entt::entity handle,Scene* scene)
+		Entity(entt::entity handle, Scene* scene)
 			:m_entityHandle (handle)
 			,m_scene(scene)
 		{
@@ -57,14 +59,27 @@ namespace FanshaweGameEngine
 
 		}
 
+		bool IsActive()
+		{
+			return m_isActive;
+		}
+
+		void SetActive(const bool active)
+		{
+			m_isActive = active;
+		}
+
+
 		template<typename T, typename... Args>
+
 		T& AddComponent(Args&... args)
 		{
-#if _DEBUG
-			// Check if the component is getting added more tha nonce
-#endif
+			if (HasComponent<T>())
+			{
+				LOG_WARN("Trying to add the component more than once");
+			}
 
-			//m_scene->GetRegistry()
+			return m_scene->GetRegistry().emplace <T>(m_entityHandle, std::forward<Args>(args)...);
 
 		}
 
@@ -72,74 +87,83 @@ namespace FanshaweGameEngine
 		T& GetComponent()
 		{
 			// Return component here
+			return m_scene->GetRegistry().get<T>(m_entityHandle);
 		}
 
 		template<typename T>
 		T* TryGetComponent()
 		{
-			//return the compoentn
+			return m_scene->GetRegistry().try_get<T>(m_entityHandle);
 		}
 
 
 		template <typename T>
 		bool HasComponent()
 		{
-			return false;
+			
+			return m_scene->GetRegistry().all_of<T>(m_entityHandle);
 		}
 
 
 		template<typename T>
 		void RemoveComponent()
 		{
-
+			m_scene->GetRegistry().remove<T>(m_entityHandle);
 		}
 
 		template<typename T>
 		void TryRemoveComponent()
 		{
-
+			if (HasComponent<T>())
+			{
+				RemoveComponent<T>();
+			}
 		}
 
-		bool IsActive()
-		{
+		
 
-		}
-
-		void SetActive(bool isActive)
-		{
-
-		}
 
 		//Transform&
 
 		uint64_t GetId()
 		{
-
+			return m_scene->GetRegistry().get<IdComponent>(m_entityHandle).ID.GetId();
 		}
 
 		const std::string& GetName()
 		{
 
+			NameComponent* comp = TryGetComponent<NameComponent>();
+
+			if(comp)
+			{
+				return comp->name;
+			}
+			else
+			{		
+				return "unamedEntity";
+			}
+
 		}
 
-		void Setparent(Entity entity)
+		void SetParent(Entity entity)
 		{
-
+			// Add parents here
 		}
 
 		Entity GetParent()
 		{
-
+			// get entity ref of parent
 		}
 
 		std::vector<Entity> GetChildren()
 		{
-
+			//Get entity ref of children
 		}
 
 		void ClearChildren()
 		{
-
+			//null all the refs of children
 		}
 
 		entt::entity GetHandle()
@@ -149,17 +173,17 @@ namespace FanshaweGameEngine
 
 		void Destroy()
 		{
-
+			m_scene->GetRegistry().destroy(m_entityHandle);
 		}
 
 		bool IsValid()
 		{
-
+			return m_scene->GetRegistry().valid(m_entityHandle) && m_scene;
 		}
 
-		SharedPtr<Scene> GetSceen() const
+		Scene* GetScene() const
 		{
-
+			return m_scene;
 		}
 
 

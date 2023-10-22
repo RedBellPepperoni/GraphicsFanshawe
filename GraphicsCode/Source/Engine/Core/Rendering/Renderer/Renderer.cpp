@@ -51,7 +51,7 @@ namespace FanshaweGameEngine
         }
 
 
-        void Renderer::ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material,Transform& transform, const std::string& name)
+        void Renderer::ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material,Transform& transform)
         {
             if (material->albedoColour.a <= 0.0f)
             {
@@ -125,6 +125,9 @@ namespace FanshaweGameEngine
         {
             // Binding the VAO for the Particular Shader
            /* m_pipeline.VAO->Bind();*/
+
+
+
 
            
             shader->Bind();
@@ -207,22 +210,22 @@ namespace FanshaweGameEngine
 
         
 
-        void Renderer::SetUpCameraElement(const SharedPtr<Camera>& cameraRef)
+        void Renderer::SetUpCameraElement(Camera& cameraRef, Transform& transform)
         {
             // Creating a new  Data only Camera element
             CameraElement camera;
 
             // Setting the details
-            camera.aspectRatio = cameraRef->GetAspectRatio();
-            camera.isOrtho = cameraRef->IsOrthographic();
+            camera.aspectRatio = cameraRef.GetAspectRatio();
+            camera.isOrtho = cameraRef.IsOrthographic();
 
-            camera.viewPosition = cameraRef->m_transform.GetPosition();
+            camera.viewPosition = transform.GetPosition();
 
 //            Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
 
             // For now , since the camera is not parented to anything. Later multiply the parent's transform to it
-            Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef->GetDirection(), cameraRef->GetUpVector());
-            Matrix4 proj = cameraRef->GetProjectionMatrix();
+            Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
+            Matrix4 proj = cameraRef.GetProjectionMatrix();
             Matrix4 projView = proj * view;
 
             // Set the View Projection matrix

@@ -154,7 +154,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
-    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\MeshComponent.cpp" />
     <ClCompile Include="Source\Engine\Utils\Math\Random.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\EntityManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Scene\Scene.cpp" />
@@ -186,7 +187,9 @@
     <ClCompile Include="Source\Engine\Utils\UniqueId\UniqueId.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\MeshRenderer.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\ComponentDefinitions.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\MeshComponent.h" />
     <ClInclude Include="Source\Engine\Utils\Math\Random.h" />
     <ClInclude Include="Source\Engine\Core\ECS\EntityManager.h" />
     <ClInclude Include="Source\Engine\Core\Scene\Scene.h" />

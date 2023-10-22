@@ -53,6 +53,9 @@ namespace FanshaweGameEngine
 		void DestroyAllGameObjects();
 
 
+		void Serialize(const std::string& filename);
+		void Deserialize(const std::string filename);
+
 	};
 
 }

@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
 
 	public:
 
-		SharedPtr<Scene> m_scene;
+		SharedPtr<Scene> m_scene = nullptr;
 		TypeView m_view;
 
 		/*EntityView(SharedPtr<Scene> scene)

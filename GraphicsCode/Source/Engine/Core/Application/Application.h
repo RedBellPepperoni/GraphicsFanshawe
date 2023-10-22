@@ -12,7 +12,7 @@ namespace FanshaweGameEngine
 
 	class ModelLibrary;
 	class GameObjectRegistry;
-
+	class Scene;
 
 	namespace Rendering
 	{
@@ -43,51 +43,65 @@ using Rendering::Camera;
 		UniquePtr<Window> m_window = nullptr;
 
 
-		std::vector<SharedPtr<Camera>> m_scenecameras;
-
-
 		bool m_isRunning = false;
 
 		// Right now it points to the class given by M Feeney, change this later
 		//SharedPtr<ShaderLibrary> shaderLibrary;
 
-	
+	    // The  containers for the loaded models 
 		SharedPtr<ModelLibrary> m_modelLibrary;		
-		SharedPtr<GameObjectRegistry> m_objectRegistry;
+
+		// Pointer to the currently loaded scene
+		SharedPtr<Scene> m_currentScene;
+
 		
 
 	protected:
 
+		// Render all the Objects in the scene
 		void RenderObjects();
 
-
+		// Teh Constructor
 		Application();
 
+		// Inherited class methods to do stuff
 		virtual void OnCreate(){};
 		virtual void OnUpdate(){};
 		virtual void OnInit()  {};
 
 
+		
+
 	public:
 
 
-
-
+		// Destructor
 		virtual ~Application();
+
+		// Reference Getter for the application
 		static Application& GetCurrent();
+
+		// Referene getter for the current window
 		Window& GetWindow();
 
+		// Reference Getter for teh current scene
+		Scene* GetCurrentScene() const;
 
+		// The start up setup for the apllication
 		void Initialize();
+
+		// This methods initaitzes the runtime and starts the gameloop
 		void Run();
 
+
+		// Reference Getters to the renderManager
 		UniquePtr<RenderManager>& GetRenderManager();
 
+		// Reference getter to teh Model Library
 		SharedPtr<ModelLibrary>& GetModelLibrary();
 		
-		SharedPtr<GameObjectRegistry>& GetObjectLibrary();
 
-		std::vector<SharedPtr<Camera>>& GetSceneCameras();
+		
 
 	};
 }
