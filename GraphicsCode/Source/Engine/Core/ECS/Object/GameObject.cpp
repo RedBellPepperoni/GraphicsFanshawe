@@ -43,11 +43,7 @@ namespace FanshaweGameEngine
         
     } 
 
-    GameObject::GameObject(const Transform& transform, const SharedPtr<Mesh>& mesh)
-    {
-        m_rendermesh = mesh;
-        m_transform = transform;
-    }
+    
     GameObject::~GameObject()
     {
     }

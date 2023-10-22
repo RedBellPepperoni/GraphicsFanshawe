@@ -15,6 +15,7 @@ namespace FanshaweGameEngine
 		// Namespace Stuff
 		
 		
+		// The actual Drawable Mesh
 
 		class Mesh
 		{
@@ -34,6 +35,7 @@ namespace FanshaweGameEngine
 
 			uint32_t m_vertexCount;
 			uint32_t m_indiciesCount;
+			
 			
 
 

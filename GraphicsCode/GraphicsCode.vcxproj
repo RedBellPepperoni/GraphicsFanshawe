@@ -73,12 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Source\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Source\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -154,7 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
-    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\MeshComponent.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Math\Random.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\EntityManager.cpp" />
+    <ClCompile Include="Source\Engine\Core\Scene\Scene.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Material.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Renderer\RenderManager.cpp" />
     <ClCompile Include="Source\Engine\Utils\Logging\Log.cpp" />
@@ -180,9 +184,15 @@
     <ClCompile Include="Source\Engine\Core\System\Window\Window.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexArray.cpp" />
+    <ClCompile Include="Source\Engine\Utils\UniqueId\UniqueId.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\MeshRenderer.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\ComponentDefinitions.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\MeshComponent.h" />
+    <ClInclude Include="Source\Engine\Utils\Math\Random.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\EntityManager.h" />
+    <ClInclude Include="Source\Engine\Core\Scene\Scene.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Material.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Renderer\RenderManager.h" />
     <ClInclude Include="Source\Engine\Utils\Logging\Log.h" />
@@ -497,6 +507,7 @@
     <ClInclude Include="Source\Engine\Core\System\Window\Window.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexArray.h" />
+    <ClInclude Include="Source\Engine\Utils\UniqueId\UniqueId.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

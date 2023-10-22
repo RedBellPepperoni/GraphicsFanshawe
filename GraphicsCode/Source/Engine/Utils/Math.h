@@ -14,6 +14,11 @@ namespace FanshaweGameEngine
 
     namespace Math
     {
+        // Randon Stuff
+
+
+
+
         // Renaming glm variables into more Usable format
         using Vector2 = glm::vec<2, float>;
         using Vector3 = glm::vec<3, float>;

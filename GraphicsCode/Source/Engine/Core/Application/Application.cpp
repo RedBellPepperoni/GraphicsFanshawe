@@ -5,9 +5,11 @@
 #include "Engine/Core/System/Window/Window.h"
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Macros/Macro.h"
-#include "Engine/Core/ECS/Object/GameObject.h"
+//#include "Engine/Core/ECS/Object/GameObject.h"
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
+
+#include "Engine/Core/Scene/Scene.h"
 
 
 namespace FanshaweGameEngine
@@ -36,12 +38,15 @@ namespace FanshaweGameEngine
 
 		// Setting up teh Model and Object Library
 		m_modelLibrary   = MakeShared<ModelLibrary>();
-		m_objectRegistry = MakeShared<GameObjectRegistry>();
+		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
+		m_currentScene = MakeShared<Scene>("testScene");
 
 		// Setting the Instance reference of the creatd application
 		m_currentApplication = this;
 		
+
+
 
 		// Activate the User function
 		OnCreate();
@@ -57,6 +62,9 @@ namespace FanshaweGameEngine
 	void Application::RenderObjects()
 	{
 		// Tell the Render Manager to Do Drawing
+		m_renderManager->ProcessScene(GetCurrentScene());
+
+
 		m_renderManager->RenderFrame();
 
 	}
@@ -77,11 +85,19 @@ namespace FanshaweGameEngine
 		return *m_window;
 	}
 
+	Scene* Application::GetCurrentScene() const
+	{
+		return m_currentScene.get();
+	}
+
 	void Application::Initialize()
 	{
 		
 	
 		// Calling Init on the child applications
+
+		// Add loading the scene here
+
 		OnInit();
 	}
 
@@ -123,12 +139,7 @@ namespace FanshaweGameEngine
 
 	
 	
-	SharedPtr<GameObjectRegistry>& Application::GetObjectLibrary()
-	{
-		return m_objectRegistry;
-	}
-	std::vector<SharedPtr<Camera>>& Application::GetSceneCameras()
-	{
-		return m_scenecameras;
-	}
+	
+	
+
 }

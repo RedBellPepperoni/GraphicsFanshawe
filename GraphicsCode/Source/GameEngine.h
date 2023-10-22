@@ -13,8 +13,12 @@
 #include "Engine/Utils/Loading/Model.h"
 
 #include "Engine/Core/Rendering/Essentials/Camera.h"
-
 #include "Engine/Core/Rendering/Essentials/Material.h"
+
+#include "Engine/Core/Scene/Scene.h"
+#include "Engine/Core/ECS/Entity.h"
+
+#include "Engine/Core/ECS/Components/ComponentDefinitions.h"
 
 
 

@@ -9,8 +9,14 @@
 
 namespace FanshaweGameEngine
 {
-	// Forward Decalrartions for better compile times
-	class Transform;
+	namespace Components
+	{
+		// Forward Decalrartions for better compile times
+		class Transform;
+	}
+	
+	
+	using Components::Transform;
 	
 
 	namespace Rendering
@@ -117,10 +123,10 @@ namespace FanshaweGameEngine
 			// Draws the provided Elements with the provided shader
 			void RenderElements( SharedPtr<Shader> shader, const MaterialType type);
 
-			void SetUpCameraElement(const SharedPtr<Camera>& cameraRef);
+			void SetUpCameraElement(Camera& cameraRef, Transform& transform);
 
 			// Adds a Render Element to the Queue
-			void ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material, Transform& transform, const std::string& name);
+			void ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material, Transform& transform);
 
 			
 

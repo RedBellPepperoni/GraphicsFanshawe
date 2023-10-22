@@ -17,15 +17,23 @@ class GameApplication : public Application
     
       
 
-       // Create a new Camera
-       SharedPtr<Camera> mainCamera = Factory<Camera>::Create();
-
+       
        // Set the position
-       mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
-       mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
+       //mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
+       //mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
 
-       // Add the created camera to teh Scene List
-       m_scenecameras.push_back(mainCamera);
+       Entity mainCamera = GetCurrentScene()->CreateEntity("Camera01");
+       mainCamera.AddComponent<Camera>();
+       mainCamera.AddComponent<Transform>();
+
+       Transform& cameraTransform = mainCamera.GetComponent<Transform>();
+
+       cameraTransform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
+
+
+       Vector3 position = cameraTransform.GetPosition();
+
+       mainCamera.GetComponent<Camera>().SetDirection(-cameraTransform.GetPosition());
 
 
       
@@ -39,45 +47,58 @@ class GameApplication : public Application
 
 
 
-       SharedPtr<GameObject> bathObject;
-       SharedPtr<GameObject> sphereObject;
+      // SharedPtr<GameObject> bathObject;
+       //SharedPtr<GameObject> sphereObject;
 
-
-       // ============= CREATING OBJECTS FROM DATA ======================
-       bathObject = GetObjectLibrary()->CreateObject(model->GetMeshes().data()[0], "BathObject");
-       CHECKNULL(bathObject);
-
-       // Creating a New Material
-       SharedPtr<Material> bathMat = GetRenderManager()->GetMaterialLibrary()->CreateMaterial("BathMat");
-
-
-       sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject01");
-       CHECKNULL(sphereObject);
+       // Using ECS now
+       Entity bathObject = GetCurrentScene()->CreateEntity("BathObject");
+       Entity sphereObject = GetCurrentScene()->CreateEntity("sphere_01");
 
 
 
-       bathObject->m_material = bathMat;
-       // Setting Positional Data    
-       bathObject->m_transform.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-
-       sphereObject->m_material = bathMat;
-       sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 10.0f));
-
-       sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject02");
-       CHECKNULL(sphereObject);
-
-       sphereObject->m_material = bathMat;
-       sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 15.0f));
+       // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+       bathObject.AddComponent<Transform>();
+       bathObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+      
+       // Set the First mesh reference as out mesh component
+       // Later need to make this automatically generate entities for multiple meshes
+       bathObject.AddComponent<MeshComponent>(model->GetMeshes()[0]);
 
 
-       sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject03");
-       CHECKNULL(sphereObject);
+       bathObject.AddComponent<MeshRenderer>();
+       
 
-       sphereObject->m_material = bathMat;
-       sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 20.0f));
 
-       // Telling t
-       mainCamera->SetDirection(sphereObject->m_transform.GetPosition()  - mainCamera->m_transform.GetPosition());
+
+
+
+       //// ============= CREATING OBJECTS FROM DATA ======================
+       
+
+    
+
+       //bathObject->m_material = bathMat;
+       //// Setting Positional Data     
+       //bathObject->m_transform.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+
+       //sphereObject->m_material = bathMat;
+       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 10.0f));
+
+       //sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject02");
+       //CHECKNULL(sphereObject);
+
+       //sphereObject->m_material = bathMat;
+       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 15.0f));
+
+
+       //sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject03");
+       //CHECKNULL(sphereObject);
+
+       //sphereObject->m_material = bathMat;
+       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 20.0f));
+
+       //// Telling t
+       //mainCamera->SetDirection(sphereObject->m_transform.GetPosition()  - mainCamera->m_transform.GetPosition());
        
    }
 

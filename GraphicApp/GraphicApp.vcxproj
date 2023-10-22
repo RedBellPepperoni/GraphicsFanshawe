@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
     <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
     <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
