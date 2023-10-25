@@ -1,7 +1,9 @@
 #include "Scene.h"
-
+#include "Engine/Core/ECS/Components/ComponentDefinitions.h"
+#include "Engine/Core/System/Input/FlyCameraController.h"
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
+
 
 
 namespace FanshaweGameEngine
@@ -10,6 +12,11 @@ namespace FanshaweGameEngine
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
 		m_EntityManager = MakeUnique<EntityManager>(this);
+
+
+	//	m_EntityManager->AddDependency<Camera, Components::Transform>();
+		//m_EntityManager->AddDependency<Components::MeshComponent, Components::Transform>();
+
 	}
 	Scene::~Scene()
 	{
@@ -18,6 +25,13 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Init()
 	{
+		Entity cameraEntity = GetEntityManager()->Create("MainCamera");
+		cameraEntity.AddComponent<Camera>();
+		cameraEntity.AddComponent<Transform>();
+		cameraEntity.AddComponent<FlyCameraController>();
+
+
+
 		// Setup systems here
 	}
 	void Scene::CleanUp()
@@ -28,9 +42,45 @@ namespace FanshaweGameEngine
 		// Clear other managers if needed
 
 	}
-	void Scene::Update()
+	void Scene::Update(float deltaTime)
 	{
 		// Update entities transform here
+
+		// get mousePosition HEre;
+
+
+		auto defaultCameraView = m_EntityManager->GetRegistry().view<FlyCameraController>();
+		auto cameraView = m_EntityManager->GetRegistry().view<Camera>();
+		auto transformView = m_EntityManager->GetRegistry().view<Transform>();
+
+
+		Camera* camera = nullptr;
+
+		if (!cameraView.empty())
+		{
+			camera = &cameraView.get<Camera>(cameraView.front());
+		}
+
+		if (!defaultCameraView.empty())
+		{
+			FlyCameraController controller = defaultCameraView.get<FlyCameraController>(defaultCameraView.front());
+			Transform* cameraTransform = &transformView.get<Transform>(defaultCameraView.front());
+
+
+			if (cameraTransform && camera)
+			{
+				controller.SetCamera(camera);
+				Vector3 pos = cameraTransform->GetPosition();
+
+				
+
+				//controller.MouseInput(cameraTrasnform,deltaTime);
+				controller.KeyboardInput(*cameraTransform,deltaTime);
+
+				
+			}
+		}
+		
 	}
 	const std::string& Scene::GetName() const
 	{

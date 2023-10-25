@@ -59,9 +59,10 @@ namespace FanshaweGameEngine
 
 	void Application::UpdateDeltaTime(float& lastFrameEnd, float& lastSecondEnd, size_t& fps)
 	{
-
+		// Get the current time from the glfw runtime
 		float currentTime = Time::CurrentEngineTime();
 
+		// IF the engine is paused, don't update anything
 		if (m_isPaused)
 		{
 			lastFrameEnd = 0.0f;
@@ -71,21 +72,29 @@ namespace FanshaweGameEngine
 			m_deltaTime = 0;
 		}
 
+		// Otherwise calcaulte the delta time and the fps for the current - previous frame
 		else
 		{
+			// Increase till we reach the frame end time
 			fps++;
 
+			
 			if (lastFrameEnd - lastSecondEnd >= 1.0f)
 			{
+				// once we are at the end, reset the fps counter
 				m_Fps = fps;
 				lastSecondEnd = currentTime;
 				fps = 0;
 
 			}
 
+			// Update the deltatime
 			m_deltaTime = m_timeScale * (currentTime - lastFrameEnd);
+
+			// Update the total time since start
 			m_totalElapsedTime += m_deltaTime;
 		}
+
 
 		lastFrameEnd = currentTime;
 
@@ -134,14 +143,21 @@ namespace FanshaweGameEngine
 		
 		this->m_window->SetEventCallback(BIND_FN(Application::ProcessEvent));
 
+		// Right now only limited to one scene -> change this to a load scene function later
+		m_currentScene->Init();
+
+		m_mainCameraIndex = 0;
+
 		// Calling Init on the child applications
 		OnInit();
 	}
 
 	void Application::Run()
 	{
+		// Set the engine as running
 		m_isRunning = true;
 
+		// container to store variables to calculate the delta timing
 		float secondEnd = Time::CurrentEngineTime();
 		float frameEnd = Time::CurrentEngineTime();
 		size_t frames = 0;
@@ -153,10 +169,18 @@ namespace FanshaweGameEngine
 		while (m_window->isOpen())
 		{
 
+
+
 			UpdateDeltaTime(frameEnd, secondEnd, frames);
+
+			m_currentScene->Update(m_deltaTime);
+
+			Input::InputSystem::GetInstance().ResetKeyPressed();
+
+
 			m_window->PollEvents();
 			
-
+			
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
 

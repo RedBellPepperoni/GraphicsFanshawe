@@ -40,7 +40,7 @@ namespace FanshaweGameEngine
 		void CleanUp();
 
 		// this should be called everyframe to update teh trasnforms and such
-		void Update();
+		void Update(float deltaTime);
 
 		// getter for accessing the scene name
 		const std::string& GetName() const;
@@ -65,6 +65,9 @@ namespace FanshaweGameEngine
 
 		// Loops through all the Entitys in the scene and destroys them
 		void DestroyAllGameObjects();
+
+
+		
 
 
 		void Serialize(const std::string& filename);

@@ -7,21 +7,7 @@ namespace FanshaweGameEngine
 		// Deals with the event when the mouse is moved
 	
 
-		class MouseMovedEvent : public EventBase
-		{
-		public:
-			MouseMovedEvent(float axisX, float axisY) : mouseX(axisX), mouseY(axisY) {}
-
-
-			inline float GetXAxis() { return mouseX; }
-			inline float GetYAxis() { return mouseY; }
-
-			EVENT_CATEGORY(EventCategoryMouse | EventCategoryInput)
-				EVENT_TYPE(MouseMoved)
-
-		private:
-			float mouseX, mouseY;
-		};
+		
 
 
 
@@ -65,4 +51,45 @@ namespace FanshaweGameEngine
 
 		};
 	
+
+		class MouseMovedEvent : public EventBase
+		{
+		public:
+			MouseMovedEvent(float axisX, float axisY) : mouseX(axisX), mouseY(axisY) {}
+
+
+			inline float GetXAxis() { return mouseX; }
+			inline float GetYAxis() { return mouseY; }
+
+			EVENT_CATEGORY(EventCategoryMouse | EventCategoryInput)
+				EVENT_TYPE(MouseMoved)
+
+		private:
+			float mouseX, mouseY;
+		};
+
+
+		class MouseScrolledEvent : public EventBase
+		{
+		public:
+
+			MouseScrolledEvent(float newXDelta, float newYDelta)
+				: xDelta(newXDelta)
+				, yDelta(newYDelta)
+			{
+
+			}
+
+
+			float GetXDelta() const { return xDelta; }
+			float GetYDelta() const { return yDelta; }
+
+			EVENT_CATEGORY(EventCategoryMouse | EventCategoryInput)
+				EVENT_TYPE(MouseScrolled)
+
+		private:
+
+			float xDelta;
+			float yDelta;
+		};
 }

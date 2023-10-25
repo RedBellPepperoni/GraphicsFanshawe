@@ -107,6 +107,9 @@ namespace FanshaweGameEngine
 		};
 
 
+		// Reference from Opengl bible for events and various stack overflow posts
+		// and a little bit from Arcane Engine
+		// https://github.com/Ershany/Arcane-Engine/blob/master/Arcane/src/Arcane/Core/Events/Event.h
 
 #define BIND_FN(fn) [this](auto&&... args) -> decltype(auto) {  return this->fn(forward<decltype(args)>(args)...); }
 

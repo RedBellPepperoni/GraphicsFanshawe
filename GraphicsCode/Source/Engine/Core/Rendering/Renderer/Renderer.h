@@ -126,7 +126,7 @@ namespace FanshaweGameEngine
 			void ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material, Transform& transform);
 
 			
-
+			void ClearRenderCache();
 			
 
 			

@@ -18,14 +18,14 @@ namespace FanshaweGameEngine
 		SharedPtr<Scene> m_scene = nullptr;
 		TypeView m_view;
 
-		/*EntityView(SharedPtr<Scene> scene)
+		EntityView(SharedPtr<Scene> scene)
 			: m_scene(scene)
 			,m_view(scene->GetRegistry.view<Component...>())
 		{
 
-		}*/
+		}
 
-		Entity GetEntity(int i) 
+		Entity operator[](int i) 
 		{		
 			if (i < Size())
 			{

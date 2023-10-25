@@ -117,6 +117,17 @@ namespace FanshaweGameEngine
 
         }
 
+        void Renderer::ClearRenderCache()
+        {
+            m_pipeline.cameraList.clear();
+            m_pipeline.MaterialList.clear();
+            m_pipeline.MeshList.clear();
+            m_pipeline.opaqueElementList.clear();
+            m_pipeline.renderElementList.clear();
+            m_pipeline.VAO = nullptr;
+
+        }
+
 
       
 
@@ -142,6 +153,7 @@ namespace FanshaweGameEngine
             // Getting the Selected camera's Index from the CameraList
             CameraElement camera = m_pipeline.cameraList[cameraIndex];
 
+          
 
             // ============Set Shader Unifroms here ==================
 
@@ -219,6 +231,9 @@ namespace FanshaweGameEngine
 
         void Renderer::SetUpCameraElement(Camera& cameraRef, Transform& transform)
         {
+
+          
+
             // Creating a new  Data only Camera element
             CameraElement camera;
 
@@ -228,7 +243,9 @@ namespace FanshaweGameEngine
 
             camera.viewPosition = transform.GetPosition();
 
-//            Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
+          
+
+//          Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
 
             // For now , since the camera is not parented to anything. Later multiply the parent's transform to it
             Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
@@ -237,6 +254,7 @@ namespace FanshaweGameEngine
 
             // Set the View Projection matrix
             camera.viewProjMatrix = projView;
+
 
             m_pipeline.cameraList.push_back(camera);
 

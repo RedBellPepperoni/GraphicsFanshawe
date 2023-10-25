@@ -20,24 +20,24 @@ class GameApplication : public Application
 
      
 
-       Entity mainCamera = GetCurrentScene()->CreateEntity("Camera01");
-       mainCamera.AddComponent<Camera>();
-       mainCamera.AddComponent<Transform>();
+     //  Entity mainCamera = GetCurrentScene()->CreateEntity("Camera01");
+     //  mainCamera.AddComponent<Camera>();
+     //  mainCamera.AddComponent<Transform>();
 
-       // Set the position
-     //mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
-     //mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
+     //  // Set the position
+     ////mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
+     ////mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
 
-       SetMainCameraIndex(0);
+     //  SetMainCameraIndex(0);
 
-       Transform& cameraTransform = mainCamera.GetComponent<Transform>();
+     //  Transform& cameraTransform = mainCamera.GetComponent<Transform>();
 
-       cameraTransform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
+     //  cameraTransform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
 
 
-       Vector3 position = cameraTransform.GetPosition();
+    /*   Vector3 position = cameraTransform.GetPosition();
 
-       mainCamera.GetComponent<Camera>().SetDirection(-cameraTransform.GetPosition());
+       mainCamera.GetComponent<Camera>().SetDirection(-cameraTransform.GetPosition());*/
 
 
 
@@ -110,6 +110,10 @@ class GameApplication : public Application
    void OnUpdate()
    {
 
+       if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::A))
+       {
+           printf("Hello");
+       }
 
    }
 

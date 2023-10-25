@@ -1,14 +1,11 @@
 #pragma once
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/ECS/Components/Transform.h"
+#include "Engine/Core/Rendering/Essentials/Camera.h"
 
 namespace FanshaweGameEngine
 {
-	namespace Rendering
-	{
-		class Camera;
-	}
-
+	
 
 	using Rendering::Camera;
 
@@ -34,7 +31,7 @@ namespace FanshaweGameEngine
 		
 		Vector3 m_FocalPoint;
 
-		Vector3 m_velocity;
+		Vector3 m_velocity = Vector3(0.0f);
 		float m_cameraSpeed = 0.0f;
 		float m_Distance = 0.0f;
 		float m_Zoom = 1.0f;

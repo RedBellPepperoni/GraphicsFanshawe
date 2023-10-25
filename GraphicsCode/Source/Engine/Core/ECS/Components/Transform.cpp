@@ -89,7 +89,7 @@ namespace FanshaweGameEngine
 
 		Vector3 Transform::GetForwardVector()
 		{
-			Vector3 newForward = Vector3(1.0f, 0.0f, 0.0f);
+			Vector3 newForward = Vector3(0.0f, 0.0f, 1.0f);
 
 			newForward = Math::GetQuaternion(m_localMatrix) * newForward;
 

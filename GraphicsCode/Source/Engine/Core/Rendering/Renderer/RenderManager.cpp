@@ -35,6 +35,9 @@ namespace FanshaweGameEngine
 
 		void RenderManager::ProcessScene(Scene* scene)
 		{
+
+			m_renderer->ClearRenderCache();
+
 			// reference of current scene
 			m_currentScene = scene;
 
@@ -135,7 +138,7 @@ namespace FanshaweGameEngine
 
 		void RenderManager::RenderFrame()
 		{
-				
+			
 	
 			// Draw the OpaqueEleemnts
 			m_renderer->RenderElements(m_ShaderLibrary->GetResource("StandardShader"), MaterialType::Opaque);
@@ -152,5 +155,8 @@ namespace FanshaweGameEngine
 		{
 			return m_MaterialLibrary;
 		}
+
+
+		
 	}
 }

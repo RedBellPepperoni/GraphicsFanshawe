@@ -107,6 +107,8 @@ using Rendering::Camera;
 		// This methods initaitzes the runtime and starts the gameloop
 		void Run();
 
+
+		// Deals with the Event queue to be processed by the glfw runtime
 		void ProcessEvent(EventBase& event);
 
 		// Reference Getters to the renderManager
@@ -115,6 +117,7 @@ using Rendering::Camera;
 		// Reference getter to teh Model Library
 		SharedPtr<ModelLibrary>& GetModelLibrary();
 		
+		// Returns the GLFW current time from the current glfwwindow
 		float GetGLFWTime();
 		
 		float GetTotalElapsed() const;
