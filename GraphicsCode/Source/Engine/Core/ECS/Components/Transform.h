@@ -13,6 +13,8 @@ namespace FanshaweGameEngine
 
 		protected:
 
+			
+
 			// The local position of the Transform
 			Vector3 m_position;
 
@@ -29,6 +31,9 @@ namespace FanshaweGameEngine
 
 		public:
 
+			
+
+
 			Transform();
 			~Transform();
 
@@ -43,6 +48,8 @@ namespace FanshaweGameEngine
 			// Get the world Rotation in Euler angles
 			const Vector3 GetEulerRotation() const;
 
+
+
 			Matrix4 GetLocalMatrix();
 
 			const Vector3 GetScale() const;
@@ -52,6 +59,15 @@ namespace FanshaweGameEngine
 
 			void SetPosition(const Vector3& newPosition);
 
+			void SetRotation(const Quaternion& newRot);
+
+			
+
+			Vector3 GetUpVector();
+
+			Vector3 GetRightVector();
+
+			Vector3 GetForwardVector();
 
 		};
 	}

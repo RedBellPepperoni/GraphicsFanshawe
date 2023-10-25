@@ -98,10 +98,7 @@ namespace FanshaweGameEngine
 		private:
 			
 
-			// Future case when there can be multiple cameras // 
-			// "-1"  means no rendering cameras were found
-
-			int m_mainCameraIndex = -1;
+			
 			
 			PipeLine m_pipeline;
 

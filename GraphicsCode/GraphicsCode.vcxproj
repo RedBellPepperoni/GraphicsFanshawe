@@ -154,6 +154,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\MeshCollider.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\ConvexHull.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\Collider.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\RigidBody3D.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\PhysicsEngine.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\MeshRenderer.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\MeshComponent.cpp" />
     <ClCompile Include="Source\Engine\Utils\Math\Random.cpp" />
@@ -185,11 +196,30 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexArray.cpp" />
     <ClCompile Include="Source\Engine\Utils\UniqueId\UniqueId.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\SphereCollider.cpp" />
+    <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\System\Input\FlyCameraController.h" />
+    <ClInclude Include="Source\Engine\Core\System\Input\CameraController.h" />
+    <ClInclude Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\BroadPhase.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\MeshCollider.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\ConvexHull.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\Collider.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\RigidBody3D.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\PhysicsEngine.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\MeshRenderer.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\ComponentDefinitions.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\MeshComponent.h" />
+    <ClInclude Include="Source\Engine\Core\System\Events\Event.h" />
+    <ClInclude Include="Source\Engine\Core\System\Events\KeyEvent.h" />
+    <ClInclude Include="Source\Engine\Core\System\Events\MouseEvent.h" />
+    <ClInclude Include="Source\Engine\Core\System\Events\WindowEvent.h" />
     <ClInclude Include="Source\Engine\Utils\Math\Random.h" />
     <ClInclude Include="Source\Engine\Core\ECS\EntityManager.h" />
     <ClInclude Include="Source\Engine\Core\Scene\Scene.h" />
@@ -200,6 +230,7 @@
     <ClInclude Include="Source\Engine\Core\Rendering\Shader\Shader.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Entity.h" />
     <ClInclude Include="Source\Engine\Core\Resources\ResourceManager.h" />
+    <ClInclude Include="Source\Engine\Utils\Singleton.h" />
     <ClInclude Include="Source\GameEngine.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\File.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\Model.h" />
@@ -508,6 +539,8 @@
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexArray.h" />
     <ClInclude Include="Source\Engine\Utils\UniqueId\UniqueId.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\SphereCollider.h" />
+    <ClInclude Include="Source\Engine\Utils\Time\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

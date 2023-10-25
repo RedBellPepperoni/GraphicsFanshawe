@@ -5,10 +5,10 @@
 #include "Engine/Utils/UniqueId/UniqueId.h"
 #include "Engine/Utils/Logging/Log.h"
 
-
+__pragma(warning(push))
 // External performant ECS Registry system
 #include <entt/entt.hpp>
-
+__pragma(warning(pop))
 
 
 

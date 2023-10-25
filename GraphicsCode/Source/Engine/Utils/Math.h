@@ -60,6 +60,43 @@ namespace FanshaweGameEngine
 
 
 
+        template<typename T>
+        inline auto Length(const T& value)
+        {
+            return glm::length(value);
+        }
+
+        template<typename T>
+        inline auto LengthSquared(const T& value)
+        {
+            return glm::length2(value);
+        }
+
+        template<typename T>
+        inline auto Distance(const T& v1, const T& v2)
+        {
+            return glm::distance(v1, v2);
+        }
+
+        template<typename T>
+        inline auto DistanceSquared(const T& v1, const T& v2)
+        {
+            return glm::distance2(v1, v2);
+        }
+
+
+        inline float Square(float value)
+        {
+            return value * value;
+        }
+
+
+
+        inline float Abs(float value)
+        {
+            return glm::abs(value);
+        }
+
         // View Projection Matrix Stuff
 
         // Calculates and returns a Matrix , returns a 4x4 Matrix 

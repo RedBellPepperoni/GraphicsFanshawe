@@ -76,6 +76,7 @@ namespace FanshaweGameEngine
 
 		LOG_WARN("No entity with the Given Id was found");
 
+		return Entity();
 	}
 
 

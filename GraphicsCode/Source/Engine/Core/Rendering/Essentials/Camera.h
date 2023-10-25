@@ -36,7 +36,7 @@ namespace FanshaweGameEngine
             void SetZoom(float zoom);
 
             void SetAspectRatio(float w, float h);
-            void SetAspectRatio(float ratio);
+            void SetAspectRatio(float m_aspectRatio);
             const float GetAspectRatio() const;
 
             void SetOrthoSize(float size);

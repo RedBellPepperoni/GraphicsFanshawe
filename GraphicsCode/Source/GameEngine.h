@@ -19,6 +19,7 @@
 #include "Engine/Core/ECS/Entity.h"
 
 #include "Engine/Core/ECS/Components/ComponentDefinitions.h"
+#include "Engine/Core/System/Input/InputSystem.h"
 
 
 

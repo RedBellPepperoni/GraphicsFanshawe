@@ -1,34 +1,78 @@
 #pragma once
-
+#include "Engine/Core/System/Events/Event.h"
+#include <functional>
 #include <string>
+#include "Engine/Utils/Math.h"
+#include "Engine/Utils/GLUtils.h"
 
-
-struct GLFWwindow;
 
 namespace FanshaweGameEngine
 {
 	namespace Rendering 
 	{
+		
+
+
 		class Window
 		{
+		public:
+
+			using EventCallBackFn = std::function<void(EventBase&)>;
+
+			struct WindowProperties
+			{
+
+				int width;
+				int height;
+				std::string title;
+				float aspectRatio;
+				EventCallBackFn eventHandler;
+			};
+			
+
+			
+
 		protected:
 
 
-			int width;
-			int height;
-			std::string title;
-			float ratio;
+			GLFWwindow* windowHandle;
+			
 
+			WindowProperties m_properties;
+			
+
+
+			// ============================ EVENT WRAPPERS  ==========================
+
+			static inline void WindowSizeCallback(GLFWwindow* window, int newWidth, int newHeight);
+
+
+			static inline void WindowCloseCallback(GLFWwindow* window);
+
+
+			static inline void WindowFocusCallback(GLFWwindow* window, int focus);
+
+
+			static inline void WindowKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+			
 
 
 		public:
 
+			
+
 			Window();
-			Window(int windowWidth, int windowHeight, const std::string& windowTitle);
+			Window(const WindowProperties& properties);
 
 			~Window();
 			void UpdateViewPort();
+
 			void PollEvents();
+
+			void SetEventCallback(const EventCallBackFn& callback);
+
+			void CallEvent(EventBase& event);
 
 			void Initialize();
 
@@ -38,10 +82,13 @@ namespace FanshaweGameEngine
 
 			void CloseWindow();
 
-			float GetAspectRatio() { return ratio; };
+			float GetAspectRatio() { return m_properties.aspectRatio; };
 
-			GLFWwindow* windowHandle;
+			float GetGLFWTime() const;
 
+			
+			void SetMousePosition(Vector2 position);
+			void SetMouseHidden(bool isHidden);
 
 		};
 	}

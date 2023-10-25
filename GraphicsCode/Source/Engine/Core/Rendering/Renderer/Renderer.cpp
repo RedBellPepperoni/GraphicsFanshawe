@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Engine/Core/System/Window/Window.h"
 #include "Engine/Utils/Logging/Log.h"
+#include "Engine/Core/Application/Application.h"
 
 // Forward Declaration Headers
 #include "Engine/Core/Rendering/Essentials/Material.h"
@@ -127,13 +128,19 @@ namespace FanshaweGameEngine
            /* m_pipeline.VAO->Bind();*/
 
 
+            int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
 
+            if (cameraIndex < 0)
+            {
+                LOG_WARN("No Rendering Cameras");
+                return;
+            }
 
            
             shader->Bind();
 
             // Getting the Selected camera's Index from the CameraList
-            CameraElement camera = m_pipeline.cameraList[m_mainCameraIndex];
+            CameraElement camera = m_pipeline.cameraList[cameraIndex];
 
 
             // ============Set Shader Unifroms here ==================
@@ -233,12 +240,7 @@ namespace FanshaweGameEngine
 
             m_pipeline.cameraList.push_back(camera);
 
-            // First Make sure we have the correct Camera
-            // Loop through all the cmaera to check if it thes corrrect one and store that index for easier access later
-            // 
-            // For now its just One camera
-            m_mainCameraIndex = 0;
-
+       
 
         }
 

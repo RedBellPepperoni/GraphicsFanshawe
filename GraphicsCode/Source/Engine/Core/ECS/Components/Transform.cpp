@@ -62,5 +62,39 @@ namespace FanshaweGameEngine
 			m_position = newPosition;
 		}
 
+		void Transform::SetRotation(const Quaternion& newRot)
+		{
+			m_rotation = newRot;
+		}
+
+		
+
+		Vector3 Transform::GetUpVector()
+		{
+			Vector3 newUp = Vector3(0.0f, 1.0f, 0.0f);
+
+			newUp = Math::GetQuaternion(m_localMatrix) * newUp;
+
+			return newUp;
+		}
+
+		Vector3 Transform::GetRightVector()
+		{
+			Vector3 newRight = Vector3(1.0f, 0.0f, 0.0f);
+
+			newRight = Math::GetQuaternion(m_localMatrix) * newRight;
+
+			return newRight;
+		}
+
+		Vector3 Transform::GetForwardVector()
+		{
+			Vector3 newForward = Vector3(1.0f, 0.0f, 0.0f);
+
+			newForward = Math::GetQuaternion(m_localMatrix) * newForward;
+
+			return newForward;
+		}
+
 	}
 }

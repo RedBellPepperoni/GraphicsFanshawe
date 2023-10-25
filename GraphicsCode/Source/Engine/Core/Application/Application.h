@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
+#include "Engine/Core/System/Events/Event.h"
 #include <vector>
 
 
@@ -13,7 +14,7 @@ namespace FanshaweGameEngine
 	class ModelLibrary;
 	class GameObjectRegistry;
 	class Scene;
-
+//
 	namespace Rendering
 	{
 		class Window;
@@ -44,6 +45,7 @@ using Rendering::Camera;
 
 
 		bool m_isRunning = false;
+		bool m_isPaused = false;
 
 		// Right now it points to the class given by M Feeney, change this later
 		//SharedPtr<ShaderLibrary> shaderLibrary;
@@ -54,6 +56,17 @@ using Rendering::Camera;
 		// Pointer to the currently loaded scene
 		SharedPtr<Scene> m_currentScene;
 
+		// Default Scale
+		float m_timeScale = 1.0f;
+
+		float m_deltaTime = 0.0f;
+		float m_totalElapsedTime = 0.0f;
+		size_t m_Fps = 0;
+
+
+		// Future case when there can be multiple cameras // 
+					// "-1"  means no rendering cameras were found
+		int m_mainCameraIndex = -1;
 		
 
 	protected:
@@ -69,7 +82,7 @@ using Rendering::Camera;
 		virtual void OnUpdate(){};
 		virtual void OnInit()  {};
 
-
+		void UpdateDeltaTime(float& lastFrameEnd, float& lastSecondEnd, size_t& fps);
 		
 
 	public:
@@ -82,7 +95,7 @@ using Rendering::Camera;
 		static Application& GetCurrent();
 
 		// Referene getter for the current window
-		Window& GetWindow();
+		Window* GetAppWindow();
 
 		// Reference Getter for teh current scene
 		Scene* GetCurrentScene() const;
@@ -93,6 +106,7 @@ using Rendering::Camera;
 		// This methods initaitzes the runtime and starts the gameloop
 		void Run();
 
+		void ProcessEvent(EventBase& event);
 
 		// Reference Getters to the renderManager
 		UniquePtr<RenderManager>& GetRenderManager();
@@ -100,8 +114,21 @@ using Rendering::Camera;
 		// Reference getter to teh Model Library
 		SharedPtr<ModelLibrary>& GetModelLibrary();
 		
-
+		float GetGLFWTime();
 		
+		float GetTotalElapsed() const;
+		void SetTotalElapsed(float time);
+		float GetDelta() const;
+		float GetUnscaledDelta() const;
+
+		size_t GetFPS() const;
+
+		const int GetMainCameraIndex() const;
+		void SetMainCameraIndex(const int newIndex);
+
+	/*	void SetCursorPosition(Vector2 position);
+		void SetCursorHidden(bool hidden);*/
+
 
 	};
 }

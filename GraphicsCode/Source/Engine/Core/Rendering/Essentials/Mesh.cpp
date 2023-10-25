@@ -32,8 +32,8 @@ namespace FanshaweGameEngine
 			m_indicies = inIndicies;
 
 			// Calculating the total number of vertices and indices
-			m_vertexCount = m_vertices.size();
-			m_indiciesCount = m_indicies.size();
+			m_vertexCount = (uint32_t)m_vertices.size();
+			m_indiciesCount = (uint32_t)m_indicies.size();
 
 			// Creating a new Index buffer with the processed data
 			m_IBO = Factory<IndexBuffer>::Create(m_indiciesCount, m_indicies.data(), UsageType::STATIC_COPY);

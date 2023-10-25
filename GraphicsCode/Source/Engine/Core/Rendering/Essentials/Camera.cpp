@@ -49,13 +49,13 @@ namespace FanshaweGameEngine
             m_zoom = zoom;
             m_shouldUpdateProjection = true;
         }
-        void Camera::SetAspectRatio(float width, float height)
+        void Camera::SetAspectRatio(float m_width, float m_height)
         {
-            SetAspectRatio(width / height);
+            SetAspectRatio(m_width / m_height);
         }
-        void Camera::SetAspectRatio(float ratio)
+        void Camera::SetAspectRatio(float m_aspectRatio)
         {
-            m_aspectRatio = ratio;
+            m_aspectRatio = m_aspectRatio;
             m_shouldUpdateProjection = true;
         }
         const float Camera::GetAspectRatio() const
