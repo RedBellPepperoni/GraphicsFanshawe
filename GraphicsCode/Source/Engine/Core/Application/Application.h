@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Core/System/Events/Event.h"
+#include "Engine/Utils/Math.h"
 #include <vector>
 
 
@@ -126,8 +127,8 @@ using Rendering::Camera;
 		const int GetMainCameraIndex() const;
 		void SetMainCameraIndex(const int newIndex);
 
-	/*	void SetCursorPosition(Vector2 position);
-		void SetCursorHidden(bool hidden);*/
+		void SetCursorPosition(Vector2 position);
+		void SetCursorHidden(bool hidden);
 
 
 	};

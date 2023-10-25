@@ -18,13 +18,15 @@ class GameApplication : public Application
 
 
 
-       // Set the position
-       //mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
-       //mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
+     
 
        Entity mainCamera = GetCurrentScene()->CreateEntity("Camera01");
        mainCamera.AddComponent<Camera>();
        mainCamera.AddComponent<Transform>();
+
+       // Set the position
+     //mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
+     //mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
 
        SetMainCameraIndex(0);
 

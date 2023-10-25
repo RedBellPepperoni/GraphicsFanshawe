@@ -1,5 +1,5 @@
 #include "FlyCameraController.h"
-//#include "Engine/Core/Application/Application.h"
+#include "Engine/Core/Application/Application.h"
 #include "Engine/Core/System/Input/InputSystem.h"
 
 namespace FanshaweGameEngine
@@ -14,7 +14,7 @@ namespace FanshaweGameEngine
 	}
 	void FlyCameraController::MouseInput(Components::Transform& transform, float xPosition, float yPosition, float deltaTime)
 	{
-		/*Vector2 center = Vector2(0.0f);
+		Vector2 center = Vector2(0.0f);
 		Application::GetCurrent().SetCursorPosition(center);
 
 
@@ -33,13 +33,14 @@ namespace FanshaweGameEngine
 
 		transform.SetRotation(Quaternion(Vector3(pitch, yaw, eularAngles.z)));
 
-		m_previousCurserPos = Vector2(xPosition, yPosition);*/
+		m_previousCurserPos = Vector2(xPosition, yPosition);
 
 	}
+
 	void FlyCameraController::KeyboardInput(Components::Transform& transform, float deltaTime)
 	{
 
-       /* m_cameraSpeed = 1000.0f * deltaTime;
+        m_cameraSpeed = 1000.0f * deltaTime;
 
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::W))
         {
@@ -80,7 +81,7 @@ namespace FanshaweGameEngine
             position += m_velocity * deltaTime;
             transform.SetPosition(position);
             m_velocity = m_velocity * pow(m_dampeningFactor, deltaTime);
-        }*/
+        }
 
 	}
 	

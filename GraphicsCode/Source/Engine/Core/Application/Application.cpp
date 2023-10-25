@@ -233,7 +233,7 @@ namespace FanshaweGameEngine
 
 	void Application::SetMainCameraIndex(const int newIndex)
 	{
-		/*size_t count = GetCurrentScene()->GetRegistry().view<Camera>().size();
+		size_t count = GetCurrentScene()->GetRegistry().view<Camera>().size();
 
 		int index = newIndex;
 
@@ -245,10 +245,10 @@ namespace FanshaweGameEngine
 		}
 
 
-		m_mainCameraIndex = index;*/
+		m_mainCameraIndex = index;
 	}
 
-	/*void Application::SetCursorPosition(Vector2 position)
+	void Application::SetCursorPosition(Vector2 position)
 	{
 		m_window->SetMousePosition(position);
 	}
@@ -256,7 +256,7 @@ namespace FanshaweGameEngine
 	void Application::SetCursorHidden(bool hidden)
 	{
 		m_window->SetMouseHidden(hidden);
-	}*/
+	}
 
 	
 	
