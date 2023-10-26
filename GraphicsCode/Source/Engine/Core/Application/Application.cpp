@@ -13,6 +13,8 @@
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 
 
+#include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
+
 
 namespace FanshaweGameEngine
 {
@@ -45,7 +47,7 @@ namespace FanshaweGameEngine
 
 		m_currentScene = MakeShared<Scene>("testScene");
 
-		
+		m_physicsSystem = MakeUnique<PhysicsEngine>();
 
 		// Setting the Instance reference of the creatd application
 		m_currentApplication = this;
@@ -169,6 +171,12 @@ namespace FanshaweGameEngine
 		while (m_window->isOpen())
 		{
 
+			if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::Escape))
+			{
+				m_window->CloseWindow();
+				m_isRunning = false;
+				break;
+			}
 
 
 			UpdateDeltaTime(frameEnd, secondEnd, frames);
@@ -181,16 +189,28 @@ namespace FanshaweGameEngine
 			m_window->PollEvents();
 			
 			
+
+
+
+
+
+
+
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
+
 
 			// Render all the vertices in the current Render array
 			RenderObjects();
 
 			m_window->SwapBuffers();
 			
+
+
+
+
 			
-			OnUpdate();
+			OnUpdate(m_deltaTime);
 
 
 		}

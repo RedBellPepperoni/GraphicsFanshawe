@@ -8,7 +8,8 @@ namespace FanshaweGameEngine
 {
 	FlyCameraController::FlyCameraController()
 	{
-		m_mouseSensitivity = 0.002f;
+		m_mouseSensitivity = 0.001f;
+		m_dampeningFactor = 0.005f;
 	}
 	FlyCameraController::~FlyCameraController()
 	{
@@ -32,7 +33,6 @@ namespace FanshaweGameEngine
 		rotation = rotY * rotation;
 		rotation = rotation * rotX;
 
-		rotation.z;
 
 		transform.SetRotation(rotation);
 

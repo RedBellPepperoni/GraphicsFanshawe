@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
 		{
 		}
 
-        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs(std::vector<RigidBody3D*> bodies)
+        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs(std::vector<SharedPtr<RigidBody3D>> bodies)
         {
             std::vector<CollisionPair> pairs;
 
@@ -31,8 +31,8 @@ namespace FanshaweGameEngine
             {
                 for (size_t j = i + 1; j < count; ++j)
                 {
-                    RigidBody3D* firstBody = bodies[i];
-                    RigidBody3D* secondBody = bodies[j];
+                    SharedPtr<RigidBody3D> firstBody = bodies[i];
+                    SharedPtr<RigidBody3D> secondBody = bodies[j];
 
                     if (!firstBody->GetCollider() || !secondBody->GetCollider())
                         continue;

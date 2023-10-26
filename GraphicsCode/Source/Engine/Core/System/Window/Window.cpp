@@ -152,8 +152,8 @@ namespace FanshaweGameEngine
 
         Window::Window()
         {
-            m_properties.width = 1280;
-            m_properties.height = 720;
+            m_properties.width = 1920;
+            m_properties.height = 1080;
             m_properties.title = "OpenGl Window!!";
 
 

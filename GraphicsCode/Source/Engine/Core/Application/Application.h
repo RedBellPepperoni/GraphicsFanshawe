@@ -12,6 +12,8 @@ namespace FanshaweGameEngine
 
 	// Forward Declaration
 
+
+
 	class ModelLibrary;
 	class GameObjectRegistry;
 	class Scene;
@@ -23,6 +25,10 @@ namespace FanshaweGameEngine
 		class Camera;
     }
 
+	namespace Physics
+	{
+		class PhysicsEngine;
+	}
 
 
 using Rendering::RenderManager;
@@ -30,6 +36,7 @@ using Rendering::Window;
 using Rendering::Camera;
 
 
+using Physics::PhysicsEngine;
 
 	class Application
 	{
@@ -43,6 +50,8 @@ using Rendering::Camera;
 		UniquePtr<RenderManager> m_renderManager;
 
 		UniquePtr<Window> m_window = nullptr;
+
+		UniquePtr<PhysicsEngine> m_physicsSystem = nullptr;
 
 
 		bool m_isRunning = false;
@@ -80,7 +89,7 @@ using Rendering::Camera;
 
 		// Inherited class methods to do stuff
 		virtual void OnCreate(){};
-		virtual void OnUpdate(){};
+		virtual void OnUpdate(float deltaTime) {};
 		virtual void OnInit()  {};
 
 		void UpdateDeltaTime(float& lastFrameEnd, float& lastSecondEnd, size_t& fps);

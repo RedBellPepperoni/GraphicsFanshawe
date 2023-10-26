@@ -83,7 +83,9 @@ namespace FanshaweGameEngine
 			PhysicsStats m_debugStats;
 
 			static float m_physicsTimeStep;
-			float m_timeStepCounter = 0;
+			float m_timeStepCounter = 0.0f;
+
+			int m_maxUpdatesPerFrame = 1;
 
 
 		};

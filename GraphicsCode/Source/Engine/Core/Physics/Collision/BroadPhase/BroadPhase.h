@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Engine/Core/Memory/Memory.h"
 
 
 namespace FanshaweGameEngine
@@ -12,8 +13,8 @@ namespace FanshaweGameEngine
 		// The pair of body that need to test for collsiosn
 		struct CollisionPair
 		{
-			RigidBody3D* firstBody;
-			RigidBody3D* secondBody;
+			SharedPtr<RigidBody3D> firstBody;
+			SharedPtr<RigidBody3D> secondBody;
 
 		};
 
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 
 			virtual ~BroadPhase() = default;
 
-			virtual std::vector<CollisionPair> FindCollisionPairs(std::vector<RigidBody3D*> bodies) = 0;
+			virtual std::vector<CollisionPair> FindCollisionPairs(std::vector<SharedPtr<RigidBody3D>> bodies) = 0;
 
 		};
 

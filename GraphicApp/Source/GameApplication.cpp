@@ -73,47 +73,17 @@ class GameApplication : public Application
 
 
 
-
-
-
-       //// ============= CREATING OBJECTS FROM DATA ======================
-
-
-
-
-       //bathObject->m_material = bathMat;
-       //// Setting Positional Data     
-       //bathObject->m_transform.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-
-       //sphereObject->m_material = bathMat;
-       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 10.0f));
-
-       //sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject02");
-       //CHECKNULL(sphereObject);
-
-       //sphereObject->m_material = bathMat;
-       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 15.0f));
-
-
-       //sphereObject = GetObjectLibrary()->CreateObject(spheremodel->GetMeshes().data()[0], "SphereObject03");
-       //CHECKNULL(sphereObject);
-
-       //sphereObject->m_material = bathMat;
-       //sphereObject->m_transform.SetPosition(Vector3(0.0f, 10.0f, 20.0f));
-
-       //// Telling t
-       //mainCamera->SetDirection(sphereObject->m_transform.GetPosition()  - mainCamera->m_transform.GetPosition());
+      
 
    }
 
 
-   void OnUpdate()
+   void OnUpdate(float deltaTime)
    {
 
-       if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::A))
-       {
-           printf("Hello");
-       }
+
+      // LOG_INFO("Deltatime : {0}", GetDelta());
+
 
    }
 

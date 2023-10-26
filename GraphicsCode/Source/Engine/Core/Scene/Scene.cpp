@@ -9,6 +9,7 @@
 
 namespace FanshaweGameEngine
 {
+
 	Scene::Scene(const std::string& name)
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
@@ -78,10 +79,9 @@ namespace FanshaweGameEngine
 				controller.SetCamera(camera);
 				Vector3 pos = cameraTransform->GetPosition();
 
-				
-
-				controller.MouseInput(*cameraTransform, mousePosition, deltaTime);
+	
 				controller.KeyboardInput(*cameraTransform,deltaTime);
+				controller.MouseInput(*cameraTransform, mousePosition, deltaTime);
 
 				
 			}

@@ -43,7 +43,7 @@ namespace FanshaweGameEngine
 
 	
 		float m_dampeningFactor = 0.00001f;
-		float m_rotateDampeningFactor = 0.0001f;
+		float m_rotateDampeningFactor = 0.00005f;
 
 		Camera* m_camera = nullptr;
 	};
