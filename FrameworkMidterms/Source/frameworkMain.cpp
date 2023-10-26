@@ -14,6 +14,7 @@ private:
 
     Framework::Game m_game;
 
+    bool StartSim = false;
 
 public:
 
@@ -69,13 +70,13 @@ public:
 
         // hard coding friendIds for now
        int Id = m_game.CreateRobot(1,Vector2Int(2, 1), robotmodel);
-        Id = m_game.CreateRobot(0,Vector2Int(2, 3), robotmodel);
+        Id = m_game.CreateRobot(0,Vector2Int(3, 3), robotmodel);
 
         Id = m_game.CreateRobot(3,Vector2Int(75, 7), robotmodel);
-        Id = m_game.CreateRobot(2,Vector2Int(60, 8), robotmodel);
+        Id = m_game.CreateRobot(2,Vector2Int(72, 8), robotmodel);
 
-        Id = m_game.CreateRobot(5,Vector2Int(50, 10), robotmodel);
-        Id = m_game.CreateRobot(4,Vector2Int(49, 8), robotmodel);
+        Id = m_game.CreateRobot(5,Vector2Int(50, 11), robotmodel);
+        Id = m_game.CreateRobot(4,Vector2Int(49, 9), robotmodel);
 
         Id = m_game.CreateRobot(7,Vector2Int(30, 80), robotmodel);
         Id = m_game.CreateRobot(6,Vector2Int(29, 78), robotmodel);
@@ -93,9 +94,22 @@ public:
 
     void OnUpdate(float deltaTime)
     {
+        if (StartSim)
+        {
+            m_game.Update(deltaTime);
+        }
+       
 
-        m_game.Update(deltaTime);
 
+        else
+        {
+
+            if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+            {
+                StartSim = true;
+            }
+
+        }
     }
 
 };

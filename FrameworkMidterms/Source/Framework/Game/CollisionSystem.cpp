@@ -40,14 +40,14 @@ void CollisionSystem::CheckOtherRobotCollisions(Robot& bot, Transform& transform
 		// Collision Occurs
 		if( distance < m_collisionRadius)
 		{
-			LOG_CRITICAL("COLIISION");
+			//LOG_CRITICAL("COLIISION");
 
 			int friendId = bot.GetFriendId();
 			int otherId = otherbot->GetId();
 
 			if (friendId == otherId)
 			{
-				LOG_INFO("==== FRIEND FOUND ==== {0} : {1}",bot.GetId(), otherId);
+				//LOG_INFO("==== FRIEND FOUND ==== {0} : {1}",bot.GetId(), otherId);
 
 				bot.OnAction(otherId, Framework::IDetector::ActionType::GreetFriend);
 				
