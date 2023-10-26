@@ -205,10 +205,8 @@ namespace Framework
 				{		
 					availableCells.push_back(iterator->second);
 				}
-				else if (iterator->second.state == CellState::Occupied)
-				{
-					return iterator->second;
-				}
+
+			
 			}
 		}
 
@@ -227,10 +225,8 @@ namespace Framework
 				{
 					availableCells.push_back(iterator->second);
 				}
-				else if (iterator->second.state == CellState::Occupied)
-				{
-					return iterator->second;
-				}
+
+				
 
 				
 			}
@@ -252,10 +248,7 @@ namespace Framework
 					
 					availableCells.push_back(iterator->second);
 				}
-				else if (iterator->second.state == CellState::Occupied)
-				{
-					return iterator->second;
-				}
+				
 			}
 
 		}
@@ -272,16 +265,10 @@ namespace Framework
 			{
 				if (iterator->second.state == CellState::Empty)
 				{
-
-					//return iterator->second;
 					availableCells.push_back(iterator->second);
 
-
 				}
-				else if (iterator->second.state == CellState::Occupied)
-				{
-					return iterator->second;
-				}
+				
 			}
 		}
 

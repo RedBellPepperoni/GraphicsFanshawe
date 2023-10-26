@@ -74,7 +74,7 @@ namespace FanshaweGameEngine
 
             if (material != nullptr)
             {
-                newElement.materialIndex = m_pipeline.MeshList.size();
+                newElement.materialIndex = m_pipeline.MaterialList.size();
                 m_pipeline.MaterialList.push_back(material);
             }
 
@@ -137,6 +137,9 @@ namespace FanshaweGameEngine
         {
             // Binding the VAO for the Particular Shader
            /* m_pipeline.VAO->Bind();*/
+
+
+            m_pipeline.MaterialList;
 
 
             int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
@@ -202,14 +205,26 @@ namespace FanshaweGameEngine
 
         void Renderer::DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader,const RenderElement& element)
         {
+            uint32_t shaderId = shader->GetProgramId();
 
 
             SharedPtr<Mesh> mesh = m_pipeline.MeshList[element.meshIndex];
+            SharedPtr<Material> mat = m_pipeline.MaterialList[element.materialIndex];
 
-            uint32_t shaderId = shader->GetProgramId();
+            if (mat != nullptr)
+            {
+                shader->SetUniform("matColor", mat->albedoColour);
+            }
+            else
+            {
+                shader->SetUniform("matColor",Vector4(1.0f));
+            }
+          
         
 
             shader->SetUniform("model", element.ModelMatrix);
+
+           
 
             //Always Bind the Buffer Array before adding Attributes 
             mesh->GetVBO()->Bind();

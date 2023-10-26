@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngine.h" 
 #include"Framework/Board/Board.h"
+#include "CollisionSystem.h"
 #include"Framework/Robot/Robot.h"
 
 namespace Framework
@@ -33,11 +34,11 @@ namespace Framework
 		float m_updateCounter = 0.0f;
 
 		// 1.0 means it A new turn will happen every 1 second
-	    float m_stepTimer = 1.0f;
+	    float m_stepTimer = 0.5f;
 
 	    uint32_t m_robotCount = 0;
 
-		
+		CollisionSystem m_collisionSystem;
 
 	};
 }

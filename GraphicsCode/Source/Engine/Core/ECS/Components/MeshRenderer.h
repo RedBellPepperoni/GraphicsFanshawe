@@ -32,7 +32,7 @@ namespace FanshaweGameEngine
 
 			~MeshRenderer();
 
-			MaterialRef GetMaterial() const;
+			MaterialRef GetMaterial();
 			MaterialList GetMaterials() const;
 
 			MaterialRef GetMaterial(int index) const;

@@ -86,12 +86,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Game\CollisionSystem.cpp" />
     <ClCompile Include="Source\Framework\Robot\Robot.cpp" />
     <ClCompile Include="Source\Framework\Game\Game.cpp" />
     <ClCompile Include="Source\Framework\Board\Board.cpp" />
     <ClCompile Include="Source\frameworkMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Game\CollisionSystem.h" />
     <ClInclude Include="Source\Framework\Game\IDetector.h" />
     <ClInclude Include="Source\Framework\Robot\Robot.h" />
     <ClInclude Include="Source\Framework\Game\Game.h" />

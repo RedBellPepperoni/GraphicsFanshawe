@@ -22,9 +22,22 @@ namespace Framework
 
 	void Robot::OnAction(int otherId, ActionType action)
 	{
-		switch(action)
-		{ 
-			
+		switch (action)
+		{
+		case Framework::IDetector::ActionType::GreetFriend:
+
+			// Change Color Here
+			printf("ColorChanged");
+
+			break;
+		case Framework::IDetector::ActionType::PlayCard:
+			break;
+		case Framework::IDetector::ActionType::GiveGift:
+			break;
+		case Framework::IDetector::ActionType::Explode:
+			break;
+		default:
+			break;
 		}
 	}
 

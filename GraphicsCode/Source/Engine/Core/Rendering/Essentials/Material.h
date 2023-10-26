@@ -42,7 +42,7 @@ namespace FanshaweGameEngine
             // Destructor
             ~Material();
 
-            Vector4 albedoColour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            Vector4 albedoColour = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
             float roughness = 0.8f;
             float metallic = 0.1f;
             float emissive = 0.0f;

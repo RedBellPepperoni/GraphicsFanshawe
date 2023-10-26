@@ -23,7 +23,7 @@ namespace FanshaweGameEngine
 		{
 		}
 
-		MeshRenderer::MaterialRef MeshRenderer::GetMaterial() const
+		MeshRenderer::MaterialRef MeshRenderer::GetMaterial() 
 		{
 			if (m_Materials.empty())
 			{

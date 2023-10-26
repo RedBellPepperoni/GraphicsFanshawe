@@ -35,12 +35,19 @@ namespace Framework
 		const bool ShouldMove() const;
 		void SetShouldMove(const bool move);
 
+		float currentCooldown = 1.0f;
+
+
+
 	private:
+
 
 
 		void ChangeColor(ActionType action);
 
 		bool m_shouldMove = false;
+
+		bool m_greetedfriend = false;
 
 		Vector2Int m_gridPos;
 

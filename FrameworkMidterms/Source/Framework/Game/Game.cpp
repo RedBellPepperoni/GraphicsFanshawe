@@ -47,19 +47,18 @@ namespace Framework
 		robotObject.GetComponent<Robot>().SetFriendId(friendId);
 
 
-		if (m_robotCount == 0)
-		{
-			robotObject.GetComponent<Robot>().SetShouldMove(true);
-		}
+		
+		robotObject.GetComponent<Robot>().SetShouldMove(true);
+		
 
-		int index = m_board.GetIndexFromPosition(CellPos(position.x, position.y));
+		//int index = m_board.GetIndexFromPosition(CellPos(position.x, position.y));
 
 		//m_board.GetGrid()[index].occupyIndex = m_robotCount;
 
 	    robotObject.GetComponent<Transform>().SetPosition(m_board.ConvertGridToWorld(position));
 
 		robotObject.GetComponent<Transform>().SetRotation(Quaternion(Vector3(glm::radians(-90.0f), 0.0f, 0.0f)));
-		robotObject.GetComponent<Transform>().SetScale(Vector3(0.07f));
+		robotObject.GetComponent<Transform>().SetScale(Vector3(0.08f));
 
 		m_robotCount++;
 
@@ -96,10 +95,7 @@ namespace Framework
 			Transform* transform = &transformView.get<Transform>(robot);
 			Robot* bot = &robotView.get<Robot>(robot);
 
-			if (!bot->ShouldMove())
-			{
-				continue;
-			}
+			
 
 			Vector2Int pos = bot->GetGridPostion();
 
@@ -107,35 +103,27 @@ namespace Framework
 
 			CellData data = m_board.GetMovementCell(pos, cellIndex);
 
-			if (data.state == CellState::Occupied)
+
+			m_collisionSystem.CheckOtherRobotCollisions(*bot, *transform);
+
+
+			if (!bot->ShouldMove())
 			{
-				LOG_CRITICAL("Occupied");
-
-				if(bot->GetFriendId() == data.occupyIndex)
-				{
-					bot->OnAction(data.occupyIndex, IDetector::ActionType::GreetFriend);
-
-					LOG_CRITICAL("Greeted");
-					
-				}
+				continue;
 			}
 
-			else if (data.state == CellState::Empty)
+			
+			if (data.state == CellState::Empty)
 			{
 				Vector2Int newPos = Vector2Int(data.position.x, data.position.y);
 
-				m_board.SetOccupyindex(cellIndex,bot->GetId());
-
-				bot->UpdatePositon(newPos);
+				//bot->UpdatePositon(newPos);
 				transform->SetPosition(m_board.ConvertGridToWorld(newPos));
 			}
 
-			Vector2Int newgridPos = m_board.ConvertGridToWorld(bot->GetGridPostion());
+		
 
-			
-			bot->UpdatePositon(newgridPos);
 
-			//LOG_ERROR("{0} {1}", newgridPos.x, newgridPos.y);
 
 		}
 		
