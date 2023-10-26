@@ -17,7 +17,10 @@ namespace FanshaweGameEngine
 		class MouseButtonEvent : public EventBase
 		{
 		public:
+			
 			Input::MouseButton GetMouseButton() const { return mouseButton; }
+
+			EVENT_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 		protected:
 
@@ -35,7 +38,12 @@ namespace FanshaweGameEngine
 		{
 		public:
 
-			MouseButtonDownEvent(Input::MouseButton button) : MouseButtonEvent(button) {}
+			MouseButtonDownEvent(Input::MouseButton button) 
+				: MouseButtonEvent(button) 
+			{
+
+			}
+
 			EVENT_TYPE(MouseButtonDown)
 		};
 

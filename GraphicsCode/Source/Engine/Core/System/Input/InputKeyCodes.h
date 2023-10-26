@@ -107,7 +107,7 @@ namespace FanshaweGameEngine
 
         };
 
-        enum MouseButton
+        enum class MouseButton : unsigned int
         {
             Left = 0,
             Middle = 1,

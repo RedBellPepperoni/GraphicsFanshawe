@@ -248,8 +248,14 @@ namespace FanshaweGameEngine
 //          Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
 
             // For now , since the camera is not parented to anything. Later multiply the parent's transform to it
-            Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
+            //Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
+
+            
+            Matrix4 view = Math::Inverse(transform.GetLocalMatrix());
+
             Matrix4 proj = cameraRef.GetProjectionMatrix();
+
+
             Matrix4 projView = proj * view;
 
             // Set the View Projection matrix

@@ -46,16 +46,17 @@ namespace FanshaweGameEngine
 
 			static inline void WindowSizeCallback(GLFWwindow* window, int newWidth, int newHeight);
 
-
 			static inline void WindowCloseCallback(GLFWwindow* window);
-
 
 			static inline void WindowFocusCallback(GLFWwindow* window, int focus);
 
-
 			static inline void WindowKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-			
+			static inline void WindowMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
+			static inline void WindowMouseScrollCallback(GLFWwindow* window, double xDelta, double yDelta);
+
+			static inline void WindowCursorCallback(GLFWwindow* window, double xPos, double yPos);
 
 
 		public:

@@ -141,6 +141,12 @@ namespace FanshaweGameEngine
 
 			dispatcher.dispatch<KeyDownEvent>(BIND_FN(OnKeyDown));
 			dispatcher.dispatch<KeyUpEvent>(BIND_FN(OnKeyUp));
+
+			dispatcher.dispatch<MouseButtonDownEvent>(BIND_FN(OnMouseDown));
+			dispatcher.dispatch<MouseButtonUpEvent>(BIND_FN(OnMouseUp));
+
+			dispatcher.dispatch<MouseMovedEvent>(BIND_FN(OnMouseMoved));
+			dispatcher.dispatch<MouseScrolledEvent>(BIND_FN(OnMouseScrolled));
 			
 		}
 
@@ -155,7 +161,10 @@ namespace FanshaweGameEngine
 			// Add mouse key reset here later
 			ResetKeyPressed();
 
-			memset(m_mouseKeysPressed, 0, MAX_MOUSE_BUTTONS);
+			memset(m_keyboardKeysHeld, 0, MAX_KEYBOARD_KEYS);
+			
+			m_mousePosition = Vector2(0.0f);
+			
 			memset(m_mouseKeysHeld, 0, MAX_MOUSE_BUTTONS);
 
 			m_scrollDelta = 0.0f;

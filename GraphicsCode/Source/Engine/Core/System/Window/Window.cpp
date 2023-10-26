@@ -94,6 +94,58 @@ namespace FanshaweGameEngine
 
         }
 
+        inline void Window::WindowMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+        {
+            Window& handle = *static_cast<Window*>((glfwGetWindowUserPointer(window)));
+
+            switch (action)
+            {
+
+            case GLFW_PRESS:
+            {
+                MouseButtonDownEvent clickevent(Input::OpenGLKeys::GetOpenGLMouseButton(button));
+                handle.CallEvent(clickevent);
+
+                break;
+            }
+
+            case GLFW_RELEASE:
+            {
+                MouseButtonUpEvent releaseevent(Input::OpenGLKeys::GetOpenGLMouseButton(button));
+                handle.CallEvent(releaseevent);
+
+                break;
+
+            }
+
+            default:
+                break;
+            }
+
+        }
+
+        inline void Window::WindowMouseScrollCallback(GLFWwindow* window, double xDelta, double yDelta)
+        {
+            Window& handle = *static_cast<Window*>((glfwGetWindowUserPointer(window)));
+
+            MouseScrolledEvent scrollevent((float)xDelta, (float)yDelta);
+
+            handle.CallEvent(scrollevent);
+        }
+
+        inline void Window::WindowCursorCallback(GLFWwindow* window, double xPos, double yPos)
+        {
+            Window& handle = *static_cast<Window*>((glfwGetWindowUserPointer(window)));
+
+            MouseMovedEvent moveevent((float)xPos, (float)yPos);
+
+            handle.CallEvent(moveevent);
+
+        }
+
+
+
+
       
 
        
@@ -212,6 +264,12 @@ namespace FanshaweGameEngine
            // glfwSetWindowFocusCallback(windowHandle, WindowFocusCallback);
 
             glfwSetKeyCallback(windowHandle, WindowKeyCallback);
+
+            glfwSetMouseButtonCallback(windowHandle, WindowMouseButtonCallback);
+
+            glfwSetScrollCallback(windowHandle, WindowMouseScrollCallback);
+
+            glfwSetCursorPosCallback(windowHandle, WindowCursorCallback);
 
 
             glfwSwapInterval(1);

@@ -1,40 +1,44 @@
 #include "FlyCameraController.h"
 #include "Engine/Core/Application/Application.h"
 #include "Engine/Core/System/Input/InputSystem.h"
+#include "Engine/Utils/Logging/Log.h"
 
 
 namespace FanshaweGameEngine
 {
 	FlyCameraController::FlyCameraController()
 	{
-
+		m_mouseSensitivity = 0.002f;
 	}
 	FlyCameraController::~FlyCameraController()
 	{
 
 	}
-	void FlyCameraController::MouseInput(Components::Transform& transform, float xPosition, float yPosition, float deltaTime)
+	void FlyCameraController::MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime)
 	{
+		// center to the top left
 		Vector2 center = Vector2(0.0f);
+
+
 		Application::GetCurrent().SetCursorPosition(center);
 
 
-		xPosition -= center.x;
-		yPosition -= center.y;
+		m_rotationvelocity = Vector2((mousePosition.x - m_previousCurserPos.x), (mousePosition.y - m_previousCurserPos.y)) * m_mouseSensitivity * 5.0f;
 
-		
+		Quaternion rotation = transform.GetRotation();
+		Quaternion rotX = glm::angleAxis(-m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
+		Quaternion rotY = glm::angleAxis(m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));
 
-		Vector3 eularAngles = transform.GetEulerRotation();
-		float pitch = eularAngles.x;
-		float yaw = eularAngles.y;
+		rotation = rotY * rotation;
+		rotation = rotation * rotX;
 
-		pitch -= (yPosition)*m_mouseSensitivity;
-		yaw -= (xPosition)*m_mouseSensitivity;
+		rotation.z;
 
+		transform.SetRotation(rotation);
 
-		transform.SetRotation(Quaternion(Vector3(pitch, yaw, eularAngles.z)));
+		m_previousCurserPos = mousePosition; 
 
-		m_previousCurserPos = Vector2(xPosition, yPosition);
+		m_rotationvelocity = m_rotationvelocity * pow(m_rotateDampeningFactor, deltaTime);
 
 	}
 
@@ -49,6 +53,8 @@ namespace FanshaweGameEngine
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::W))
         {
             m_velocity += transform.GetForwardVector() * m_cameraSpeed;
+
+			
         }
 
 		// ================ REVERSE CAMERA MOVEMENT =====================
@@ -56,13 +62,14 @@ namespace FanshaweGameEngine
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::S))
         {
             m_velocity -= transform.GetForwardVector() * m_cameraSpeed;
+			
         }
 
 		// ================ RIGHT CAMERA MOVEMENT =====================
 
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::A))
 		{
-			m_velocity += transform.GetRightVector() * m_cameraSpeed;
+			m_velocity -= transform.GetRightVector() * m_cameraSpeed;
 		}
 
 		// ================ LEFT CAMERA MOVEMENT =====================
@@ -70,7 +77,7 @@ namespace FanshaweGameEngine
 
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::D))
 		{
-			m_velocity -= transform.GetRightVector () * m_cameraSpeed;
+			m_velocity += transform.GetRightVector () * m_cameraSpeed;
 		}
 
 		// ================ UP CAMERA MOVEMENT =====================
@@ -105,6 +112,8 @@ namespace FanshaweGameEngine
 		}
 
 	}
+
+	
 	
 
 	

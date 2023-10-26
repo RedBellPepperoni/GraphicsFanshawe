@@ -3,6 +3,7 @@
 #include "Engine/Core/System/Input/FlyCameraController.h"
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
+#include "Engine/Core/System/Input/inputSystem.h"
 
 
 
@@ -47,7 +48,12 @@ namespace FanshaweGameEngine
 		// Update entities transform here
 
 		// get mousePosition HEre;
+		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
+		/*if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+		{
+			LOG_INFO("Mouse Position : {0}, {1}", mousePosition.x, mousePosition.y);
+		}*/
 
 		auto defaultCameraView = m_EntityManager->GetRegistry().view<FlyCameraController>();
 		auto cameraView = m_EntityManager->GetRegistry().view<Camera>();
@@ -74,7 +80,7 @@ namespace FanshaweGameEngine
 
 				
 
-				//controller.MouseInput(cameraTrasnform,deltaTime);
+				controller.MouseInput(*cameraTransform, mousePosition, deltaTime);
 				controller.KeyboardInput(*cameraTransform,deltaTime);
 
 				

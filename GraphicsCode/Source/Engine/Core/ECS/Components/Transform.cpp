@@ -8,7 +8,7 @@ namespace FanshaweGameEngine
 
 		Transform::Transform()
 			: m_position(Vector3(0.0f))
-			, m_rotation(Quaternion(1.0f, 1.0f, 1.0f, 1.0f))
+			, m_rotation(Quaternion(0.0f, 0.0f, 0.0f, 1.0f))
 			, m_scale(Vector3(1.0f))
 			, m_localMatrix(Matrix4(1.0f))
 		{
@@ -34,15 +34,8 @@ namespace FanshaweGameEngine
 		{
 			Matrix4 matModel = Matrix4(1.0f);
 
-			// translating the model
-			matModel = Math::Translate(matModel, m_position);
+			mat = Math::Translate(matModel, m_position) * Math::QuatToMatrix(m_rotation) *  Math::Scale(matModel, m_scale);
 
-			//matModel = Math::Rotate(matModel,)
-
-			// scaling teh model
-			matModel = Math::Scale(matModel, m_scale);
-
-			mat = matModel;
 		}
 
 		Matrix4 Transform::GetLocalMatrix()
@@ -64,7 +57,9 @@ namespace FanshaweGameEngine
 
 		void Transform::SetRotation(const Quaternion& newRot)
 		{
+
 			m_rotation = newRot;
+			
 		}
 
 		
@@ -89,7 +84,8 @@ namespace FanshaweGameEngine
 
 		Vector3 Transform::GetForwardVector()
 		{
-			Vector3 newForward = Vector3(0.0f, 0.0f, 1.0f);
+			// Open GL is stupid and has -z as forward
+			Vector3 newForward = Vector3(0.0f, 0.0f, -1.0f);
 
 			newForward = Math::GetQuaternion(m_localMatrix) * newForward;
 
