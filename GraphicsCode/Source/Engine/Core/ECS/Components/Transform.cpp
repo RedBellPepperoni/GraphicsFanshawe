@@ -61,7 +61,10 @@ namespace FanshaweGameEngine
 			m_rotation = newRot;
 			
 		}
-
+		void Transform::SetScale(const Vector3& newScale)
+		{
+			m_scale = newScale;
+		}
 		
 
 		Vector3 Transform::GetUpVector()

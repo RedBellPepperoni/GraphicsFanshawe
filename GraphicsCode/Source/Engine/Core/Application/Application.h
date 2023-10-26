@@ -3,6 +3,7 @@
 #include "Engine/Core/System/Events/Event.h"
 #include "Engine/Utils/Math.h"
 #include <vector>
+#include <string>
 
 
 
@@ -141,6 +142,8 @@ using Physics::PhysicsEngine;
 
 		void SetCursorPosition(Vector2 position);
 		void SetCursorHidden(bool hidden);
+
+		void SetWindowTitle(const std::string& newTitle);
 
 
 	};

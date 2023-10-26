@@ -30,9 +30,15 @@ namespace FanshaweGameEngine
 		Entity cameraEntity = GetEntityManager()->Create("MainCamera");
 		cameraEntity.AddComponent<Camera>();
 		cameraEntity.AddComponent<Transform>();
+		cameraEntity.GetComponent<Transform>().SetPosition(Vector3(10, 10, 10));
+		//cameraEntity.GetComponent<Transform>().SetRotation(Vector3(glm::radians(45.0f), glm::radians(45.0f), 0));
+
+
 		cameraEntity.AddComponent<FlyCameraController>();
 
+		
 
+		Vector3 pos = cameraEntity.GetComponent<Transform>().GetPosition();
 
 		// Setup systems here
 	}

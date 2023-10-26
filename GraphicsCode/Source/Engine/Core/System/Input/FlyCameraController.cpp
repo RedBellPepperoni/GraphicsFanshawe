@@ -27,11 +27,17 @@ namespace FanshaweGameEngine
 		m_rotationvelocity = Vector2((mousePosition.x - m_previousCurserPos.x), (mousePosition.y - m_previousCurserPos.y)) * m_mouseSensitivity * 5.0f;
 
 		Quaternion rotation = transform.GetRotation();
+
+	
+
+
 		Quaternion rotX = glm::angleAxis(-m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
-		Quaternion rotY = glm::angleAxis(m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));
+		Quaternion rotY = glm::angleAxis(-m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));
 
 		rotation = rotY * rotation;
 		rotation = rotation * rotX;
+		// 
+	  
 
 
 		transform.SetRotation(rotation);
@@ -85,14 +91,14 @@ namespace FanshaweGameEngine
 
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Space))
 		{
-			m_velocity += transform.GetUpVector() * m_cameraSpeed;
+			m_velocity += Vector3(0.0f,1.0f,0.0f) * m_cameraSpeed;
 		}
 
 		// ================ DOWN CAMERA MOVEMENT =====================
 		
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::LeftControl))
 		{
-			m_velocity -= transform.GetUpVector() * m_cameraSpeed;
+			m_velocity -= Vector3(0.0f, 1.0f, 0.0f) * m_cameraSpeed;
 		}
 
 

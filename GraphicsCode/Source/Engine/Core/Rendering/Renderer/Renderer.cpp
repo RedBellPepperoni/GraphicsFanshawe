@@ -153,7 +153,10 @@ namespace FanshaweGameEngine
             // Getting the Selected camera's Index from the CameraList
             CameraElement camera = m_pipeline.cameraList[cameraIndex];
 
-          
+           
+            std::string position = "X : " + std::to_string( camera.viewPosition.x) + " Y : " + std::to_string(camera.viewPosition.y) + " Z : " + std::to_string(camera.viewPosition.z);
+
+            Application::GetCurrent().SetWindowTitle(position);
 
             // ============Set Shader Unifroms here ==================
 
@@ -253,7 +256,7 @@ namespace FanshaweGameEngine
             
             Matrix4 view = Math::Inverse(transform.GetLocalMatrix());
 
-            Matrix4 proj = cameraRef.GetProjectionMatrix();
+            Matrix4 proj = (cameraRef.GetProjectionMatrix());
 
 
             Matrix4 projView = proj * view;

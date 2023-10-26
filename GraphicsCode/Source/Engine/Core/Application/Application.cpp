@@ -302,6 +302,13 @@ namespace FanshaweGameEngine
 		m_window->SetMouseHidden(hidden);
 	}
 
+	void Application::SetWindowTitle(const std::string& newTitle)
+	{
+		
+
+		GetAppWindow()->SetWindowTitle(newTitle);
+	}
+
 	
 	
 	

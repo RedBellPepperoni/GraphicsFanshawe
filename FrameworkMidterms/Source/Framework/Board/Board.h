@@ -2,6 +2,7 @@
 #include <string>
 #include "Engine/Utils/Math.h"
 #include <vector>
+#include <map>
 
 using namespace FanshaweGameEngine;
 
@@ -14,32 +15,34 @@ namespace Framework
 	{
 		Wall, // Robots cant move ot these /pass through these
 		Exit, // an extracase incase needed lateron -> for now it will be treaded as if its a wall
-		Free, // Robots can move to these
-		Occupied // Already occupied by something (mostly a robot)
+		Empty, // Robots can move to these
+		Pillar,
+		Occupied, // Already occupied by something (mostly a robot)
+		None
 	};
 
 	struct CellPos
 	{
 		CellPos()
 		{
-			xPos = (-1);
-			yPos = (-1);
+			x = (-1);
+			y = (-1);
 		}
 
-		CellPos(int x, int y)
+		CellPos(int newX, int newY)
 		{
-			xPos = x;
-			yPos = y;
+			x = newX;
+			y = newY;
 		}
 
 		bool operator==(const CellPos& other)
 		{
-			return xPos == other.xPos && yPos == other.yPos;
+			return x == other.x && y == other.y;
 		}
 
 
-		int xPos;
-		int yPos;
+		int x;
+		int y;
 	};
 
 
@@ -47,20 +50,24 @@ namespace Framework
 	{
 		CellData()
 		{
-			state = (CellState::Free);
+			state = (CellState::None);
 			position = CellPos(-1, -1);
+			occupyIndex = -1;
 		}
 
 		CellData(CellState instate, CellPos inPos)
 		{
 			state = instate;
 			position = inPos;
+			occupyIndex = -1;
 		}
 
 		// Defines the current state of the cell
 		CellState state;
-
 		CellPos position;
+
+		// the RobotIndex
+		int occupyIndex;
 
 		// Add the Robot refernce here later
 		
@@ -88,7 +95,19 @@ namespace Framework
 		// Reads and fills in the data of the board from the text file
 		bool GenerateBoardfromTextFile(const std::string& filename);
 
-		std::vector<CellData> GetGrid() const { return m_grid; }
+
+		
+
+		//std::vector<>
+
+		std::map<int, CellData> GetGrid()& { return m_boardGrid; }
+
+		void SetOccupyindex(const int cellIndex, int occupyindex);
+
+		Vector3 ConvertGridToWorld(const Vector2Int& position);
+		CellData GetMovementCell(const Vector2Int& position,  int& outcellIndex);
+		int GetIndexFromPosition(CellPos position);
+
 
 
 
@@ -96,11 +115,24 @@ namespace Framework
 
 	private:
 
-		// The Grid of the board
+
 		
-		std::vector<CellData> m_grid = {};
+
+		
+		
 
 
+	private:
+
+
+
+
+		
+
+		std::map<int, CellData> m_boardGrid = {};
+
+		uint32_t totalRows = 0;
+		uint32_t totalColumns = 0;
 
 		
 

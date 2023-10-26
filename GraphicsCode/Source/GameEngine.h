@@ -21,6 +21,8 @@
 #include "Engine/Core/ECS/Components/ComponentDefinitions.h"
 #include "Engine/Core/System/Input/InputSystem.h"
 
+#include "Engine/Core/System/Window/Window.h"
+
 
 
 using namespace FanshaweGameEngine;

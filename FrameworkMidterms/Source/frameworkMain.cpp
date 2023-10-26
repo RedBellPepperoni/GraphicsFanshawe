@@ -1,9 +1,8 @@
-
+#pragma once
 // The actual engine
 #include "GameEngine.h"
+#include "Framework/Game/Game.h"
 
-// The custom clases for this applicaiton
-#include"Framework/Board/Board.h"
 
 
 class FrameworkApp : public Application
@@ -13,7 +12,7 @@ class FrameworkApp : public Application
 
 private:
 
-    Framework::Board m_board;
+    Framework::Game m_game;
 
 
 public:
@@ -30,31 +29,29 @@ public:
         LOG_TRACE("This is a TRACE Log message");
 
 
+       
+
+
 
           // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
-        SharedPtr<Model> model = GetModelLibrary()->LoadModel("Board", "Assets\\Berzerk_Level_Ouput.ply");
-        CHECKNULL(model);
+       SharedPtr<Model> model = GetModelLibrary()->LoadModel("Board", "Assets\\Berzerk_Level_Ouput.ply");
+       CHECKNULL(model);
 
-       /* SharedPtr<Model> spheremodel = GetModelLibrary()->LoadModel("IcoSphere", "Assets\\icosphere.ply");
-        CHECKNULL(spheremodel);
-*/
+       SharedPtr<Model> robotmodel = GetModelLibrary()->LoadModel("Robot", "Assets\\robot.ply");
+       CHECKNULL(robotmodel);
 
 
-        // SharedPtr<GameObject> bathObject;
-         //SharedPtr<GameObject> sphereObject;
+;
 
          // Using ECS now
         Entity boardObject = GetCurrentScene()->CreateEntity("BathObject");
-       // Entity sphereObject = GetCurrentScene()->CreateEntity("sphere_01");
-
-
 
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         boardObject.AddComponent<Transform>();
-        boardObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        boardObject.GetComponent<Transform>().SetPosition(Vector3(0.0f ,0.0f, 60.0f));
 
         // Making the board flat with the ground
-        boardObject.GetComponent<Transform>().SetRotation(Quaternion(Vector3(glm::radians(90.0f), 0.0f, 0.0f)));
+        boardObject.GetComponent<Transform>().SetRotation(Quaternion(Vector3(glm::radians(-90.0f), 0.0f, 0.0f)));
 
         // Set the First mesh reference as out mesh component
         // Later need to make this automatically generate entities for multiple meshes
@@ -62,16 +59,30 @@ public:
         boardObject.AddComponent<MeshRenderer>();
 
 
-        m_board.GenerateBoardfromTextFile("Assets\\Berzerk_Level_1193265.txt");
 
-        std::vector<Framework::CellData> grid =  m_board.GetGrid();
+        
+        m_game.GenerateGameBoard("Assets\\Berzerk_Level_1193265.txt");
 
+        // hard coding friendIds for now
+        m_game.CreateRobot(1,Vector2Int(2, 1), robotmodel);
+        m_game.CreateRobot(0,Vector2Int(2, 2), robotmodel);
+        m_game.CreateRobot(0,Vector2Int(2, 2), robotmodel);
+        m_game.CreateRobot(0,Vector2Int(2, 2), robotmodel);
+
+
+       
+
+        
+       
     }
 
     void OnUpdate(float deltaTime)
     {
 
+        m_game.Update(deltaTime);
+
     }
+
 };
 
 

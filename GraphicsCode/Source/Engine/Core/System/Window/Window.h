@@ -66,8 +66,11 @@ namespace FanshaweGameEngine
 			Window();
 			Window(const WindowProperties& properties);
 
+
+
 			~Window();
 			void UpdateViewPort();
+
 
 			void PollEvents();
 
@@ -86,6 +89,8 @@ namespace FanshaweGameEngine
 			float GetAspectRatio() { return m_properties.aspectRatio; };
 
 			float GetGLFWTime() const;
+
+			void SetWindowTitle(const std::string& newTitle);
 
 			
 			void SetMousePosition(Vector2 position);

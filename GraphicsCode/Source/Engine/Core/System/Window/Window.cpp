@@ -191,8 +191,8 @@ namespace FanshaweGameEngine
 
             // While drawing a pixel, see if the pixel that's already there is closer or not?
             GLDEBUG(glEnable(GL_DEPTH_TEST));
-
-
+            
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
         }
@@ -314,6 +314,13 @@ namespace FanshaweGameEngine
         float Window::GetGLFWTime() const
         {
             return (float)glfwGetTime();
+        }
+
+        void Window::SetWindowTitle(const std::string& newTitle)
+        {
+            m_properties.title = newTitle;
+
+            glfwSetWindowTitle(windowHandle,newTitle.c_str());
         }
 
 
