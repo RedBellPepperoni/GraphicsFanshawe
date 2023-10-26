@@ -25,9 +25,9 @@ namespace Framework
 
 	}
 
-	void Game::CreateRobot(const int friendId, const Vector2Int& position, const SharedPtr<Model>& model)
+	int Game::CreateRobot(const int friendId, const Vector2Int& position, const SharedPtr<Model>& model)
 	{
-		
+		int robotId = m_robotCount;
 
 		Entity robotObject = Application::GetCurrent().GetCurrentScene()->CreateEntity("Robot_" + std::to_string(m_robotCount));
 
@@ -62,6 +62,8 @@ namespace Framework
 
 		m_robotCount++;
 
+		return robotId;
+
 
 	}
 
@@ -87,7 +89,7 @@ namespace Framework
 
 		auto robotView = registry.view<Robot>();
 		auto transformView = registry.view<Transform>();
-
+		auto meshRenderView = registry.view<MeshRenderer>();
 	
 		// Looping through all the entities that have the Robot component
 		for (entt::entity robot : robotView)
@@ -95,7 +97,7 @@ namespace Framework
 			Transform* transform = &transformView.get<Transform>(robot);
 			Robot* bot = &robotView.get<Robot>(robot);
 
-			
+			MeshRenderer* meshRend = &meshRenderView.get<MeshRenderer>(robot);
 
 			Vector2Int pos = bot->GetGridPostion();
 
@@ -104,7 +106,7 @@ namespace Framework
 			CellData data = m_board.GetMovementCell(pos, cellIndex);
 
 
-			m_collisionSystem.CheckOtherRobotCollisions(*bot, *transform);
+			m_collisionSystem.CheckOtherRobotCollisions(*bot, *transform, *meshRend);
 
 
 			if (!bot->ShouldMove())

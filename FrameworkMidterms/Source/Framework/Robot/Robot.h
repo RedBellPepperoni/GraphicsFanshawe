@@ -29,7 +29,7 @@ namespace Framework
 		
 
 		const int GetFriendId() const;
-		void SetFriendId(const int Id);
+		void SetFriendId(const int& Id);
 
 
 		const bool ShouldMove() const;
@@ -37,7 +37,7 @@ namespace Framework
 
 		float currentCooldown = 1.0f;
 
-
+		bool m_Greeted = false;
 
 	private:
 

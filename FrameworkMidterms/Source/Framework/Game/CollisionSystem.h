@@ -14,7 +14,7 @@ public:
 
 	
 
-	void CheckOtherRobotCollisions(Robot& bot, Transform& transform);
+	void CheckOtherRobotCollisions(Robot& bot, Transform& transform, MeshRenderer& meshRend);
 
 	float m_collisionRadius = 2.0f;
 };

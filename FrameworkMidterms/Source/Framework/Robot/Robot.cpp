@@ -1,5 +1,5 @@
 #include "Robot.h"
-
+#include "Engine/Utils/Logging/Log.h"
 
 namespace Framework
 {
@@ -27,7 +27,7 @@ namespace Framework
 		case Framework::IDetector::ActionType::GreetFriend:
 
 			// Change Color Here
-			printf("ColorChanged");
+			//printf("ColorChanged");
 
 			break;
 		case Framework::IDetector::ActionType::PlayCard:
@@ -61,9 +61,11 @@ namespace Framework
 		return m_friendlyRobotID;
 	}
 
-	void Robot::SetFriendId(const int Id)
+	void Robot::SetFriendId(const int& Id)
 	{
 		m_friendlyRobotID = Id;
+
+		LOG_WARN("Friend for {0} is : {1}", m_robotID, m_friendlyRobotID);
 	}
 
 	const bool Robot::ShouldMove() const

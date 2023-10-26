@@ -7,7 +7,7 @@ void CollisionSystem::Update()
 {
 }
 
-void CollisionSystem::CheckOtherRobotCollisions(Robot& bot, Transform& transform)
+void CollisionSystem::CheckOtherRobotCollisions(Robot& bot, Transform& transform, MeshRenderer& meshRend)
 {
 	
 	entt::registry& registry = Application::GetCurrent().GetCurrentScene()->GetRegistry();
@@ -47,34 +47,53 @@ void CollisionSystem::CheckOtherRobotCollisions(Robot& bot, Transform& transform
 
 			if (friendId == otherId)
 			{
-				LOG_INFO("============= FRIEND FOUND ============== ");
+				LOG_INFO("==== FRIEND FOUND ==== {0} : {1}",bot.GetId(), otherId);
 
 				bot.OnAction(otherId, Framework::IDetector::ActionType::GreetFriend);
 				
 				material->GetMaterial()->albedoColour = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+				meshRend.GetMaterial()->albedoColour = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-				bot.currentCooldown = 1.0f; 
-				//otherbot->currentCooldown = 1.0f;
+				
+			
+
+				if (!bot.m_Greeted)
+				{
+					bot.SetShouldMove(false);
+					otherbot->SetShouldMove(false);
+
+					otherbot->currentCooldown = 1.0f;
+					bot.currentCooldown = 1.0f;
+
+					bot.m_Greeted = true;
+					otherbot->m_Greeted = true;
+
+
+
+
+				}
+				
 			}
 
+			
 
 
 		}
 
-		else
+		/*if (bot.m_Greeted)
 		{
-			bot.currentCooldown -= 0.5f;
+			bot.currentCooldown = bot.currentCooldown - 0.05f;
 
-			if (bot.currentCooldown < 0.0f)
+			if (bot.currentCooldown < 0)
 			{
-				bot.currentCooldown = 0.0f;
+				bot.currentCooldown = 1.0f;
+				bot.m_Greeted = false;
 
-				material->GetMaterial()->albedoColour = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+				meshRend.GetMaterial()->albedoColour = Vector4(0.0f,0.0f,0.0f,1.0f);
 			}
+		}*/
 
-
-
-		}
+		
 
 	}
 

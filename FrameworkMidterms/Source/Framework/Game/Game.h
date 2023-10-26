@@ -17,7 +17,7 @@ namespace Framework
 
 		void Update(float deltaTime);
 
-		void CreateRobot(const int friendId,const Vector2Int& position, const SharedPtr<Model>& model);
+		int CreateRobot(const int friendId,const Vector2Int& position, const SharedPtr<Model>& model);
 
 		void GenerateGameBoard(const std::string& filename);
 
