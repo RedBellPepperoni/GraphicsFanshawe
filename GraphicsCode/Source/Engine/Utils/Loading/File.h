@@ -9,7 +9,7 @@ namespace FanshaweGameEngine
 	using FilePath = std::filesystem::path;
 
 	
-
+	
 
 	// Wrapper around the std file system
 	class File
