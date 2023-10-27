@@ -15,6 +15,8 @@ private:
         SharedPtr<Model> wallModel = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
 
+        wallModel = GetModelLibrary()->LoadModel("BathTub", "Assets\\bathtub.ply");
+        CHECKNULL(wallModel);
 
         wallModel = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
@@ -26,7 +28,7 @@ private:
 
     void BuildScene()
     {
-        SharedPtr<Model> wallModel01 = GetModelLibrary()->GetResource("Floor");
+        SharedPtr<Model> wallModel01 = GetModelLibrary()->GetResource("BathTub");
         CHECKNULL(wallModel01);
 
         Entity wallObject = GetCurrentScene()->CreateEntity("Wall_01_01");

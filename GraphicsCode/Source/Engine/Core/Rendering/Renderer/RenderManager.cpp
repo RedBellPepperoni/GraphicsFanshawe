@@ -29,7 +29,7 @@ namespace FanshaweGameEngine
 			// Loading the Default Shader 
 			// Add other Defaultr Shaders below <----
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vertexShader01.glsl", File::GetShaderDir().string() + "fragmentShader01.glsl"));
-			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vert.glsl", File::GetShaderDir().string() + "frag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "lightVert.glsl", File::GetShaderDir().string() + "lightFrag.glsl"));
 
 		}
 

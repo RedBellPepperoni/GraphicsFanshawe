@@ -226,7 +226,10 @@ namespace FanshaweGameEngine
         
 
             shader->SetUniform("model", element.ModelMatrix);
-            shader->SetUniform("normalMatrix", element.ModelMatrix);
+
+            shader->SetUniform("normalMat", element.NormalMatrix);
+
+            shader->SetUniform("cameraView", camera.viewPosition);
 
            
 
