@@ -21,8 +21,8 @@ private:
         wallModel = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
 
-        wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+       // wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+       // CHECKNULL(wallModel);
     }
 
 
@@ -35,7 +35,7 @@ private:
 
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         wallObject.AddComponent<Transform>();
-        wallObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        wallObject.GetComponent<Transform>().SetPosition(Vector3(20.0f,-12.5,6.0f));
         wallObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
         // Set the First mesh reference as out mesh component

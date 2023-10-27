@@ -15,7 +15,8 @@ out vec4 vertexNormal;
 
 uniform mat4 model;
 uniform mat4 viewProj;
-uniform mat3 normalMat;
+
+uniform mat4 normalMat;
 
 
 // For now flat coloring until i figure out textures
@@ -33,8 +34,8 @@ void main()
 
 	
 
-	vec3 tempNorm = normalMat * vNormal.xyz;
-	vertexNormal = vec4(normalize(tempNorm), 1.0f);
+	vec4 tempNorm = normalMat * vec4( vNormal.xyz, 1.0f);
+	vertexNormal = vec4(normalize(tempNorm.xyz), 1.0f);
 
 	vertPosition = model * vec4(vPosition, 1.0f);
 

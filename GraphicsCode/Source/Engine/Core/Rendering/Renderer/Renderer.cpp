@@ -79,13 +79,13 @@ namespace FanshaweGameEngine
             }
 
 
-           
+          
 
             newElement.ModelMatrix = transform.GetLocalMatrix();
 
             // New!! - For lighting
             newElement.NormalMatrix = transform.GetNormalMatrix();
-
+            
 
             // Getting the index of the element we are going to create
             size_t currentElementIndex = m_pipeline.renderElementList.size();
@@ -223,14 +223,23 @@ namespace FanshaweGameEngine
                 shader->SetUniform("matColor",Vector4(1.0f));
             }
           
-        
 
+        
+           
             shader->SetUniform("model", element.ModelMatrix);
 
-            shader->SetUniform("normalMat", element.NormalMatrix);
+            shader->SetUniform("normalMat",element.NormalMatrix);
 
             shader->SetUniform("cameraView", camera.viewPosition);
 
+            
+            shader->SetUniform("lightList[0].position", Vector4(1.0f,40.0f,2.0f,1.0f));
+
+            shader->SetUniform("lightList[0].color", Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+            shader->SetUniform("lightList[0].lightOn", float(GL_TRUE));
+
+            shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
            
 
             //Always Bind the Buffer Array before adding Attributes 

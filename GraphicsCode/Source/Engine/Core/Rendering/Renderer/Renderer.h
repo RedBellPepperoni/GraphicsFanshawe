@@ -44,7 +44,7 @@ namespace FanshaweGameEngine
 			Matrix4 ModelMatrix;
 
 			// Defines the Normal matrix : used for calculating lights			
-			Matrix3 NormalMatrix;
+			Matrix4 NormalMatrix;
 		};
 
 		// Data Structure to define main camera properties

@@ -38,13 +38,13 @@ namespace FanshaweGameEngine
 
 		}
 
-		const Matrix4& Transform::GetLocalMatrix()
+	    Matrix4 Transform::GetLocalMatrix()
 		{
 			UpdateMatrix(m_localMatrix);
 			return m_localMatrix;
 		}
 
-		const Matrix4& Transform::GetNormalMatrix()
+		Matrix4 Transform::GetNormalMatrix()
 		{
 			// Just incase
 			UpdateMatrix(m_localMatrix);
