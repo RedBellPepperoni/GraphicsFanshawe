@@ -7,17 +7,6 @@ out vec4 FragColor;
 
 
 
-struct Light
-{
-	vec4 position;
-	vec4 color;
-	vec4 specular;
-	vec4 attenuation;
-	vec4 direction;
-    vec4 properties;
-    bool lightOn;
-};
-
 uniform vec3 cameraView;
 
 uniform bool doNotLight;
@@ -28,12 +17,42 @@ const int PointLigthId = 0;
 const int lightCount = 10;
 
 
+struct DirLight
+{
+	vec3 position;
+	vec3 color;
+	vec3 intensity;
+	vec3 specular;
+
+};
 
 
 
-uniform Light lightList[lightCount];
+struct PointLight
+{
+	vec3 position;
+	vec3 color;
+	vec3 intensity;
+	vec3 specular;
 
-vec4 CalculateDirectionalLight(vec4 vPos, vec4 vColor,vec4 vNormal, Light dirlight);
+	float constant;
+	float linear;
+	float quadratic;
+
+};
+
+
+
+
+uniform DirLight dirLight;
+
+#define MAX_POINT_LIGHTS 6
+uniform PointLight pointLightList[MAX_POINT_LIGHTS];
+
+
+vec3 CalculateDirectionalLight(vec4 vPos, vec4 vNormal, DirLight light);
+vec3 CalculatePointLight(vec4 vPos, vec4 vNormal, PointLight light);
+
 
 vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal);
 
@@ -60,14 +79,13 @@ void main()
 
 
 
-vec4 CalculateDirectionalLight(vec4 vPos, vec4 vColor,vec4 vNormal, Light dirlight)
+vec3 CalculateDirectionalLight(vec4 vPos ,vec4 vNormal,  DirLight light)
 {
-	vec3 lightPos = dirlight.position.xyz;
-	vec3 lightColor = dirlight.color.rgb;
+	vec3 lightPos = light.position;
+	vec3 lightColor = light.color;
 
-	// ambient
-    float ambientStrength = 0.2f;
-    vec3 ambient = ambientStrength * lightColor;
+
+    vec3 ambient = light.intensity * lightColor;
   	
     // diffuse 
     vec3 norm = normalize(vNormal.xyz);
@@ -76,47 +94,32 @@ vec4 CalculateDirectionalLight(vec4 vPos, vec4 vColor,vec4 vNormal, Light dirlig
     vec3 diffuse = diff * lightColor;
     
     // specular
-    float specularStrength = 0.5;
+   
     vec3 viewDir = normalize(cameraView - vPos.xyz);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;  
+    vec3 specular = light.specular * spec * lightColor;  
         
-    vec3 result = (ambient + diffuse + specular) * vColor.rgb;
+    vec3 result = (ambient + diffuse + specular);
 
-	return vec4(result , 1.0f);
+	return result;
+
 }
+
+vec3 CalculatePointLight(vec4 vPos, vec4 vNormal, PointLight light)
+{
+	vec3 result = vec3(0.0f,0.0f,0.0f);
+
+	return result;
+}
+
 
 vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
 {
-	vec4 finalColor = vec4(1.0f,1.0f,1.0f,1.0f);
+	vec4 finalColor = vec4((CalculateDirectionalLight(vPos,vNormal,dirLight) * vColor.xyz),1.0f);	
+	
 
-
-
-	for( int index = 0; index < lightCount; index++ )
-	{
-		if(lightList[index].lightOn == false)
-		{
-			// Skip the calculations
-			continue;
-		}
-
-		//Gather each light's Type
-		int lightType = int(lightList[index].properties.x);
-
-		// Switch according to what light type it is
-
-		//=============== DIRECTIONAL LIGHT ================
-        
-		if(lightType == DirectionlightId)
-		{			
-			finalColor = CalculateDirectionalLight(vPos,vColor,vNormal,lightList[index]);		
-		}
-
-		
-	}
-
-
+	
 	finalColor.a = 1.0f;
 
 	return finalColor;

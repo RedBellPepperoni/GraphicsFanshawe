@@ -109,6 +109,7 @@ namespace FanshaweGameEngine
 			void DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader, const RenderElement& element);
 
 			
+			void SetUpDirLightUniform(SharedPtr<Shader>& shader);
 			
 			
 		public:

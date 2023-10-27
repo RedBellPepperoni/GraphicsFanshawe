@@ -233,13 +233,7 @@ namespace FanshaweGameEngine
             shader->SetUniform("cameraView", camera.viewPosition);
 
             
-            shader->SetUniform("lightList[0].position", Vector4(1.0f,40.0f,2.0f,1.0f));
-
-            shader->SetUniform("lightList[0].color", Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-
-            shader->SetUniform("lightList[0].lightOn", float(GL_TRUE));
-
-            shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
+            SetUpDirLightUniform(shader);
            
 
             //Always Bind the Buffer Array before adding Attributes 
@@ -258,6 +252,22 @@ namespace FanshaweGameEngine
             // Unbind all the bound buffers 
             mesh->GetIBO()->UnBind();
             mesh->GetVBO()->UnBind();
+
+        }
+
+        void Renderer::SetUpDirLightUniform(SharedPtr<Shader>& shader)
+        {
+            // Hardcoding for now
+            shader->SetUniform("dirLight.position", Vector3(1.0f, 40.0f, 2.0f));
+
+            shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
+
+            shader->SetUniform("dirLight.intensity", Vector3(0.4f));
+
+            shader->SetUniform("dirLight.specular", Vector3(0.5f));
+
+            //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
+
 
         }
 
