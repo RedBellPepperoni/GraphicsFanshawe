@@ -90,7 +90,11 @@ namespace FanshaweGameEngine
             return value * value;
         }
 
-
+        template<typename T>
+        inline constexpr T Clamp(const T& value, const T& low, const T& high)
+        {
+            return glm::clamp(value, low, high);
+        }
 
         inline float Abs(float value)
         {

@@ -63,6 +63,7 @@ class GameApplication : public Application
        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
        bathObject.AddComponent<Transform>();
        bathObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+       bathObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
        // Set the First mesh reference as out mesh component
        // Later need to make this automatically generate entities for multiple meshes

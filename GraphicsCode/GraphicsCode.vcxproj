@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Lights\Light.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.cpp" />
@@ -145,6 +147,8 @@
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Lights\Light.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\FlyCameraController.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\CameraController.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.h" />
