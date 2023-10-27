@@ -22,7 +22,7 @@ namespace FanshaweGameEngine
 		Vector2 center = Vector2(0.0f);
 
 
-		Application::GetCurrent().SetCursorPosition(center);
+		Application::GetCurrent().SetCursorPosition(Vector2());
 
 
 		m_rotationvelocity = Vector2((mousePosition.x - m_previousCurserPos.x), (mousePosition.y - m_previousCurserPos.y)) * m_mouseSensitivity * 5.0f;

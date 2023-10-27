@@ -51,76 +51,189 @@ private:
 
         wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("ConBlock", "Assets\\Geometry\\SM_Env_Construction_Block_06_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("ConStair", "Assets\\Geometry\\SM_Env_Construction_Stairs_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("ConRail", "Assets\\Geometry\\SM_Env_Construction_Rail_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("Satellite", "Assets\\Geometry\\SM_Prop_Satellite_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+
+        
+    }
+
+    void BuildFloorCeling()
+    {
+        int floorlinecount = 12;
+        float startpoint = -20.0f;
+
+        for (int i = 0; i < floorlinecount; i++)
+        {
+            float zLoc = startpoint + (i * 5.0f);
+
+            CreateMeshObject("Floor", Vector3(30.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(25.0f, 0.0f, zLoc), Vector3(0.0f));
+
+            CreateMeshObject("Floor", Vector3(20.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(15.0f, 0.0f, zLoc), Vector3(0.0f));
+
+            CreateMeshObject("Floor", Vector3(10.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(5.0f, 0.0f, zLoc), Vector3(0.0f));
+
+            CreateMeshObject("Floor", Vector3(0.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(-5.0f, 0.0f, zLoc), Vector3(0.0f));
+
+            CreateMeshObject("Floor", Vector3(-10.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(-15.0f, 0.0f, zLoc), Vector3(0.0f));
+
+
+
+            /*  CreateMeshObject("Floor", Vector3(30.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(25.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(20.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(15.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(10.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(5.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(0.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(-5.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(-10.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));
+              CreateMeshObject("Floor", Vector3(-15.0f, 20.0f, zLoc), Vector3(0.0f, 180.0f, 0.0f));*/
+
+        }
+    }
+
+    void BuildWalls()
+    {
+
+        // First Wall
+
+        int wallHeight = 5;
+
+        for (int i = 0; i < wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, -20.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(-10.0f, yPos, -20.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(0.0f, yPos, -20.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(10.0f, yPos, -20.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(20.0f, yPos, -20.0f), Vector3(0.0f));
+        }
+
+        //Second Wall 
+
+        for (int i = 0; i < wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, -20.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, -10.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 0.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 10.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 20.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 30.0f), Vector3(0.0f, -90.0f, 0.0f));
+           
+        }
+
+
+
+        // Forth Wall
+        for (int i = 0; i < wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, -10.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 0.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 20.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 30.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 40.0f), Vector3(0.0f, 90.0f, 0.0f));
+           
+
+        }
+
+
+        CreateMeshObject("ConWall", Vector3(-20.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(-10.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+        CreateMeshObject("ConWall", Vector3(0.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(20.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(30.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+
+    }
+
+    void BuildWAlkwayStairs()
+    {
+        int numblock = 10;
+        float startPos = -15.0f;
+        
+        for (int i = 0; i < numblock; i++)
+        {
+            float xPos = startPos + (i * 5.0f);
+
+            CreateMeshObject("ConBlock", Vector3(xPos, 10.0f, 10.0f), Vector3(0.0f));
+            CreateMeshObject("ConRail", Vector3(xPos, 15.0f, 5.0f), Vector3(0.0f,90.0f,0.0f));
+            
+            CreateMeshObject("Floor", Vector3(xPos, 15.02f, 5.0f), Vector3(0.0f));
+        }
+
+
+        CreateMeshObject("ConRail", Vector3(-15.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(-10.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(-5.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(-0.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(5.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(10.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(15.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(20.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(25.0f, 15.0f, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+       
+    
+       
+
+
+        CreateMeshObject("ConBlock", Vector3(30.0f, 5.0f, 10.0f), Vector3(0.0f));
+        CreateMeshObject("ConBlock", Vector3(30.0f, 0.0f, 10.0f), Vector3(0.0f));
+
+        CreateMeshObject("ConBlock", Vector3(30.0f, 5.0f, 15.0f), Vector3(0.0f));
+        CreateMeshObject("ConBlock", Vector3(30.0f, 0.0f, 15.0f), Vector3(0.0f));
+
+        CreateMeshObject("ConBlock", Vector3(30.0f, 0.0f, 20.0f), Vector3(0.0f));
+        CreateMeshObject("ConBlock", Vector3(30.0f, 0.0f, 25.0f), Vector3(0.0f));
+        CreateMeshObject("ConBlock", Vector3(30.0f, 0.0f, 25.0f), Vector3(0.0f));
+        CreateMeshObject("Floor", Vector3(30.0f, 5.01f, 5.0f), Vector3(0.0f));
+
+
+        CreateMeshObject("ConStair", Vector3(25.0f, 10.0f, 15.0f), Vector3(0.0f,-90.0f,0.0f));
+        CreateMeshObject("ConStair", Vector3(25.0f, 5.0f, 20.0f), Vector3(0.0f,-90.0f,0.0f));
+
+        CreateMeshObject("ConRail", Vector3(30.0f, 5.0f, 25.0f), Vector3(0.0f, 0.0f, 0.0f));
+        CreateMeshObject("ConRail", Vector3(30.0f, 5.0f, 25.0f), Vector3(0.0f, 90.0f, 0.0f));
+
+        
+        CreateMeshObject("ConStair", Vector3(20.0f, 0.0f, 20.0f), Vector3(0.0f, 180.0f, 0.0f));
     }
 
 
     void BuildScene()
     {
-// Floooor
+// Floooor and ceiling
 
-        int floorlinecount = 8;
-        float startpoint = -10.0f;
+        
+        BuildFloorCeling();
 
-        for (int i = 0; i <= floorlinecount; i++)
-        {
-            float zLoc = startpoint + (i* 5.0f);
+        BuildWalls();
 
-            CreateMeshObject("Floor", Vector3(30.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(25.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(20.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(15.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(10.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(5.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(0.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(-5.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(-10.0f, 0.0f, zLoc), Vector3(0.0f));
-            CreateMeshObject("Floor", Vector3(-15.0f, 0.0f, zLoc), Vector3(0.0f));
-
-        }
-      
+        BuildWAlkwayStairs();
 
 
-        // First Wall
-
-        int wallHeight = 3;
-
-        for (int i = 0; i <= wallHeight; i++)
-        {
-            float yPos = i * 5.0f;
-            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, -10.0f), Vector3(0.0f));
-            CreateMeshObject("ConWall", Vector3(-10.0f, yPos, -10.0f), Vector3(0.0f));
-            CreateMeshObject("ConWall", Vector3(0.0f, yPos, -10.0f), Vector3(0.0f));
-            CreateMeshObject("ConWall", Vector3(10.0f, yPos, -10.0f), Vector3(0.0f));
-            CreateMeshObject("ConWall", Vector3(20.0f, yPos, -10.0f), Vector3(0.0f));
-        }
-
-        //Second Wall 
-
-        for (int i = 0; i <= wallHeight; i++)
-        {
-            float yPos = i * 5.0f;
-
-            CreateMeshObject("ConWall", Vector3(30.0f, yPos, -10.0f), Vector3(0.0f, -90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 0.0f), Vector3(0.0f, -90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 10.0f), Vector3(0.0f, -90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 20.0f), Vector3(0.0f, -90.0f, 0.0f));
-        }
-
-       
-
-       // Forth Wall
-        for (int i = 0; i <= wallHeight; i++)
-        {
-            float yPos = i * 5.0f;
-
-            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 0.0f), Vector3(0.0f, 90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 20.0f), Vector3(0.0f, 90.0f, 0.0f));
-            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 30.0f), Vector3(0.0f, 90.0f, 0.0f));
-
-        }
-
-      
+        CreateMeshObject("Satellite", Vector3(-3.0f, 0.0f, -10.0f ), Vector3(0.0f, 25.0f,0.0f));
 
     }
 

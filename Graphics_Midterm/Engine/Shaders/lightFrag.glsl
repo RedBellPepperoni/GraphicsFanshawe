@@ -62,7 +62,7 @@ vec4 CalculateDirectionalLight(vec4 vPos, vec4 vColor,vec4 vNormal, Light dirlig
 	vec3 lightColor = dirlight.color.rgb;
 
 	// ambient
-    float ambientStrength = 0.4f;
+    float ambientStrength = 0.2f;
     vec3 ambient = ambientStrength * lightColor;
   	
     // diffuse 
