@@ -83,6 +83,9 @@ namespace FanshaweGameEngine
 
             newElement.ModelMatrix = transform.GetLocalMatrix();
 
+            // New!! - For lighting
+            newElement.NormalMatrix = transform.GetNormalMatrix();
+
 
             // Getting the index of the element we are going to create
             size_t currentElementIndex = m_pipeline.renderElementList.size();
@@ -223,6 +226,7 @@ namespace FanshaweGameEngine
         
 
             shader->SetUniform("model", element.ModelMatrix);
+            shader->SetUniform("normalMatrix", element.ModelMatrix);
 
            
 

@@ -38,10 +38,26 @@ namespace FanshaweGameEngine
 
 		}
 
-		Matrix4 Transform::GetLocalMatrix()
+		const Matrix4& Transform::GetLocalMatrix()
 		{
 			UpdateMatrix(m_localMatrix);
 			return m_localMatrix;
+		}
+
+		const Matrix4& Transform::GetNormalMatrix()
+		{
+			// Just incase
+			UpdateMatrix(m_localMatrix);
+
+			/*if (m_scale.x == m_scale.y && m_scale.y == m_scale.z)
+			{
+				return (Matrix3(m_localMatrix));
+			}*/
+				
+			m_normalMatrix =  Transpose(Inverse(m_localMatrix));
+
+			return m_normalMatrix;
+
 		}
 
 		const Vector3 Transform::GetScale() const

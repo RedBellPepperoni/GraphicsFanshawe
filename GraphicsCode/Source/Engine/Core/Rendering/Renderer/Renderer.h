@@ -43,7 +43,7 @@ namespace FanshaweGameEngine
 			// Define the transform/ model matrix
 			Matrix4 ModelMatrix;
 
-			// Defines the Normal matrix : optional
+			// Defines the Normal matrix : used for calculating lights			
 			Matrix3 NormalMatrix;
 		};
 

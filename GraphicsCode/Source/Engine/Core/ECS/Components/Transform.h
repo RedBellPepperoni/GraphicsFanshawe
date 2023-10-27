@@ -27,6 +27,8 @@ namespace FanshaweGameEngine
 			// The local Matric for the Transform
 			Matrix4 m_localMatrix = Matrix4(1.0f);
 
+			Matrix4 m_normalMatrix = Matrix4(1.0f);
+
 			void UpdateMatrix(Matrix4& mat) const;
 
 		public:
@@ -50,7 +52,9 @@ namespace FanshaweGameEngine
 
 
 
-			Matrix4 GetLocalMatrix();
+			const Matrix4& GetLocalMatrix();
+
+			const Matrix4& GetNormalMatrix();
 
 			const Vector3 GetScale() const;
 

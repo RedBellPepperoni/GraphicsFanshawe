@@ -6,6 +6,48 @@
 class GraphicApp : public Application
 {
 
+private:
+
+    void LoadSceneModels()
+    {
+
+        // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
+        SharedPtr<Model> wallModel = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+
+        wallModel = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+    }
+
+
+    void BuildScene()
+    {
+        SharedPtr<Model> wallModel01 = GetModelLibrary()->GetResource("Floor");
+        CHECKNULL(wallModel01);
+
+        Entity wallObject = GetCurrentScene()->CreateEntity("Wall_01_01");
+
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+        wallObject.AddComponent<Transform>();
+        wallObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        wallObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+
+        // Set the First mesh reference as out mesh component
+        // Later need to make this automatically generate entities for multiple meshes
+        wallObject.AddComponent<MeshComponent>(wallModel01->GetMeshes()[0]);
+        wallObject.AddComponent<MeshRenderer>();
+
+
+    }
+
+public:
+
+
+
     void OnInit()
     {
 
@@ -16,61 +58,38 @@ class GraphicApp : public Application
         LOG_TRACE("This is a TRACE Log message");
 
 
+        LoadSceneModels();
+
+        BuildScene();
+
+
+        //  // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
+        //SharedPtr<Model> model = GetModelLibrary()->LoadModel("Bathtub", "Assets\\bathtub.ply");
+        //CHECKNULL(model);
 
 
 
 
-        //  Entity mainCamera = GetCurrentScene()->CreateEntity("Camera01");
-        //  mainCamera.AddComponent<Camera>();
-        //  mainCamera.AddComponent<Transform>();
+        //// SharedPtr<GameObject> bathObject;
+        // //SharedPtr<GameObject> sphereObject;
 
-        //  // Set the position
-        ////mainCamera->m_transform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
-        ////mainCamera->SetDirection(-mainCamera->m_transform.GetPosition());
-
-        //  SetMainCameraIndex(0);
-
-        //  Transform& cameraTransform = mainCamera.GetComponent<Transform>();
-
-        //  cameraTransform.SetPosition(Vector3(20.0f, 30.0f, 30.0f));
-
-
-       /*   Vector3 position = cameraTransform.GetPosition();
-
-          mainCamera.GetComponent<Camera>().SetDirection(-cameraTransform.GetPosition());*/
+        // // Using ECS now
+        //Entity bathObject = GetCurrentScene()->CreateEntity("BathObject");
+        //Entity sphereObject = GetCurrentScene()->CreateEntity("sphere_01");
 
 
 
+        //// Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+        //bathObject.AddComponent<Transform>();
+        //bathObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        //bathObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
-          // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
-        SharedPtr<Model> model = GetModelLibrary()->LoadModel("Bathtub", "Assets\\bathtub.ply");
-        CHECKNULL(model);
-
-        SharedPtr<Model> spheremodel = GetModelLibrary()->LoadModel("IcoSphere", "Assets\\icosphere.ply");
-        CHECKNULL(spheremodel);
-
-
-
-        // SharedPtr<GameObject> bathObject;
-         //SharedPtr<GameObject> sphereObject;
-
-         // Using ECS now
-        Entity bathObject = GetCurrentScene()->CreateEntity("BathObject");
-        Entity sphereObject = GetCurrentScene()->CreateEntity("sphere_01");
+        //// Set the First mesh reference as out mesh component
+        //// Later need to make this automatically generate entities for multiple meshes
+        //bathObject.AddComponent<MeshComponent>(model->GetMeshes()[0]);
 
 
-
-        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
-        bathObject.AddComponent<Transform>();
-        bathObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
-        bathObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-
-        // Set the First mesh reference as out mesh component
-        // Later need to make this automatically generate entities for multiple meshes
-        bathObject.AddComponent<MeshComponent>(model->GetMeshes()[0]);
-
-
-        bathObject.AddComponent<MeshRenderer>();
+        //bathObject.AddComponent<MeshRenderer>();
 
 
 
@@ -105,3 +124,9 @@ int main(int argc, char* argv)
     // Running the Application
     app->Run();
 }
+
+
+
+
+
+
