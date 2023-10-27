@@ -9,12 +9,13 @@ namespace FanshaweGameEngine
 	FlyCameraController::FlyCameraController()
 	{
 		m_mouseSensitivity = 0.001f;
-		m_dampeningFactor = 0.005f;
+		m_dampeningFactor = 0.001f;
 	}
 	FlyCameraController::~FlyCameraController()
 	{
 
 	}
+
 	void FlyCameraController::MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime)
 	{
 		// center to the top left
@@ -31,7 +32,7 @@ namespace FanshaweGameEngine
 	
 
 
-		Quaternion rotX = glm::angleAxis(-m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
+		Quaternion rotX = glm::angleAxis(-(m_rotationvelocity.y), Vector3(1.0f, 0.0f, 0.0f));
 		Quaternion rotY = glm::angleAxis(-m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));
 
 		rotation = rotY * rotation;

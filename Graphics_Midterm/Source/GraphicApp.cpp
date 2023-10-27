@@ -8,11 +8,39 @@ class GraphicApp : public Application
 
 private:
 
+    int m_entitycounter = 0;
+
+    void CreateMeshObject(const std::string& resourcename, const Vector3& position, const Vector3& rotation)
+    {
+        SharedPtr<Model> model = GetModelLibrary()->GetResource(resourcename);
+        CHECKNULL(model);
+
+        std::string entityName = "Entity_" + std::to_string(m_entitycounter);
+
+        Entity Object = GetCurrentScene()->CreateEntity(entityName);
+
+
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(position); 
+        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
+
+        m_entitycounter += 1;
+
+    }
+
+
+
     void LoadSceneModels()
     {
 
         // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
-        SharedPtr<Model> wallModel = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        SharedPtr<Model> wallModel = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_10_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
+
+        wallModel = GetModelLibrary()->LoadModel("ConWall", "Assets\\Geometry\\SM_Env_Construction_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
 
         wallModel = GetModelLibrary()->LoadModel("BathTub", "Assets\\bathtub.ply");
@@ -21,28 +49,78 @@ private:
         wallModel = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(wallModel);
 
-       // wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-       // CHECKNULL(wallModel);
+        wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(wallModel);
     }
 
 
     void BuildScene()
     {
-        SharedPtr<Model> wallModel01 = GetModelLibrary()->GetResource("BathTub");
-        CHECKNULL(wallModel01);
+// Floooor
 
-        Entity wallObject = GetCurrentScene()->CreateEntity("Wall_01_01");
+        int floorlinecount = 8;
+        float startpoint = -10.0f;
 
-        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
-        wallObject.AddComponent<Transform>();
-        wallObject.GetComponent<Transform>().SetPosition(Vector3(20.0f,-12.5,6.0f));
-        wallObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+        for (int i = 0; i <= floorlinecount; i++)
+        {
+            float zLoc = startpoint + (i* 5.0f);
 
-        // Set the First mesh reference as out mesh component
-        // Later need to make this automatically generate entities for multiple meshes
-        wallObject.AddComponent<MeshComponent>(wallModel01->GetMeshes()[0]);
-        wallObject.AddComponent<MeshRenderer>();
+            CreateMeshObject("Floor", Vector3(30.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(25.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(20.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(15.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(10.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(5.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(0.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(-5.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(-10.0f, 0.0f, zLoc), Vector3(0.0f));
+            CreateMeshObject("Floor", Vector3(-15.0f, 0.0f, zLoc), Vector3(0.0f));
 
+        }
+      
+
+
+        // First Wall
+
+        int wallHeight = 3;
+
+        for (int i = 0; i <= wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, -10.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(-10.0f, yPos, -10.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(0.0f, yPos, -10.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(10.0f, yPos, -10.0f), Vector3(0.0f));
+            CreateMeshObject("ConWall", Vector3(20.0f, yPos, -10.0f), Vector3(0.0f));
+        }
+
+        //Second Wall 
+
+        for (int i = 0; i <= wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, -10.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 0.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 10.0f), Vector3(0.0f, -90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(30.0f, yPos, 20.0f), Vector3(0.0f, -90.0f, 0.0f));
+        }
+
+       
+
+       // Forth Wall
+        for (int i = 0; i <= wallHeight; i++)
+        {
+            float yPos = i * 5.0f;
+
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 0.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 10.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 20.0f), Vector3(0.0f, 90.0f, 0.0f));
+            CreateMeshObject("ConWall", Vector3(-20.0f, yPos, 30.0f), Vector3(0.0f, 90.0f, 0.0f));
+
+        }
+
+      
 
     }
 
