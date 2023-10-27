@@ -10,6 +10,13 @@ namespace Framework
 	class Game
 	{
 
+		enum class GameStages
+		{
+			FriendshipStage,
+			CardGames,
+			BirthDayParty
+		};
+
 	public:
 
 		Game();
@@ -27,7 +34,7 @@ namespace Framework
 
 		void UpdateTurn();
 
-		
+		GameStages currentstage = GameStages::FriendshipStage;
 
 		Board m_board;
 

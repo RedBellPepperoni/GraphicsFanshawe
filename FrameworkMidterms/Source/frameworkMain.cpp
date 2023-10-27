@@ -75,11 +75,11 @@ public:
         Id = m_game.CreateRobot(3,Vector2Int(75, 7), robotmodel);
         Id = m_game.CreateRobot(2,Vector2Int(72, 8), robotmodel);
 
-        Id = m_game.CreateRobot(5,Vector2Int(50, 11), robotmodel);
-        Id = m_game.CreateRobot(4,Vector2Int(49, 9), robotmodel);
+        Id = m_game.CreateRobot(5,Vector2Int(36, 11), robotmodel);
+        Id = m_game.CreateRobot(4,Vector2Int(35, 15), robotmodel);
 
-        Id = m_game.CreateRobot(7,Vector2Int(30, 80), robotmodel);
-        Id = m_game.CreateRobot(6,Vector2Int(29, 78), robotmodel);
+        Id = m_game.CreateRobot(7,Vector2Int(34, 37), robotmodel);
+        Id = m_game.CreateRobot(6,Vector2Int(35, 36), robotmodel);
 
         Id = m_game.CreateRobot(9,Vector2Int(12, 20), robotmodel);
         Id = m_game.CreateRobot(8,Vector2Int(14, 19), robotmodel);

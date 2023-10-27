@@ -97,7 +97,7 @@ namespace Framework
 		bool GenerateBoardfromTextFile(const std::string& filename);
 
 
-		
+		CellData GetDirectedMovement(const Vector2Int& selfPos, const Vector2Int& targetPos);
 
 		//std::vector<>
 
@@ -106,7 +106,7 @@ namespace Framework
 		void SetOccupyindex(const int cellIndex, int occupyindex);
 
 		Vector3 ConvertGridToWorld(const Vector2Int& position);
-		CellData GetMovementCell(const Vector2Int& position,  int& outcellIndex);
+		CellData GetRandomMovementCell(const Vector2Int& position);
 		int GetIndexFromPosition(CellPos position);
 
 

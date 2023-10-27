@@ -11,6 +11,13 @@ namespace Framework
 
 	class Robot : public IDetector
 	{
+		enum class CardGame
+		{
+			ExplodingKitten,
+			Enchure
+
+		};
+
 
 	public:
 
@@ -38,6 +45,12 @@ namespace Framework
 		float currentCooldown = 1.0f;
 
 		bool m_Greeted = false;
+
+		CardGame currentCardGame;
+
+
+
+
 
 	private:
 

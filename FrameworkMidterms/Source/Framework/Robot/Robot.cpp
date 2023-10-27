@@ -7,7 +7,7 @@ namespace Framework
 	  : m_robotID(id)
  	  , m_gridPos(startposition)
 	{
-
+		m_currentfriendShipValue = (rand() % (10));
 	}
 
 	Robot::~Robot()

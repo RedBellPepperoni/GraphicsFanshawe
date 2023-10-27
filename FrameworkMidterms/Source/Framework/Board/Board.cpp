@@ -148,6 +148,186 @@ namespace Framework
 
 	}
 
+	CellData Board::GetDirectedMovement(const Vector2Int& selfPos, const Vector2Int& targetPos)
+	{
+
+
+		int outcellIndex = selfPos.y * (totalColumns + 1) + selfPos.x;
+
+		CellData currentCell;
+
+		CellData outData;
+
+		CellState state;
+		
+
+		std::vector<CellData> availableCells;
+
+
+		auto iterator = m_boardGrid.find(outcellIndex);
+
+		if (iterator == m_boardGrid.end())
+		{
+			return CellData();
+		}
+
+		currentCell = iterator->second;
+
+		CellPos averagepos = currentCell.position;
+
+		bool CanMove = false;
+		
+		bool walldetected = false;
+		
+
+
+		if ((selfPos.x - targetPos.x) > 1)
+		{
+			// We have to move Left
+			walldetected = false;
+
+			int tempPos  = averagepos.x - 1 ;
+
+			if (averagepos.x >= 0 && averagepos.y >= 0)
+			{
+				int checkIndex = GetIndexFromPosition(CellPos(tempPos,averagepos.y));
+
+				auto iterator = m_boardGrid.find(checkIndex);
+
+				if (iterator != m_boardGrid.end())
+				{
+					if (iterator->second.state == CellState::Empty)
+					{
+						CanMove = CanMove || true;
+;						averagepos.x = tempPos;
+
+					}
+					else {
+						walldetected = true;
+					}
+
+				}
+			}
+		}
+
+		if ((selfPos.y - targetPos.y) > 1)
+		{
+			// We have to move UP
+			walldetected = false;
+
+			int tempPos = averagepos.y + 1;
+
+
+			if (averagepos.x >= 0 && averagepos.y >= 0)
+			{
+				int checkIndex = GetIndexFromPosition(CellPos(averagepos.x, tempPos));
+
+				auto iterator = m_boardGrid.find(checkIndex);
+
+				if (iterator != m_boardGrid.end())
+				{
+
+
+					if (iterator->second.state == CellState::Empty)
+					{
+						CanMove = CanMove || true;
+						averagepos.y = tempPos;
+					}
+					else
+					{
+						walldetected = true;
+					}
+
+
+				}
+			}
+		}
+
+
+
+		if (walldetected = true || ((selfPos.x - targetPos.x) < -1))
+		{
+			// We have to move Right
+
+			walldetected = false;
+
+			int tempPos =  averagepos.x + 1;
+
+			if (averagepos.x >= 0 && averagepos.y >= 0)
+			{
+				int checkIndex = GetIndexFromPosition(CellPos(tempPos, averagepos.y));
+
+				auto iterator = m_boardGrid.find(checkIndex);
+
+				if (iterator != m_boardGrid.end())
+				{
+					if (iterator->second.state == CellState::Empty)
+					{
+						//Reset it
+						CanMove = CanMove || true;
+						averagepos.x = tempPos;
+						
+					}
+
+					else
+					{
+						walldetected = true;
+					}
+
+				}
+			}
+		}
+
+		
+
+
+		if(walldetected == true || ((selfPos.y - targetPos.y) < -1))
+		{
+			// We have to move UP
+			walldetected = false;
+
+			int tempPos = averagepos.y - 1;
+
+			if (averagepos.x >= 0 && averagepos.y >= 0)
+			{
+				int checkIndex = GetIndexFromPosition(CellPos(averagepos.x, tempPos));
+
+				auto iterator = m_boardGrid.find(checkIndex);
+
+				if (iterator != m_boardGrid.end())
+				{
+					if (iterator->second.state == CellState::Empty)
+					{
+						CanMove = CanMove || true;
+						averagepos.y = tempPos;
+					}
+					else
+					{
+						walldetected = true;
+					}
+
+
+				}
+			}
+		}
+		
+
+		outData.position = averagepos;
+		//outData.state = ;
+
+		if (CanMove)
+		{
+			outData.state = CellState::Empty;
+		}
+		else
+		{
+			outData.state = CellState::Wall;
+
+		}
+
+		return outData;
+	}
+
 
 
 
@@ -169,11 +349,11 @@ namespace Framework
 	}
 
 	// For now Random Movement
-	CellData Board::GetMovementCell(const Vector2Int& position, int& outcellIndex)
+	CellData Board::GetRandomMovementCell(const Vector2Int& position)
 	{
 		
 
-		outcellIndex = position.y * (totalColumns + 1) + position.x;
+		int outcellIndex = position.y * (totalColumns + 1) + position.x;
 
 		
 		CellData currentCell;
@@ -271,27 +451,16 @@ namespace Framework
 				
 			}
 		}
-
-
-		
-
-		
-
 		
 		if (availableCells.empty())
 		{
 			return CellData();
 		}
-
-
-		
+	
 		int randomIndex = (rand() % (availableCells.size()));
-
-		
-		
+	
 
 		return  availableCells[randomIndex];
-
 
 
 	}

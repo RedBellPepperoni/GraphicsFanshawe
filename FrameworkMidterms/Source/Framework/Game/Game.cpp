@@ -87,6 +87,9 @@ namespace Framework
 
 		// havent wrapped all the Entt functions into my calsses , so the current state looks like this
 
+		bool allfriendPairsFound = false;
+		bool friendCheck = true;
+
 		auto robotView = registry.view<Robot>();
 		auto transformView = registry.view<Transform>();
 		auto meshRenderView = registry.view<MeshRenderer>();
@@ -96,38 +99,54 @@ namespace Framework
 		{
 			Transform* transform = &transformView.get<Transform>(robot);
 			Robot* bot = &robotView.get<Robot>(robot);
-
 			MeshRenderer* meshRend = &meshRenderView.get<MeshRenderer>(robot);
 
-			Vector2Int pos = bot->GetGridPostion();
-
-			int cellIndex = 0;
-
-			CellData data = m_board.GetMovementCell(pos, cellIndex);
-
+			//Vector2Int pos = bot->GetGridPostion();
+			Vector2Int pos = Vector2Int(transform->GetPosition().x, transform->GetPosition().z);
 
 			m_collisionSystem.CheckOtherRobotCollisions(*bot, *transform, *meshRend);
 
 
-			if (!bot->ShouldMove())
+
+
+			if (currentstage == GameStages::FriendshipStage)
 			{
-				continue;
+				// See if all the paits
+				friendCheck = friendCheck && bot->m_Greeted;
+
+				
+				CellData data = m_board.GetRandomMovementCell(pos);
+
+				//CellData data = m_board.GetDirectedMovement(pos, Vector2Int(50,-30));
+
+
+				if (!bot->ShouldMove()) { continue; }
+
+				if (data.state == CellState::Empty)
+				{
+					Vector2Int newPos = Vector2Int(data.position.x, data.position.y);
+					//bot->UpdatePositon(newPos);
+					transform->SetPosition(m_board.ConvertGridToWorld(newPos));
+				}
+	
+			}
+
+			else if (currentstage == GameStages::CardGames)
+			{
+
 			}
 
 			
-			if (data.state == CellState::Empty)
-			{
-				Vector2Int newPos = Vector2Int(data.position.x, data.position.y);
-
-				//bot->UpdatePositon(newPos);
-				transform->SetPosition(m_board.ConvertGridToWorld(newPos));
-			}
-
-		
-
 
 
 		}
+
+		if (friendCheck == true && currentstage == GameStages::FriendshipStage)
+		{
+			LOG_CRITICAL("ALL PAIRS FOUND");
+			currentstage = GameStages::CardGames;
+		}
+
 		
 	}
 }
