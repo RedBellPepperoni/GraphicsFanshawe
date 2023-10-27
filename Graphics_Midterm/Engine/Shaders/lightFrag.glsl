@@ -27,6 +27,10 @@ const int SpotLightId = 1;
 const int PointLigthId = 0;
 const int lightCount = 10;
 
+
+
+
+
 uniform Light lightList[lightCount];
 
 vec4 CalculateDirectionalLight(vec4 vPos, vec4 vColor,vec4 vNormal, Light dirlight);

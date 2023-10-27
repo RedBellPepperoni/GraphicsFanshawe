@@ -37,32 +37,54 @@ private:
     {
 
         // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
-        SharedPtr<Model> wallModel = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_10_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        SharedPtr<Model> model = GetModelLibrary()->LoadModel("Wall", "Assets\\Geometry\\SM_Env_Wall_10_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("ConWall", "Assets\\Geometry\\SM_Env_Construction_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("ConWall", "Assets\\Geometry\\SM_Env_Construction_Wall_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("BathTub", "Assets\\bathtub.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("BathTub", "Assets\\bathtub.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("Floor", "Assets\\Geometry\\SM_Env_Floor_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("PlantWall", "Assets\\Geometry\\SM_Env_PlantWall_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("ConBlock", "Assets\\Geometry\\SM_Env_Construction_Block_06_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("ConBlock", "Assets\\Geometry\\SM_Env_Construction_Block_06_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("ConStair", "Assets\\Geometry\\SM_Env_Construction_Stairs_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("ConStair", "Assets\\Geometry\\SM_Env_Construction_Stairs_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("ConRail", "Assets\\Geometry\\SM_Env_Construction_Rail_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("ConRail", "Assets\\Geometry\\SM_Env_Construction_Rail_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
 
-        wallModel = GetModelLibrary()->LoadModel("Satellite", "Assets\\Geometry\\SM_Prop_Satellite_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(wallModel);
+        model = GetModelLibrary()->LoadModel("Satellite", "Assets\\Geometry\\SM_Prop_Satellite_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+
+        model = GetModelLibrary()->LoadModel("Rocket", "Assets\\Geometry\\SM_Prop_Rocket_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+
+        model = GetModelLibrary()->LoadModel("DoorFrame", "Assets\\Geometry\\SM_Env_ControlRoom_Doorway_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+        
+        model = GetModelLibrary()->LoadModel("Door", "Assets\\Geometry\\SM_Env_ControlRoom_Door_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
+
+        model = GetModelLibrary()->LoadModel("DeskOne", "Assets\\Geometry\\SM_Prop_Desk_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+
+
+        model = GetModelLibrary()->LoadModel("DeskTwo", "Assets\\Geometry\\SM_Prop_Desk_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
+        
+        model = GetModelLibrary()->LoadModel("Shuttle", "Assets\\Geometry\\SM_Prop_Shuttle_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+        
+
+       
 
 
         
@@ -218,6 +240,14 @@ private:
 
         
         CreateMeshObject("ConStair", Vector3(20.0f, 0.0f, 20.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+
+
+        // Door creation
+
+        CreateMeshObject("DoorFrame", Vector3(-19.55f, 15.0f, 5.0f), Vector3(0.0f, 90.0f, 0.0f));
+        CreateMeshObject("Door", Vector3(-19.70f, 15.0f, 8.55f), Vector3(0.0f, 90.0f, 0.0f));
+
     }
 
 
@@ -232,8 +262,15 @@ private:
 
         BuildWAlkwayStairs();
 
-
+        // teh satelllite
         CreateMeshObject("Satellite", Vector3(-3.0f, 0.0f, -10.0f ), Vector3(0.0f, 25.0f,0.0f));
+
+
+        // Rocket boii!!!
+        CreateMeshObject("Rocket", Vector3(22.5f, 0.0f, -15.0f), Vector3(0.0f));
+
+        // Finally the Shuttle
+        CreateMeshObject("Shuttle", Vector3(0.0f, 0.0f, 15.0f), Vector3(0.0,180.0f,0.0f));
 
     }
 
