@@ -6,6 +6,7 @@
 #include "Engine/Core/System/Input/inputSystem.h"
 #include "Engine/Core/Rendering/Lights/DirectionLight.h"
 #include "Engine/Core/Resources/ResourceManager.h"
+#include "Engine/Core/Rendering/Essentials/Camera.h"
 
 
 
@@ -16,7 +17,6 @@ namespace FanshaweGameEngine
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
 		m_EntityManager = MakeUnique<EntityManager>(this);
-
 		m_directionLight = Factory<DirectionLight>::Create();
 
 
@@ -32,17 +32,16 @@ namespace FanshaweGameEngine
 	void Scene::Init()
 	{
 		Entity cameraEntity = GetEntityManager()->Create("MainCamera");
-		cameraEntity.AddComponent<Camera>();
-		cameraEntity.AddComponent<Transform>();
-		cameraEntity.GetComponent<Transform>().SetPosition(Vector3(0, 2, 2));
-		//cameraEntity.GetComponent<Transform>().SetRotation(Vector3(glm::radians(180.f), 0.0f, 0.0f));
+		Camera* camera = &cameraEntity.AddComponent<Camera>();
+		Transform* transform = &cameraEntity.AddComponent<Transform>();
+		transform->SetPosition(Vector3(0, 2, 2));
 
+		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
+		controller->SetCamera(camera);
 
-		cameraEntity.AddComponent<FlyCameraController>();
-
+		SetMainCamera(controller, transform);
 		
 
-		Vector3 pos = cameraEntity.GetComponent<Transform>().GetPosition();
 
 		// Setup systems here
 	}
@@ -56,17 +55,23 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Update(float deltaTime)
 	{
-		// Update entities transform here
-
-		// get mousePosition HEre;
+		
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
-		/*if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
-		{
-			LOG_INFO("Mouse Position : {0}, {1}", mousePosition.x, mousePosition.y);
-		}*/
+		
 
-		auto defaultCameraView = m_EntityManager->GetRegistry().view<FlyCameraController>();
+		if (mainCameraTransform)
+		{
+			
+			//Vector3 pos = cameraTransform->GetPosition();
+
+
+			mainCameraController->KeyboardInput(*mainCameraTransform, deltaTime);
+			mainCameraController->MouseInput(*mainCameraTransform, mousePosition, deltaTime);
+		}
+
+
+	/*	auto defaultCameraView = m_EntityManager->GetRegistry().view<FlyCameraController>();
 		auto cameraView = m_EntityManager->GetRegistry().view<Camera>();
 		auto transformView = m_EntityManager->GetRegistry().view<Transform>();
 
@@ -95,7 +100,7 @@ namespace FanshaweGameEngine
 
 				
 			}
-		}
+		}*/
 		
 	}
 	const std::string& Scene::GetName() const
@@ -133,6 +138,22 @@ namespace FanshaweGameEngine
 		// deletes all teh entities in the registry
 		m_EntityManager->Clear();
 	}
+
+
+	void Scene::SetMainCamera(CameraController* controller, Transform* transform)
+	{
+		mainCameraTransform = transform;
+		mainCameraController = controller;
+
+		//LOG_ERROR("Camera Transform : {0} : {1} : {2}", mainCameraTransform->GetPosition().x, mainCameraTransform->GetPosition().y, mainCameraTransform->GetPosition().z);
+
+	}
+
+
+
+
+
+
 	void Scene::Serialize(const std::string& filename)
 	{
 	}

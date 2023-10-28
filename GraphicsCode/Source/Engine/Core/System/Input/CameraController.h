@@ -21,8 +21,11 @@ namespace FanshaweGameEngine
 		virtual void KeyboardInput(Components::Transform& transform, float deltaTime) {};
 
 		void SetCamera(Camera* camera) { m_camera = camera; }
+		Camera* GetCamera() { return m_camera; };
 
 		void SetMouseSensitivity(float newSens) { m_mouseSensitivity = newSens; }
+
+
 
 	protected:
 

@@ -11,9 +11,16 @@ namespace FanshaweGameEngine
 
 	class EntityManager;
 	class Entity;
-
-	
+	class CameraController;	
 	class DirectionLight;
+
+	namespace Components
+	{
+		class Transform;
+	}
+
+	using Components::Transform;
+
 
 	class Scene
 	{
@@ -24,9 +31,12 @@ namespace FanshaweGameEngine
 		std::string m_name;
 		
 		// The Refernce to the Entity Manager wrapper class 
-		UniquePtr<EntityManager> m_EntityManager;
+		UniquePtr<EntityManager> m_EntityManager = nullptr;
 
-		SharedPtr<DirectionLight> m_directionLight;
+		SharedPtr<DirectionLight> m_directionLight = nullptr;
+
+		Transform* mainCameraTransform = nullptr;
+		CameraController* mainCameraController = nullptr;
 
 
 	public:
@@ -70,7 +80,7 @@ namespace FanshaweGameEngine
 		// Loops through all the Entitys in the scene and destroys them
 		void DestroyAllGameObjects();
 
-
+		void SetMainCamera(CameraController* controller, Transform* transform);
 		
 
 
