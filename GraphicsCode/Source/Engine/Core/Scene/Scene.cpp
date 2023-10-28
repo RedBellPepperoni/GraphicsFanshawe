@@ -4,6 +4,8 @@
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
 #include "Engine/Core/System/Input/inputSystem.h"
+#include "Engine/Core/Rendering/Lights/DirectionLight.h"
+#include "Engine/Core/Resources/ResourceManager.h"
 
 
 
@@ -14,6 +16,8 @@ namespace FanshaweGameEngine
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
 		m_EntityManager = MakeUnique<EntityManager>(this);
+
+		m_directionLight = Factory<DirectionLight>::Create();
 
 
 	//	m_EntityManager->AddDependency<Camera, Components::Transform>();

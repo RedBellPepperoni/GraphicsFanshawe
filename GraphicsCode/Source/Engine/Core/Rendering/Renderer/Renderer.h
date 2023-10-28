@@ -18,6 +18,7 @@ namespace FanshaweGameEngine
 	
 	using Components::Transform;
 	
+	class PointLight;
 
 	namespace Rendering
 	{
@@ -27,6 +28,7 @@ namespace FanshaweGameEngine
 		class VertexArray;
 		class Shader;
 		class Camera;
+		
 
 		enum class MaterialType;
 
@@ -110,7 +112,10 @@ namespace FanshaweGameEngine
 
 			
 			void SetUpDirLightUniform(SharedPtr<Shader>& shader);
+			void SetUpPointLightUniform(SharedPtr<Shader>& shader);
 			
+
+			void SetUpSpotLights(SharedPtr<Shader>& shader);
 			
 		public:
 

@@ -12,6 +12,9 @@ namespace FanshaweGameEngine
 	class EntityManager;
 	class Entity;
 
+	
+	class DirectionLight;
+
 	class Scene
 	{
 
@@ -23,6 +26,7 @@ namespace FanshaweGameEngine
 		// The Refernce to the Entity Manager wrapper class 
 		UniquePtr<EntityManager> m_EntityManager;
 
+		SharedPtr<DirectionLight> m_directionLight;
 
 
 	public:

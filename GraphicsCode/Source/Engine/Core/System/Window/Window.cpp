@@ -184,7 +184,7 @@ namespace FanshaweGameEngine
             m_properties.aspectRatio = m_properties.width / (float)m_properties.height;
 
             GLDEBUG(glViewport(0, 0, m_properties.width, m_properties.height));
-            GLDEBUG(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+            GLDEBUG(glClearColor(0.01f, 0.01f, 0.01f, 1.0f));
             GLDEBUG(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 

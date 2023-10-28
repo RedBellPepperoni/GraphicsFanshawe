@@ -8,7 +8,70 @@ class GraphicApp : public Application
 
 private:
 
+    Entity Door;
+    bool m_isOpen;
+    bool m_isinMotion;
+    bool mShouldOpen;
+    float y_max = 5.0f;
+
+
     int m_entitycounter = 0;
+    void CreateColoredObject(const std::string& resourcename, const Vector3& position, const Vector3& rotation, const Vector3& color)
+    {
+        SharedPtr<Model> model = GetModelLibrary()->GetResource(resourcename);
+        CHECKNULL(model);
+
+        std::string entityName = "Entity_" + std::to_string(m_entitycounter);
+
+        Entity Object = GetCurrentScene()->CreateEntity(entityName);
+
+
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(position);
+        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
+
+        SharedPtr<Material> newmat = Object.GetComponent<MeshRenderer>().GetMaterial();
+
+        newmat->albedoColour = Vector4(color, 1.0f);
+
+
+        m_entitycounter += 1;
+
+    }
+
+   
+
+    Entity& CreateScaledObject(const std::string& resourcename, const Vector3& position, const Vector3& rotation, const Vector3& scale, const Vector3& color)
+    {
+        SharedPtr<Model> model = GetModelLibrary()->GetResource(resourcename);
+        CHECKNULL(model);
+
+        std::string entityName = "Entity_" + std::to_string(m_entitycounter);
+
+        Entity Object = GetCurrentScene()->CreateEntity(entityName);
+
+
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(position);
+        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.GetComponent<Transform>().SetScale(scale);
+        
+        Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
+
+        SharedPtr<Material> newmat = Object.GetComponent<MeshRenderer>().GetMaterial();
+
+        newmat->albedoColour = Vector4(color, 1.0f);
+
+        m_entitycounter += 1;
+
+        return Object;
+
+    }
 
     void CreateMeshObject(const std::string& resourcename, const Vector3& position, const Vector3& rotation)
     {
@@ -22,7 +85,7 @@ private:
 
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         Object.AddComponent<Transform>();
-        Object.GetComponent<Transform>().SetPosition(position); 
+        Object.GetComponent<Transform>().SetPosition(position);
         Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
@@ -81,12 +144,21 @@ private:
         CHECKNULL(model); 
         
         model = GetModelLibrary()->LoadModel("Shuttle", "Assets\\Geometry\\SM_Prop_Shuttle_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
+        
+        model = GetModelLibrary()->LoadModel("LightGreen", "Assets\\Lights\\SM_Env_Ceiling_Light_04_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(model);
         
-
-       
-
-
+        model = GetModelLibrary()->LoadModel("HangerDoor", "Assets\\Geometry\\SM_Env_Wall_06_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
+        
+        model = GetModelLibrary()->LoadModel("LabDesk_01", "Assets\\Props\\SM_Prop_Desk_Lab_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+        
+        model = GetModelLibrary()->LoadModel("LabDesk_02", "Assets\\Props\\SM_Prop_Desk_Lab_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+        
+        
         
     }
 
@@ -187,6 +259,34 @@ private:
         CreateMeshObject("ConWall", Vector3(20.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
         CreateMeshObject("ConWall", Vector3(30.0f, 0.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
 
+        CreateMeshObject("ConWall", Vector3(-20.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(-10.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(0.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(10.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(20.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(30.0f, 5.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+        CreateMeshObject("ConWall", Vector3(-20.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(-10.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(0.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(10.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(20.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(30.0f, 10.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+        CreateMeshObject("ConWall", Vector3(-20.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(-10.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(0.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(10.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(20.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(30.0f, 15.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+        CreateMeshObject("ConWall", Vector3(-20.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(-10.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(0.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(10.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(20.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+        CreateMeshObject("ConWall", Vector3(30.0f, 20.0f, 40.0f), Vector3(0.0f, 180.0f, 0.0f));
+
 
     }
 
@@ -272,6 +372,13 @@ private:
         // Finally the Shuttle
         CreateMeshObject("Shuttle", Vector3(0.0f, 0.0f, 15.0f), Vector3(0.0,180.0f,0.0f));
 
+        // Red Greenlights
+        CreateMeshObject("LightGreen", Vector3(19.6f, 9.98f, 9.0f), Vector3(0.0f));
+
+       
+
+         CreateMeshObject("LabDesk_01", Vector3(-10.0f, 0.0f, 30.0f), Vector3(0.0f, -20.f,0.0f));
+         CreateMeshObject("LabDesk_02", Vector3(-15.0f, 0.0f, 30.0f), Vector3(0.0f, 5.f, 0.0f));
     }
 
 public:
@@ -293,36 +400,13 @@ public:
         BuildScene();
 
 
-        //  // Loading a new Resource from the Disk and storing the reference in the Model lirary for future use
-        //SharedPtr<Model> model = GetModelLibrary()->LoadModel("Bathtub", "Assets\\bathtub.ply");
-        //CHECKNULL(model);
+        // Hanger Door
+        Door = CreateScaledObject("HangerDoor", Vector3(10.0f, 0.0f, 40.0f), Vector3(0.0f), Vector3(2.0f, 1.0f, 1.0f), Vector3(0.7f,0.7f,0.7f));
+
+        
 
 
-
-
-        //// SharedPtr<GameObject> bathObject;
-        // //SharedPtr<GameObject> sphereObject;
-
-        // // Using ECS now
-        //Entity bathObject = GetCurrentScene()->CreateEntity("BathObject");
-        //Entity sphereObject = GetCurrentScene()->CreateEntity("sphere_01");
-
-
-
-        //// Add a Trasnform. later make sure every spawnd entity has an auto attached transform
-        //bathObject.AddComponent<Transform>();
-        //bathObject.GetComponent<Transform>().SetPosition(Vector3(0.0f));
-        //bathObject.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-
-        //// Set the First mesh reference as out mesh component
-        //// Later need to make this automatically generate entities for multiple meshes
-        //bathObject.AddComponent<MeshComponent>(model->GetMeshes()[0]);
-
-
-        //bathObject.AddComponent<MeshRenderer>();
-
-
-
+      
 
 
     }
@@ -331,8 +415,27 @@ public:
     void OnUpdate(float deltaTime)
     {
 
+        //LOG_ERROR("{0}",Door.GetComponent<Transform>().GetPosition());
+
+       /* if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Up))
+        {
+            Vector3 pos = Door.GetComponent<Transform>().GetPosition();
+
+            float  yPos = pos.y;
+
+            yPos += deltaTime * 10.0f;
+
+            yPos = yPos > 5.0f ? 5.0f : yPos;
+
+            Door.GetComponent<Transform>().SetPosition(Vector3(pos.x, yPos, pos.z));
+        }*/
 
         // LOG_INFO("Deltatime : {0}", GetDelta());
+
+
+      
+
+
 
 
     }

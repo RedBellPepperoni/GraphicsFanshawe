@@ -19,7 +19,7 @@ const int lightCount = 10;
 
 struct DirLight
 {
-	vec3 position;
+	vec3 direction;
 	vec3 color;
 	vec3 intensity;
 	vec3 specular;
@@ -39,20 +39,40 @@ struct PointLight
 	float linear;
 	float quadratic;
 
+	
+
 };
 
+struct SpotLight {
+
+    vec3 position;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+  
+    float constant;
+    float linear;
+    float quadratic;
+  
+    vec3 intensity;
+    vec3 color;
+    vec3 specular;       
+};
 
 
 
 uniform DirLight dirLight;
 
-#define MAX_POINT_LIGHTS 6
+#define MAX_POINT_LIGHTS 2
 uniform PointLight pointLightList[MAX_POINT_LIGHTS];
 
+#define MAX_SPOT_LIGHTS 6
+uniform SpotLight spotLightList[MAX_SPOT_LIGHTS];
 
-vec3 CalculateDirectionalLight(vec4 vPos, vec4 vNormal, DirLight light);
-vec3 CalculatePointLight(vec4 vPos, vec4 vNormal, PointLight light);
 
+vec3 CalculateDirectionalLight(vec3 viewDir ,vec3 normal,  DirLight light);
+vec3 CalculatePointLight(vec3 viewDir, vec3 normal, vec3 vPos, PointLight light);
+vec3 CalcSpotLight(vec3 viewDir, vec3 normal, vec3 vPos,SpotLight light);
 
 vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal);
 
@@ -60,7 +80,7 @@ vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal);
 void main()
 {
 
-	
+   
 
 	if(doNotLight)
 	{
@@ -79,48 +99,106 @@ void main()
 
 
 
-vec3 CalculateDirectionalLight(vec4 vPos ,vec4 vNormal,  DirLight light)
+vec3 CalculateDirectionalLight(vec3 viewDir ,vec3 normal,  DirLight light)
 {
-	vec3 lightPos = light.position;
-	vec3 lightColor = light.color;
+	
 
+ 	vec3 lightDir = normalize(-light.direction);
 
-    vec3 ambient = light.intensity * lightColor;
-  	
-    // diffuse 
-    vec3 norm = normalize(vNormal.xyz);
-    vec3 lightDir = normalize(lightPos - vPos.xyz);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
-    
-    // specular
-   
-    vec3 viewDir = normalize(cameraView - vPos.xyz);
-    vec3 reflectDir = reflect(-lightDir, norm);  
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = light.specular * spec * lightColor;  
-        
+
+    // combine results
+    vec3 ambient  = light.intensity  * vertColor.xyz;
+    vec3 diffuse  = light.color  * diff * vertColor.xyz;
+    vec3 specular = light.specular * spec * vec3(1.0f);
+   
     vec3 result = (ambient + diffuse + specular);
 
 	return result;
 
 }
 
-vec3 CalculatePointLight(vec4 vPos, vec4 vNormal, PointLight light)
+vec3 CalculatePointLight(vec3 viewDir, vec3 normal, vec3 vPos, PointLight light)
 {
-	vec3 result = vec3(0.0f,0.0f,0.0f);
+	
+
+	vec3 lightDir = normalize(light.position - vPos);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    // attenuation
+    float distance    = length(light.position - vPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + 
+  			     light.quadratic * (distance * distance));    
+    // combine results
+    vec3 ambient  = light.intensity  * vertColor.xyz;
+    vec3 diffuse  = light.color  * diff * vertColor.xyz;
+    vec3 specular = light.specular * spec * vertColor.xyz;
+
+    ambient  *= attenuation;
+    diffuse  *= attenuation;
+    specular *= attenuation;
+
+
+	vec3 result = (ambient + diffuse + specular);
 
 	return result;
+}
+
+vec3 CalcSpotLight(vec3 viewDir, vec3 normal, vec3 vPos, SpotLight light)
+{
+	vec3 lightDir = normalize(light.position - vPos);
+
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    // attenuation
+    float distance = length(light.position - vPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+    // spotlight intensity
+    float theta = dot(lightDir, normalize(-light.direction)); 
+    float epsilon = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    // combine results
+    vec3 ambient = light.intensity * vertColor.xyz;
+    vec3 diffuse = light.color * diff * vertColor.xyz;
+    vec3 specular = light.specular * spec * vertColor.xyz;
+    ambient *= attenuation * intensity;
+    diffuse *= attenuation * intensity;
+    specular *= attenuation * intensity;
+    return (ambient + diffuse + specular);
 }
 
 
 vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
 {
-	vec4 finalColor = vec4((CalculateDirectionalLight(vPos,vNormal,dirLight) * vColor.xyz),1.0f);	
-	
+ 	vec3 norm = normalize(vNormal.xyz);
+	vec3 viewDir = normalize(cameraView - vPos.xyz);
 
+	vec3 result = (CalculateDirectionalLight(viewDir,norm,dirLight) * vColor.xyz);
 	
-	finalColor.a = 1.0f;
+	for(int index = 0; index < MAX_POINT_LIGHTS; index++)
+	{
+		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]) * vColor.xyz;
+	}
 
+	for(int index = 0; index < MAX_SPOT_LIGHTS; index++)
+	{
+		result += CalcSpotLight(viewDir,norm,vertPosition.xyz,spotLightList[index]) * vColor.xyz;
+	}
+
+
+	vec4 finalColor = vec4(result,1.0f);
+	
 	return finalColor;
 }

@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Lights\PointLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\Light.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Rendering\Lights\PointLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\Light.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\FlyCameraController.h" />
