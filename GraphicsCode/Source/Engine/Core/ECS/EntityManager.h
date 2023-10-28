@@ -9,17 +9,17 @@ namespace FanshaweGameEngine
 	class Scene;
 	
 	template <typename... Component>
-	struct EntityView
+	struct ComponentView
 	{
 		class iterator;
-		using ComponentView = entt::view<entt::get_t<Component...>>;
+		using View = entt::view<entt::get_t<Component...>>;
 
 	public:
 
 		Scene* m_scene = nullptr;
-		ComponentView m_view;
+		View m_view;
 
-		EntityView(Scene* scene)
+		ComponentView(Scene* scene)
 			: m_scene(scene)
 			, m_view(scene->GetRegistry().view<Component...>())
 		{
@@ -50,12 +50,12 @@ namespace FanshaweGameEngine
 
 		iterator begin()
 		{
-			return EntityView<Component...>::iterator(*this, 0);
+			return ComponentView<Component...>::iterator(*this, 0);
 		}
 
 		iterator end()
 		{
-			return EntityView<Component...>::iterator(*this, Size());
+			return ComponentView<Component...>::iterator(*this, Size());
 		}
 
 		// Custom class for iterating through our
@@ -66,7 +66,7 @@ namespace FanshaweGameEngine
 			using pointer = Entity*;
 			using reference = Entity&;
 
-			explicit iterator(EntityView<Component...>& view, size_t index = 0)
+			explicit iterator(ComponentView<Component...>& view, size_t index = 0)
 				: m_View(view)
 				, m_Index(index)
 			{
@@ -96,7 +96,7 @@ namespace FanshaweGameEngine
 			}
 		private:
 			size_t m_Index = 0;
-			EntityView<Component...>& m_View;
+			ComponentView<Component...>& m_View;
 		};
 		
 
@@ -129,17 +129,9 @@ namespace FanshaweGameEngine
 	
 
 		template<typename... Component>
-		EntityView<Component...> GetComponentsOfType()
+		ComponentView<Component...> GetComponentsOfType()
 		{
-			return EntityView<Component...>(m_scene);
-		}
-		
-
-		// Sunction to make sure that when creating an element the dependants are avaibale
-		template <typename R, typename T>
-		void AddDependency()
-		{
-			m_registry.template on_construct<R>().template connect<&entt::registry::get_or_emplace<T>>();
+			return ComponentView<Component...>(m_scene);
 		}
 		
 

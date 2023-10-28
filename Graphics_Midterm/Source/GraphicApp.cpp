@@ -29,7 +29,7 @@ private:
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(position);
-        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.GetComponent<Transform>().SetRotation(rotation);
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
@@ -57,7 +57,7 @@ private:
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(position);
-        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.GetComponent<Transform>().SetRotation(rotation);
         Object.GetComponent<Transform>().SetScale(scale);
         
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
@@ -86,7 +86,7 @@ private:
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(position);
-        Object.GetComponent<Transform>().SetRotation(Vector3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z)));
+        Object.GetComponent<Transform>().SetRotation(rotation);
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 

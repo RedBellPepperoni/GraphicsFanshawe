@@ -77,6 +77,15 @@ namespace FanshaweGameEngine
 			m_rotation = newRot;
 			
 		}
+
+		void Transform::SetRotation(const Vector3& eularRot)
+		{
+
+			m_rotation = Quaternion(Vector3(Radians(eularRot.x), Radians(eularRot.y), Radians(eularRot.z)));
+		}
+
+		
+
 		void Transform::SetScale(const Vector3& newScale)
 		{
 			m_scale = newScale;

@@ -65,6 +65,8 @@ namespace FanshaweGameEngine
 
 			void SetRotation(const Quaternion& newRot);
 
+			void SetRotation(const Vector3& eularRot);
+
 			void SetScale(const Vector3& newScale);
 
 			Vector3 GetUpVector();

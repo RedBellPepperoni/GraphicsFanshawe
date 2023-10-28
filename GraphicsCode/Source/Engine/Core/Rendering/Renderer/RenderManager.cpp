@@ -44,7 +44,7 @@ namespace FanshaweGameEngine
 			m_renderer->ClearRenderCache();
 
 			// get all the Entities that have the "Camera" Component
-			EntityView cameraView = scene->GetEntityManager()->GetComponentsOfType<Camera>();
+			ComponentView cameraView = scene->GetEntityManager()->GetComponentsOfType<Camera>();
 
 
 			// No rendering cameras found since the view returned empty
@@ -66,7 +66,7 @@ namespace FanshaweGameEngine
 
 
 			// Getting a view of all the Objects which have a "mesh" componenet
-			EntityView meshView = scene->GetEntityManager()->GetComponentsOfType<MeshComponent>();
+			ComponentView meshView = scene->GetEntityManager()->GetComponentsOfType<MeshComponent>();
 			
 			// Looping through all the entities that have a mesh component
 

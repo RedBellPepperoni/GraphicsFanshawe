@@ -101,6 +101,48 @@ namespace FanshaweGameEngine
             return glm::abs(value);
         }
 
+        inline Quaternion Lerp(const Quaternion& q1, const Quaternion& q2, float a)
+        {
+            return glm::lerp(q1, q2, a);
+        }
+
+        inline Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float a)
+        {
+            return glm::slerp(q1, q2, a);
+        }
+
+        template<typename T>
+        inline constexpr T Radians(const T& degrees)
+        {
+            return glm::radians(degrees);
+        }
+
+        template<typename T>
+        inline constexpr T Degrees(const T& radians)
+        {
+            return glm::degrees(radians);
+        }
+
+        template<typename T>
+        inline constexpr T Pi()
+        {
+            return glm::pi<T>();
+        }
+
+        template<typename T>
+        inline constexpr T Epsilon()
+        {
+            return glm::epsilon<T>();
+        }
+
+        // Gets an angle in radians between 2 vectors
+        template<typename Vector>
+        inline float Angle(const Vector& v1, const Vector& v2)
+        {
+            return std::acos(Dot(v1, v2) / (Length(v1) * Length(v2)));
+        }
+
+
         // View Projection Matrix Stuff
 
         // Calculates and returns a Matrix , returns a 4x4 Matrix 
