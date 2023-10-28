@@ -66,8 +66,8 @@ namespace FanshaweGameEngine
 			//Vector3 pos = cameraTransform->GetPosition();
 
 
-			mainCameraController->KeyboardInput(*mainCameraTransform, deltaTime);
-			mainCameraController->MouseInput(*mainCameraTransform, mousePosition, deltaTime);
+			mainCameraController->KeyboardInput(mainCameraTransform, deltaTime);
+			mainCameraController->MouseInput(mainCameraTransform, mousePosition, deltaTime);
 		}
 
 

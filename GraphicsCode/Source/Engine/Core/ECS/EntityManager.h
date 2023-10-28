@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 
 		}
 
-		Entity operator[](int i) 
+		Entity Get(int i) 
 		{		
 			if (i < Size())
 			{
@@ -46,6 +46,7 @@ namespace FanshaweGameEngine
 			return m_view.size();
 		}
 
+		
 
 	};
 	
@@ -67,7 +68,6 @@ namespace FanshaweGameEngine
 		}
 
 		Entity Create();
-
 		Entity Create(const std::string& name);
 		
 

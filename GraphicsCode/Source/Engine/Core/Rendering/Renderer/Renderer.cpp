@@ -82,8 +82,6 @@ namespace FanshaweGameEngine
             }
 
 
-          
-
             newElement.ModelMatrix = transform.GetLocalMatrix();
 
             // New!! - For lighting
@@ -439,12 +437,12 @@ namespace FanshaweGameEngine
             //Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
 
             
-            Matrix4 view = (transform.GetLocalMatrix());
+            Matrix4 view = Math::Inverse(transform.GetLocalMatrix());
 
             Matrix4 proj = (cameraRef.GetProjectionMatrix());
 
 
-            Matrix4 projView = proj * Math::Inverse(view);
+            Matrix4 projView = proj * (view);
 
             // Set the View Projection matrix
             camera.viewProjMatrix = projView;

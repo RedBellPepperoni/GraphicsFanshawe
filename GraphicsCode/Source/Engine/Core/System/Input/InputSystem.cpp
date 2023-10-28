@@ -49,7 +49,7 @@ namespace FanshaweGameEngine
 
 		void InputSystem::SetMouseBtnHeld(MouseButton button, bool held)
 		{
-			m_mouseKeysPressed[(int)button] = held;
+			m_mouseKeysHeld[(int)button] = held;
 		}
 
 

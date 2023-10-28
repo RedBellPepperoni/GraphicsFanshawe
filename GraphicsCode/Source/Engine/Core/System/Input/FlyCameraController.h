@@ -11,9 +11,9 @@ namespace FanshaweGameEngine
 		FlyCameraController();
 		~FlyCameraController();
 
-		virtual void MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime) override;
+		virtual void MouseInput(Components::Transform* transform, Vector2 mousePosition, float deltaTime) override;
 
-		virtual void KeyboardInput(Components::Transform& transform, float deltaTime) override;
+		virtual void KeyboardInput(Components::Transform* transform, float deltaTime) override;
 
 
 		
