@@ -27,7 +27,7 @@ namespace FanshaweGameEngine
 	struct NameComponent
 	{
 		// The name of the Entity
-		std::string name = "";
+		std::string name = "CHANGE  ME!!!!";
 	};
 
 

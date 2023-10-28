@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Core/Rendering/Renderer/Renderer.h"
-#include "Engine/Core/Scene/Scene.h"
+
 
 namespace FanshaweGameEngine
 {
@@ -9,7 +9,7 @@ namespace FanshaweGameEngine
 	class ShaderLibrary;
 	class MaterialLibrary;
 	
-	//class Scene;
+	class Scene;
 
 
 	namespace Rendering

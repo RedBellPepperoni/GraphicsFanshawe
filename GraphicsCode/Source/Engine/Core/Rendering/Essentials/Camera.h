@@ -1,14 +1,12 @@
 #pragma once
 #include "Engine/Utils/Math.h"
-#include "Engine/Core/ECS/Components/Transform.h"
+
 #include <string>
 
 
 namespace FanshaweGameEngine
 {
     
-
-
 	namespace Rendering
 	{
 

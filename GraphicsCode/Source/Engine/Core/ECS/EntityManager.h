@@ -11,23 +11,25 @@ namespace FanshaweGameEngine
 	template <typename... Component>
 	struct EntityView
 	{
-		using TypeView = entt::view<entt::get_t<Component...>>;
+		class iterator;
+		using ComponentView = entt::view<entt::get_t<Component...>>;
 
 	public:
 
-		SharedPtr<Scene> m_scene = nullptr;
-		TypeView m_view;
+		Scene* m_scene = nullptr;
+		ComponentView m_view;
 
-		EntityView(SharedPtr<Scene> scene)
+		EntityView(Scene* scene)
 			: m_scene(scene)
-			,m_view(scene->GetRegistry.view<Component...>())
+			, m_view(scene->GetRegistry().view<Component...>())
 		{
 
 		}
 
-		Entity Get(int i) 
+		Entity operator[](int i) 
 		{		
-			if (i < Size())
+			// Out of bounds : This should realistically not happen
+			if (i >= Size())
 			{
 				LOG_ERROR("Index out of bound on EntityView");
 				__debugbreak();
@@ -46,10 +48,62 @@ namespace FanshaweGameEngine
 			return m_view.size();
 		}
 
+		iterator begin()
+		{
+			return EntityView<Component...>::iterator(*this, 0);
+		}
+
+		iterator end()
+		{
+			return EntityView<Component...>::iterator(*this, Size());
+		}
+
+		// Custom class for iterating through our
+		class iterator
+		{
+		public:
+
+			using pointer = Entity*;
+			using reference = Entity&;
+
+			explicit iterator(EntityView<Component...>& view, size_t index = 0)
+				: m_View(view)
+				, m_Index(index)
+			{
+			}
+
+			Entity operator*() const
+			{
+				return m_View[int(m_Index)];
+			}
+
+			iterator& operator++()
+			{
+				m_Index++;
+				return *this;
+			}
+
+			iterator operator++(int)
+			{
+				iterator temp = *this;
+				++(*this);
+				return temp;
+			}
+
+			bool operator!=(const iterator& rhs) const
+			{
+				return m_Index != rhs.m_Index;
+			}
+		private:
+			size_t m_Index = 0;
+			EntityView<Component...>& m_View;
+		};
 		
 
 	};
+
 	
+
 	
 
 	class EntityManager
@@ -75,12 +129,18 @@ namespace FanshaweGameEngine
 	
 
 		template<typename... Component>
-		EntityView<Component...> GetEntitiesOfType();
+		EntityView<Component...> GetComponentsOfType()
+		{
+			return EntityView<Component...>(m_scene);
+		}
 		
 
 		// Sunction to make sure that when creating an element the dependants are avaibale
 		template <typename R, typename T>
-		void AddDependency();
+		void AddDependency()
+		{
+			m_registry.template on_construct<R>().template connect<&entt::registry::get_or_emplace<T>>();
+		}
 		
 
 		entt::registry& GetRegistry();

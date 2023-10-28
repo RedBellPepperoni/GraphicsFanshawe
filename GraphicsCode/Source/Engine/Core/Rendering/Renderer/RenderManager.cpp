@@ -1,4 +1,10 @@
 #include "RenderManager.h"
+
+// Include teh scene before Application
+#include "Engine/Core/Scene/Scene.h"
+#include "Engine/Core/ECS/EntityManager.h"
+
+
 #include "Engine/Utils/GLUtils.h"
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Macros/Macro.h"
@@ -11,8 +17,6 @@
 #include "Engine/Core/ECS/Components/MeshRenderer.h"
 
 #include "Engine/Core/Rendering/Essentials/Material.h"
-
-
 
 
 
@@ -36,51 +40,40 @@ namespace FanshaweGameEngine
 
 		void RenderManager::ProcessScene(Scene* scene)
 		{
-
+			// Clear the Data of the Pipeline
 			m_renderer->ClearRenderCache();
 
-			// reference of current scene
-			m_currentScene = scene;
-
-			// Temporary copy of registry
-			entt::registry& registry = scene->GetRegistry();
-
-			
-			// Getting a view of all the cameras in the scene
-			auto cameraView = registry.view<Camera>();
-			auto transformView = registry.view<Transform>();
+			// get all the Entities that have the "Camera" Component
+			EntityView cameraView = scene->GetEntityManager()->GetComponentsOfType<Camera>();
 
 
 			// No rendering cameras found since the view returned empty
-			if (cameraView.empty())
+			if (cameraView.IsEmpty())
 			{
 				LOG_WARN("No cameras in the scene");
 				return;
 			}
 			
-
-
-			//// Loop through all the cameras in the scene and send thier data to the pipeline 
-			for (entt::entity cameraEntity : cameraView)
+			//// Loop through all the cameras in the scene and send therr data to the pipeline 
+			for (Entity cameraObject : cameraView)
 			{
-				// get the Camera Reference from te view
-				Camera& camera = cameraView.get<Camera>(cameraEntity);
+				Camera& camera = cameraObject.GetComponent<Camera>();
+				Transform& transform = cameraObject.GetComponent<Transform>();
 
-				// get the transform of teh camera
-				Transform& cameraTransform = transformView.get<Transform>(cameraEntity);
-
-				// Send the data to the Pipeline
-				m_renderer->SetUpCameraElement(camera, cameraTransform);
+				m_renderer->SetUpCameraElement(camera, transform);
 			}
 
 
-			auto meshView = registry.view<MeshComponent>();
-			auto materialView = registry.view<MeshRenderer>();
-			
-			for (entt::entity meshEntity : meshView)
-			{
-				MeshComponent& meshComp = meshView.get<MeshComponent>(meshEntity);
 
+			// Getting a view of all the Objects which have a "mesh" componenet
+			EntityView meshView = scene->GetEntityManager()->GetComponentsOfType<MeshComponent>();
+			
+			// Looping through all the entities that have a mesh component
+
+			for (Entity meshObject : meshView)
+			{
+
+				MeshComponent& meshComp = meshObject.GetComponent<MeshComponent>();
 
 				if(!meshComp.isVisible)
 				{
@@ -89,22 +82,16 @@ namespace FanshaweGameEngine
 				}
 
 				// getting the required components
-				MeshRenderer& materialComp = materialView.get<MeshRenderer>(meshEntity);
-				Transform transform = transformView.get<Transform>(meshEntity);
+				MeshRenderer& materialComp = meshObject.GetComponent<MeshRenderer>();
+				Transform& transform = meshObject.GetComponent<Transform>();
 
-
-				// Getting data from teh Componenets
-				SharedPtr<Mesh> renderMesh = meshComp.GetMesh();
-				SharedPtr<Material> renderMaterial = materialComp.GetMaterial();
 
 				// Sending the mesh data for processing
-				m_renderer->ProcessRenderElement(renderMesh, renderMaterial, transform);
-
+				m_renderer->ProcessRenderElement(meshComp.GetMesh(), materialComp.GetMaterial(), transform);
 
 			}
 
-			
-			
+					
 
 		}
 

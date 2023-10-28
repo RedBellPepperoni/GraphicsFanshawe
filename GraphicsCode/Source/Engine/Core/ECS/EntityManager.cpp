@@ -80,19 +80,6 @@ namespace FanshaweGameEngine
 	}
 
 
-	template <typename ...Component>
-	inline EntityView<Component...> EntityManager::GetEntitiesOfType()
-	{
-		return EntityView<Component...>(m_scene);
-	}
-
-
-	template<typename R, typename T>
-	void EntityManager::AddDependency()
-	{
-		m_registry.template on_construct<R>().template connect<&entt::registry::get_or_emplace<T>>();
-	}
-
 
 
 }
