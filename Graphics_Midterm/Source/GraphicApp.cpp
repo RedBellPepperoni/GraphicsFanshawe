@@ -160,8 +160,20 @@ private:
         
         model = GetModelLibrary()->LoadModel("Desk_0", "Assets\\Props\\SM_Prop_Desk_04_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(model);
+         
+        model = GetModelLibrary()->LoadModel("Beaker", "Assets\\Props\\SM_Prop_Beaker_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
+
+        model = GetModelLibrary()->LoadModel("Battery", "Assets\\Props\\SM_Prop_Battery_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model); 
         
+        model = GetModelLibrary()->LoadModel("Cabinet", "Assets\\Props\\SM_Prop_Cabinets_02_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
+
+        model = GetModelLibrary()->LoadModel("Computer", "Assets\\Props\\SM_Prop_Computer_03_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);
         
+       
        
     }
 
@@ -378,12 +390,25 @@ private:
         // Red Greenlights
         CreateMeshObject("LightGreen", Vector3(19.6f, 9.98f, 9.0f), Vector3(0.0f));
 
-       
+        
 
          CreateMeshObject("LabDesk_01", Vector3(-10.0f, 0.0f, 30.0f), Vector3(0.0f, -20.f,0.0f));
          CreateMeshObject("LabDesk_02", Vector3(-15.0f, 0.0f, 30.0f), Vector3(0.0f, 5.f, 0.0f));
 
          CreateMeshObject("Desk_0", Vector3(0.0f, 0.0f, 30.0f), Vector3(0.0f, 0.0f, 0.0f));
+
+        // CreateMeshObject("Desk_0", Vector3(-5.0f, 0.0f, 31.0f), Vector3(0.0f, -30.0f, 0.0f));
+
+         CreateMeshObject("Cabinet", Vector3(-10.0f, 0.0f, 39.0f), Vector3(0.0f, 180.0f, 0.0f));
+         CreateMeshObject("Cabinet", Vector3(-10.0f, 2.0f, 39.0f), Vector3(0.0f, 180.0f, 0.0f));
+
+         CreateMeshObject("Beaker", Vector3(-1.0f, 1.55f, 29.2f), Vector3(0.0f, 0.0f, 0.0f)); 
+         CreateMeshObject("Beaker", Vector3(-0.9f, 1.55f, 30.0f), Vector3(0.0f, 0.0f, 0.0f)); 
+
+         CreateMeshObject("Battery", Vector3(0.7f, 1.55f, 30.0f), Vector3(0.0f, 0.0f, 0.0f));
+
+         CreateMeshObject("Computer", Vector3(-4.0f, 0.0f, 31.0f), Vector3(0.0f, -10.0f, 0.0f));
+         CreateMeshObject("Computer", Vector3(-4.0f, 0.0f, 29.0f), Vector3(0.0f, -10.0f, 0.0f));
     }
 
 public:
@@ -406,7 +431,7 @@ public:
 
 
         // Hanger Door
-        Door = CreateScaledObject("HangerDoor", Vector3(10.0f, 0.0f, 40.0f), Vector3(0.0f), Vector3(2.0f, 1.0f, 1.0f), Vector3(0.7f,0.7f,0.7f));
+        Door = CreateScaledObject("HangerDoor", Vector3(10.2f, 2.0f, 40.05f), Vector3(0.0f), Vector3(2.0f, 1.0f, 1.0f), Vector3(0.7f,0.7f,0.7f));
 
         
 
