@@ -156,10 +156,13 @@ private:
         CHECKNULL(model);
         
         model = GetModelLibrary()->LoadModel("LabDesk_02", "Assets\\Props\\SM_Prop_Desk_Lab_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(model);  
+        
+        model = GetModelLibrary()->LoadModel("Desk_0", "Assets\\Props\\SM_Prop_Desk_04_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(model);
         
         
-        
+       
     }
 
     void BuildFloorCeling()
@@ -379,6 +382,8 @@ private:
 
          CreateMeshObject("LabDesk_01", Vector3(-10.0f, 0.0f, 30.0f), Vector3(0.0f, -20.f,0.0f));
          CreateMeshObject("LabDesk_02", Vector3(-15.0f, 0.0f, 30.0f), Vector3(0.0f, 5.f, 0.0f));
+
+         CreateMeshObject("Desk_0", Vector3(0.0f, 0.0f, 30.0f), Vector3(0.0f, 0.0f, 0.0f));
     }
 
 public:
