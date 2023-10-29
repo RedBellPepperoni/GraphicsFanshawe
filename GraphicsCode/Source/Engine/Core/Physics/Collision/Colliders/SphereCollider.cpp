@@ -7,13 +7,13 @@ namespace FanshaweGameEngine
 	{
 		SphereCollider::SphereCollider()
 		{
-			m_type = ColliderType::SphereCollider;
+			m_type = ColliderType::SPHERE;
 			SetRadius(1.0f);
 		}
 
 		SphereCollider::SphereCollider(float radius)
 		{
-			m_type = ColliderType::SphereCollider;
+			m_type = ColliderType::SPHERE;
 			SetRadius(radius);
 		}
 		SphereCollider::~SphereCollider()

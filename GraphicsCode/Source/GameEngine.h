@@ -8,7 +8,7 @@
 #include "Engine/Core/Rendering/Renderer/Renderer.h"
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Resources/ResourceManager.h"
-#include "Engine/Core/ECS/Object/GameObject.h"
+
 #include "Engine/Core/Rendering/Essentials/Mesh.h"
 #include "Engine/Utils/Loading/Model.h"
 

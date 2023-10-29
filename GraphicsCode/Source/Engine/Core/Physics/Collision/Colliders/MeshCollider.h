@@ -57,11 +57,11 @@ namespace FanshaweGameEngine
 
 
 
-		class MeshCollider
+		class MESH
 		{
 
-			MeshCollider();
-			virtual ~MeshCollider();
+			MESH();
+			virtual ~MESH();
 
 
 

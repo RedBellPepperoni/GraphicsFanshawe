@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\PointLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\Light.cpp" />
@@ -130,10 +131,7 @@
     <ClCompile Include="Source\Engine\Utils\Loading\Model.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\InputSystem.cpp" />
-    <ClCompile Include="Source\Engine\Core\ECS\Object\GameObject.cpp" />
     <ClCompile Include="Source\Engine\Utils\Logging\OpenGLDebug.h" />
-    <ClCompile Include="Source\FeeneyShader.cpp" />
-    <ClCompile Include="Source\ShaderManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Camera.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Mesh.cpp" />
     <ClCompile Include="Source\Engine\Utils\Loading\ModelLoader.cpp" />
@@ -148,6 +146,7 @@
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\PointLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\Light.h" />
@@ -190,9 +189,7 @@
     <ClInclude Include="Source\Engine\Core\Rendering\Definitions.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\InputSystem.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\InputKeyCodes.h" />
-    <ClInclude Include="Source\Engine\Core\ECS\Object\GameObject.h" />
     <ClInclude Include="Source\Engine\Utils\GLUtils.h" />
-    <ClInclude Include="Source\ShaderManager.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Camera.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Mesh.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\ModelLoader.h" />

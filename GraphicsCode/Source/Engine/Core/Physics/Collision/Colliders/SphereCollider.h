@@ -1,7 +1,4 @@
 #pragma once
-
-
-//#pragma once
 #include "Engine/Core/Physics/Collision/Colliders/Collider.h"
 
 namespace FanshaweGameEngine

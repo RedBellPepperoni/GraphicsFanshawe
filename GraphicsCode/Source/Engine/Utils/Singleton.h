@@ -17,7 +17,7 @@ namespace FanshaweGameEngine
 			return *instance;
 		}
 
-		static bool Release()
+		static void Release()
 		{
 			if (instance)
 			{
@@ -29,7 +29,7 @@ namespace FanshaweGameEngine
 	protected:
 
 		Singleton() {};
-		~Singleton() {};
+		~Singleton() { Release(); };
 
 		static T* instance;
 	};

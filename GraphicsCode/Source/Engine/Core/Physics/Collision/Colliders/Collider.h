@@ -28,12 +28,12 @@ namespace FanshaweGameEngine
 
 		enum ColliderType : uint8_t
 		{
-			None = 0,
-			CuboidCollider = 1,
-			SphereCollider = 2,
-			CapsuleCollider = 4,
-			MeshCollider = 8,
-			MaxType = 16
+			NONE = 1 << 0,				// 0
+			BOX = 1 << 1,	// 1
+			SPHERE = 1 << 2,	// 2
+			CAPSULE = 1 << 3,	// 4
+			MESH = 1 << 4,		// 8
+			MAX = 1 << 5			//16
 
 		};
 
@@ -56,6 +56,8 @@ namespace FanshaweGameEngine
 
 			virtual std::vector<ColliderEdge>& GetEdgeList(const RigidBody3D* currentBody) = 0;
 
+
+			// The Seperated Axis Theorem
 			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) = 0;
 
 			ColliderType GetType() const;

@@ -8,7 +8,7 @@ namespace FanshaweGameEngine
 
 
 		Collider::Collider()
-			: m_type(ColliderType::None)
+			: m_type(ColliderType::NONE)
 			, m_transform(Matrix4(1.0f))
 		{
 		}

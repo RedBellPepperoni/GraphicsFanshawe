@@ -11,7 +11,7 @@ namespace FanshaweGameEngine
 
 		enum class EventType
 		{
-			None = 0,
+			NONE = 0,
 
 			/// Window Events
 			WindowMouseEnter,
