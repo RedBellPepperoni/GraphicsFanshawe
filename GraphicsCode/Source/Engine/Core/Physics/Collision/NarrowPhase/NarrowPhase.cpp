@@ -49,9 +49,56 @@ namespace FanshaweGameEngine
 			return false;
 		}
 
+		bool NarrowPhase::CheckCollisionbySAT(const Vector3& axis, RigidBody3D* bodyOne, RigidBody3D* bodyTwo, SphereCollider* colliderOne, SphereCollider* colliderTwo, CollisionData* outData)
+		{
+			Vector3 minOne, maxOne;
+			Vector3 minTwo, maxTwo;
+
+			colliderOne->GetMinMaxFromAxis(bodyOne, axis, &minOne, &maxOne);
+			colliderOne->GetMinMaxFromAxis(bodyTwo, axis, &minTwo, &maxTwo);
+
+			float minOneCorrelation = Dot(axis, minOne);
+			float maxOneCorrelation = Dot(axis, maxOne);
+			float minTwoCorrelation = Dot(axis, minTwo);
+			float maxTwoCorrelation = Dot(axis, maxTwo);
+
+			if (minOneCorrelation < minTwoCorrelation && maxOneCorrelation >= minTwoCorrelation)
+			{
+				if (outData != nullptr)
+				{
+					outData->collisionNormal = axis;
+					outData->penetration = minTwoCorrelation - maxOneCorrelation;
+					outData->pointOnPlane = maxOne + outData->collisionNormal * outData->penetration;
+				}
+
+				return true;
+
+			}
+
+			if (minTwoCorrelation <= minOneCorrelation && maxTwoCorrelation > minOneCorrelation)
+			{
+				if (outData != nullptr)
+				{
+					outData->collisionNormal = -axis;
+					outData->penetration = minOneCorrelation - maxTwoCorrelation;
+					outData->pointOnPlane = minOne + outData->collisionNormal * outData->penetration;
+				}
+
+				return true;
+
+			}
+
+			return false;
+		}
+
 		bool NarrowPhase::DetectSphereCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, SphereCollider* colliderOne, SphereCollider* colliderTwo, CollisionData* outData)
 		{
+			CollisionData data;
 
+			Vector3 axis = bodyTwo->GetPosition() - bodyOne->GetPosition();
+			axis = Normalize(axis);
+
+			//if(CheckCollisionAxis())
 
 
 			return false;
