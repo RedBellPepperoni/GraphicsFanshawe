@@ -47,7 +47,7 @@ namespace FanshaweGameEngine
 
 		m_currentScene = MakeShared<Scene>("testScene");
 
-		m_physicsSystem = MakeUnique<PhysicsEngine>();
+		//m_physicsSystem = MakeUnique<PhysicsEngine>();
 
 		// Setting the Instance reference of the creatd application
 		m_currentApplication = this;

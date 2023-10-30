@@ -1,82 +1,83 @@
 #pragma once
-#include "Engine/Utils/Math.h"
+#include "Engine/Core/Physics/Collision/Bounds/AABB.h"
 #include <vector>
 
 namespace FanshaweGameEngine
 {
 	namespace Physics
 	{
-
-		class RigidBody3D;
-
-		// this is the Edge for the Collison Shape that will be used for detection 
-		struct ColliderEdge
+		enum class ColliderType 
 		{
-			ColliderEdge(const Vector3& firstPoint = Vector3(0.0f), const Vector3& secondPoint = Vector3(0.0f))
-				: firstPosition(firstPoint)
-				, secondPosition(secondPoint)
-			{
+			PLANE,
+			SPHERE,
+			CAPSULE,
+			HULL,
+			MESH
+		};
+		
 
+		struct ColliderBase;	
+		struct Collider;
+
+
+		struct ColliderBase 
+		{
+			const ColliderType m_type;
+			
+
+			ColliderBase(ColliderType type)
+				: m_type(type)	
+			{}
+
+			template<typename _t>
+			_t* as() {
+				assert(_t().get_id() == get_id());
+				return (_t*)this;
 			}
 
+			size_t get_id() const {
+				return (size_t)m_type;
+			}
 
-			Vector3 firstPosition;
-			Vector3 secondPosition;
-			
+			virtual bool CacheIsOld() const = 0;
+			virtual void UpdateCache() = 0;
 		};
 
-
-		enum ColliderType : uint8_t
+		
+		struct Collider: ColliderBase
 		{
-			NONE = 1 << 0,				// 0
-			BOX = 1 << 1,	// 1
-			SPHERE = 1 << 2,	// 2
-			CAPSULE = 1 << 3,	// 4
-			MESH = 1 << 4,		// 8
-			MAX = 1 << 5			//16
+					
 
+			Collider(ColliderType type)
+				: ColliderBase(type)
+			{
+				
+			}
+
+			virtual Vector3 FindFurthestPoint(
+				Transform* transform,
+				const Vector3& direction) const = 0;
+
+			virtual AABB CalcBounds() const = 0;
+
+			AABB Bounds()
+			{
+				if (CacheIsOld())
+				{
+					UpdateCache();
+				}
+
+				return m_bounds;
+			}
+
+			void UpdateCache() override
+			{
+				m_bounds = CalcBounds();
+			}
+		private:
+			AABB m_bounds;
 		};
 
-		class Collider
-		{
-		public:
-
-			Collider();
-
-
-			virtual ~Collider();
-
-			void SetTransform(const Matrix4& transform);
-
-			virtual float GetSize() const = 0;
-
-
-
-			virtual std::vector<Vector3>& GetCollisionNormals(const RigidBody3D* currentBody) = 0;
-
-			virtual std::vector<ColliderEdge>& GetEdgeList(const RigidBody3D* currentBody) = 0;
-
-
-			// The Seperated Axis Theorem
-			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) = 0;
-
-			ColliderType GetType() const;
-
-		protected:
-
-			// type of collider
-			ColliderType m_type;
-
-			// The local transform matrix
-			Matrix4 m_transform;
-
-			// Conatiner to store all the Colliding edge data
-			std::vector<ColliderEdge> m_edgelist;
-
-			// All the face normals used for detection
-			std::vector<Vector3> m_normallist;
-
-		};
 	}
 }
 

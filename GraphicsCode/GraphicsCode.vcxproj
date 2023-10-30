@@ -99,16 +99,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Manifold.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\ManifoldPoints.h" />
+    <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\GJKAlgo.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\PlaneCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\PhysicsUtils.h" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\PointLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\Light.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
-    <ClCompile Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.cpp" />
-    <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.cpp" />
-    <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\MeshCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\ConvexHull.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\Collider.cpp" />
@@ -146,18 +148,20 @@
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Manifold.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\GJKAlgo.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\PlaneCollider.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Bounds\AABB.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\PhysicsGrid.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\PointLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\Light.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\FlyCameraController.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\CameraController.h" />
-    <ClInclude Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\BroadPhase.h" />
-    <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.h" />
-    <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\MeshCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\ConvexHull.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\Collider.h" />

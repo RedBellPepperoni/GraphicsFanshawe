@@ -5,44 +5,63 @@ namespace FanshaweGameEngine
 {
 	namespace Physics
 	{
-
-		class SphereCollider : public Collider
+		struct SphereCollider : public Collider
 		{
+			
+			 Vector3 Center;
+			 float Radius;
+
 		public:
+			SphereCollider()
+				: Collider(ColliderType::SPHERE)
+				, Center(0.0f)
+				, Radius(1.0f)
+			{
+				Bounds();
+			}
 
-			SphereCollider();
+			SphereCollider(
+				Vector3 center,
+				float radius
+			)
+				: Collider(ColliderType::SPHERE)
+				, Center(center)
+				, Radius(radius)
+			{
+				Bounds();
+			}
 
-			//May be add an explicit here later on if it clashes
-			SphereCollider(float radius);
+			Vector3 FindFurthestPoint(
+				Transform* transform,
+				const Vector3& direction) const override
+			{
+				return Center + (Vector3)transform->GetPosition()
+					+ Radius * normalize(direction) * Major(transform->GetScale());
+			}
 
+			AABB CalcBounds() const
+			{
+				return AABB(Center, sqrt(Radius * Radius + Radius * Radius));
+			}
 
-			~SphereCollider();
+			bool CacheIsOld() const override
+			{
+				return  Center != t_center
+					|| Radius != t_radius;
+			}
 
+			void UpdateCache() override
+			{
+				t_center = Center;
+				t_radius = Radius;
 
-			virtual std::vector<Vector3>& GetCollisionNormals(const RigidBody3D* currentBody) override;
-
-			virtual std::vector<ColliderEdge>& GetEdgeList(const RigidBody3D* currentBody) override;
-
-			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) override;
-
-
-			void SetRadius(const float radius);
-
-			const float GetRadius() const;
-
-			float GetSize() const override;
-
-
-
-		protected:
-
-			// the radius of the Sphere Collider
-			float m_radius;
-
-
+				Collider::UpdateCache();
+			}
+		private:
+			Vector3 t_center;
+			float t_radius;
 		};
-
-
+	
 
 	}
 }

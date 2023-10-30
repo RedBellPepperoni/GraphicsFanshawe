@@ -52,7 +52,7 @@ using Physics::PhysicsEngine;
 
 		UniquePtr<Window> m_window = nullptr;
 
-		UniquePtr<PhysicsEngine> m_physicsSystem = nullptr;
+		//UniquePtr<PhysicsEngine> m_physicsSystem = nullptr;
 
 
 		bool m_isRunning = false;

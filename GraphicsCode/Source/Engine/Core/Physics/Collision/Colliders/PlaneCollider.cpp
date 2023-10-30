@@ -1,19 +1,11 @@
 #pragma once
-#include "MeshCollider.h"
+#include "PlaneCollider.h"
 
 
 namespace FanshaweGameEngine
 {
-
-
-	
-
-
 	namespace Physics
 	{
 
-	
-
 	}
-
 }
