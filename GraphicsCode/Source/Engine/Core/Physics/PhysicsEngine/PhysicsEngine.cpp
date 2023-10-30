@@ -5,7 +5,7 @@
 #include "Engine/Core/ECS/Components/Transform.h"
 #include "Engine/Core/Physics/Collision/Broadphase/SortnSweepBroadPhase.h"
 #include "Engine/Core/Physics/Collision/Broadphase/DefaultBroadPhase.h"
-
+#include "Engine/Core/Physics/Collision/NarrowPhase/NarrowPhase.h"
 #include "Engine/Utils/Logging/Log.h"
 
 
@@ -44,9 +44,10 @@ namespace FanshaweGameEngine
 		void PhysicsEngine::Init()
 		{
 			m_timeStepCounter = 0.0f;
-			m_gravity = Vector3(0.0f, -9.81f, 0.0f);
+			//m_gravity = Vector3(0.0f, -9.81f, 0.0f);
+			m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
-			m_dampingFactor = 0.999f;
+			m_dampingFactor = 0.98f;
 			m_physicsTimeStep = 1.0f / 50.0f;
 
 			m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
@@ -178,7 +179,12 @@ namespace FanshaweGameEngine
 		{
 
 			BroadPhaseCollision();
+
+			NarrowPhaseCollision();
+
 			UpdateAllBodies();
+
+
 
 		}
 
@@ -198,14 +204,41 @@ namespace FanshaweGameEngine
 			// get the potential Collison pairs
 			m_broadPhasePairs = m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
 
-			LOG_INFO("Number of collisions : {0}", m_broadPhasePairs.size());
+			
+			for (CollisionPair& pair : m_broadPhasePairs)
+			{
+				Collider* colliderOne = pair.firstBody->GetCollider();
+				Collider* colliderTwo = pair.secondBody->GetCollider();
+
+
+				if (colliderOne && colliderTwo)
+				{
+					CollisionData coldata;
+
+
+					if (NarrowPhase::GetInstance().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
+					{
+						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
+						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
+
+					}
+
+				}
+
+			}
 		   
 
 
 		}
 		void PhysicsEngine::NarrowPhaseCollision()
 		{
+			if(m_broadPhasePairs.empty())
+			{
+				return;
+			}
 
+
+			m_debugStats.collisionCount = 0;
 
 		}
 		void PhysicsEngine::UpdateAllBodies()

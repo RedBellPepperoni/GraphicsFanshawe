@@ -192,7 +192,7 @@ namespace FanshaweGameEngine
             // While drawing a pixel, see if the pixel that's already there is closer or not?
             GLDEBUG(glEnable(GL_DEPTH_TEST));
             
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glPolygonMode(GL_FRONT, GL_FILL);
 
 
         }

@@ -3,6 +3,7 @@
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/UniqueId/UniqueId.h"
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingBox.h"
+#include <functional>
 
 namespace FanshaweGameEngine
 {
@@ -12,6 +13,9 @@ namespace FanshaweGameEngine
 
 		class Collider;
 		enum ColliderType : uint8_t;
+
+
+		
 
 		struct PhysicsProperties
 		{
@@ -40,7 +44,7 @@ namespace FanshaweGameEngine
 
 		};
 
-
+		//typedef std::function<bool(RigidBody3D* this_obj, RigidBody3D* colliding_obj)> PhysicsCollisionCallback;
 
 		class RigidBody3D
 		{
@@ -74,7 +78,7 @@ namespace FanshaweGameEngine
 			void SetForce(const Vector3& newForce);
 			void SetRotation(const Quaternion& newRot);
 			
-
+			//void SetOnCollisionCallback(PhysicsCollisionCallback& callback) { m_OnCollisionCallback = callback; }
 			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
 
 
@@ -150,6 +154,9 @@ namespace FanshaweGameEngine
 
 			//(made mutable for accessing in const functions)
 			mutable Matrix4 m_transform;
+
+
+			//PhysicsCollisionCallback m_OnCollisionCallback;
 
 			BoundingBox m_modelboundingBox;
 			mutable BoundingBox m_aabb;

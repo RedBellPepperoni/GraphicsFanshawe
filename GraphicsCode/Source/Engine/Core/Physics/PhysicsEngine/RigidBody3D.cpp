@@ -1,5 +1,6 @@
 #include "RigidBody3D.h"
 #include "Engine/Core/Physics/Collision/Colliders/Collider.h"
+#include "Engine/Utils/Logging/Log.h"
 
 namespace FanshaweGameEngine
 {
@@ -172,6 +173,10 @@ namespace FanshaweGameEngine
 		bool RigidBody3D::OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond)
 		{
 			// Work on this
+
+			LOG_CRITICAL("Collision : " + std::to_string(bodyFirst->GetUniqueId()));
+
+
 			return false;
 		}
 

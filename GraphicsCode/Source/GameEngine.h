@@ -28,6 +28,8 @@
 #include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
 #include "Engine/Core/Physics/Collision/Colliders/SphereCollider.h"
+#include "Engine/Core/Physics/Collision/Colliders/MeshCollider.h"
+#include "Engine/Core/Physics/Collision/Colliders/BoxCollider.h"
 
 
 
