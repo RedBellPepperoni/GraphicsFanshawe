@@ -30,6 +30,8 @@ namespace FanshaweGameEngine
 
 			m_Id = UniqueId();
 
+			
+
 		}
 
 
@@ -174,7 +176,10 @@ namespace FanshaweGameEngine
 		{
 			// Work on this
 
-			LOG_CRITICAL("Collision : " + std::to_string(bodyFirst->GetUniqueId()));
+			if (m_OnCollisionCallback)
+			{
+				m_OnCollisionCallback();
+			}
 
 
 			return false;

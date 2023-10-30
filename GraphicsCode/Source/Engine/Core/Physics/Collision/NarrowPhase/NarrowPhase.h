@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 			Vector3 pointOnPlane;
 		};
 
-		class NarrowPhase : public Singleton<NarrowPhase>
+		class NarrowPhase : public ThreadSafeSingleton<NarrowPhase>
 		{
 		private:
 

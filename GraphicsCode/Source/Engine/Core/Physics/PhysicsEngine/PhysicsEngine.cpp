@@ -216,7 +216,7 @@ namespace FanshaweGameEngine
 					CollisionData coldata;
 
 
-					if (NarrowPhase::GetInstance().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
+					if (NarrowPhase::Get().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
 					{
 						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
 						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);

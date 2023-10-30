@@ -1,7 +1,12 @@
 #include "GameEngine.h"
-
+#include <functional>
+#include "Asteroid.h"
+#include "Explosion.h"
 
 using namespace Physics;
+
+
+
 
 class PhysicsApp : public Application
 {
@@ -11,10 +16,17 @@ class PhysicsApp : public Application
     SharedPtr<Model> boxModel;
     SharedPtr<Model> asteroidOne;
     SharedPtr<Model> asteroidTwo;
+    SharedPtr<Model> simpleCollider;
+    SharedPtr<Explosion> exp;
 
 
-    RigidBody3D* asterTrasnform;
+    std::vector<SharedPtr<Asteroid>> asteroidList;
 
+    std::vector<RigidBody3D*> asteroids;
+    
+   
+
+    
     int asteroidCount = 0;
 
     bool pausePhysics = false;
@@ -76,9 +88,7 @@ class PhysicsApp : public Application
 
         Transform* transform = &Object.GetComponent<Transform>();
         transform->SetPosition(position);
-        transform->SetScale(halfSize * 2.0f
-        
-        );
+        transform->SetScale(halfSize * 2.0f);
         Object.AddComponent<MeshComponent>(boxModel->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
@@ -110,42 +120,6 @@ class PhysicsApp : public Application
     }
 
 
-    void SpawnAsteroid(const Vector3& position, SharedPtr<Model> model)
-    {
-        std::string name = "AsteroidEntity_" + std::to_string(asteroidCount);
-        Entity Object = GetCurrentScene()->CreateEntity(name);
-        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
-
-        Object.AddComponent<Transform>();
-
-        Transform* transform = &Object.GetComponent<Transform>();
-        transform->SetPosition(position);
-        transform->SetScale(Vector3(0.05));
-        Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
-        Object.AddComponent<MeshRenderer>();
-
-        PhysicsProperties properties;
-
-        properties.position = position;
-        properties.stationary = false;
-        properties.isStatic = false;
-        properties.mass = 50.0f;
-
-
-        RigidBody3D* body = &Object.AddComponent<RigidBody3D>(properties);
-
-
-        MeshCollider* collider = &Object.AddComponent<MeshCollider>();
-
-        collider->BuildFromMesh(model->GetMeshes()[0].get());
-        collider->SetHalfDimensions(Vector3(0.35f));
-
-        body->SetCollider(*collider);
-
-        asteroidCount++;
-
-    }
-
 
     void SpawnShip()
     {
@@ -153,7 +127,7 @@ class PhysicsApp : public Application
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
 
         SharedPtr<Model> ship = GetModelLibrary()->LoadModel("Ship", "Assets\\SM_Ship_Massive_Transport_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
-        CHECKNULL(asteroidTwo);
+        CHECKNULL(ship);
 
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(Vector3(0.0f));
@@ -161,6 +135,21 @@ class PhysicsApp : public Application
         Object.AddComponent<MeshComponent>(ship->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
+
+        simpleCollider = GetModelLibrary()->LoadModel("ShipCollider", "Assets\\ShipMesh.ply");
+        CHECKNULL(simpleCollider);
+
+
+
+        Object = GetCurrentScene()->CreateEntity("SpaceCollider");
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+
+
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        Object.GetComponent<Transform>().SetScale(Vector3(1, 1, 1));
+       // Object.AddComponent<MeshComponent>(simpleCollider->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
 
         PhysicsProperties properties;
 
@@ -174,11 +163,12 @@ class PhysicsApp : public Application
 
 
         MeshCollider* collider = &Object.AddComponent<MeshCollider>();
-
-        collider->BuildFromMesh(ship->GetMeshes()[0].get());
-        collider->SetHalfDimensions(Vector3(0.01f));
+        collider->BuildFromMesh(simpleCollider->GetMeshes()[0].get());
 
         body->SetCollider(*collider);
+
+
+
     }
 
 
@@ -209,29 +199,38 @@ class PhysicsApp : public Application
         asteroidOne = GetModelLibrary()->LoadModel("AsteroidOne", "Assets\\Asteroid_011_x10_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(asteroidOne);
 
+
+
         asteroidTwo = GetModelLibrary()->LoadModel("ASteroidTwo", "Assets\\Asteroid_015_x10_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(asteroidTwo);
+
+
+        
 
         SpawnShip();
 
         
-       // SpawnAsteroid(Vector3(140.0f,0.0f,0.0f), asteroidOne);
-
-       // SpawnAsteroid(Vector3(140.0f,5.0f,0.0f), asteroidOne);
-
-       // SpawnAsteroid(Vector3(140.0f, 0.0f, 0.0f), asteroidOne);
-
+       
      
 
-        //AddBoxCollider(Vector3(140.0f, 0.0f, 0.0f), Vector3(8.0f,8.0f, 30.0f));
-        asterTrasnform = AddSphereCollider(Vector3(100.0f, 5.0f, 0.0f),8.0f);
-        asterTrasnform = AddSphereCollider(Vector3(100.0f, 5.0f, 20.0f),8.0f);
-        asterTrasnform = AddSphereCollider(Vector3(120.0f, 5.0f, 40.0f),8.0f);
-        asterTrasnform = AddSphereCollider(Vector3(70.0f, 5.0f, 60.0f),8.0f);
-        asterTrasnform = AddSphereCollider(Vector3(60.0f, 5.0f, 80.0f),8.0f);
+       //AddBoxCollider(Vector3(0.0f, 0.0f, 40.0f), Vector3(30.0f,50.0f, 80.0f));
 
+       // AddSphereCollider(Vector3(100.0f, 5.0f, 0.0f),8.0f);
+
+
+
+        exp = MakeShared<Explosion>();
         
 
+         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 5.0f, 0.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(210.0f, 100.0f, 40.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 50.0f, 200.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 5.0f, 300.0f)));
+ 
+       
+
+      
+        
        
     }
 
@@ -244,23 +243,11 @@ class PhysicsApp : public Application
 
         }
 
-      
-        if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Right))
-        {
-            asterTrasnform->SetForce(Vector3(500.0f,0,0));
-        }
 
-        if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Left))
+        for (SharedPtr<Asteroid> asteroid : asteroidList)
         {
-            asterTrasnform->SetForce(Vector3(-500.0f, 0, 0));
+            asteroid->Update(deltaTime);
         }
-
-        if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Numpad0))
-        {
-            asterTrasnform->SetForce(Vector3(0.0f));
-            asterTrasnform->SetVelocity(Vector3(0.0f));
-        }
-
 
     }
 

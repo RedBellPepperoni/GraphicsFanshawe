@@ -171,7 +171,7 @@ namespace FanshaweGameEngine
       
             SetUpDirLightUniform(shader);
            // SetUpSpotLights(shader);
-           // SetUpPointLightUniform(shader);
+            SetUpPointLightUniform(shader);
 
            //entt::registry& registry =  Application::GetCurrent().GetCurrentScene()->GetRegistry();
 
@@ -282,7 +282,7 @@ namespace FanshaweGameEngine
 
             shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
 
-            shader->SetUniform("dirLight.intensity", Vector3(1.0f));
+            shader->SetUniform("dirLight.intensity", Vector3(0.4f));
 
             shader->SetUniform("dirLight.specular", Vector3(0.5f));
 
@@ -293,26 +293,26 @@ namespace FanshaweGameEngine
 
         void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
         {
-            Vector3 intensity = Vector3(1.0f);
+            Vector3 intensity = Vector3(9.0f);
 
 
             std::string uniformName = "pointLightList[0]";
 
-            shader->SetUniform(uniformName + ".position", Vector3(0.0f, 5.0f, 0.0f));
+            shader->SetUniform(uniformName + ".position", Vector3(120.0f, 40.0f, 20.0f));
             shader->SetUniform(uniformName + ".color", Vector3(1.0f,0.0f,0.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.003f);
-            shader->SetUniform(uniformName + ".quadratic", 0.009f);
+            shader->SetUniform(uniformName + ".linear", 0.0003f);
+            shader->SetUniform(uniformName + ".quadratic", 0.0009f);
 
-            uniformName = "pointLightList[1]";
+          /*  uniformName = "pointLightList[1]";
 
             shader->SetUniform(uniformName + ".position", Vector3(20.0f, 8.0f, 8.0f));
             shader->SetUniform(uniformName + ".color", Vector3(0.0f, 1.0f, 0.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
             shader->SetUniform(uniformName + ".linear", 0.003f);
-            shader->SetUniform(uniformName + ".quadratic", 0.009f);
+            shader->SetUniform(uniformName + ".quadratic", 0.009f);*/
 
         }
 

@@ -29,7 +29,7 @@ namespace FanshaweGameEngine
 		{
 			m_Hull = MakeShared<ConvexHull>();
 
-			auto vertexBuffer = mesh->GetVBO();
+			SharedPtr<Rendering::VertexBuffer> vertexBuffer = mesh->GetVBO();
 			
 			
 			std::vector<Rendering::Vertex> vertices = mesh->GetVertexData();

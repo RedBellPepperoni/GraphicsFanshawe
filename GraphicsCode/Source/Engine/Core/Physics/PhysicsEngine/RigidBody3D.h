@@ -13,9 +13,10 @@ namespace FanshaweGameEngine
 
 		class Collider;
 		enum ColliderType : uint8_t;
+		class RigidBody3D;
 
+		//typedef  PhysicsCollisionCallback;
 
-		
 
 		struct PhysicsProperties
 		{
@@ -45,6 +46,7 @@ namespace FanshaweGameEngine
 		};
 
 		//typedef std::function<bool(RigidBody3D* this_obj, RigidBody3D* colliding_obj)> PhysicsCollisionCallback;
+		typedef std::function<void()> PhysicsCollisionCallback;
 
 		class RigidBody3D
 		{
@@ -124,6 +126,11 @@ namespace FanshaweGameEngine
 			Vector3 m_velocity = Vector3(0.0f);
 			Vector3 m_force = Vector3(0.0f);
 
+
+			
+
+
+			PhysicsCollisionCallback m_OnCollisionCallback;
 
 			// ========= Rotational and angular stuff for later on
 			Quaternion m_rotation = Quaternion();
