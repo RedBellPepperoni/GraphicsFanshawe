@@ -8,7 +8,7 @@ class PhysicsApp : public Application
     int sphereCount = 0;
     SharedPtr<Model> sphereModel;
 
-    bool startPhysics = true;
+    bool pausePhysics = false;
 
     
     void SpawnSphere(const Vector3& position)
@@ -67,8 +67,8 @@ class PhysicsApp : public Application
     {
         if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
         {
-            startPhysics = !startPhysics;
-            Application::GetCurrent().StartPhysics(startPhysics);
+            pausePhysics = !pausePhysics;
+            Application::GetCurrent().StartPhysics(pausePhysics);
 
         }
 
