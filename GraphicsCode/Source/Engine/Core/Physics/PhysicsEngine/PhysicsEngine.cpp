@@ -18,7 +18,7 @@ namespace FanshaweGameEngine
 	{
 
 
-		float PhysicsEngine::m_physicsTimeStep = 1.0f / 50.0f;
+		float PhysicsEngine::m_physicsTimeStep = 1.0f / 30.0f;
 
 
 
@@ -48,7 +48,7 @@ namespace FanshaweGameEngine
 			m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
 			m_dampingFactor = 0.98f;
-			m_physicsTimeStep = 1.0f / 50.0f;
+			m_physicsTimeStep = 1.0f / 30.0f;
 
 			m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();

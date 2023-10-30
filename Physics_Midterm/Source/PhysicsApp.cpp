@@ -76,7 +76,9 @@ class PhysicsApp : public Application
 
         Transform* transform = &Object.GetComponent<Transform>();
         transform->SetPosition(position);
-        transform->SetScale(halfSize);
+        transform->SetScale(halfSize * 2.0f
+        
+        );
         Object.AddComponent<MeshComponent>(boxModel->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
@@ -115,12 +117,31 @@ class PhysicsApp : public Application
         // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
 
         Object.AddComponent<Transform>();
-        Object.GetComponent<Transform>().SetPosition(position);
-         Object.GetComponent<Transform>().SetScale(Vector3(0.01, 0.01, 0.01));
+
+        Transform* transform = &Object.GetComponent<Transform>();
+        transform->SetPosition(position);
+        transform->SetScale(Vector3(0.05));
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
-        AddSphereCollider(position, 8.0f);
+        PhysicsProperties properties;
+
+        properties.position = position;
+        properties.stationary = false;
+        properties.isStatic = false;
+        properties.mass = 50.0f;
+
+
+        RigidBody3D* body = &Object.AddComponent<RigidBody3D>(properties);
+
+
+        MeshCollider* collider = &Object.AddComponent<MeshCollider>();
+
+        collider->BuildFromMesh(model->GetMeshes()[0].get());
+        collider->SetHalfDimensions(Vector3(0.35f));
+
+        body->SetCollider(*collider);
+
         asteroidCount++;
 
     }
@@ -139,6 +160,25 @@ class PhysicsApp : public Application
         Object.GetComponent<Transform>().SetScale(Vector3(0.01, 0.01, 0.01));
         Object.AddComponent<MeshComponent>(ship->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
+
+
+        PhysicsProperties properties;
+
+        properties.position = Vector3(0.0f);
+        properties.stationary = false;
+        properties.isStatic = false;
+        properties.mass = 5000.0f;
+
+
+        RigidBody3D* body = &Object.AddComponent<RigidBody3D>(properties);
+
+
+        MeshCollider* collider = &Object.AddComponent<MeshCollider>();
+
+        collider->BuildFromMesh(ship->GetMeshes()[0].get());
+        collider->SetHalfDimensions(Vector3(0.01f));
+
+        body->SetCollider(*collider);
     }
 
 
@@ -178,12 +218,17 @@ class PhysicsApp : public Application
        // SpawnAsteroid(Vector3(140.0f,0.0f,0.0f), asteroidOne);
 
        // SpawnAsteroid(Vector3(140.0f,5.0f,0.0f), asteroidOne);
-        //SpawnAsteroid(Vector3(20.0f, 0.0f, 20.0f), asteroidTwo);
+
+       // SpawnAsteroid(Vector3(140.0f, 0.0f, 0.0f), asteroidOne);
 
      
 
-        AddBoxCollider(Vector3(140.0f, 0.0f, 0.0f),Vector3(8.0f));
-        asterTrasnform = AddSphereCollider(Vector3(180.0f, 5.0f, 0.0f),8.0f);
+        //AddBoxCollider(Vector3(140.0f, 0.0f, 0.0f), Vector3(8.0f,8.0f, 30.0f));
+        asterTrasnform = AddSphereCollider(Vector3(100.0f, 5.0f, 0.0f),8.0f);
+        asterTrasnform = AddSphereCollider(Vector3(100.0f, 5.0f, 20.0f),8.0f);
+        asterTrasnform = AddSphereCollider(Vector3(120.0f, 5.0f, 40.0f),8.0f);
+        asterTrasnform = AddSphereCollider(Vector3(70.0f, 5.0f, 60.0f),8.0f);
+        asterTrasnform = AddSphereCollider(Vector3(60.0f, 5.0f, 80.0f),8.0f);
 
         
 
@@ -202,12 +247,18 @@ class PhysicsApp : public Application
       
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Right))
         {
-            asterTrasnform->SetForce(Vector3(100.0f,0,0));
+            asterTrasnform->SetForce(Vector3(500.0f,0,0));
         }
 
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Left))
         {
-            asterTrasnform->SetForce(Vector3(-100.0f, 0, 0));
+            asterTrasnform->SetForce(Vector3(-500.0f, 0, 0));
+        }
+
+        if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Numpad0))
+        {
+            asterTrasnform->SetForce(Vector3(0.0f));
+            asterTrasnform->SetVelocity(Vector3(0.0f));
         }
 
 

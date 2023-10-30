@@ -49,6 +49,8 @@ namespace FanshaweGameEngine
 			// If one of the object is a sphere and the other is either a box or mesh collider
 			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
 			{
+				
+
 				return DetectSpherePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 			
@@ -97,6 +99,8 @@ namespace FanshaweGameEngine
 
 			}
 
+
+			
 			return false;
 		}
 
@@ -124,6 +128,7 @@ namespace FanshaweGameEngine
 		{
 			if (!(colliderOne->GetType() & ColliderType::SPHERE || colliderTwo->GetType() & ColliderType::SPHERE))
 			{
+
 				LOG_ERROR("None of the colliders are spheres");
 				return false;
 			}
@@ -149,7 +154,7 @@ namespace FanshaweGameEngine
 			CollisionData best_colData;
 			best_colData.penetration = -FLT_MAX;
 
-			std::vector<glm::vec3>& shapeCollisionAxes = complexShape->GetCollisionNormals(complexObj);
+			std::vector<Vector3>& shapeCollisionAxes = complexShape->GetCollisionNormals(complexObj);
 			std::vector<ColliderEdge>& complex_shape_edges = complexShape->GetEdgeList(complexObj);
 
 			glm::vec3 p = GetClosestPointOnEdges(sphereObj->GetPosition(), complex_shape_edges);
@@ -179,6 +184,9 @@ namespace FanshaweGameEngine
 
 			if (outData)
 				*outData = best_colData;
+
+
+			
 
 			return true;
 		}
