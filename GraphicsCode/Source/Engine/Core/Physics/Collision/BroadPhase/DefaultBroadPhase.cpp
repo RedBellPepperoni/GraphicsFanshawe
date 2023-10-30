@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
 		{
 		}
 
-        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs(std::vector<SharedPtr<RigidBody3D>> bodies)
+        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs(std::vector<RigidBody3D*> bodies)
         {
             std::vector<CollisionPair> pairs;
 
@@ -31,38 +31,38 @@ namespace FanshaweGameEngine
             {
                 for (size_t j = i + 1; j < count; ++j)
                 {
-                    SharedPtr<RigidBody3D> firstBody = bodies[i];
-                    SharedPtr<RigidBody3D> secondBody = bodies[j];
+                    RigidBody3D& firstBody = *bodies[i];
+                    RigidBody3D& secondBody = *bodies[j];
 
-                    if (!firstBody->GetCollider() || !secondBody->GetCollider())
+                    if (!firstBody.GetCollider() || !secondBody.GetCollider())
                         continue;
 
-                    // Skip pairs of two at objects at rest
-                    if (firstBody->GetIsStationary() && secondBody->GetIsStationary())
+                    // Skip pairs of two at objects which are stationary
+                    if (firstBody.GetIsStationary() && secondBody.GetIsStationary())
                         continue;
 
                     // Skip pairs of two at static objects
-                    if (firstBody->GetIsStatic() && secondBody->GetIsStatic())
+                    if (firstBody.GetIsStatic() && secondBody.GetIsStatic())
                         continue;
 
-                    // Skip pairs of one static and one at rest
-                    if (firstBody->GetIsStationary() && secondBody->GetIsStatic())
+                    // Skip pairs of one static and one stationary
+                    if (firstBody.GetIsStationary() && secondBody.GetIsStatic())
                         continue;
 
-                    if (firstBody->GetIsStatic() && secondBody->GetIsStationary())
+                    if (firstBody.GetIsStatic() && secondBody.GetIsStationary())
                         continue;
 
                     CollisionPair pair;
 
                     if (i < j)
                     {
-                        pair.firstBody = firstBody;
-                        pair.secondBody = secondBody;
+                        pair.firstBody = &firstBody;
+                        pair.secondBody = &secondBody;
                     }
                     else
                     {
-                        pair.firstBody = secondBody;
-                        pair.secondBody = firstBody;
+                        pair.firstBody = &secondBody;
+                        pair.secondBody = &firstBody;
                     }
 
                     bool duplicate = false;

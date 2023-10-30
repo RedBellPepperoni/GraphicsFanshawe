@@ -22,6 +22,7 @@ namespace FanshaweGameEngine
 			
 			Quaternion rotation = Quaternion();
 
+			float m_invMass;
 
 			bool stationary = true;
 
@@ -110,6 +111,10 @@ namespace FanshaweGameEngine
 
 			UniqueId m_Id;
 
+			// Changing to public for easier access
+
+		public:
+
 			// === Basic Velocity ======
 			Vector3 m_position = Vector3(0.0f);
 			Vector3 m_velocity = Vector3(0.0f);
@@ -139,7 +144,7 @@ namespace FanshaweGameEngine
 			// teh actual Collider Type
 			SharedPtr<Collider> m_collider = nullptr;
 
-
+			float m_invMass;
 
 			//=== Transforms and stuff
 
