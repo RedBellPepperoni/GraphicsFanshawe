@@ -22,7 +22,7 @@ namespace FanshaweGameEngine
 			
 			Quaternion rotation = Quaternion();
 
-			float m_invMass;
+			float mass;
 
 			bool stationary = true;
 
@@ -36,7 +36,7 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			SharedPtr<Collider> collider = nullptr;
+			Collider* collider = nullptr;
 
 		};
 
@@ -60,7 +60,7 @@ namespace FanshaweGameEngine
 
 			const Matrix4& GetTransform() const;
 
-			const BoundingBox& GetAABB() const;
+			const BoundingBox& GetAABB();
 
 
 			BoundingBox GetBoundingBox() const;
@@ -78,9 +78,9 @@ namespace FanshaweGameEngine
 			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
 
 
-			void SetCollider(const SharedPtr<Collider>& collider);
+			void SetCollider(Collider& collider);
 			void SetCollider(ColliderType type);
-			const SharedPtr<Collider>& GetCollider() const;
+			Collider* GetCollider();
 
 			uint64_t GetUniqueId() const;
 
@@ -142,7 +142,7 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			SharedPtr<Collider> m_collider = nullptr;
+			Collider* m_collider = nullptr;
 
 			float m_invMass = 0.5;
 
@@ -152,7 +152,7 @@ namespace FanshaweGameEngine
 			mutable Matrix4 m_transform;
 
 			BoundingBox m_modelboundingBox;
-			BoundingBox m_aabb;
+			mutable BoundingBox m_aabb;
 
 
 			// A small optimisation to only update transform when needed (made mutable for acceeing in const functions)

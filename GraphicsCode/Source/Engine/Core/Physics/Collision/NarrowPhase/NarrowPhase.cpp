@@ -98,10 +98,17 @@ namespace FanshaweGameEngine
 			Vector3 axis = bodyTwo->GetPosition() - bodyOne->GetPosition();
 			axis = Normalize(axis);
 
-			//if(CheckCollisionAxis())
+			if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &data));
+			{
+				return false;
+			}
 
+			if (outData)
+			{
+				*outData = data;
+			}
 
-			return false;
+			return true;
 		}
 
 

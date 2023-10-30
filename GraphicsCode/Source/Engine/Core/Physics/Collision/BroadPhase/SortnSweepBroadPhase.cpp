@@ -1,6 +1,7 @@
 #include "SortnSweepBroadPhase.h"
 #include <algorithm>
 #include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
+#include "Engine/Utils/Logging/Log.h"
 
 namespace FanshaweGameEngine
 {
@@ -95,13 +96,16 @@ namespace FanshaweGameEngine
 						pair.secondBody = &secondBody;
 
 						pairs.push_back(pair);
+
+						LOG_INFO("Yeet");
+						
 					}
 				}
 			}
 
-
+			LOG_INFO("Count: {0}", pairs.size());
 			// Implement this later
-			return std::vector<CollisionPair>();
+			return pairs;
 			
 		}
 	}

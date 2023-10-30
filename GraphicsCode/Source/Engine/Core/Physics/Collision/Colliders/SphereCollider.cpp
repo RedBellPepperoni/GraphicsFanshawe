@@ -9,12 +9,14 @@ namespace FanshaweGameEngine
 		{
 			m_type = ColliderType::SPHERE;
 			SetRadius(1.0f);
+			m_transform = Math::Scale(Matrix4(1.0f), Vector3(m_radius * 2.0f));
 		}
 
 		SphereCollider::SphereCollider(float radius)
 		{
 			m_type = ColliderType::SPHERE;
 			SetRadius(radius);
+			m_transform = Math::Scale(Matrix4(1.0f), Vector3(m_radius * 2.0f));
 		}
 		SphereCollider::~SphereCollider()
 		{

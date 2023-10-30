@@ -7,6 +7,10 @@ class PhysicsApp : public Application
 {
     int sphereCount = 0;
     SharedPtr<Model> sphereModel;
+    SharedPtr<Model> asteroidOne;
+    SharedPtr<Model> asteroidTwo;
+
+    int asteroidCount = 0;
 
     bool pausePhysics = false;
 
@@ -21,21 +25,64 @@ class PhysicsApp : public Application
 
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(position);
+       // Object.GetComponent<Transform>().SetScale(Vector3(20.0, 20.0, 20.0));
         Object.AddComponent<MeshComponent>(sphereModel->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
+        
 
         PhysicsProperties properties;
 
         properties.position = position;
         properties.stationary = false;
         properties.isStatic = false;
-        properties.m_invMass = 0.1f;
+        properties.mass = 50.0f;
 
-        Object.AddComponent<RigidBody3D>(properties);
+
+        LOG_ERROR("{0}",sphereModel->GetMeshes()[0]->GetName());
+
+        RigidBody3D* body = &Object.AddComponent<RigidBody3D>(properties);
+
+        SphereCollider* collider = &Object.AddComponent<SphereCollider>();
+        collider->SetRadius(1.0f);
+
+        body->SetCollider(*collider);
 
         sphereCount++;
 
     }
+
+    void SpawnAsteroid(const Vector3& position, SharedPtr<Model> model)
+    {
+        std::string name = "AsteroidEntity_" + std::to_string(asteroidCount);
+        Entity Object = GetCurrentScene()->CreateEntity(name);
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(position);
+         Object.GetComponent<Transform>().SetScale(Vector3(0.01, 0.01, 0.01));
+        Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
+        asteroidCount++;
+
+    }
+
+
+    void SpawnShip()
+    {
+        Entity Object = GetCurrentScene()->CreateEntity("SpaceStation");
+        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
+
+        SharedPtr<Model> ship = GetModelLibrary()->LoadModel("Ship", "Assets\\SM_Ship_Massive_Transport_01_xyz_n_rgba_uv_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(asteroidTwo);
+
+        Object.AddComponent<Transform>();
+        Object.GetComponent<Transform>().SetPosition(Vector3(0.0f));
+        Object.GetComponent<Transform>().SetScale(Vector3(0.01, 0.01, 0.01));
+        Object.AddComponent<MeshComponent>(ship->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();
+    }
+
+
 
     void OnInit()
     {
@@ -49,17 +96,31 @@ class PhysicsApp : public Application
         PlaneObject.AddComponent<MeshComponent>(planemodel->GetMeshes()[0]);
         PlaneObject.AddComponent<MeshRenderer>();
 
+        sphereModel = GetModelLibrary()->LoadModel("Sphere", "Assets\\SphereBlender.ply");
+        CHECKNULL(sphereModel);  
+        
+        asteroidOne = GetModelLibrary()->LoadModel("Sphere", "Assets\\Asteroid_011_x10_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(asteroidOne);
 
-        sphereModel = GetModelLibrary()->LoadModel("Ball", "Assets\\icosphere.ply");
-        CHECKNULL(sphereModel);
+        asteroidTwo = GetModelLibrary()->LoadModel("Sphere", "Assets\\Asteroid_015_x10_flatshaded_xyz_n_rgba.ply");
+        CHECKNULL(asteroidTwo);
+
+        SpawnShip();
+
+        
+        //SpawnAsteroid(Vector3(0.0f), asteroidOne);
+        //SpawnAsteroid(Vector3(20.0f, 0.0f, 20.0f), asteroidTwo);
+
+        //SpawnSphere(Vector3(0.0f, 2.0f, 0.0f));
+     //  SpawnSphere(Vector3(5.0f, 20.0f, 0.0f));
+       // SpawnSphere(Vector3(-5.0f, 20.0f, 0.0f));
+      //  SpawnSphere(Vector3(0.0f, 20.0f, 15.0f));
+       // SpawnSphere(Vector3(0.0f, 20.0f, -15.0f));
 
 
 
-        SpawnSphere(Vector3(0.0f, 20.0f, 0.0f));
-        SpawnSphere(Vector3(5.0f, 20.0f, 0.0f));
-        SpawnSphere(Vector3(-5.0f, 20.0f, 0.0f));
-        SpawnSphere(Vector3(0.0f, 20.0f, 5.0f));
-        SpawnSphere(Vector3(0.0f, 20.0f, -5.0f));
+        
+
        
     }
 

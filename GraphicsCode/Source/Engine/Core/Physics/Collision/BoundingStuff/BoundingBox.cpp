@@ -4,8 +4,8 @@ namespace FanshaweGameEngine
 {
 	BoundingBox::BoundingBox()
 	{
-		m_min = Vector3(0.0f);
-		m_max = Vector3(0.0f);
+		m_min = Vector3(FLT_MAX);
+		m_max = Vector3(-FLT_MAX);
 	}
 
 	BoundingBox::BoundingBox(const Vector3& min, const Vector3& max)
@@ -26,14 +26,32 @@ namespace FanshaweGameEngine
 
 	void BoundingBox::Reset()
 	{
-		m_min = Vector3(0.0f);
-		m_max = Vector3(0.0f);
+		m_min = Vector3(FLT_MAX);
+		m_max = Vector3(-FLT_MAX);
 	}
 
 	void BoundingBox::Set(const Vector3& min, const Vector3& max)
 	{
 		m_min = min;
-		m_max = max;
+		m_max = 
+			
+			max;
+	}
+
+	BoundingBox& BoundingBox::operator=(const BoundingBox& other)
+	{
+		m_min = other.m_min;
+		m_max = other.m_max;
+
+		return *this;
+	}
+
+	BoundingBox& BoundingBox::operator=(BoundingBox&& other)
+	{
+		m_min = other.m_min;
+		m_max = other.m_max;
+
+		return *this;
 	}
 
 	void BoundingBox::Translate(const Vector3& translation)

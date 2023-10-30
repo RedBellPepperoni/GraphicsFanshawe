@@ -161,9 +161,7 @@ namespace FanshaweGameEngine
             CameraElement camera = m_pipeline.cameraList[cameraIndex];
 
            
-            std::string position = "X : " + std::to_string( camera.viewPosition.x) + " Y : " + std::to_string(camera.viewPosition.y) + " Z : " + std::to_string(camera.viewPosition.z);
-
-            Application::GetCurrent().SetWindowTitle(position);
+           
 
             // ============Set Shader Unifroms here ==================
 

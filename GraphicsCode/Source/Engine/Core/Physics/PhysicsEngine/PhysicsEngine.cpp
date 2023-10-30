@@ -4,6 +4,7 @@
 #include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
 #include "Engine/Core/ECS/Components/Transform.h"
 #include "Engine/Core/Physics/Collision/Broadphase/SortnSweepBroadPhase.h"
+#include "Engine/Core/Physics/Collision/Broadphase/DefaultBroadPhase.h"
 
 #include "Engine/Utils/Logging/Log.h"
 
@@ -48,6 +49,7 @@ namespace FanshaweGameEngine
 			m_dampingFactor = 0.999f;
 			m_physicsTimeStep = 1.0f / 50.0f;
 
+			m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
 		}
 
@@ -194,7 +196,7 @@ namespace FanshaweGameEngine
 
 
 			// get the potential Collison pairs
-			m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
+			m_broadPhasePairs = m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
 
 			LOG_INFO("Number of collisions : {0}", m_broadPhasePairs.size());
 		   
@@ -235,7 +237,7 @@ namespace FanshaweGameEngine
 					body->m_velocity += m_gravity * m_physicsTimeStep;
 				}
 
-				LOG_WARN("Body Velo  {0} {1} {2}", body->m_velocity.x, body->m_velocity.y, body->m_velocity.z);
+				//LOG_WARN("Body Velo  {0} {1} {2}", body->m_velocity.x, body->m_velocity.y, body->m_velocity.z);
 				
 					// Update position
 					body->m_position += body->m_velocity * m_physicsTimeStep;

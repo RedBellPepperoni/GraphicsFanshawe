@@ -27,7 +27,11 @@ namespace FanshaweGameEngine
 		}
 		const Vector3 Transform::GetEulerRotation() const
 		{
-			return GetEularAngles(m_rotation);
+			Vector3 rot = GetEularAngles(m_rotation);
+
+			Vector3 degreerot = Vector3(Degrees(rot.x), Degrees(rot.y), Degrees(rot.z));
+
+			return degreerot;
 		}
 
 		void Transform::UpdateMatrix(Matrix4& mat) const
