@@ -172,8 +172,8 @@ namespace FanshaweGameEngine
             
       
             SetUpDirLightUniform(shader);
-            SetUpSpotLights(shader);
-            SetUpPointLightUniform(shader);
+           // SetUpSpotLights(shader);
+           // SetUpPointLightUniform(shader);
 
            //entt::registry& registry =  Application::GetCurrent().GetCurrentScene()->GetRegistry();
 
@@ -284,7 +284,7 @@ namespace FanshaweGameEngine
 
             shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
 
-            shader->SetUniform("dirLight.intensity", Vector3(0.2f));
+            shader->SetUniform("dirLight.intensity", Vector3(1.0f));
 
             shader->SetUniform("dirLight.specular", Vector3(0.5f));
 
@@ -300,7 +300,7 @@ namespace FanshaweGameEngine
 
             std::string uniformName = "pointLightList[0]";
 
-            shader->SetUniform(uniformName + ".position", Vector3(18.0f, 8.0f, 14.0f));
+            shader->SetUniform(uniformName + ".position", Vector3(0.0f, 5.0f, 0.0f));
             shader->SetUniform(uniformName + ".color", Vector3(1.0f,0.0f,0.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);

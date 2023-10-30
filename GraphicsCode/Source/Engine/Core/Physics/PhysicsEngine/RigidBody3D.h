@@ -144,7 +144,7 @@ namespace FanshaweGameEngine
 			// teh actual Collider Type
 			SharedPtr<Collider> m_collider = nullptr;
 
-			float m_invMass;
+			float m_invMass = 0.5;
 
 			//=== Transforms and stuff
 

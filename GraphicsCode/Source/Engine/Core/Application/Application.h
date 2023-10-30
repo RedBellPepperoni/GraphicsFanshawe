@@ -145,7 +145,7 @@ using Physics::PhysicsEngine;
 
 		void SetWindowTitle(const std::string& newTitle);
 
-
+		void StartPhysics(bool shouldstart);
 	};
 }
 

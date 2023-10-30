@@ -48,7 +48,7 @@ namespace FanshaweGameEngine
 			m_dampingFactor = 0.999f;
 			m_physicsTimeStep = 1.0f / 50.0f;
 
-			m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
+			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
 		}
 
 		void PhysicsEngine::Update(const float deltatime, Scene* scene)
@@ -82,6 +82,8 @@ namespace FanshaweGameEngine
 			}
 
 			m_debugStats.rigidBodyCount = (uint32_t)m_rigidBodies.size();
+
+			//LOG_WARN("Nodies : {0}", m_debugStats.rigidBodyCount);
 
 
 			m_timeStepCounter += deltatime;
@@ -145,11 +147,12 @@ namespace FanshaweGameEngine
 
 		const bool PhysicsEngine::GetIsPaused() const
 		{
-			return false;
+			return m_paused;
 		}
 
 		void PhysicsEngine::SetPaused(const bool paused)
 		{
+			m_paused = paused;
 		}
 
 		const Vector3& PhysicsEngine::GetGravity() const
@@ -173,6 +176,7 @@ namespace FanshaweGameEngine
 		{
 
 			BroadPhaseCollision();
+			UpdateAllBodies();
 
 		}
 
@@ -184,7 +188,7 @@ namespace FanshaweGameEngine
 			if (!m_broadPhaseDetection)
 			{
 				// No BroadPhase Detector found
-				LOG_WARN("PHYSICS: No Active broadphase");
+				
 				return;
 			}
 
@@ -210,7 +214,10 @@ namespace FanshaweGameEngine
 			m_debugStats.rigidBodyCount = 0;
 
 
-			//EntityView rigidBodyView = 
+			for (RigidBody3D* body : m_rigidBodies)
+			{
+				UpdateRigidBody(body);
+			}
 
 
 		}
@@ -218,12 +225,17 @@ namespace FanshaweGameEngine
 		{
 			if (!body->GetIsStatic() && !body->GetIsStationary())
 			{
+				
+
 				const float damping = m_dampingFactor;
 
 				// Apply gravity
 				if (body->m_invMass > 0.0f)
-					body->m_velocity += m_gravity * m_physicsTimeStep ;
+				{
+					body->m_velocity += m_gravity * m_physicsTimeStep;
+				}
 
+				LOG_WARN("Body Velo  {0} {1} {2}", body->m_velocity.x, body->m_velocity.y, body->m_velocity.z);
 				
 					// Update position
 					body->m_position += body->m_velocity * m_physicsTimeStep;
@@ -237,7 +249,7 @@ namespace FanshaweGameEngine
 					
 					// No rotation for now
 				
-
+				
 				// Mark cached world transform and AABB as invalid
 				body->m_AABBDirty = true;
 				body->m_transformDirty = true;

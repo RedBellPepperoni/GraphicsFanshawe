@@ -25,5 +25,9 @@
 #include "Engine/Core/System/Window/Window.h"
 
 
+#include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
+#include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
+
+
 
 using namespace FanshaweGameEngine;

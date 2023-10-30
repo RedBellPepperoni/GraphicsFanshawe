@@ -150,6 +150,9 @@ namespace FanshaweGameEngine
 
 		m_mainCameraIndex = 0;
 
+		m_physicsSystem->Init();
+		//m_physicsSystem->SetPaused(false);
+
 		// Calling Init on the child applications
 		OnInit();
 	}
@@ -183,18 +186,14 @@ namespace FanshaweGameEngine
 
 			m_currentScene->Update(m_deltaTime);
 
+		
+
 			Input::InputSystem::GetInstance().ResetKeyPressed();
 
 
 			m_window->PollEvents();
 			
 			
-
-
-
-
-
-
 
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
@@ -206,11 +205,14 @@ namespace FanshaweGameEngine
 			m_window->SwapBuffers();
 			
 
+			m_physicsSystem->Update(m_deltaTime, m_currentScene.get());
 
-
+			m_physicsSystem->UpdateECSTransforms(m_currentScene.get());
 
 			
 			OnUpdate(m_deltaTime);
+
+
 
 
 		}
@@ -307,6 +309,13 @@ namespace FanshaweGameEngine
 		
 
 		GetAppWindow()->SetWindowTitle(newTitle);
+	}
+
+	void Application::StartPhysics(bool shouldstart)
+	{
+		m_physicsSystem->SetPaused(shouldstart);
+
+		
 	}
 
 	
