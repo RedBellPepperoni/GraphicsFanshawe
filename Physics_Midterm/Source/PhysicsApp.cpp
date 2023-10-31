@@ -197,7 +197,8 @@ class PhysicsApp : public Application
          asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-60.0f, -10.0f, 280.0f)));
      
        
-
+         pausePhysics = !pausePhysics;
+         Application::GetCurrent().StartPhysics(pausePhysics);
       
         
        
