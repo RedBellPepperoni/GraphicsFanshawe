@@ -64,7 +64,7 @@ namespace FanshaweGameEngine
 			if (m_transformDirty)
 			{
 				// Update teh cached trasnform
-				m_transform = Translate(Matrix4(1.0f), m_position) * QuatToMatrix(m_rotation);
+				m_transform = Translate(Matrix4(1.0f), m_position);
 			
 				// We just Updated, no it can be cached
 				m_transformDirty = false;

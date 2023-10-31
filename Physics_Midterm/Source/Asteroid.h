@@ -9,7 +9,7 @@ class Asteroid
 
 public:
 
-	Asteroid(const std::string& newName, SharedPtr<Model> model ,const Vector3& position)
+	Asteroid(const std::string& newName, SharedPtr<Model> model ,const Vector3& position, bool towardsShip = true)
 	{
 		m_name = newName;
         Entity Object = Application::GetCurrent().GetCurrentScene()->CreateEntity(m_name);
@@ -23,7 +23,7 @@ public:
 
 
         // So that the sphere kinda emcompasses teh asteroid
-        m_transform->SetScale(Vector3(0.015));
+        m_transform->SetScale(Vector3(0.015f));
         Object.AddComponent<MeshComponent>(model->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
 
@@ -50,7 +50,9 @@ public:
         m_Explosion = MakeShared<Explosion>();
 
 
+        goToShip = towardsShip;
 
+        ResetSpawn();
 
 	}
 
@@ -61,17 +63,8 @@ public:
     {
         if (!isHit)
         {
-
             m_Explosion->Explode(m_transform->GetPosition());
-
-            m_body->SetForce(Vector3(0.0f));
-            m_body->SetVelocity(Vector3(0.0f));
-
-            m_transform->SetPosition(startPosi);
-            m_body->SetPosition(startPosi);
-
-            //isHit = true;
-
+            ResetSpawn();
 
         }
 
@@ -88,33 +81,75 @@ public:
     {
       
         m_Explosion->Update(deltaTime);
-        MoveTowardsShip();
+
+        Move(deltaTime);
+
+
     }
 
 
+
+    void ApplyShieldForce()
+    {   
+        shieldDeflect = true;  
+    }
 
 
 private:
 
-
-    void SpawnRandomDirection()
+    void ResetSpawn()
     {
-        int xDir = rand() % (300 - 180 + 1) + 180;
-        int yDir = rand() % (300 - 180 + 1) + 180;
-        int zDir = rand() % (300 - 180 + 1) + 180;
-
-
-
-
+        m_body->SetForce(Vector3(0.0f));
+        m_body->SetVelocity(Vector3(0.0f));
+        
+        Vector3 randomRotation = Vector3(rand() % 350, rand() % 360, rand() % 360);
+       
+        m_transform->SetPosition(startPosi);
+        m_transform->SetRotation(randomRotation);
+        m_body->SetPosition(startPosi);
+        shieldDeflect = false;
     }
+   
 
-    void MoveTowardsShip()
+
+    void Move(float deltaTime)
     {
         if (m_body && m_transform)
         {
-            // Direction towards Ship
-            Vector3 force = Normalize( - m_transform->GetPosition());
-            m_body->SetForce(force * forceMultiplier);
+            if (Distance(Vector3(0.0f), m_body->m_position) > 500.0f)
+            {
+                ResetSpawn();
+                return;
+            }
+
+            if (shieldDeflect)
+            {
+                Vector3 forceDir = Normalize(m_transform->GetPosition());
+                m_body->SetForce(forceDir * 80000.0f);
+                return;
+            }
+
+
+            if (goToShip)
+            { // Direction towards Ship
+
+                Vector3 newDir = Normalize(-m_transform->GetPosition());
+                Vector3 force = Normalize(direction + (newDir * 0.6f));
+                m_body->SetForce(force * forceMultiplier);
+            }
+
+            else
+            {
+                m_body->SetForce(Normalize(direction) * forceMultiplier);
+               
+            }
+
+
+            Vector3 rotation = m_transform->GetEulerRotation();
+
+         
+
+           
         }
     }
 
@@ -125,8 +160,15 @@ private:
     float forceMultiplier = 10000.0f;
     SharedPtr<Explosion> m_Explosion;
    
+    Vector3 direction = Vector3(0.0f,0.0f,-1.0f);
 
+    
+    
+    bool goToShip = false;
     Vector3 startPosi;
+    bool shieldDeflect = false;
+
+
 
 };
 

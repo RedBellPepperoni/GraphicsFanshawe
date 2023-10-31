@@ -131,7 +131,7 @@ namespace FanshaweGameEngine
 					Transform* transform = &rigidbodyEntity.GetComponent<Transform>();
 
 					transform->SetPosition(rigidBody->GetPosition());
-					transform->SetRotation(rigidBody->GetRotation());
+					//transform->SetRotation(rigidBody->GetRotation());
 
 				}
 

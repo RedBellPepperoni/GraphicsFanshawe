@@ -29,7 +29,8 @@ class PhysicsApp : public Application
     
     int asteroidCount = 0;
 
-    bool pausePhysics = false;
+    bool pausePhysics = true;
+    bool shieldEnabled = false;
 
     
     RigidBody3D* AddSphereCollider(const Vector3& position, float radius)
@@ -76,49 +77,16 @@ class PhysicsApp : public Application
 
     }
 
-    RigidBody3D* AddBoxCollider(const Vector3& position,const Vector3& halfSize)
+    
+    void EnableShield()
     {
-
-
-        std::string name = "BoxEntity_" + std::to_string(boxCount);
-        Entity Object = GetCurrentScene()->CreateEntity(name);
-        // Add a Trasnform. later make sure every spawnd entity has an auto attached transform
-
-        Object.AddComponent<Transform>();
-
-        Transform* transform = &Object.GetComponent<Transform>();
-        transform->SetPosition(position);
-        transform->SetScale(halfSize * 2.0f);
-        Object.AddComponent<MeshComponent>(boxModel->GetMeshes()[0]);
-        Object.AddComponent<MeshRenderer>();
-
-
-        PhysicsProperties properties;
-
-        properties.position = position;
-        properties.stationary = false;
-        properties.isStatic = false;
-        properties.mass = 50.0f;
-
-
-        LOG_ERROR("{0}", sphereModel->GetMeshes()[0]->GetName());
-
-        RigidBody3D* body = &Object.AddComponent<RigidBody3D>(properties);
-
-
-        BoxCollider* collider = &Object.AddComponent<BoxCollider>();
-
-        collider->SetHalfDimensions(halfSize);
-
-
-        body->SetCollider(*collider);
-
-        boxCount++;
-
-        return body;
-
+        shieldEnabled = true;
     }
 
+    void SpawnVisualAsteroidbelt()
+    {
+
+    }
 
 
     void SpawnShip()
@@ -173,21 +141,9 @@ class PhysicsApp : public Application
 
 
 
+
     void OnInit()
     {
-
-       
-
-        SharedPtr<Model> planemodel = GetModelLibrary()->LoadModel("Plane", "Assets\\floor.ply");
-        CHECKNULL(planemodel);
-
-        Entity PlaneObject = GetCurrentScene()->CreateEntity("PlaneOne");
-        PlaneObject.AddComponent<Transform>();
-        PlaneObject.GetComponent<Transform>().SetPosition(Vector3(-30.0, 0.0, -30.0));
-        PlaneObject.GetComponent<Transform>().SetScale(Vector3(20.0, 1.0, 20.0));
-        PlaneObject.AddComponent<MeshComponent>(planemodel->GetMeshes()[0]);
-        PlaneObject.AddComponent<MeshRenderer>();
-
 
 
         sphereModel = GetModelLibrary()->LoadModel("Sphere", "Assets\\SphereBlender.ply");
@@ -199,34 +155,34 @@ class PhysicsApp : public Application
         asteroidOne = GetModelLibrary()->LoadModel("AsteroidOne", "Assets\\Asteroid_011_x10_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(asteroidOne);
 
-
-
         asteroidTwo = GetModelLibrary()->LoadModel("ASteroidTwo", "Assets\\Asteroid_015_x10_flatshaded_xyz_n_rgba.ply");
         CHECKNULL(asteroidTwo);
 
 
-        
 
         SpawnShip();
-
-        
-       
-     
-
-       //AddBoxCollider(Vector3(0.0f, 0.0f, 40.0f), Vector3(30.0f,50.0f, 80.0f));
-
-       // AddSphereCollider(Vector3(100.0f, 5.0f, 0.0f),8.0f);
 
 
 
         exp = MakeShared<Explosion>();
         
 
-         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 5.0f, 0.0f)));
-         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(210.0f, 100.0f, 40.0f)));
-         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 50.0f, 200.0f)));
-         asteroidList.push_back(MakeShared<Asteroid>("ASter1",asteroidOne, Vector3(200.0f, 5.0f, 300.0f)));
- 
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_01",asteroidOne, Vector3(50.0f, 5.0f, 400)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_02",asteroidOne, Vector3(80.0f, 100.0f, 300.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_03",asteroidOne, Vector3(-80.0f, 50.0f, 310.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_04",asteroidOne, Vector3(40.0f, 5.0f, 350.0f)));
+         
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_05",asteroidOne, Vector3(56.0f, 27.0f, 310.0f),false));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_06",asteroidOne, Vector3(-56.0f, 60.0f, 320.0f),false));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_07",asteroidOne, Vector3(70.0f, -30.0f, 290.0f)));
+        // asteroidList.push_back(MakeShared<Asteroid>("Asteroid_05",asteroidOne, Vector3(56.0f, 27.0f, 300.0f),false));
+        // asteroidList.push_back(MakeShared<Asteroid>("Asteroid_05",asteroidOne, Vector3(56.0f, 27.0f, 300.0f),false));
+
+
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-20.0f, 20.0f, 300.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(30.0f, -30.0f, 310.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-20.0f, -20.0f, 280.0f)));
+     
        
 
       
@@ -243,11 +199,29 @@ class PhysicsApp : public Application
 
         }
 
+        if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::Space))
+        {
+
+            for (SharedPtr<Asteroid> asteroid : asteroidList)
+            {
+                asteroid->ApplyShieldForce(); 
+            }
+            
+        }
+
 
         for (SharedPtr<Asteroid> asteroid : asteroidList)
         {
+
+          
+
+
             asteroid->Update(deltaTime);
+
         }
+
+
+      
 
     }
 
