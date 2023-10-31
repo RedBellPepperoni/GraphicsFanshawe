@@ -2,6 +2,8 @@
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Core/Physics/Collision/BroadPhase/BroadPhase.h"
+#include "RigidBody3D.h"
+#include "Engine/Core/ECS/EntityManager.h"
 #include <vector>
 
 
@@ -21,16 +23,17 @@ namespace FanshaweGameEngine
 			uint32_t staticCount;
 		};
 
-		class RigidBody3D;
+		//class RigidBody3D;
 		
-
+		
 
 
 		class PhysicsEngine
 		{
+			
 
 		public:
-
+			//friend class RigidBody3D;
 
 			PhysicsEngine();
 			~PhysicsEngine();
@@ -71,11 +74,12 @@ namespace FanshaweGameEngine
 			float m_dampingFactor;
 
 
-			std::vector<SharedPtr<RigidBody3D>> m_rigidBodies;
+			std::vector<RigidBody3D*> m_rigidBodies;
 			std::vector<CollisionPair> m_broadPhasePairs;
 
 			SharedPtr<BroadPhase> m_broadPhaseDetection;
 
+			
 
 			RigidBody3D* m_rootBody;
 
@@ -85,7 +89,7 @@ namespace FanshaweGameEngine
 			static float m_physicsTimeStep;
 			float m_timeStepCounter = 0.0f;
 
-			int m_maxUpdatesPerFrame = 1;
+			int m_maxSubstepsPerUpdate = 5;
 
 
 		};

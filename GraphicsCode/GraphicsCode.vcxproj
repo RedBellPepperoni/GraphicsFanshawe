@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\BoxCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\PointLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\BoxCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\PointLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />

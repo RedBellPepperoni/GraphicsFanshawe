@@ -161,9 +161,7 @@ namespace FanshaweGameEngine
             CameraElement camera = m_pipeline.cameraList[cameraIndex];
 
            
-            std::string position = "X : " + std::to_string( camera.viewPosition.x) + " Y : " + std::to_string(camera.viewPosition.y) + " Z : " + std::to_string(camera.viewPosition.z);
-
-            Application::GetCurrent().SetWindowTitle(position);
+           
 
             // ============Set Shader Unifroms here ==================
 
@@ -172,7 +170,7 @@ namespace FanshaweGameEngine
             
       
             SetUpDirLightUniform(shader);
-            SetUpSpotLights(shader);
+           // SetUpSpotLights(shader);
             SetUpPointLightUniform(shader);
 
            //entt::registry& registry =  Application::GetCurrent().GetCurrentScene()->GetRegistry();
@@ -280,13 +278,13 @@ namespace FanshaweGameEngine
         void Renderer::SetUpDirLightUniform(SharedPtr<Shader>& shader)
         {
             // Hardcoding for now
-            shader->SetUniform("dirLight.direction", Vector3(1.0f, 40.0f, 2.0f));
+            shader->SetUniform("dirLight.direction", Vector3(60.0f, 40.0f, -40.0f));
 
             shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
 
-            shader->SetUniform("dirLight.intensity", Vector3(0.2f));
+            shader->SetUniform("dirLight.intensity", Vector3(0.8f));
 
-            shader->SetUniform("dirLight.specular", Vector3(0.5f));
+            shader->SetUniform("dirLight.specular", Vector3(0.3f));
 
             //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
 
@@ -295,26 +293,26 @@ namespace FanshaweGameEngine
 
         void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
         {
-            Vector3 intensity = Vector3(1.0f);
+            Vector3 intensity = Vector3(0.9f);
 
 
             std::string uniformName = "pointLightList[0]";
 
-            shader->SetUniform(uniformName + ".position", Vector3(18.0f, 8.0f, 14.0f));
-            shader->SetUniform(uniformName + ".color", Vector3(1.0f,0.0f,0.0f));
+            shader->SetUniform(uniformName + ".position", Vector3(120.0f, 40.0f, 20.0f));
+            shader->SetUniform(uniformName + ".color", Vector3(1.0f,1.0f,1.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
             shader->SetUniform(uniformName + ".linear", 0.003f);
             shader->SetUniform(uniformName + ".quadratic", 0.009f);
 
-            uniformName = "pointLightList[1]";
+          /*  uniformName = "pointLightList[1]";
 
             shader->SetUniform(uniformName + ".position", Vector3(20.0f, 8.0f, 8.0f));
             shader->SetUniform(uniformName + ".color", Vector3(0.0f, 1.0f, 0.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
             shader->SetUniform(uniformName + ".linear", 0.003f);
-            shader->SetUniform(uniformName + ".quadratic", 0.009f);
+            shader->SetUniform(uniformName + ".quadratic", 0.009f);*/
 
         }
 

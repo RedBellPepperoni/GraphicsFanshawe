@@ -3,6 +3,7 @@
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/UniqueId/UniqueId.h"
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingBox.h"
+#include <functional>
 
 namespace FanshaweGameEngine
 {
@@ -12,6 +13,10 @@ namespace FanshaweGameEngine
 
 		class Collider;
 		enum ColliderType : uint8_t;
+		class RigidBody3D;
+
+		//typedef  PhysicsCollisionCallback;
+
 
 		struct PhysicsProperties
 		{
@@ -22,6 +27,7 @@ namespace FanshaweGameEngine
 			
 			Quaternion rotation = Quaternion();
 
+			float mass;
 
 			bool stationary = true;
 
@@ -35,11 +41,12 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			SharedPtr<Collider> collider = nullptr;
+			Collider* collider = nullptr;
 
 		};
 
-
+		//typedef std::function<bool(RigidBody3D* this_obj, RigidBody3D* colliding_obj)> PhysicsCollisionCallback;
+		typedef std::function<void()> PhysicsCollisionCallback;
 
 		class RigidBody3D
 		{
@@ -59,7 +66,7 @@ namespace FanshaweGameEngine
 
 			const Matrix4& GetTransform() const;
 
-			const BoundingBox& GetAABB() const;
+			const BoundingBox& GetAABB();
 
 
 			BoundingBox GetBoundingBox() const;
@@ -73,13 +80,13 @@ namespace FanshaweGameEngine
 			void SetForce(const Vector3& newForce);
 			void SetRotation(const Quaternion& newRot);
 			
-
+			//void SetOnCollisionCallback(PhysicsCollisionCallback& callback) { m_OnCollisionCallback = callback; }
 			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
 
 
-			void SetCollider(const SharedPtr<Collider>& collider);
+			void SetCollider(Collider& collider);
 			void SetCollider(ColliderType type);
-			const SharedPtr<Collider>& GetCollider() const;
+			Collider* GetCollider();
 
 			uint64_t GetUniqueId() const;
 
@@ -110,11 +117,20 @@ namespace FanshaweGameEngine
 
 			UniqueId m_Id;
 
+			// Changing to public for easier access
+
+		public:
+
 			// === Basic Velocity ======
 			Vector3 m_position = Vector3(0.0f);
 			Vector3 m_velocity = Vector3(0.0f);
 			Vector3 m_force = Vector3(0.0f);
 
+
+			
+
+
+			PhysicsCollisionCallback m_OnCollisionCallback;
 
 			// ========= Rotational and angular stuff for later on
 			Quaternion m_rotation = Quaternion();
@@ -137,17 +153,20 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			SharedPtr<Collider> m_collider = nullptr;
+			Collider* m_collider = nullptr;
 
-
+			float m_invMass = 0.5;
 
 			//=== Transforms and stuff
 
 			//(made mutable for accessing in const functions)
 			mutable Matrix4 m_transform;
 
+
+			//PhysicsCollisionCallback m_OnCollisionCallback;
+
 			BoundingBox m_modelboundingBox;
-			BoundingBox m_aabb;
+			mutable BoundingBox m_aabb;
 
 
 			// A small optimisation to only update transform when needed (made mutable for acceeing in const functions)

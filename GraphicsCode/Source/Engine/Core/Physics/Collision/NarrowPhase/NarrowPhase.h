@@ -3,6 +3,7 @@
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/Singleton.h"
+#include "Engine/Core/Physics/Collision/Colliders/Collider.h"
 
 
 namespace FanshaweGameEngine
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 			Vector3 pointOnPlane;
 		};
 
-		class NarrowPhase : public Singleton<NarrowPhase>
+		class NarrowPhase : public ThreadSafeSingleton<NarrowPhase>
 		{
 		private:
 
@@ -42,11 +43,20 @@ namespace FanshaweGameEngine
 
 			bool DetectCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);
 
-			bool DetectSphereCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, SphereCollider* colliderOne, SphereCollider* colliderTwo, CollisionData* outData);
+
+protected:
+
+		    static bool CheckCollisionbySAT(const Vector3& axis, RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);
+
+			bool DetectSphereCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);
 			//bool DetectBoxCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, SphereCollider* colliderOne, SphereCollider* colliderTwo, CollisionData* outData)
 
-		
-			bool DetectSphereMeshCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, SphereCollider* colliderOne, MeshCollider* colliderTwo, CollisionData* outData);
+	
+
+			bool DetectSpherePolygonCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);
+
+			Vector3 GetClosestPointOnEdges(const Vector3& target, const std::vector<ColliderEdge>& edges);
+			void AddPossibleCollisionAxis(Vector3& axis, Vector3* possibleCollisionAxes, uint32_t& possibleCollisionAxesCount);
 		};
 	}
 }

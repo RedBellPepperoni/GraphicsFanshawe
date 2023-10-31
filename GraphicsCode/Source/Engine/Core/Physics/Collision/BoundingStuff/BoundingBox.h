@@ -31,6 +31,9 @@ namespace FanshaweGameEngine
 		void Reset();
 
 
+		BoundingBox& operator=(const BoundingBox& other);
+		BoundingBox& operator=(BoundingBox&& other);
+
 		void Set(const Vector3& min, const Vector3& max);
 
 		void Translate(const Vector3& translation);

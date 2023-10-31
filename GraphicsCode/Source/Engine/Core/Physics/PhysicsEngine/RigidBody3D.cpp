@@ -1,5 +1,6 @@
 #include "RigidBody3D.h"
 #include "Engine/Core/Physics/Collision/Colliders/Collider.h"
+#include "Engine/Utils/Logging/Log.h"
 
 namespace FanshaweGameEngine
 {
@@ -19,13 +20,17 @@ namespace FanshaweGameEngine
 		{
 			m_modelboundingBox.Set(Vector3(-0.5f), Vector3(0.5f));
 
+			m_invMass = 1.0f/properties.mass;
+
 			if (properties.collider)
 			{
-				SetCollider(properties.collider);
+				SetCollider(*properties.collider);
 			}
 
 
 			m_Id = UniqueId();
+
+			
 
 		}
 
@@ -59,7 +64,7 @@ namespace FanshaweGameEngine
 			if (m_transformDirty)
 			{
 				// Update teh cached trasnform
-				m_transform = Translate(Matrix4(1.0f), m_position) * QuatToMatrix(m_rotation);
+				m_transform = Translate(Matrix4(1.0f), m_position);
 			
 				// We just Updated, no it can be cached
 				m_transformDirty = false;
@@ -70,8 +75,14 @@ namespace FanshaweGameEngine
 
 		}
 
-		const BoundingBox& RigidBody3D::GetAABB() const
+		const BoundingBox& RigidBody3D::GetAABB() 
 		{
+			if (m_AABBDirty)
+			{
+				m_aabb = m_modelboundingBox.GetTransformedBox(GetTransform());
+				m_AABBDirty = false;
+			}
+
 			return m_aabb;
 		}
 
@@ -164,28 +175,35 @@ namespace FanshaweGameEngine
 		bool RigidBody3D::OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond)
 		{
 			// Work on this
+
+			if (m_OnCollisionCallback)
+			{
+				m_OnCollisionCallback();
+			}
+
+
 			return false;
 		}
 
-		void RigidBody3D::SetCollider(const SharedPtr<Collider>& collider)
+		void RigidBody3D::SetCollider(Collider& collider)
 		{
-			m_collider = collider;
+			m_collider = &collider;
 
 		}
 		void RigidBody3D::SetCollider(ColliderType type)
 		{
 		}
-		const SharedPtr<Collider>& RigidBody3D::GetCollider() const
+		Collider* RigidBody3D::GetCollider()
 		{
 			return m_collider;
 		}
 		uint64_t RigidBody3D::GetUniqueId() const
 		{
-			return 0;
+			return m_Id.GetId();
 		}
 		bool RigidBody3D::GetIsStatic() const
 		{
-			return false;
+			return m_isStatic;
 		}
 		float RigidBody3D::GetFriction() const
 		{

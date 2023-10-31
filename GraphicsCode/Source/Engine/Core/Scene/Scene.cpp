@@ -8,6 +8,8 @@
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 
+#include "Engine/Core/Application/Application.h"
+
 
 
 namespace FanshaweGameEngine
@@ -35,13 +37,15 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
-		transform->SetPosition(Vector3(0, 2, 2));
-		transform->SetRotation(Vector3(0, 180, 0));
+		transform->SetPosition(Vector3(112, 65, 172));
+		transform->SetRotation(Vector3(-26, 60, 0));
 
 		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
 		controller->SetCamera(camera);
 
 		SetMainCamera(controller, transform);
+
+
 		
 
 
@@ -73,36 +77,12 @@ namespace FanshaweGameEngine
 		}
 
 
-	/*	auto defaultCameraView = m_EntityManager->GetRegistry().view<FlyCameraController>();
-		auto cameraView = m_EntityManager->GetRegistry().view<Camera>();
-		auto transformView = m_EntityManager->GetRegistry().view<Transform>();
+		Vector3 pos = mainCameraTransform->GetPosition();
+		Vector3 rot = mainCameraTransform->GetEulerRotation();
 
+		std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
 
-		Camera* camera = nullptr;
-
-		if (!cameraView.empty())
-		{
-			camera = &cameraView.get<Camera>(cameraView.front());
-		}
-
-		if (!defaultCameraView.empty())
-		{
-			FlyCameraController controller = defaultCameraView.get<FlyCameraController>(defaultCameraView.front());
-			Transform* cameraTransform = &transformView.get<Transform>(defaultCameraView.front());
-
-
-			if (cameraTransform && camera)
-			{
-				controller.SetCamera(camera);
-				Vector3 pos = cameraTransform->GetPosition();
-
-	
-				controller.KeyboardInput(*cameraTransform,deltaTime);
-				controller.MouseInput(*cameraTransform, mousePosition, deltaTime);
-
-				
-			}
-		}*/
+		Application::GetCurrent().SetWindowTitle(position);
 		
 	}
 	const std::string& Scene::GetName() const

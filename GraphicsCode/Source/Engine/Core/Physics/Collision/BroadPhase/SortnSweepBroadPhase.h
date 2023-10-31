@@ -22,7 +22,7 @@ namespace FanshaweGameEngine
 
 			
 
-			std::vector<CollisionPair> FindCollisionPairs(std::vector<SharedPtr<RigidBody3D>> bodies) override;
+			std::vector<CollisionPair> FindCollisionPairs(std::vector<RigidBody3D*> bodies) override;
 
 		protected:
 
