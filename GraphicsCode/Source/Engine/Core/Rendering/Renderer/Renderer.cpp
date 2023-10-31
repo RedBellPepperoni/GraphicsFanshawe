@@ -278,13 +278,13 @@ namespace FanshaweGameEngine
         void Renderer::SetUpDirLightUniform(SharedPtr<Shader>& shader)
         {
             // Hardcoding for now
-            shader->SetUniform("dirLight.direction", Vector3(1.0f, 40.0f, 2.0f));
+            shader->SetUniform("dirLight.direction", Vector3(60.0f, 40.0f, -40.0f));
 
             shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
 
-            shader->SetUniform("dirLight.intensity", Vector3(0.7f));
+            shader->SetUniform("dirLight.intensity", Vector3(0.8f));
 
-            shader->SetUniform("dirLight.specular", Vector3(0.2f));
+            shader->SetUniform("dirLight.specular", Vector3(0.3f));
 
             //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
 
@@ -293,17 +293,17 @@ namespace FanshaweGameEngine
 
         void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
         {
-            Vector3 intensity = Vector3(9.0f);
+            Vector3 intensity = Vector3(0.9f);
 
 
             std::string uniformName = "pointLightList[0]";
 
             shader->SetUniform(uniformName + ".position", Vector3(120.0f, 40.0f, 20.0f));
-            shader->SetUniform(uniformName + ".color", Vector3(1.0f,0.0f,0.0f));
+            shader->SetUniform(uniformName + ".color", Vector3(1.0f,1.0f,1.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.0003f);
-            shader->SetUniform(uniformName + ".quadratic", 0.0009f);
+            shader->SetUniform(uniformName + ".linear", 0.003f);
+            shader->SetUniform(uniformName + ".quadratic", 0.009f);
 
           /*  uniformName = "pointLightList[1]";
 

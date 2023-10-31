@@ -9,7 +9,6 @@ out vec4 FragColor;
 
 uniform vec3 cameraView;
 
-uniform bool doNotLight;
 
 const int DirectionlightId = 2;
 const int SpotLightId = 1;
@@ -82,13 +81,6 @@ void main()
 
    
 
-	if(doNotLight)
-	{
-		FragColor = vertColor;
-		return;
-	}
-
-
 	vec4 vertexLit = CalculateLighting(vertPosition, vertColor, vertexNormal);
 
 
@@ -115,7 +107,7 @@ vec3 CalculateDirectionalLight(vec3 viewDir ,vec3 normal,  DirLight light)
     // combine results
     vec3 ambient  = light.intensity  * vertColor.xyz;
     vec3 diffuse  = light.color  * diff * vertColor.xyz;
-    vec3 specular = light.specular * spec * vec3(1.0f);
+    vec3 specular = light.specular * spec * vec3(0.25f);
    
     vec3 result = (ambient + diffuse + specular);
 
@@ -185,12 +177,12 @@ vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
  	vec3 norm = normalize(vNormal.xyz);
 	vec3 viewDir = normalize(cameraView - vPos.xyz);
 
-	vec3 result = (CalculateDirectionalLight(viewDir,norm,dirLight) * vColor.xyz);
+	vec3 result = CalculateDirectionalLight(viewDir,norm,dirLight) * vColor.xyz;
 	
    
 	for(int index = 0; index < MAX_POINT_LIGHTS; index++)
 	{
-		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]) * vColor.xyz;
+		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]);
 	}
 
      /*

@@ -54,6 +54,10 @@ public:
 
         ResetSpawn();
 
+
+        
+
+
 	}
 
 
@@ -64,6 +68,7 @@ public:
         if (!isHit)
         {
             m_Explosion->Explode(m_transform->GetPosition());
+            //nucleonTransform->SetPosition(m_transform->GetPosition());
             ResetSpawn();
 
         }
@@ -127,6 +132,7 @@ private:
                 Vector3 forceDir = Normalize(m_transform->GetPosition());
                 m_body->SetForce(forceDir * 80000.0f);
                 return;
+                
             }
 
 
@@ -159,6 +165,9 @@ private:
     bool isHit = false;
     float forceMultiplier = 10000.0f;
     SharedPtr<Explosion> m_Explosion;
+    
+
+    Transform* nucleonTransform = nullptr;
    
     Vector3 direction = Vector3(0.0f,0.0f,-1.0f);
 

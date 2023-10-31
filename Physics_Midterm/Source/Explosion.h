@@ -28,7 +28,7 @@ public:
 
 		if (!m_hasFinishedExploding)
 		{
-			m_scale += deltaTime * 60.0f;
+			m_scale += deltaTime * 50.0f;
 
 			if (m_sphereTrasnform)
 			{
@@ -36,21 +36,21 @@ public:
 			}
 
 
-				if (m_scale > m_maxScale)
+			if (m_scale > m_maxScale)
+			{
+				m_scale = 0.001f;
+
+				m_hasFinishedExploding = true;
+
+				if (m_sphereTrasnform)
 				{
-					m_scale = 0.001f;
-
-					m_hasFinishedExploding = true;
-
-					if (m_sphereTrasnform)
-					{
-						m_sphereTrasnform->SetScale(Vector3(m_scale));
-						m_sphereTrasnform->SetPosition(Vector3(1000.0f));
-						m_shouldExplode = false;
+					m_sphereTrasnform->SetScale(Vector3(m_scale));
+					m_sphereTrasnform->SetPosition(Vector3(1000.0f));
+					m_shouldExplode = false;
 						return;
-					}
-
 				}
+
+			}
 
 
 				
@@ -95,7 +95,7 @@ private:
 
 		m_sphereTrasnform = &Object.GetComponent<Transform>();
 		m_sphereTrasnform->SetPosition(Vector3(1000.0f));
-		m_sphereTrasnform->SetScale(Vector3(0.1f));
+		m_sphereTrasnform->SetScale(Vector3(0.001f));
 		Object.AddComponent<MeshComponent>(sphereModel->GetMeshes()[0]);
 		Object.AddComponent<MeshRenderer>();
 		Object.GetComponent<MeshRenderer>().GetMaterial()->albedoColour = Vector4(0.7f, 0.0f, 0.0f, 1.0f);
@@ -106,7 +106,7 @@ private:
 
 
 	float m_scale = 1.0f;
-	float m_maxScale = 30.0f;
+	float m_maxScale = 20.0f;
 	Transform* m_sphereTrasnform = nullptr;
 
 	bool m_shouldExplode = false;

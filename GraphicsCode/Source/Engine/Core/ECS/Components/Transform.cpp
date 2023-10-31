@@ -8,7 +8,7 @@ namespace FanshaweGameEngine
 
 		Transform::Transform()
 			: m_position(Vector3(0.0f))
-			, m_rotation(Quaternion(0.0f, 0.0f, 0.0f, 1.0f))
+			, m_rotation(Quaternion())
 			, m_scale(Vector3(1.0f))
 			, m_localMatrix(Matrix4(1.0f))
 		{

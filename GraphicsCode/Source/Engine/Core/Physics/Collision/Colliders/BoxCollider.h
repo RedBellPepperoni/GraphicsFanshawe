@@ -28,17 +28,17 @@ namespace FanshaweGameEngine
             void SetHalfWidth(float half_width)
             {
                 m_CuboidHalfDimensions.x = fabs(half_width);
-                m_transform = glm::scale(glm::mat4(1.0), m_CuboidHalfDimensions);
+                m_transform = Scale(Matrix4(1.0), m_CuboidHalfDimensions);
             }
             void SetHalfHeight(float half_height)
             {
                 m_CuboidHalfDimensions.y = fabs(half_height);
-                m_transform = glm::scale(glm::mat4(1.0), m_CuboidHalfDimensions);
+                m_transform = Scale(Matrix4(1.0), m_CuboidHalfDimensions);
             }
             void SetHalfDepth(float half_depth)
             {
                 m_CuboidHalfDimensions.z = fabs(half_depth);
-                m_transform = glm::scale(glm::mat4(1.0), m_CuboidHalfDimensions);
+                m_transform = Scale(Matrix4(1.0), m_CuboidHalfDimensions);
             }
 
             // Get Cuboid Dimensions
@@ -55,14 +55,14 @@ namespace FanshaweGameEngine
                 return m_CuboidHalfDimensions.z;
             }
 
-            const glm::vec3& GetHalfDimensions() const
+            const Vector3& GetHalfDimensions() const
             {
                 return m_CuboidHalfDimensions;
             }
-            void SetHalfDimensions(const glm::vec3& dims)
+            void SetHalfDimensions(const Vector3& dims)
             {
                 m_CuboidHalfDimensions = dims;
-                m_transform = glm::scale(glm::mat4(1.0), m_CuboidHalfDimensions);
+                m_transform = Scale(Matrix4(1.0), m_CuboidHalfDimensions);
             }
 
             virtual float GetSize() const override
@@ -75,7 +75,7 @@ namespace FanshaweGameEngine
             static void ConstructCubeHull();
 
         protected:
-            glm::vec3 m_CuboidHalfDimensions;
+            Vector3 m_CuboidHalfDimensions;
 
             static SharedPtr<ConvexHull> m_CubeHull;
 

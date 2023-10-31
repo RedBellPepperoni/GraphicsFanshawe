@@ -154,18 +154,21 @@ namespace FanshaweGameEngine
 			CollisionData best_colData;
 			best_colData.penetration = -FLT_MAX;
 
+			
 			std::vector<Vector3>& shapeCollisionAxes = complexShape->GetCollisionNormals(complexObj);
+
+			// The predefined Edgesof the triangles are checked here
 			std::vector<ColliderEdge>& complex_shape_edges = complexShape->GetEdgeList(complexObj);
 
-			glm::vec3 p = GetClosestPointOnEdges(sphereObj->GetPosition(), complex_shape_edges);
-			glm::vec3 p_t = sphereObj->GetPosition() - p;
-			p_t = glm::normalize(p_t);
+			Vector3 p = GetClosestPointOnEdges(sphereObj->GetPosition(), complex_shape_edges);
+			Vector3 p_t = sphereObj->GetPosition() - p;
+			p_t = Normalize(p_t);
 
 			static const int MAX_COLLISION_AXES = 100;
-			static glm::vec3 possibleCollisionAxes[MAX_COLLISION_AXES];
+			static Vector3 possibleCollisionAxes[MAX_COLLISION_AXES];
 
 			uint32_t possibleCollisionAxesCount = 0;
-			for (const glm::vec3& axis : shapeCollisionAxes)
+			for (const Vector3& axis : shapeCollisionAxes)
 			{
 				possibleCollisionAxes[possibleCollisionAxesCount++] = axis;
 			}
@@ -174,7 +177,7 @@ namespace FanshaweGameEngine
 
 			for (uint32_t i = 0; i < possibleCollisionAxesCount; i++)
 			{
-				const glm::vec3& axis = possibleCollisionAxes[i];
+				const Vector3& axis = possibleCollisionAxes[i];
 				if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &cur_colData))
 					return false;
 
@@ -250,7 +253,7 @@ namespace FanshaweGameEngine
 			for (uint32_t i = 0; i < possibleCollisionAxesCount; i++)
 			{
 				const Vector3& p_axis = possibleCollisionAxes[i];
-				if (glm::abs(glm::dot(axis, p_axis)) >= value)
+				if (glm::abs(Dot(axis, p_axis)) >= value)
 					return;
 			}
 

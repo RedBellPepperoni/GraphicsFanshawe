@@ -82,17 +82,17 @@ namespace FanshaweGameEngine
 			void SetHalfWidth(float half_width)
 			{
 				m_HalfDimensions.x = fabs(half_width);
-				m_transform = glm::scale(glm::mat4(1.0), m_HalfDimensions);
+				m_transform = Scale(Matrix4(1.0), m_HalfDimensions);
 			}
 			void SetHalfHeight(float half_height)
 			{
 				m_HalfDimensions.y = fabs(half_height);
-				m_transform = glm::scale(glm::mat4(1.0), m_HalfDimensions);
+				m_transform = Scale(Matrix4(1.0), m_HalfDimensions);
 			}
 			void SetHalfDepth(float half_depth)
 			{
 				m_HalfDimensions.z = fabs(half_depth);
-				m_transform = glm::scale(glm::mat4(1.0), m_HalfDimensions);
+				m_transform = Scale(Matrix4(1.0), m_HalfDimensions);
 			}
 
 			float GetHalfWidth() const
@@ -108,14 +108,14 @@ namespace FanshaweGameEngine
 				return m_BoundingBox.Size().z;
 			}
 
-			glm::vec3 GetHalfDimensions() const
+			Vector3 GetHalfDimensions() const
 			{
 				return m_BoundingBox.Size();
 			}
-			void SetHalfDimensions(const glm::vec3& dims)
+			void SetHalfDimensions(const Vector3& dims)
 			{
 				m_HalfDimensions = dims;
-				m_transform = glm::scale(glm::mat4(1.0), m_HalfDimensions);
+				m_transform = Scale(Matrix4(1.0), m_HalfDimensions);
 			}
 
 			virtual float GetSize() const override

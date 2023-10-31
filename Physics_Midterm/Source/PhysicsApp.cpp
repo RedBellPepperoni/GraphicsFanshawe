@@ -108,12 +108,15 @@ class PhysicsApp : public Application
 
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(Vector3(0.0f));
-        Object.GetComponent<Transform>().SetScale(Vector3(0.01, 0.01, 0.01));
+
+        Object.GetComponent<Transform>().SetScale(Vector3(0.01f, 0.01f, 0.01f));
+        Object.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 00.0f));
         Object.AddComponent<MeshComponent>(ship->GetMeshes()[0]);
         Object.AddComponent<MeshRenderer>();
+        Object.GetComponent<MeshRenderer>().GetMaterial()->albedoColour = Vector4(0.0f,0.0f,0.0f,1.0f);
 
 
-        simpleCollider = GetModelLibrary()->LoadModel("ShipCollider", "Assets\\ShipMesh.ply");
+        simpleCollider = GetModelLibrary()->LoadModel("ShipCollider", "Assets\\ShipMeshLow.ply");
         CHECKNULL(simpleCollider);
 
 
@@ -124,9 +127,10 @@ class PhysicsApp : public Application
 
         Object.AddComponent<Transform>();
         Object.GetComponent<Transform>().SetPosition(Vector3(0.0f));
-        Object.GetComponent<Transform>().SetScale(Vector3(1, 1, 1));
-       // Object.AddComponent<MeshComponent>(simpleCollider->GetMeshes()[0]);
-        Object.AddComponent<MeshRenderer>();
+     /*   Object.GetComponent<Transform>().SetScale(Vector3(1.0f));
+        Object.GetComponent<Transform>().SetRotation(Vector3(0.0f, 0.0f, 00.0f));
+        Object.AddComponent<MeshComponent>(simpleCollider->GetMeshes()[0]);
+        Object.AddComponent<MeshRenderer>();*/
 
         PhysicsProperties properties;
 
@@ -188,9 +192,9 @@ class PhysicsApp : public Application
         // asteroidList.push_back(MakeShared<Asteroid>("Asteroid_05",asteroidOne, Vector3(56.0f, 27.0f, 300.0f),false));
 
 
-         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-20.0f, 20.0f, 300.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-80.0f, 3.0f, 300.0f)));
          asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(30.0f, -30.0f, 310.0f)));
-         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-20.0f, -20.0f, 280.0f)));
+         asteroidList.push_back(MakeShared<Asteroid>("Asteroid_08",asteroidOne, Vector3(-60.0f, -10.0f, 280.0f)));
      
        
 
