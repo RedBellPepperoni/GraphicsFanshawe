@@ -89,7 +89,7 @@ namespace FanshaweGameEngine
 			static float m_physicsTimeStep;
 			float m_timeStepCounter = 0.0f;
 
-			int m_maxUpdatesPerFrame = 4;
+			int m_maxSubstepsPerUpdate = 5;
 
 
 		};

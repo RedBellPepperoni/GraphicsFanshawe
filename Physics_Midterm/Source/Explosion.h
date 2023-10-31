@@ -98,7 +98,7 @@ private:
 		m_sphereTrasnform->SetScale(Vector3(0.1f));
 		Object.AddComponent<MeshComponent>(sphereModel->GetMeshes()[0]);
 		Object.AddComponent<MeshRenderer>();
-		Object.GetComponent<MeshRenderer>().GetMaterial()->albedoColour = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		Object.GetComponent<MeshRenderer>().GetMaterial()->albedoColour = Vector4(0.7f, 0.0f, 0.0f, 1.0f);
 
 		counter += 1;
 
@@ -106,7 +106,7 @@ private:
 
 
 	float m_scale = 1.0f;
-	float m_maxScale = 50.0f;
+	float m_maxScale = 30.0f;
 	Transform* m_sphereTrasnform = nullptr;
 
 	bool m_shouldExplode = false;

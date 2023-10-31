@@ -91,13 +91,13 @@ namespace FanshaweGameEngine
 
 			m_timeStepCounter += deltatime;
 
-			for (uint32_t i = 0; (m_timeStepCounter >= m_physicsTimeStep) && i < m_maxUpdatesPerFrame; i++)
+			for (uint32_t i = 0; (m_timeStepCounter >= m_physicsTimeStep) && (i < m_maxSubstepsPerUpdate); i++)
 			{
 				m_timeStepCounter -= m_physicsTimeStep;
 				UpdatePhysics();
 			}
 
-			if (m_timeStepCounter >= m_physicsTimeStep)
+			if (m_timeStepCounter > m_physicsTimeStep)
 			{
 
 				LOG_WARN("Physics taking too long to run in realtime");

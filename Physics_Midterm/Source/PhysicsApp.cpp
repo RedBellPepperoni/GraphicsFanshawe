@@ -77,10 +77,19 @@ class PhysicsApp : public Application
 
     }
 
+
+ 
+
     
     void EnableShield()
     {
         shieldEnabled = true;
+    }
+
+
+    void SpawnVisualAsteroid()
+    {
+
     }
 
     void SpawnVisualAsteroidbelt()

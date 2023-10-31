@@ -282,9 +282,9 @@ namespace FanshaweGameEngine
 
             shader->SetUniform("dirLight.color", Vector3(1.0f, 1.0f, 1.0f));
 
-            shader->SetUniform("dirLight.intensity", Vector3(0.4f));
+            shader->SetUniform("dirLight.intensity", Vector3(0.7f));
 
-            shader->SetUniform("dirLight.specular", Vector3(0.5f));
+            shader->SetUniform("dirLight.specular", Vector3(0.2f));
 
             //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
 
