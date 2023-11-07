@@ -35,7 +35,7 @@ namespace FanshaweGameEngine
 			std::vector<Rendering::Vertex> vertices = mesh->GetVertexData();
 			std::vector<uint32_t> indices = mesh->GetIndexData();
 
-			int indexCount = indices.size();
+			size_t indexCount = indices.size();
 
 			for (Rendering::Vertex vert: vertices)
 			{

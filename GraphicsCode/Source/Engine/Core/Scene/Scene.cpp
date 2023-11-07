@@ -37,10 +37,11 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
-		transform->SetPosition(Vector3(112, 65, 172));
-		transform->SetRotation(Vector3(-26, 60, 0));
+		transform->SetPosition(Vector3(0.0, 50, 0.0));
+		transform->SetRotation(Vector3(-90, 0, 0));
 
-		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
+		//FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
+		CameraController* controller = &cameraEntity.AddComponent<CameraController>();
 		controller->SetCamera(camera);
 
 		SetMainCamera(controller, transform);

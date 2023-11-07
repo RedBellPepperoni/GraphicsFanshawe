@@ -13,7 +13,7 @@ namespace FanshaweGameEngine
 			SphereCollider();
 
 			//May be add an explicit here later on if it clashes
-			SphereCollider(float radius);
+			 SphereCollider(float radius);
 
 
 			~SphereCollider();

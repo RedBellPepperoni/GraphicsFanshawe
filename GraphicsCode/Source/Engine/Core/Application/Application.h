@@ -111,6 +111,8 @@ using Physics::PhysicsEngine;
 		// Reference Getter for teh current scene
 		Scene* GetCurrentScene() const;
 
+		PhysicsEngine* GetPhysicsEngine() const;
+
 		// The start up setup for the apllication
 		void Initialize();
 

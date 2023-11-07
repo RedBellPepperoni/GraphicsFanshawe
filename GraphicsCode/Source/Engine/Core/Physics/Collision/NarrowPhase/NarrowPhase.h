@@ -6,6 +6,7 @@
 #include "Engine/Core/Physics/Collision/Colliders/Collider.h"
 
 
+
 namespace FanshaweGameEngine
 {
 	namespace Physics
@@ -43,7 +44,7 @@ namespace FanshaweGameEngine
 
 			bool DetectCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);
 
-
+			
 protected:
 
 		    static bool CheckCollisionbySAT(const Vector3& axis, RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData);

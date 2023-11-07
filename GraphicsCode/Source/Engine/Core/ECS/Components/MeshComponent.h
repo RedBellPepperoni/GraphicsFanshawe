@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
+#include <string>
 
 namespace FanshaweGameEngine
 {
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 
 			const SharedPtr<Mesh>& GetMesh();
 				
-			SharedPtr<Mesh> meshHandle;
+			SharedPtr<Mesh> m_handle;
 			bool isVisible = true;
 			bool castsShadow = true;
 

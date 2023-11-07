@@ -17,6 +17,7 @@ namespace FanshaweGameEngine
 			, m_rotation(properties.rotation)
 			, m_isStatic(properties.isStatic)
 			, m_friction(properties.friction)
+			, m_tag(properties.tag)
 		{
 			m_modelboundingBox.Set(Vector3(-0.5f), Vector3(0.5f));
 
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 
 			if (properties.collider)
 			{
-				SetCollider(*properties.collider);
+				SetCollider(properties.collider);
 			}
 
 
@@ -176,24 +177,28 @@ namespace FanshaweGameEngine
 		{
 			// Work on this
 
-			if (m_OnCollisionCallback)
+			const bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(bodyFirst, bodySecond) : true;
+
+			if (handleCollision)
 			{
-				m_OnCollisionCallback();
+				SetIsStationary(false);
 			}
 
 
-			return false;
+			return handleCollision;
 		}
 
-		void RigidBody3D::SetCollider(Collider& collider)
+		void RigidBody3D::SetCollider(const SharedPtr<Collider>& collider)
 		{
-			m_collider = &collider;
+			m_collider = collider;
 
 		}
 		void RigidBody3D::SetCollider(ColliderType type)
 		{
 		}
-		Collider* RigidBody3D::GetCollider()
+
+
+		SharedPtr<Collider> RigidBody3D::GetCollider()
 		{
 			return m_collider;
 		}

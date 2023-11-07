@@ -140,6 +140,11 @@ namespace FanshaweGameEngine
 		return m_currentScene.get();
 	}
 
+	PhysicsEngine* Application::GetPhysicsEngine() const
+	{
+		return m_physicsSystem.get();
+	}
+
 	void Application::Initialize()
 	{
 		
@@ -151,7 +156,9 @@ namespace FanshaweGameEngine
 		m_mainCameraIndex = 0;
 
 		m_physicsSystem->Init();
-		//m_physicsSystem->SetPaused(false);
+		m_physicsSystem->UpdateScene(m_currentScene.get());
+
+		m_physicsSystem->SetPaused(false);
 
 		// Calling Init on the child applications
 		OnInit();
@@ -205,9 +212,9 @@ namespace FanshaweGameEngine
 			m_window->SwapBuffers();
 			
 
-			m_physicsSystem->Update(m_deltaTime, m_currentScene.get());
+			m_physicsSystem->Update(m_deltaTime);
 
-			m_physicsSystem->UpdateECSTransforms(m_currentScene.get());
+			m_physicsSystem->UpdateECSTransforms();
 
 			
 			OnUpdate(m_deltaTime);

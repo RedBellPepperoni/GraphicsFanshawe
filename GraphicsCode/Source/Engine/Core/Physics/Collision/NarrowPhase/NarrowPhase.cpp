@@ -60,6 +60,8 @@ namespace FanshaweGameEngine
 			return false;
 		}
 
+		
+
 		bool NarrowPhase::CheckCollisionbySAT(const Vector3& axis, RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
 		{
 			Vector3 minOne, maxOne;
@@ -109,7 +111,11 @@ namespace FanshaweGameEngine
 			CollisionData data;
 
 			Vector3 axis = bodyTwo->GetPosition() - bodyOne->GetPosition();
-			axis = Normalize(axis);
+
+			if (Length(axis) > 0.1f)
+			{
+				axis = Normalize(axis);
+			}
 
 			if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &data))
 			{

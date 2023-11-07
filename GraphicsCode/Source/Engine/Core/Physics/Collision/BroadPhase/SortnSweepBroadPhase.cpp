@@ -50,7 +50,7 @@ namespace FanshaweGameEngine
 		
 
 
-		std::vector<CollisionPair> SortnSweepBroadPhase::FindCollisionPairs(std::vector<RigidBody3D*> bodies)
+		std::vector<CollisionPair> SortnSweepBroadPhase::FindCollisionPairs( std::vector<RigidBody3D*> bodies)
 		{
 			std::vector<CollisionPair> pairs;
 

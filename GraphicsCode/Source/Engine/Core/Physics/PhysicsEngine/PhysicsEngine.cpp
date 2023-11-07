@@ -18,7 +18,7 @@ namespace FanshaweGameEngine
 	{
 
 
-		float PhysicsEngine::m_physicsTimeStep = 1.0f / 30.0f;
+		float PhysicsEngine::m_physicsTimeStep = 1.0f / 50.0f;
 
 
 
@@ -27,11 +27,11 @@ namespace FanshaweGameEngine
 			, m_paused(true)
 			, m_dampingFactor(0.999f)
 			, m_broadPhaseDetection(nullptr)
-			, m_rootBody(nullptr)
+			
 		{
 			m_timeStepCounter = 0.0f;
-			m_rigidBodies.reserve(50);
-			m_broadPhasePairs.reserve(500);
+			//m_rigidBodies.reserve(50);
+			//m_broadPhasePairs.reserve(500);
 
 		}
 
@@ -54,9 +54,9 @@ namespace FanshaweGameEngine
 			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
 		}
 
-		void PhysicsEngine::Update(const float deltatime, Scene* scene)
+		void PhysicsEngine::Update(const float deltatime)
 		{
-			m_rigidBodies.clear();
+			//m_rigidBodies.clear();
 
 			// Dont update if paused
 			if (m_paused)
@@ -64,19 +64,7 @@ namespace FanshaweGameEngine
 				return;
 			}
 			
-			ComponentView<RigidBody3D> rigidBodyView = scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
-
-
-			for (Entity rigidbodyEntity : rigidBodyView)
-			{
-				//m_rigidBodies.push_back(rigidbodyEntity-)
-
-				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
-
-				// get all the rigidBodies
-				m_rigidBodies.push_back(rigidBody);
-
-			}
+			
 
 			if (m_rigidBodies.empty())
 			{
@@ -85,10 +73,7 @@ namespace FanshaweGameEngine
 			}
 
 			m_debugStats.rigidBodyCount = (uint32_t)m_rigidBodies.size();
-
-			//LOG_WARN("Nodies : {0}", m_debugStats.rigidBodyCount);
-
-
+			
 			m_timeStepCounter += deltatime;
 
 			for (uint32_t i = 0; (m_timeStepCounter >= m_physicsTimeStep) && (i < m_maxSubstepsPerUpdate); i++)
@@ -107,44 +92,42 @@ namespace FanshaweGameEngine
 
 		}
 
-		void PhysicsEngine::UpdateECSTransforms(Scene* scene)
+		void PhysicsEngine::UpdateScene(Scene* scene)
+		{
+			m_scene = scene;
+		}
+
+		void PhysicsEngine::UpdateECSTransforms()
 		{
 
-			if (!scene)
+			if (!m_scene)
 			{
 				// No scene , so why update anything
 				return;
 			}
 
-			ComponentView<RigidBody3D> rigidBodyView = scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
 
-
-			
-			for (Entity rigidbodyEntity : rigidBodyView)
+			if(m_transforms.empty() || m_rigidBodies.empty())
 			{
-				
+				return;
+			}
 
-				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
 
-				if (!rigidBody->GetIsStatic() && !rigidBody->GetIsStationary())
+			// Optimised this step by a lot
+			for (int index = 0; index < m_transforms.size(); index ++)
+			{
+				RigidBody3D* body = m_rigidBodies[index];
+
+				if (!body->GetIsStatic() && !body->GetIsStationary())
 				{
-					Transform* transform = &rigidbodyEntity.GetComponent<Transform>();
+					m_transforms[index]->SetPosition(body->GetPosition());
 
-					transform->SetPosition(rigidBody->GetPosition());
-					//transform->SetRotation(rigidBody->GetRotation());
+					
 
 				}
 
-				
-
-
 			}
 		
-
-
-
-
-
 
 		}
 
@@ -173,10 +156,68 @@ namespace FanshaweGameEngine
 			return 0.0f;
 		}
 
+		// Call this when you create or Delete a rigidbody
+		void PhysicsEngine::UpdateRigidBodyCache()
+		{
+
+			//m_rigidBodies.clear();
+
+			if (!m_scene)
+			{
+				return;
+			}
+
+			ComponentView<RigidBody3D> rigidBodyView = m_scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
+
+
+			for (Entity rigidbodyEntity : rigidBodyView)
+			{
+				
+
+				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
+				Transform* transform = &rigidbodyEntity.GetComponent<Transform>();
+
+				// get all the rigidBodies
+				m_rigidBodies.push_back(rigidBody);
+				m_transforms.push_back(transform);
+
+
+				
+
+
+			}
+
+			m_rigidBodies;
+
+		}
+
+		RigidBody3D* PhysicsEngine::CreateRigidBody(Entity& entity, PhysicsProperties properties)
+		{
+
+			RigidBody3D* body = &entity.AddComponent<RigidBody3D>(properties);
+			Transform* transform = &entity.AddComponent<Transform>();
+
+			transform->SetPosition(properties.position);
+
+			if (!m_rigidBodies.empty())
+			{
+				m_rigidBodies.clear();
+				m_transforms.clear();
+			}
+
+			UpdateRigidBodyCache();
+
+			return body;
+		}
+
+	
+
 		// Initial Check to get pairs of potential collision using AABBs
 		
 		void PhysicsEngine::UpdatePhysics()
 		{
+
+			
 
 			BroadPhaseCollision();
 
@@ -200,15 +241,29 @@ namespace FanshaweGameEngine
 				return;
 			}
 
+			
+			m_rigidBodies;
 
 			// get the potential Collison pairs
 			m_broadPhasePairs = m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
 
-			
+		
+
+		
+
+		}
+		void PhysicsEngine::NarrowPhaseCollision()
+		{
+			if(m_broadPhasePairs.empty())
+			{
+				return;
+			}
+
+
 			for (CollisionPair& pair : m_broadPhasePairs)
 			{
-				Collider* colliderOne = pair.firstBody->GetCollider();
-				Collider* colliderTwo = pair.secondBody->GetCollider();
+				Collider* colliderOne = pair.firstBody->GetCollider().get();
+				Collider* colliderTwo = pair.secondBody->GetCollider().get();
 
 
 				if (colliderOne && colliderTwo)
@@ -221,21 +276,17 @@ namespace FanshaweGameEngine
 						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
 						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
 
+
+
+						//if(NarrowPhase::Get().)
+
+
 					}
 
 				}
 
 			}
-		   
 
-
-		}
-		void PhysicsEngine::NarrowPhaseCollision()
-		{
-			if(m_broadPhasePairs.empty())
-			{
-				return;
-			}
 
 
 			m_debugStats.collisionCount = 0;
@@ -252,10 +303,16 @@ namespace FanshaweGameEngine
 			for (RigidBody3D* body : m_rigidBodies)
 			{
 				UpdateRigidBody(body);
+
+				m_debugStats.rigidBodyCount++;
 			}
 
 
+			m_debugStats.rigidBodyCount;
+
 		}
+
+
 		void PhysicsEngine::UpdateRigidBody(RigidBody3D* body) const
 		{
 			if (!body->GetIsStatic() && !body->GetIsStationary())

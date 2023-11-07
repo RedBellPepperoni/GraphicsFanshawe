@@ -17,6 +17,18 @@ namespace FanshaweGameEngine
 
 		//typedef  PhysicsCollisionCallback;
 
+		//Hardcoding for now
+		enum CollisionTag
+		{	
+			None,
+			Player,
+			Enemy,
+			Playerbullet,
+			Enemybullet,
+			Human
+
+		};
+
 
 		struct PhysicsProperties
 		{
@@ -41,12 +53,15 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			Collider* collider = nullptr;
+			SharedPtr<Collider> collider = nullptr;
+
+			CollisionTag tag;
+
 
 		};
 
 		//typedef std::function<bool(RigidBody3D* this_obj, RigidBody3D* colliding_obj)> PhysicsCollisionCallback;
-		typedef std::function<void()> PhysicsCollisionCallback;
+		typedef std::function<bool(RigidBody3D* , RigidBody3D*)> PhysicsCollisionCallback;
 
 		class RigidBody3D
 		{
@@ -84,9 +99,9 @@ namespace FanshaweGameEngine
 			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
 
 
-			void SetCollider(Collider& collider);
+			void SetCollider(const SharedPtr<Collider>& collider);
 			void SetCollider(ColliderType type);
-			Collider* GetCollider();
+			SharedPtr<Collider> GetCollider();
 
 			uint64_t GetUniqueId() const;
 
@@ -153,7 +168,7 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			Collider* m_collider = nullptr;
+			SharedPtr<Collider> m_collider = nullptr;
 
 			float m_invMass = 0.5;
 
@@ -174,6 +189,8 @@ namespace FanshaweGameEngine
 
 			// Determines if the AABB needs to be updated
 			bool m_AABBDirty = false;
+
+			CollisionTag m_tag;
 
 		};
 
