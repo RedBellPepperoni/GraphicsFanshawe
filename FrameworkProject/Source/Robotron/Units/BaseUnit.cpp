@@ -35,17 +35,18 @@ namespace Robotron
 		if (LengthSquared(targetDirection) > 0.1f)
 		{
 			targetDirection = Normalize(targetDirection);
+		
 		}
 
-
-
-		Vector3 resultingForce = Vector3(targetDirection.x, 0.0f, targetDirection.y) * speed * speedMultiplier ;
+		Vector3 resultingForce = Vector3(targetDirection.x, 0.0f, targetDirection.y) * speed * speedMultiplier;
 
 		rigidBodyRef->SetVelocity(resultingForce);
 
 		
 
 		//rigidBodyRef->SetForce(resultingForce);
+
+		
 
 		targetDirection = Vector2(0.0f);
 	}

@@ -40,21 +40,21 @@ namespace Robotron
 		playerRef = m_spawner->SpawnPlayer();
 
 
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(0.0f, 0.0f, 5.0f)));
 		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 5.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 5.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 6.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 5.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 6.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 5.0f)));
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(-10.0f, 0.0f, -15.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 5.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 6.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 5.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 6.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 5.0f)));
 
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(5.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 0.0f)));
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(5.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 0.0f)));
+		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 0.0f)));
 
 
 

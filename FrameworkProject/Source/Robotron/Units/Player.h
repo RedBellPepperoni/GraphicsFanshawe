@@ -3,22 +3,13 @@
 
 namespace Robotron
 {
-
+	class BulletPool;
 
 	class Player : public BaseUnit
 	{
 	public:
 
-		Player(RigidBody3D* body) 
-		{
-			rigidBodyRef = body; 
-			targetDirection = Vector2(0.0f);
-
-
-			speed = 5.0f;
-			speedMultiplier = 2.0f;
-		
-		};
+		Player(RigidBody3D* body);
 
 		~Player() {};
 
@@ -26,11 +17,21 @@ namespace Robotron
 		
 		void Update(float deltaTime) override;
 
+
+		void Shoot();
+
 	private:
 
+		SharedPtr<BulletPool> bulletpool;
 
+		float shootCooldown = 0.2f;
+		float shootCounter = 0.0f;
+		bool canShoot;
 
+		bool isShooting = false;
+		bool flipShooting = false;
 
+		Vector2 lastShootingDirection = Vector2(1.0f, 0.0f);
 	};
 }
 

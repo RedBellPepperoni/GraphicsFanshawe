@@ -23,11 +23,14 @@ namespace Robotron
 
 		void Update(float deltaTime) override;
 
+		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
+
 	private:
 
 
 		EnemyType m_type;
 
+		bool shouldUpdate = true;
 
 	};
 }

@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Robotron\Units\BulletPool.cpp" />
     <ClCompile Include="Source\Robotron\Units\Bullet.cpp" />
     <ClCompile Include="Source\Robotron\Arena\ArenaImpl.cpp" />
     <ClCompile Include="Source\Robotron\Units\Player.cpp" />
@@ -158,6 +159,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Robotron\Units\BulletPool.h" />
     <ClInclude Include="Source\Robotron\Units\Bullet.h" />
     <ClInclude Include="Source\Robotron\Arena\ArenaImpl.h" />
     <ClInclude Include="Source\Robotron\Units\Player.h" />
