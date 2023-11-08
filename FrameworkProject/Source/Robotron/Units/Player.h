@@ -24,12 +24,13 @@ namespace Robotron
 
 		SharedPtr<BulletPool> bulletpool;
 
-		float shootCooldown = 0.2f;
+		float shootCooldown = 0.15f;
 		float shootCounter = 0.0f;
 		bool canShoot;
 
 		bool isShooting = false;
-		bool flipShooting = false;
+		bool shootBackwards = false;
+		
 
 		Vector2 lastShootingDirection = Vector2(1.0f, 0.0f);
 	};

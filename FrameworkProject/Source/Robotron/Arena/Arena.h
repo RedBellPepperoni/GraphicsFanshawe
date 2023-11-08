@@ -11,11 +11,11 @@ namespace Robotron
 		~Arena();
 
 
-		void Init(int levelId, uint8_t width, uint8_t height);
+		void Init(uint8_t width, uint8_t height);
 
 		static Arena* GetArena(void);
 
-
+		ArenaImpl* GetImp() const;
 
 	private:
 

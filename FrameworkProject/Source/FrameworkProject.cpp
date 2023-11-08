@@ -1,6 +1,8 @@
 #include "GameEngine.h"
 #include"Robotron/Units/BaseUnit.h"
 #include "Robotron/Units/UnitManager.h"
+#include "Robotron/Arena/ArenaImpl.h"
+#include "Robotron/Arena/Arena.h"
 
 
 using namespace Robotron;
@@ -10,9 +12,13 @@ class FrameworkApplication : public Application
     void OnInit()
     {
        
+        arena = Arena::GetArena();
+        arena->Init(20, 20);
+
         unitManager = Factory<UnitManager>::Create();
 
         unitManager->Init();
+        unitManager->SetArena(arena->GetImp());
 
         unitManager->LoadLevel(0);
 
@@ -29,6 +35,8 @@ class FrameworkApplication : public Application
 private:
 
     SharedPtr<UnitManager> unitManager;
+
+    Arena* arena;
 
 };
 

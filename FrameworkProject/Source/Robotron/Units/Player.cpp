@@ -21,7 +21,7 @@ namespace Robotron
 
 
 		bulletpool = Factory<BulletPool>::Create();
-		bulletpool->Init(20);
+		bulletpool->Init(20, CollisionTag::Playerbullet);
 
 	}
 
@@ -71,7 +71,8 @@ namespace Robotron
 	    if (InputSystem::GetInstance().GetKeyHeld(Key::Space))
 		{
 				
-			isShooting = true;			
+			isShooting = true;	
+			
 			
 		}
 
@@ -92,11 +93,11 @@ namespace Robotron
 		if (InputSystem::GetInstance().GetKeyHeld(Key::LeftControl))
 		{
 			
-			flipShooting = true;
+			shootBackwards = true;
 			
 			if(isShooting)
 			{
-				flipShooting = true;
+				shootBackwards = true;
 			}
 			
 
@@ -105,7 +106,7 @@ namespace Robotron
 		else
 		{
 			
-			flipShooting = false;
+			shootBackwards = false;
 		}
 
 
@@ -141,7 +142,7 @@ namespace Robotron
 
 
 
-		Vector2 finalDir = flipShooting?  lastShootingDirection * -1.0f : lastShootingDirection;
+		Vector2 finalDir = shootBackwards?  lastShootingDirection * -1.0f : lastShootingDirection;
 
 		bullet->Shoot(GetPosition(), finalDir);
 

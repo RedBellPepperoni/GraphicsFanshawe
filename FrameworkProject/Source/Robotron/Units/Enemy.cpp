@@ -40,9 +40,23 @@ namespace Robotron
 
 		if (bodyTwo->m_tag == CollisionTag::Playerbullet)
 		{
-			shouldUpdate = false;
+			// If its a hulk, dont kill it just move it away from the player
+			if (m_type == EnemyType::Hulk)
+			{
+				Vector2 direction = (GetPosition() - UnitManager::GetPlayerPos());
 
-			rigidBodyRef->SetPosition(Vector3(200.0f, 0.0f, 100.0f));
+				direction = Normalize(direction) * 25.0f;
+				//rigidBodyRef->SetForce(Vector3(direction.x,0.0f,direction.y));
+				rigidBodyRef->SetVelocity(Vector3(direction.x,0.0f,direction.y));
+
+			}
+			else
+			{
+				shouldUpdate = false;
+				rigidBodyRef->SetPosition(Vector3(200.0f, 0.0f, 100.0f));
+			}
+
+			
 
 		}
 

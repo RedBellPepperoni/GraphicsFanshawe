@@ -9,13 +9,13 @@ namespace Robotron
 
     Arena::~Arena()
     {
-
+        delete m_impl;
+        delete m_arenaPtr;
     }
 
-    void Arena::Init(int levelId, uint8_t width, uint8_t height)
+    void Arena::Init(uint8_t width, uint8_t height)
     {
-
-
+        m_impl->Init(width, height);
     }
 
     Arena* Arena::GetArena(void)
@@ -29,9 +29,15 @@ namespace Robotron
     }
 
 
+
+    ArenaImpl* Arena::GetImp() const
+    {
+        return m_impl;
+    }
+
+
     Arena::Arena()
     {
-
         m_impl = new ArenaImpl();
     }
 

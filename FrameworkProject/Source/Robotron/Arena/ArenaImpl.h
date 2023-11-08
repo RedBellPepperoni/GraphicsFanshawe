@@ -1,10 +1,13 @@
 #pragma once
 #include "Engine/Utils/Math.h"
 
+
 using namespace FanshaweGameEngine::Math;
 
 namespace Robotron
 {
+
+
 
 	class ArenaImpl
 	{
@@ -15,17 +18,28 @@ namespace Robotron
 		~ArenaImpl();
 
 
-		void Init(int levelId, uint8_t width, uint8_t height);
-
-		void Update(float deltaTime);
+		void Init(uint8_t width, uint8_t height);
 
 
-		//Vector2 GetRandomPointinQuadrant(int quadarnt);
+		uint8_t GetWidth() const;
+		uint8_t GetHeight() const;
+
+
+		Vector2 GetRandomPointinArena();
+		
 
 	private:
 
+
+		void AddQuadrant();
+
 		uint8_t m_width;
 		uint8_t m_height;
+
+		Vector2Int TopRight;
+		Vector2Int BottomLeft;
+
+		
 
 	};
 

@@ -19,7 +19,7 @@ namespace Robotron
 	{
 	}
 
-	void BulletPool::Init(int bulletcount)
+	void BulletPool::Init(int bulletcount, CollisionTag tag)
 	{
 		SharedPtr<ModelLibrary> modelLib = Application::GetCurrent().GetModelLibrary();
 
@@ -31,7 +31,7 @@ namespace Robotron
 		
 		for (int index = 0; index < currentBulletCount; index++)
 		{
-			Bullet* spawnedBullet = CreateBullet();
+			Bullet* spawnedBullet = CreateBullet(tag);
 			
 		}
 
@@ -42,7 +42,7 @@ namespace Robotron
 	}
 
 
-	Bullet* BulletPool::CreateBullet()
+	Bullet* BulletPool::CreateBullet(CollisionTag tag)
 	{
 
 		Bullet* bullet = nullptr;
@@ -59,7 +59,7 @@ namespace Robotron
 		properties.collider = collider;
 		properties.mass = 50.0f;
 
-		properties.tag = CollisionTag::Playerbullet;
+		properties.tag = tag;
 
 		// Atatching the Rigidbody to the player entity
 		RigidBody3D* rigidBody = Application::GetCurrent().GetPhysicsEngine()->CreateRigidBody(bulletEntity, properties);
@@ -71,7 +71,7 @@ namespace Robotron
 		transform->SetScale(Vector3(0.2f));
 		transform->SetPosition(Vector3(50.0f, 0.0f, 50.0f));
 		
-
+		
 
 
 
@@ -93,6 +93,7 @@ namespace Robotron
 		bullet = &bulletEntity.AddComponent<Bullet>(rigidBody);
 
 		bullet->SetParentPool(this);
+		bullet->SetTag(tag);
 		bullet->SetCallBack();
 
 		// Add to avaibale list

@@ -48,6 +48,9 @@
     <ClCompile Include="Source\Robotron\Units\BulletPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Robotron\Units\Human.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Robotron\Arena\Arena.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Robotron\Units\BulletPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Robotron\Units\Human.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

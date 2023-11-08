@@ -1,12 +1,14 @@
 #include "UnitManager.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Human.h"
 #include "UnitSpawner.h"
 
 namespace Robotron
 {
 
 	Player* UnitManager::playerRef = nullptr;
+	ArenaImpl* UnitManager::arena = nullptr;
 
 	void UnitManager::Init()
 	{
@@ -26,6 +28,11 @@ namespace Robotron
 
 	}
 
+	void UnitManager::SetArena(ArenaImpl* ptr)
+	{
+		arena = ptr;
+	}
+
 	void UnitManager::LoadLevel(int levelId)
 	{
 		if (m_levelDataList.empty() || levelId >= m_levelDataList.size())
@@ -42,19 +49,11 @@ namespace Robotron
 
 		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 5.0f)));
 		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(-10.0f, 0.0f, -15.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 5.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 6.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 5.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 6.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 5.0f)));
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Hulk, Vector3(15.0f, 0.0f, 5.0f)));
 
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(5.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(15.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(20.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(25.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(30.0f, 0.0f, 0.0f)));
-		//m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(35.0f, 0.0f, 0.0f)));
+
+		
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Daddy, Vector3(0.0f, 0.0f, -10.0f)));
 
 
 
@@ -75,7 +74,10 @@ namespace Robotron
 			unit->Update(deltaTime);
 		}
 
-
+		for (Human* human : m_Humans)
+		{
+			human->Update(deltaTime);
+		}
 
 
 	}
@@ -83,6 +85,29 @@ namespace Robotron
 	Vector2 UnitManager::GetPlayerPos()
 	{
 		return playerRef->GetPosition();
+	}
+
+	Vector2 UnitManager::GetRandomPosition()
+	{
+
+		if (!arena)
+		{
+			return Vector2(0.0f);
+		}
+
+
+
+		return arena->GetRandomPointinArena();
+	}
+
+	void UnitManager::EnemyKilled(EnemyType type)
+	{
+		// Decrement the Counter
+		enemyCount -= 1;
+
+
+
+
 	}
 
 }

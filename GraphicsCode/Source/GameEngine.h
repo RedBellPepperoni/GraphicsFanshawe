@@ -31,6 +31,8 @@
 #include "Engine/Core/Physics/Collision/Colliders/MeshCollider.h"
 #include "Engine/Core/Physics/Collision/Colliders/BoxCollider.h"
 
+#include "Engine/Utils/Math/Random.h"
+
 
 
 using namespace FanshaweGameEngine;

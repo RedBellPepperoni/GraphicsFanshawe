@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
+#include <stdint.h>
 #include <vector>
 
 
@@ -9,16 +10,23 @@ namespace FanshaweGameEngine
 	{
 		class Mesh;
 	}
+
+	namespace Physics
+	{
+		enum CollisionTag;
+	}
 }
 
 
 using FanshaweGameEngine::Rendering::Mesh;
+using FanshaweGameEngine::Physics::CollisionTag;
 
 
 namespace Robotron
 {
 
 	class Bullet;
+	
 
 	class BulletPool
 	{
@@ -27,10 +35,10 @@ namespace Robotron
 		BulletPool();
 		~BulletPool();
 
-		void Init(int bulletcount);
+		void Init(int bulletcount, CollisionTag tag);
 
 
-		Bullet* CreateBullet();
+		Bullet* CreateBullet(CollisionTag tag);
 
 
 		void PushToAvailable(Bullet* bullet);

@@ -44,10 +44,6 @@ namespace Robotron
 
 		
 
-		//rigidBodyRef->SetForce(resultingForce);
-
-		
-
 		targetDirection = Vector2(0.0f);
 	}
 
