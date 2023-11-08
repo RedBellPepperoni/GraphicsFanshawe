@@ -266,7 +266,40 @@ namespace Robotron
 		return human;
 	}
 
+	
 
+	void UnitSpawner::SpawnMesh(std::string name, const Vector3 position, const Vector3 scale, const Vector3 rotation)
+	{
+
+		Entity MeshEntity = Application::GetCurrent().GetCurrentScene()->CreateEntity("Mesh");
+
+
+
+
+		Transform* transform = &MeshEntity.AddComponent<Transform>();
+
+	
+
+		transform->SetScale(scale);
+		transform->SetPosition(Vector3(position));
+
+		transform->SetRotation(rotation);
+
+
+
+		SharedPtr<Mesh> mesh = Application::GetCurrent().GetModelLibrary()->GetResource(name)->GetMeshes()[0];
+
+		if (!mesh)
+		{
+			LOG_WARN("NO  MESH FOUND");
+
+		}
+		else
+		{
+			MeshEntity.AddComponent<MeshComponent>(mesh);
+			MeshEntity.AddComponent<MeshRenderer>();
+		}
+	}
 
 
 
@@ -303,6 +336,9 @@ namespace Robotron
 		model = modelLib->LoadModel("Score4000", "Assets//Score4000.ply");
 		model = modelLib->LoadModel("Score5000", "Assets//Score5000.ply");
 		model = modelLib->LoadModel("Skull", "Assets//Skull.ply");
+		model = modelLib->LoadModel("Arena", "Assets//Arena.ply");
+		model = modelLib->LoadModel("Gameover", "Assets//Gameover.ply");
+		model = modelLib->LoadModel("GameWin", "Assets//GameWin.ply");
 		
 
 	}

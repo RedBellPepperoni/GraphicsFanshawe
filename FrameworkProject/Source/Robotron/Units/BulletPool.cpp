@@ -72,17 +72,26 @@ namespace Robotron
 
 		// Atatching the Rigidbody to the player entity
 		RigidBody3D* rigidBody = Application::GetCurrent().GetPhysicsEngine()->CreateRigidBody(bulletEntity, properties);
-		//rigidBody->SetPosition(Vector3(1000.0f, 0.0f, 1000.0f));
+		
+
 		rigidBody->SetPosition(Vector3(50.0f, 0.0f, 50.0f));
 
 		Transform* transform = &bulletEntity.GetComponent<Transform>();
 
-		transform->SetScale(Vector3(0.2f));
+		if (tag == CollisionTag::Playerbullet)
+		{
+			transform->SetScale(Vector3(0.2f));
+		}
+		else if (tag == CollisionTag::Enemybullet)
+		{
+			transform->SetScale(Vector3(0.025f));
+			transform->SetRotation(Vector3(-90.0f,0.0f,0.0f));
+		}
+
+		
+
 		transform->SetPosition(Vector3(50.0f, 0.0f, 50.0f));
 		
-		
-
-
 
 
 		if (!bulletMesh)
@@ -184,5 +193,19 @@ namespace Robotron
 			}
 		}
 
+	}
+	void BulletPool::RestAll()
+	{
+		for (Bullet* activeBullet : m_activeBullets)
+		{
+			m_availableBullets.push_back(activeBullet);
+		}
+
+		m_activeBullets.clear();
+
+		for (Bullet* bullet : m_availableBullets)
+		{
+			bullet->Reset();
+		}
 	}
 }

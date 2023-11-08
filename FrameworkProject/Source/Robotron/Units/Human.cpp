@@ -124,6 +124,10 @@ namespace Robotron
 	{
 		
 		UnitManager::GetInstance().SetHumanDead(GetPosition(), becomeProg);
+		collided = true;
+
+		LOG_ERROR("{0}:{1} ", GetPosition().x, GetPosition().y);
+
 		rigidBodyRef->SetPosition(Vector3(100.0f, 0.0f, 100.0f));
 		shouldUpdate = false;
 	}

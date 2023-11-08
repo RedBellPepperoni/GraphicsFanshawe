@@ -13,7 +13,7 @@ class FrameworkApplication : public Application
     {
        
         arena = Arena::GetArena();
-        arena->Init(20, 20);
+        arena->Init(40, 20);
 
        
 

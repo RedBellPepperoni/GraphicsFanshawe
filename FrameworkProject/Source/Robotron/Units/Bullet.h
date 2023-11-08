@@ -28,11 +28,12 @@ namespace Robotron
 
 		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
 
+		void Reset();
 
 	private:
 
 
-		void Reset();
+		
 
 		bool isFree = true;
 

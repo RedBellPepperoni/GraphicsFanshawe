@@ -27,7 +27,7 @@ namespace Robotron
 		EnemyType& GetType();
 		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
 
-		//void OnShoot();
+		void OnShoot();
 
 	private:
 
@@ -35,6 +35,11 @@ namespace Robotron
 		EnemyType m_type;
 
 		bool shouldUpdate = true;
+
+		SharedPtr<BulletPool> bulletPool = nullptr;
+
+		float shootCooldown = 1.5f;
+		float shootCounter = 0.0f;
 
 	};
 }

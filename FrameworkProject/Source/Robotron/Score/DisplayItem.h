@@ -20,6 +20,8 @@ namespace Robotron
 
 		void Display(Vector2 postion);
 
+		
+
 		void Hide();
 
 

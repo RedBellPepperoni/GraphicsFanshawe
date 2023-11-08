@@ -30,6 +30,8 @@ namespace Robotron
 	{
 		if (bodyTwo->m_tag == CollisionTag::Enemy)
 		{
+			rigidBodyRef->SetPosition(Vector3(100.0f, 0.0f, 100.0f));
+			rigidBodyRef->SetVelocity(Vector3(0.0f));
 			UnitManager::GetInstance().SetGameOver(false);
 		}
 		

@@ -11,6 +11,13 @@ namespace Robotron
 		speed = 1.0f;
 		speedMultiplier = 5.0f;
 
+		if (m_type == EnemyType::Enforcer)
+		{
+			bulletPool = Factory<BulletPool>::Create();
+			bulletPool->Init(5, CollisionTag::Enemybullet);
+		}
+		
+
 	}
 
 
@@ -21,7 +28,20 @@ namespace Robotron
 			return;
 		}
 
-		
+		if (m_type == EnemyType::Enforcer)
+		{
+			shootCounter += deltaTime;
+
+			if (shootCounter >= shootCooldown)
+			{
+				OnShoot();
+
+				shootCounter = 0.0f;
+			}
+
+
+			bulletPool->Update(deltaTime);
+		}
 
 	
 
@@ -33,7 +53,7 @@ namespace Robotron
 
 		//LOG_INFO("{0}", LengthSquared(rigidBodyRef->GetVelocity()));
 		
-
+		
 
 	}
 
@@ -59,6 +79,11 @@ namespace Robotron
 			}
 			else
 			{
+				if (m_type == EnemyType::Enforcer)
+				{
+					bulletPool->RestAll();
+				}
+
 				shouldUpdate = false;
 				rigidBodyRef->SetPosition(Vector3(200.0f, 0.0f, 100.0f));
 			}
@@ -69,6 +94,17 @@ namespace Robotron
 
 
 		return false;
+	}
+
+	void Enemy::OnShoot()
+	{
+
+		Bullet* bullet = bulletPool->PushToActive();
+
+		Vector2 finalDir = Normalize(UnitManager::GetInstance().GetPlayerPos() - GetPosition());
+
+		bullet->Shoot(GetPosition(), finalDir);
+
 	}
 
 	

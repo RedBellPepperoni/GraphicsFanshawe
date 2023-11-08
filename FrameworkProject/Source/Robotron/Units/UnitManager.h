@@ -74,6 +74,8 @@ namespace Robotron
 		
 		void SetGameOver(bool winCondition);
 
+		void CheckGameStatus();
+
 	private:
 
 		SharedPtr<UnitSpawner> m_spawner = nullptr;
@@ -89,7 +91,10 @@ namespace Robotron
 		
 
 		int enemyCount = 0;
+		int humanPickupCount = 0;
 		int humanCount = 0;
+
+		int hulkCount = 0;
 
 		static Player* playerRef;
 		static ArenaImpl* arena;

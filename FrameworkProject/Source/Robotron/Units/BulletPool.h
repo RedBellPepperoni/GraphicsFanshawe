@@ -47,6 +47,8 @@ namespace Robotron
 
 		void Update(float deltaTime);
 
+		void RestAll();
+
 
 	protected:
 	

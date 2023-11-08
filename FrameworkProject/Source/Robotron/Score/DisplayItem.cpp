@@ -24,13 +24,14 @@ namespace Robotron
 			return;
 		}
 
-		LOG_WARN("{0}", DeltaTime);
+		
 
 		countdown += DeltaTime;
 
 		if (countdown >= disappeartime)
 		{
 			Hide();
+			
 		}
 
 
@@ -40,12 +41,16 @@ namespace Robotron
 	void DisplayItem::Display(Vector2 position)
 	{
 		transform->SetPosition(Vector3(position.x, 0.0f, position.y));
-		//displayMesh->isVisible = true;
+		displayMesh->isVisible = true;
 		shouldUpdate = true;
+		countdown = 0.0f;
 	}
+
+	
 
 	void DisplayItem::Hide()
 	{
+		//transform->SetPosition(Vector3(100.0f, 0.0f, 100.0f));
 		displayMesh->isVisible = false;
 		shouldUpdate = false;
 		

@@ -23,12 +23,14 @@ namespace Robotron
 		LevelData level01;
 		level01.enforcerCount = 0;
 		level01.gruntCount = 4;
-		level01.humanCount = 0;
+		level01.humanCount = 5;
 
 		m_levelDataList.push_back(level01);
 
-
+		m_spawner->SpawnMesh("GameWin",Vector3(-100.0f,0.0f,-100.0f), Vector3(0.15f), Vector3(0.0f,180.0f,0.0f));
+		m_spawner->SpawnMesh("Gameover",Vector3(-200.0f,0.0f,-200.0f), Vector3(0.15f), Vector3(0.0f, 180.0f, 0.0f));
 	
+		Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(0.0f, 50.0f, 0.0f));
 
 	}
 
@@ -48,20 +50,37 @@ namespace Robotron
 		LevelData levelData = m_levelDataList[levelId];
 
 		
+		humanCount = levelData.humanCount;
+
 		playerRef = m_spawner->SpawnPlayer();
 
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Enforcer, Vector3(-35.0f, 0.0f, 10.0f)));
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Enforcer, Vector3(-10.0, 0.0f, -18.0f)));
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Enforcer, Vector3(35.0f, 0.0f, 19.0f)));
 
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(10.0f, 0.0f, 5.0f)));
+
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(-35.0f, 0.0f, -10.0f)));
 		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Grunt, Vector3(-10.0f, 0.0f, -15.0f)));
+
+
+		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Hulk, Vector3(20.0f, 0.0f, 15.0f)));
 		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Hulk, Vector3(15.0f, 0.0f, 5.0f)));
 
-		m_enemyUnits.push_back(m_spawner->SpawnEnemy(EnemyType::Enforcer, Vector3(10.0f, 0.0f, 10.0f)));
-
+		
+		hulkCount = 2;
 
 
 
 		
-		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Daddy, Vector3(0.0f, 0.0f, -10.0f)));
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Daddy, Vector3(30.0f, 0.0f, -16.0f)));
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Mommy, Vector3(0.0f, 0.0f, -10.0f)));
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Mikey, Vector3(-30.0f, 0.0f, 10.0f)));
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Mikey, Vector3(-30.0f, 0.0f, -18.0f)));
+		m_Humans.push_back(m_spawner->SpawnHuman(HumanType::Mikey, Vector3(-30.0f, 0.0f, 19.0f)));
+
+
+
+
 		displayList.push_back(SpawnDisplayItem(DisplayType::Score1000, Vector2(100.0f)));
 		displayList.push_back(SpawnDisplayItem(DisplayType::Score2000, Vector2(100.0f)));
 		displayList.push_back(SpawnDisplayItem(DisplayType::Score3000, Vector2(100.0f)));
@@ -132,7 +151,7 @@ namespace Robotron
 		// Decrement the Counter
 		enemyCount -= 1;
 
-
+		CheckGameStatus();
 
 
 	}
@@ -242,11 +261,14 @@ namespace Robotron
 	{
 		// Spawn Score here
 
-		humanCount++;
+		humanPickupCount++;
+		humanCount--;
 
-		
+		CheckGameStatus();
 
-			switch (humanCount)
+		LOG_ERROR("{0}", humanCount);
+
+			switch (humanPickupCount)
 			{
 			case 1:  ShowDisplayItem(DisplayType::Score1000, GetPlayerPos());
 				break;
@@ -273,9 +295,14 @@ namespace Robotron
 
 	void UnitManager::SetHumanDead(Vector2 deathPosition, bool becameProg)
 	{
+		
+
 		if (!becameProg)
 		{
+			humanCount--;
 			ShowDisplayItem(DisplayType::HumanDeath, deathPosition);
+			CheckGameStatus();
+
 			return;
 		}
 	}
@@ -283,6 +310,27 @@ namespace Robotron
 	void UnitManager::SetGameOver(bool winCondition)
 	{
 		GameOver = true;
+
+		if (winCondition)
+		{
+			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(-100.0f, 50.0f, -100.0f));
+		}
+
+		else
+		{
+			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(-200.0f, 50.0f, -200.0f));
+		}
+
+		
+	}
+
+	void UnitManager::CheckGameStatus()
+	{
+		if (enemyCount <= hulkCount && humanCount <= 0)
+		{
+			SetGameOver(true);
+		}
+
 	}
 
 	

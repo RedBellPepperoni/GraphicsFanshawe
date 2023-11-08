@@ -3,6 +3,7 @@
 #include "Engine/Utils/Math.h"
 #include <stdint.h>
 #include <vector>
+#include <string>
 
 namespace FanshaweGameEngine
 {
@@ -40,9 +41,9 @@ namespace Robotron
 		Enemy* SpawnEnemy(EnemyType type,const Vector3& position);
 		Human* SpawnHuman(HumanType type, const Vector3& position);
 
+		
 
-
-
+		void SpawnMesh(std::string name,const Vector3 position, const Vector3 scale, const Vector3 rotation = Vector3(0.0f));
 
 		void LoadMeshes();
 
