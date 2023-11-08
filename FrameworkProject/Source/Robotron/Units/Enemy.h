@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseUnit.h"
 #include "UnitManager.h"
+#include "BulletPool.h"
 
 
 namespace Robotron
@@ -10,7 +11,8 @@ namespace Robotron
 		Grunt,
 		Spheroid,
 		Enforcer,
-		Hulk
+		Hulk,
+		Brain
 	};
 
 
@@ -22,8 +24,10 @@ namespace Robotron
 		~Enemy() {};
 
 		void Update(float deltaTime) override;
-
+		EnemyType& GetType();
 		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
+
+		//void OnShoot();
 
 	private:
 

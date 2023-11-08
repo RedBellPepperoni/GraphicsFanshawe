@@ -1,14 +1,16 @@
 #include "Enemy.h"
-
+#include "Bullet.h"
 namespace Robotron
 {
 
 	Enemy::Enemy(const EnemyType type, RigidBody3D* body)
-		: m_type(type)
 	{
+
+		m_type = type;
 		rigidBodyRef = body;
 		speed = 1.0f;
 		speedMultiplier = 5.0f;
+
 	}
 
 
@@ -19,13 +21,13 @@ namespace Robotron
 			return;
 		}
 
+		
+
+	
 
 		rigidBodyRef->SetVelocity(Vector3(0.0f));
 
 		targetDirection = UnitManager::GetPlayerPos() - GetPosition();
-
-
-		
 
 		UpdateMovement();
 
@@ -33,6 +35,11 @@ namespace Robotron
 		
 
 
+	}
+
+	EnemyType& Enemy::GetType()
+	{
+		return m_type;
 	}
 
 	bool Enemy::OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo)
@@ -63,6 +70,8 @@ namespace Robotron
 
 		return false;
 	}
+
+	
 
 
 }

@@ -43,7 +43,7 @@ namespace Robotron
 
 		Transform* transform = &playerEntity.GetComponent<Transform>();
 
-		Vector3 position = Vector3(-40.0f, 0.0f, -20.0f);
+		Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
 
 		transform->SetScale(Vector3(0.02f));
 		transform->SetPosition(Vector3(position));
@@ -131,7 +131,14 @@ namespace Robotron
 
 			break;
 		case Robotron::EnemyType::Enforcer:
-
+			if (!enforcerMesh)
+			{
+				LOG_WARN("NO ENFORCER MESH FOUND");
+			}
+			else
+			{
+				mesh = enforcerMesh;
+			}
 
 			break;
 		case Robotron::EnemyType::Hulk:
@@ -277,6 +284,9 @@ namespace Robotron
 		model = modelLib->LoadModel("Hulk", "Assets//HulkFront.ply");
 		hulkMesh = model->GetMeshes()[0];
 
+		model = modelLib->LoadModel("Enforcer", "Assets//Enforcer.ply");
+		enforcerMesh = model->GetMeshes()[0];
+
 
 		model = modelLib->LoadModel("Daddy", "Assets//DaddyFront.ply");
 		daddyMesh = model->GetMeshes()[0];
@@ -286,5 +296,14 @@ namespace Robotron
 
 		model = modelLib->LoadModel("Mikey", "Assets//MikeyFront.ply");
 		mikeyMesh = model->GetMeshes()[0];
+
+		model = modelLib->LoadModel("Score1000", "Assets//Score1000.ply");
+		model = modelLib->LoadModel("Score2000", "Assets//Score2000.ply");
+		model = modelLib->LoadModel("Score3000", "Assets//Score3000.ply");
+		model = modelLib->LoadModel("Score4000", "Assets//Score4000.ply");
+		model = modelLib->LoadModel("Score5000", "Assets//Score5000.ply");
+		model = modelLib->LoadModel("Skull", "Assets//Skull.ply");
+		
+
 	}
 }

@@ -1,23 +1,23 @@
 #pragma once
-#include "IDamagable.h"
-#include "stdint.h"
+#include "ICollidable.h"
 #include "GameEngine.h"
+#include "stdint.h"
+
 
 using namespace FanshaweGameEngine::Physics;
 
 namespace Robotron
 {
+	class UnitManager;
 	
 
-	class BaseUnit : public IDamagable
+	class BaseUnit : public ICollidable
 	{
 	public:
 		BaseUnit();
 	
-		virtual   ~BaseUnit() {};
+		virtual  ~BaseUnit() = default;
 
-
-		void TakeDamage(const int damage) override;
 
 		virtual void Update(float deltaTime);
 
@@ -34,7 +34,7 @@ namespace Robotron
 
 		void SetCallBack();
 
-		virtual bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) { return false; };
+		virtual bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override { return false; };
 
 	protected:
 
@@ -44,6 +44,7 @@ namespace Robotron
 		RigidBody3D* rigidBodyRef = nullptr;
 
 		Vector2 targetDirection = Vector2(0.0f);
+
 		
 		float speedMultiplier = 10.0f;
 

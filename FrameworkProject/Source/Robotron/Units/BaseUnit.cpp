@@ -1,4 +1,5 @@
 #include "BaseUnit.h"
+#include "UnitManager.h"
 
 namespace Robotron
 {
@@ -7,15 +8,6 @@ namespace Robotron
 
 
 	}
-
-	void BaseUnit::TakeDamage(const int damage)
-	{
-		if (m_health < damage)
-		{
-			//OnDeath();
-		}
-	}
-
 
 	void BaseUnit::Update(float deltaTime)
 	{
@@ -42,9 +34,9 @@ namespace Robotron
 
 		rigidBodyRef->SetVelocity(resultingForce);
 
-		
-
 		targetDirection = Vector2(0.0f);
+
+
 	}
 
 	void BaseUnit::SetTargetDirection(const Vector2& direction)

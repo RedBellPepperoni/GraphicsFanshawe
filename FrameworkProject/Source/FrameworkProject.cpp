@@ -15,12 +15,12 @@ class FrameworkApplication : public Application
         arena = Arena::GetArena();
         arena->Init(20, 20);
 
-        unitManager = Factory<UnitManager>::Create();
+       
 
-        unitManager->Init();
-        unitManager->SetArena(arena->GetImp());
+        UnitManager::GetInstance().Init();
+        UnitManager::GetInstance().SetArena(arena->GetImp());
 
-        unitManager->LoadLevel(0);
+        UnitManager::GetInstance().LoadLevel(0);
 
         //GetPhysicsEngine()->CreateRigidBody();
     }
@@ -28,13 +28,13 @@ class FrameworkApplication : public Application
     void OnUpdate(float deltaTime)
     {
 
-        unitManager->Update(deltaTime);
+        UnitManager::GetInstance().Update(deltaTime);
     }
 
 
 private:
 
-    SharedPtr<UnitManager> unitManager;
+    
 
     Arena* arena;
 

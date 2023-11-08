@@ -4,6 +4,10 @@
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
 #include "Robotron/Arena/ArenaImpl.h"
+#include "Engine/Utils/Singleton.h"
+#include "Robotron/Score/DisplayItem.h"
+
+using namespace FanshaweGameEngine;
 
 namespace Robotron
 {
@@ -23,15 +27,26 @@ namespace Robotron
 
 	};
 
+	enum DisplayType
+	{
+		Score1000,
+		Score2000,
+		Score3000,
+		Score4000,
+		Score5000,
+		HumanDeath
+
+	};
+
+
 	using namespace FanshaweGameEngine::Math;
 
 
-	class UnitManager
+	class UnitManager : public Singleton<UnitManager>
 	{
 	public:
 
-		UnitManager() {};
-		~UnitManager() {};
+		
 
 		void Init();
 
@@ -47,13 +62,24 @@ namespace Robotron
 
 		void EnemyKilled(EnemyType type);
 
+		Vector2 GetHumanPosition();
+
+
+		DisplayItem* SpawnDisplayItem(DisplayType type, Vector2 position);
+		
+		void ShowDisplayItem(DisplayType type, Vector2 position);
+
+		void SetHumaRescued();
+		void SetHumanDead(Vector2 deathPosition, bool becameProg);
+		
+		void SetGameOver(bool winCondition);
 
 	private:
 
 		SharedPtr<UnitSpawner> m_spawner = nullptr;
 
-
-
+		
+		std::vector<DisplayItem*> displayList;
 
 		std::vector<LevelData> m_levelDataList;
 
@@ -63,9 +89,12 @@ namespace Robotron
 		
 
 		int enemyCount = 0;
+		int humanCount = 0;
 
 		static Player* playerRef;
 		static ArenaImpl* arena;
+
+		bool GameOver = false;
 
 	};
 }

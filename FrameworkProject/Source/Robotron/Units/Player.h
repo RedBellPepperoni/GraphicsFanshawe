@@ -31,6 +31,7 @@ namespace Robotron
 		bool isShooting = false;
 		bool shootBackwards = false;
 		
+		bool dead = false;
 
 		Vector2 lastShootingDirection = Vector2(1.0f, 0.0f);
 	};

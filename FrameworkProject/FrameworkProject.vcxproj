@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Robotron\Score\DisplayItem.cpp" />
     <ClCompile Include="Source\Robotron\Units\Human.cpp" />
     <ClCompile Include="Source\Robotron\Units\BulletPool.cpp" />
     <ClCompile Include="Source\Robotron\Units\Bullet.cpp" />
@@ -150,7 +151,6 @@
     <ClCompile Include="Source\Robotron\Units\BaseUnit.cpp" />
     <ClCompile Include="Source\Robotron\Arena\Arena.cpp" />
     <ClCompile Include="Source\FrameworkProject.cpp" />
-    <ClCompile Include="Source\Robotron\Units\IDamagable.cpp" />
     <ClCompile Include="Source\Robotron\Units\UnitSpawner.cpp" />
     <ClCompile Include="Source\Robotron\Units\UnitManager.cpp" />
   </ItemGroup>
@@ -160,6 +160,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Robotron\Score\DisplayItem.h" />
     <ClInclude Include="Source\Robotron\Units\Human.h" />
     <ClInclude Include="Source\Robotron\Units\BulletPool.h" />
     <ClInclude Include="Source\Robotron\Units\Bullet.h" />
@@ -168,7 +169,7 @@
     <ClInclude Include="Source\Robotron\Units\Enemy.h" />
     <ClInclude Include="Source\Robotron\Units\BaseUnit.h" />
     <ClInclude Include="Source\Robotron\Arena\Arena.h" />
-    <ClInclude Include="Source\Robotron\Units\IDamagable.h" />
+    <ClInclude Include="Source\Robotron\Units\ICollidable.h" />
     <ClInclude Include="Source\Robotron\Units\UnitSpawner.h" />
     <ClInclude Include="Source\Robotron\Units\UnitManager.h" />
   </ItemGroup>

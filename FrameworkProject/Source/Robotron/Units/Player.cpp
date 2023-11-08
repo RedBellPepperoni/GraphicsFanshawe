@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "BulletPool.h"
 #include "Bullet.h"
+#include "UnitManager.h"
 
 using namespace FanshaweGameEngine::Input;
 
@@ -29,7 +30,7 @@ namespace Robotron
 	{
 		if (bodyTwo->m_tag == CollisionTag::Enemy)
 		{
-			LOG_CRITICAL("Collided with ");
+			UnitManager::GetInstance().SetGameOver(false);
 		}
 		
 		return false;
@@ -139,8 +140,6 @@ namespace Robotron
 	void Player::Shoot()
 	{
 		Bullet* bullet = bulletpool->PushToActive();
-
-
 
 		Vector2 finalDir = shootBackwards?  lastShootingDirection * -1.0f : lastShootingDirection;
 

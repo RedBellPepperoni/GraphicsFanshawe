@@ -24,8 +24,16 @@ namespace Robotron
 		SharedPtr<ModelLibrary> modelLib = Application::GetCurrent().GetModelLibrary();
 
 		SharedPtr<Model> model = modelLib->LoadModel("Bullet", "Assets//SphereBlender.ply");
+		SharedPtr<Model> enemyBullet = modelLib->LoadModel("EnforcerBullet", "Assets//EnforcerBullet.ply");
 
-		bulletMesh = model->GetMeshes()[0];
+		if (tag == CollisionTag::Playerbullet)
+		{
+			bulletMesh = model->GetMeshes()[0];
+		}
+		else if (tag == CollisionTag::Enemybullet)
+		{
+			bulletMesh = enemyBullet->GetMeshes()[0];
+		}
 
 		currentBulletCount = bulletcount;
 		
@@ -44,6 +52,7 @@ namespace Robotron
 
 	Bullet* BulletPool::CreateBullet(CollisionTag tag)
 	{
+		namedbulletcount++;
 
 		Bullet* bullet = nullptr;
 
@@ -113,7 +122,11 @@ namespace Robotron
 			if (m_activeBullets[i] == bullet)
 			{
 				//swappign the current bullet with the last index
+
+				Bullet* temp = m_activeBullets[size - 1];
+
 				m_activeBullets[size - 1] = m_activeBullets[i];
+				m_activeBullets[i] = temp;
 				
 				// Storing the bullet in avaibale pool
 				m_availableBullets.push_back(m_activeBullets.back());
@@ -151,24 +164,24 @@ namespace Robotron
 
 	void BulletPool::Update(float deltaTime)
 	{
-		for (Bullet* bullet : m_activeBullets)
-		{
-			bullet->Update(deltaTime);
-		}
+		
 
-		for (Bullet* bullet : m_availableBullets)
-		{
-			bullet->Update(deltaTime);
-		}
+		
 
 		if(!m_activeBullets.empty())
 		{
-			
+			for (Bullet* bullet : m_activeBullets)
+			{
+				bullet->Update(deltaTime);
+			}
 		}
 
 		if (!m_availableBullets.empty())
 		{
-			
+			for (Bullet* bullet : m_availableBullets)
+			{
+				bullet->Update(deltaTime);
+			}
 		}
 
 	}

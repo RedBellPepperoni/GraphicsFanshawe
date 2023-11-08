@@ -17,14 +17,21 @@ namespace Robotron
 	{
 
 	public:
+
 		Human(const HumanType type, RigidBody3D* body);
 		~Human() {};
 
 		void Update(float deltaTime) override;
 
+		
+
 		void MoveToNewPositionn();
 
 		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
+
+
+		void Die(bool becomeProg);
+		void Rescue();
 
 	private:
 
@@ -32,8 +39,10 @@ namespace Robotron
 		HumanType m_type;
 
 		Vector2 finalposition = Vector2(0.0f);
-		
 
+		UnitManager* manager = nullptr;
+		
+		bool collided = false;
 
 		bool shouldUpdate = true;
 	};

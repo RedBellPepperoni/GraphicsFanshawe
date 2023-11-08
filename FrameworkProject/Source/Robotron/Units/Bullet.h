@@ -6,6 +6,9 @@ namespace Robotron
 
 	class BulletPool;
 
+
+
+
 	class Bullet : public BaseUnit
 	{
 	public:
