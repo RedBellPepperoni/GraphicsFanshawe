@@ -1,5 +1,4 @@
 #pragma once
-#include "nlohmann/json.hpp"
 #include "Source/Engine/Core/Scene/Scene.h"
 
 namespace FanshaweGameEngine

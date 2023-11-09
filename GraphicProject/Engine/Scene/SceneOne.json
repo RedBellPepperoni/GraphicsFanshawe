@@ -1,0 +1,35 @@
+{
+  "Scene":  "SceneOne",
+  "Models": [
+
+    {
+      "Name": "Ground",
+      "Path": "Assets\\Ground.ply"
+    },
+
+    {
+      "Name": "Car",
+      "Path": "Assets\\Car.ply"
+    }
+
+  ],
+
+
+  "Objects" :[
+
+  { 
+    "Mesh" : "Car",
+    "Position" : [0.0,0.0,0.0],
+    "Rotation" : [0.0,0.0,0.0],
+    "Scale" : [1.0,1.0,1.0]
+  } 
+
+
+
+
+  ]
+
+
+
+}
+
