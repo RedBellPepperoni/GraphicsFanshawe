@@ -11,33 +11,34 @@ class GraphicProject : public Application
         parser = Factory<SceneParser>::Create();
         loader = Factory<SceneLoader>::Create();
 
+        // parse the scene with the name
         parser->ParseScene("Engine\\Scene\\SceneOne.json");
 
+        // Retrives the parsed models
         std::map<std::string, std::string> modelmap = parser->GetModelList();
        
+        // Retrives the parsed object data
         std::vector<ObjectData> objectmap = parser->GetObjectList();
 
+
+        // Load all the models from the model data list
         for (auto const& data : modelmap)
         {
             loader->LoadModel(data.first, data.second);
         }
 
-
+        // Create objects according to the scene data
         for (ObjectData object : objectmap)
         {
             loader->SpawnObject(object.meshName, object.position, object.rotation, object.scale);
         }
 
 
-       // loader->SpawnObject("Ground", Vector3(0.0f), Vector3(0.0f), Vector3(1.0f));
-       // loader->SpawnObject("Car", Vector3(0.0f), Vector3(0.0f), Vector3(1.0f));
-
-
     }
 
     void OnUpdate(float deltaTime)
     {
-
+        // Input map for switching between the Wireframe and normal displays
         if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
         {
             GetCurrent().GetAppWindow()->ToggleWireframe();
