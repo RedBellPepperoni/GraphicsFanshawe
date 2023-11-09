@@ -30,9 +30,10 @@ namespace FanshaweGameEngine
 			};
 			
 
-			
+			bool wireFrame = false;
 
 		protected:
+
 
 
 			GLFWwindow* windowHandle;
@@ -95,6 +96,9 @@ namespace FanshaweGameEngine
 			
 			void SetMousePosition(Vector2 position);
 			void SetMouseHidden(bool isHidden);
+
+			void ToggleWireframe();
+			 
 
 		};
 	}

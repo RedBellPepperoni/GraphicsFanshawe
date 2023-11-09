@@ -38,6 +38,11 @@ class GraphicProject : public Application
     void OnUpdate(float deltaTime)
     {
 
+        if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+        {
+            GetCurrent().GetAppWindow()->ToggleWireframe();
+        }
+
     }
 
 

@@ -65,7 +65,7 @@ uniform DirLight dirLight;
 #define MAX_POINT_LIGHTS 1
 uniform PointLight pointLightList[MAX_POINT_LIGHTS];
 
-#define MAX_SPOT_LIGHTS 6
+#define MAX_SPOT_LIGHTS 2
 uniform SpotLight spotLightList[MAX_SPOT_LIGHTS];
 
 
@@ -127,8 +127,7 @@ vec3 CalculatePointLight(vec3 viewDir, vec3 normal, vec3 vPos, PointLight light)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     // attenuation
     float distance    = length(light.position - vPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + 
-  			     light.quadratic * (distance * distance));    
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
     // combine results
     vec3 ambient  = light.intensity  * vertColor.xyz;
     vec3 diffuse  = light.color  * diff * vertColor.xyz;
@@ -182,14 +181,14 @@ vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
    
 	for(int index = 0; index < MAX_POINT_LIGHTS; index++)
 	{
-		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]);
+		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]) * vColor.xyz;
 	}
 
-     /*
+     
 	for(int index = 0; index < MAX_SPOT_LIGHTS; index++)
 	{
 		result += CalcSpotLight(viewDir,norm,vertPosition.xyz,spotLightList[index]) * vColor.xyz;
-	}*/
+	}
 
 
 	vec4 finalColor = vec4(result,1.0f);
