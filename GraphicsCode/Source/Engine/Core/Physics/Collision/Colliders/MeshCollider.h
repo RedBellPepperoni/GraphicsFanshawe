@@ -78,6 +78,11 @@ namespace FanshaweGameEngine
 			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) override;
 			
 
+			virtual void GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const override;
+
+
+			virtual Matrix3 BuildInverseInertia(float invMass) const override;
+
 			// Set Cuboid Dimensions
 			void SetHalfWidth(float half_width)
 			{

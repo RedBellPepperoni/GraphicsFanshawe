@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\Plane.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\ModelComponent.cpp" />
     <ClCompile Include="SceneSerializer.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\NarrowPhase\Manifold.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\Plane.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\ModelComponent.h" />
     <ClInclude Include="SceneSerializer.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\NarrowPhase\Manifold.h" />

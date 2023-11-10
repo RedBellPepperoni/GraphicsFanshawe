@@ -97,13 +97,13 @@ namespace FanshaweGameEngine
 
 						pairs.push_back(pair);
 
-						LOG_INFO("Yeet");
+						//LOG_INFO("Yeet");
 						
 					}
 				}
 			}
 
-			LOG_INFO("Count: {0}", pairs.size());
+			//LOG_INFO("Count: {0}", pairs.size());
 			// Implement this later
 			return pairs;
 			

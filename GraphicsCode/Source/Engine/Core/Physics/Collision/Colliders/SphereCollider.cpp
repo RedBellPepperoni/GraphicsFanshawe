@@ -52,6 +52,33 @@ namespace FanshaweGameEngine
 
 
 		}
+
+		void SphereCollider::GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const
+		{
+			// Since its a sphere, we only need one face that will be parallel
+
+			manifoldPolygon.Faces[0] = currentObject->GetPosition() + axis * m_radius;
+			manifoldPolygon.FaceCount = 1;
+
+			manifoldPolygon.Normal = axis;
+		}
+
+		Matrix3 SphereCollider::BuildInverseInertia(float invMass) const
+		{
+
+		//https://en.wikipedia.org/wiki/List_of_moments_of_inertia
+			// SOLID
+			float i = 2.5f * invMass / (m_radius * m_radius);
+			
+
+			Matrix3 inertia;
+			inertia[0][0] = i;
+			inertia[1][1] = i;
+			inertia[2][2] = i;
+
+			return inertia;
+		}
+
 		void SphereCollider::SetRadius(const float radius)
 		{
 			// Set the incoming radius

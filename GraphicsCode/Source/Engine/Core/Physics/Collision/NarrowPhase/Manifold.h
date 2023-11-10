@@ -17,6 +17,8 @@ namespace FanshaweGameEngine
 
 			float collisionPenetratin = 0.0f;
 
+			float elasticityTerm = 0.0f;
+
 			Vector3 collisionNormal;
 			Vector3 relativePosOne;
 			Vector3 relativePosTwo;
@@ -38,6 +40,7 @@ namespace FanshaweGameEngine
 			void AddContactPoint(const Vector3& pointOnOne, const Vector3& pointOnTwo, const Vector3& contactNormal, const float& penetration);
 
 			void ApplyImpulse();
+			void SolveElasticity(float deltaTime);
 
 
 			RigidBody3D* GetBodyOne() const;
@@ -48,6 +51,7 @@ namespace FanshaweGameEngine
 
 			void SolveContactPoint(ContactPoint& point) const;
 
+			void SolveContraints(ContactPoint& point);
 
 
 		protected:

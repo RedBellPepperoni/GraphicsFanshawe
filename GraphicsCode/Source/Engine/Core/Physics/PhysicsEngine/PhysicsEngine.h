@@ -72,7 +72,7 @@ namespace FanshaweGameEngine
 
 			void UpdateRigidBody(RigidBody3D* body) const;
 
-
+			void SolveManifolds();
 
 		protected:
 
@@ -80,11 +80,20 @@ namespace FanshaweGameEngine
 			Vector3 m_gravity;
 			float m_dampingFactor;
 
+			uint32_t m_positionIterations = 1;
+			uint32_t m_velocityIterations = 50;
+
 
 			std::vector<RigidBody3D*> m_rigidBodies{};
 			std::vector<Transform*> m_transforms{};
 
 			std::vector<CollisionPair> m_broadPhasePairs;
+
+
+			std::vector<Manifold> m_manifoldList;
+
+			std::mutex m_manifoldLock;
+
 
 			SharedPtr<BroadPhase> m_broadPhaseDetection;
 
@@ -94,7 +103,7 @@ namespace FanshaweGameEngine
 			static float m_physicsTimeStep;
 			float m_timeStepCounter = 0.0f;
 
-			uint8_t m_maxSubstepsPerUpdate =1;
+			uint8_t m_maxSubstepsPerUpdate = 5;
 
 
 

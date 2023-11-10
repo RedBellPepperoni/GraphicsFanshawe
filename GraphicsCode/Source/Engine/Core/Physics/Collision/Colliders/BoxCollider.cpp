@@ -85,6 +85,98 @@ namespace FanshaweGameEngine
 			if (outMax)
 				*outMax = wsTransform * Vector4(m_CubeHull->GetVertex(vMax).pos, 1.0f);
 		}
+
+		void BoxCollider::GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const
+		{
+			Matrix4 wsTransform = currentObject ? currentObject->GetTransform() * m_transform : m_transform;
+
+			const Matrix3 invNormalMatrix = Inverse(Matrix3(wsTransform));
+			const Matrix3 normalMatrix = Transpose(invNormalMatrix);
+
+			const Vector3 local_axis = invNormalMatrix * axis;
+
+			int minVertex, maxVertex;
+			m_CubeHull->GetMinMaxVerticesInAxis(local_axis, &minVertex, &maxVertex);
+
+			const HullVertex& vert = m_CubeHull->GetVertex(maxVertex);
+
+			const HullFace* best_face = nullptr;
+			float best_correlation = -FLT_MAX;
+			for (int faceIdx : vert.enclosing_faces)
+			{
+				const HullFace* face = &m_CubeHull->GetFace(faceIdx);
+				const float temp_correlation = Dot(local_axis, face->normal);
+				if (temp_correlation > best_correlation)
+				{
+					best_correlation = temp_correlation;
+					best_face = face;
+				}
+			}
+
+			{
+				if (best_face)
+					manifoldPolygon.Normal = normalMatrix * best_face->normal;
+				manifoldPolygon.Normal = Normalize(manifoldPolygon.Normal);
+			}
+
+			if (best_face)
+			{
+				for (int vertIdx : best_face->vert_ids)
+				{
+					const HullVertex& vertex = m_CubeHull->GetVertex(vertIdx);
+					manifoldPolygon.Faces[manifoldPolygon.FaceCount++] = wsTransform * Vector4(vertex.pos, 1.0f);
+				}
+			}
+
+			if (best_face)
+			{
+				// Add the reference face itself to the list of adjacent planes
+				Vector3 wsPointOnPlane = wsTransform * Vector4(m_CubeHull->GetVertex(m_CubeHull->GetEdge(best_face->edge_ids[0]).vStart).pos, 1.0f);
+				Vector3 planeNrml = -(normalMatrix * best_face->normal);
+				planeNrml = Normalize(planeNrml);
+				float planeDist = -Dot(planeNrml, wsPointOnPlane);
+
+				manifoldPolygon.AdjacentPlanes[manifoldPolygon.PlaneCount++] = Plane(planeNrml, planeDist);
+
+				for (int edgeIdx : best_face->edge_ids)
+				{
+					const HullEdge& edge = m_CubeHull->GetEdge(edgeIdx);
+
+					wsPointOnPlane = wsTransform * Vector4(m_CubeHull->GetVertex(edge.vStart).pos, 1.0f);
+
+					for (int adjFaceIdx : edge.enclosing_faces)
+					{
+						if (adjFaceIdx != best_face->idx)
+						{
+							const HullFace& adjFace = m_CubeHull->GetFace(adjFaceIdx);
+
+							planeNrml = -(normalMatrix * adjFace.normal);
+							planeNrml = Normalize(planeNrml);
+							planeDist = -Dot(planeNrml, wsPointOnPlane);
+
+							manifoldPolygon.AdjacentPlanes[manifoldPolygon.PlaneCount++] = Plane(planeNrml, planeDist);
+						}
+					}
+				}
+			}
+		}
+
+		Matrix3 BoxCollider::BuildInverseInertia(float invMass) const
+		{
+
+		//https://en.wikipedia.org/wiki/List_of_moments_of_inertia
+			Matrix3 inertia(1.0f);
+
+			Vector3 dimsSq = (m_CuboidHalfDimensions + m_CuboidHalfDimensions);
+			dimsSq = dimsSq * dimsSq;
+
+			inertia[0][0] = 12.f * invMass * 1.f / (dimsSq.y + dimsSq.z);
+			inertia[1][1] = 12.f * invMass * 1.f / (dimsSq.x + dimsSq.z);
+			inertia[2][2] = 12.f * invMass * 1.f / (dimsSq.x + dimsSq.y);
+
+			return inertia;
+		}
+
 		void BoxCollider::ConstructCubeHull()
 		{
 			

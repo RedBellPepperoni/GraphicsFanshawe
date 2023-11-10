@@ -1,6 +1,6 @@
 #include "Manifold.h"
 #include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
-
+#include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
 
 namespace FanshaweGameEngine
 {
@@ -87,6 +87,15 @@ namespace FanshaweGameEngine
 			}
 		}
 
+
+		void Manifold::SolveElasticity(float deltaTime)
+		{
+			for (uint32_t i = 0; i < m_contactCount; i++)
+			{
+				SolveContraints(m_contactPoints[i]);
+			}
+		}
+
 	
 
 		RigidBody3D* Manifold::GetBodyOne() const
@@ -120,12 +129,29 @@ namespace FanshaweGameEngine
 			// Contact Collision Check 
 
 			const float Mass = (m_bodyOne->m_invMass + m_bodyTwo->m_invMass);
+			
+
+			//  "Baumgarte Stabilization"
+
+			 // Amount of force to add to the System to solve error
+			const float baumgarteScalar = 0.35f;  
+
+			// Amount of allowed penetration, ensures a complete manifold each frame
+			const float baumgarteSlop = 0.001f; 
 
 
-			// Read about "Baumgarte Stabilization"
+			float penetrationSlop = fmin(point.collisionPenetratin + baumgarteSlop, 0.0f);
+			float b = -(baumgarteScalar / PhysicsEngine::GetDeltaTime()) * penetrationSlop;
+			float b_real = fmax(b, point.elasticityTerm + b * 0.2f);
+			float jn = -(Dot(velocityDirection, normal) + b_real) / Mass;
+			float oldSumImpulseContact = point.totalImpulsefromContact;
 
-			m_bodyOne->SetVelocity(m_bodyOne->GetVelocity() + normal * m_bodyOne->m_invMass);
-			m_bodyTwo->SetVelocity(m_bodyTwo->GetVelocity() - normal * m_bodyTwo->m_invMass);
+			jn = fmin(jn, 0.0f);
+			point.totalImpulsefromContact = fmin(point.totalImpulsefromContact + jn, 0.0f);
+			jn = point.totalImpulsefromContact - oldSumImpulseContact;
+
+			m_bodyOne->SetVelocity((velocityOne + normal * (jn *m_bodyOne->m_invMass)) );
+			m_bodyTwo->SetVelocity((velocityTwo - normal * (jn * m_bodyTwo->m_invMass)));
 
 
 			// Friction
@@ -145,6 +171,38 @@ namespace FanshaweGameEngine
 				float frictionCoeff = sqrtf(fricOne * fricTwo);
 
 			}*/
+
+
+		}
+
+		void Manifold::SolveContraints(ContactPoint& point)
+		{
+
+			point.totalImpulsefromContact = 0.0f;
+			point.totalImpulsefromFriction = 0.0f;
+
+
+			const float elasticity = sqrtf(m_bodyOne->GetElasticity() * m_bodyTwo->GetElasticity());
+
+			float elasticity_term = elasticity * Dot(point.collisionNormal, (m_bodyOne->GetVelocity() - m_bodyTwo->GetVelocity()));
+
+
+			if (elasticity_term < 0.0f)
+			{
+				point.elasticityTerm = 0.0f;
+			}
+			else
+			{
+				const float elasticity_slope = 0.2f;
+
+				if (elasticity_term < elasticity_slope)
+				{
+					elasticity_term = 0.0f;
+
+				}
+
+				point.elasticityTerm = elasticity_term;
+			}
 
 
 		}

@@ -11,6 +11,11 @@ class PhysicsProject : public Application
         parser = Factory<SceneParser>::Create();
         loader = Factory<SceneLoader>::Create();
 
+
+
+        //loader->LoadModel("Marble", "Assets\\SphereBlender.ply");
+        //loader->LoadModel("Base", "Assets\\Physicsbase.ply");
+
         // parse the scene with the name
         parser->ParseScene("Engine\\Scene\\SceneOne.json");
 
@@ -30,11 +35,19 @@ class PhysicsProject : public Application
         // Create objects according to the scene data
         for (ObjectData object : objectmap)
         {
-            loader->SpawnObject(object.meshName, object.position, object.rotation, object.scale);
+            loader->SpawnMarbles(object.position);
         }
 
 
+        loader->SpawnPhysicsSpace();
+   
+
     }
+
+
+    
+
+
 
     void OnUpdate(float deltaTime)
     {
@@ -47,7 +60,7 @@ class PhysicsProject : public Application
     }
 
 
-
+  
 
 
 

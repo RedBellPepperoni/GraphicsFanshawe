@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Utils/Math.h"
+#include "Engine/Core/Physics/Collision/BoundingStuff/Plane.h"
 #include <vector>
 
 namespace FanshaweGameEngine
@@ -23,6 +24,15 @@ namespace FanshaweGameEngine
 			Vector3 firstPosition;
 			Vector3 secondPosition;
 			
+		};
+
+		struct ManifoldPolygon
+		{
+			glm::vec3 Faces[8];
+			Plane AdjacentPlanes[8];
+			glm::vec3 Normal;
+			uint32_t FaceCount = 0;
+			uint32_t PlaneCount = 0;
 		};
 
 
@@ -59,6 +69,11 @@ namespace FanshaweGameEngine
 
 			// The Seperated Axis Theorem
 			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) = 0;
+
+			virtual void GetManifoldPolygon(const RigidBody3D* currentObject,const Vector3& axis, ManifoldPolygon& manifoldPolygon) const = 0;
+
+
+			virtual Matrix3 BuildInverseInertia(float invMass) const = 0;
 
 			ColliderType GetType() const;
 
