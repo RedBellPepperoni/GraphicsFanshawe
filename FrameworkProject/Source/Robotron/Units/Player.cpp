@@ -28,12 +28,13 @@ namespace Robotron
 
 	bool Player::OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo)
 	{
-		if (bodyTwo->m_tag == CollisionTag::Enemy)
+		if (bodyTwo->m_tag == CollisionTag::Enemy || bodyTwo->m_tag == CollisionTag::Enemybullet)
 		{
 			rigidBodyRef->SetPosition(Vector3(100.0f, 0.0f, 100.0f));
 			rigidBodyRef->SetVelocity(Vector3(0.0f));
 			UnitManager::GetInstance().SetGameOver(false);
 		}
+		
 		
 		return false;
 
@@ -51,24 +52,29 @@ namespace Robotron
 			//LOG_INFO("Direction : X: {0}  Z:{1}", targetDirection.x, targetDirection.y);
 			//LOG_INFO("DeltaTime : {0}", deltaTime);
 
+			
+			animatorRef->PlayClip("WalkBack");
 
 		}
 
 		
-		if (InputSystem::GetInstance().GetKeyHeld(Key::S))
+		else if (InputSystem::GetInstance().GetKeyHeld(Key::S))
 		{
 			targetDirection += Vector2(0.0f, 1.0f) ;
+			animatorRef->PlayClip("WalkFront");
 		}
 
 		
 		if (InputSystem::GetInstance().GetKeyHeld(Key::A))
 		{
 			targetDirection -= Vector2(1.0f, 0.0f);
+			animatorRef->PlayClip("WalkLeft");
 		}
 			
-	    if (InputSystem::GetInstance().GetKeyHeld(Key::D))
+	    else if (InputSystem::GetInstance().GetKeyHeld(Key::D))
 		{
 			targetDirection += Vector2(1.0f, 0.0f);
+			animatorRef->PlayClip("WalkRight");
 		}
 			
 	    if (InputSystem::GetInstance().GetKeyHeld(Key::Space))
@@ -135,6 +141,8 @@ namespace Robotron
 		UpdateMovement();
 
 		bulletpool->Update(deltaTime);
+
+		animatorRef->Update(deltaTime);
 
 	}
 

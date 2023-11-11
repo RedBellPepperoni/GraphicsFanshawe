@@ -2,7 +2,7 @@
 #include "ICollidable.h"
 #include "GameEngine.h"
 #include "stdint.h"
-
+#include "Robotron/Animation/Animator.h"
 
 using namespace FanshaweGameEngine::Physics;
 
@@ -10,6 +10,14 @@ namespace Robotron
 {
 	class UnitManager;
 	
+	enum class FacingDirection : uint8_t
+	{
+		Top,
+		Left,
+		Right,
+		Down
+	};
+
 
 	class BaseUnit : public ICollidable
 	{
@@ -36,6 +44,14 @@ namespace Robotron
 
 		virtual bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override { return false; };
 
+
+		virtual void SetAnimtor(Animator* animator);
+
+
+	protected:
+
+		virtual void SetFacingDirection();
+
 	protected:
 
 		
@@ -45,6 +61,9 @@ namespace Robotron
 
 		Vector2 targetDirection = Vector2(0.0f);
 
+		Animator* animatorRef = nullptr;
+
+		FacingDirection facingDirection;
 		
 		float speedMultiplier = 10.0f;
 

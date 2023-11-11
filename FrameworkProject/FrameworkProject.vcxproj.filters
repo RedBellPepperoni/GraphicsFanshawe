@@ -51,6 +51,9 @@
     <ClCompile Include="Source\Robotron\Score\DisplayItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Robotron\Animation\Animator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Robotron\Arena\Arena.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Robotron\Score\DisplayItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Robotron\Animation\Animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,11 +8,11 @@ namespace FanshaweGameEngine
 
 	namespace Components
 	{
-		MeshComponent::MeshComponent()
+		/*MeshComponent::MeshComponent()
 			:m_handle(Factory<Mesh>::Create())
 		{
 
-		}
+		}*/
 
 		MeshComponent::MeshComponent(const SharedPtr<Mesh>& meshRef)
 			: m_handle(meshRef)
@@ -25,6 +25,13 @@ namespace FanshaweGameEngine
 		const SharedPtr<Mesh>& MeshComponent::GetMesh()
 		{
 			return m_handle;
+		}
+
+
+		void MeshComponent::SetMesh(SharedPtr<Mesh> mesh)
+		{
+
+			m_handle = mesh;
 		}
 	}
 

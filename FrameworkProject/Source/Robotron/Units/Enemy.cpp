@@ -18,6 +18,7 @@ namespace Robotron
 		}
 		
 
+
 	}
 
 
@@ -43,17 +44,58 @@ namespace Robotron
 			bulletPool->Update(deltaTime);
 		}
 
+
+
 	
 
 		rigidBodyRef->SetVelocity(Vector3(0.0f));
 
 		targetDirection = UnitManager::GetPlayerPos() - GetPosition();
 
+		SetFacingDirection();
+
 		UpdateMovement();
 
-		//LOG_INFO("{0}", LengthSquared(rigidBodyRef->GetVelocity()));
 		
+
 		
+		if (animatorRef)
+		{
+			switch (m_type)
+			{
+			case Robotron::EnemyType::Grunt: animatorRef->PlayClip("Walk");
+				break;
+			case Robotron::EnemyType::Spheroid:
+				break;
+			case Robotron::EnemyType::Enforcer:
+				break;
+			case Robotron::EnemyType::Hulk:
+
+				switch (facingDirection)
+				{
+				case Robotron::FacingDirection::Down:
+				case Robotron::FacingDirection::Top: animatorRef->PlayClip("Walk");
+					break;
+				case Robotron::FacingDirection::Left: animatorRef->PlayClip("WalkLeft");
+					break;
+				case Robotron::FacingDirection::Right: animatorRef->PlayClip("WalkRight");
+
+					break;
+				
+		
+				default:
+					break;
+				}
+
+				break;
+			case Robotron::EnemyType::Brain:
+				break;
+			default:
+				break;
+			}
+
+			animatorRef->Update(deltaTime);
+		}
 
 	}
 
@@ -84,8 +126,14 @@ namespace Robotron
 					bulletPool->RestAll();
 				}
 
+
+				UnitManager::GetInstance().EnemyKilled(m_type);
+
 				shouldUpdate = false;
 				rigidBodyRef->SetPosition(Vector3(200.0f, 0.0f, 100.0f));
+
+
+
 			}
 
 			
@@ -95,6 +143,8 @@ namespace Robotron
 
 		return false;
 	}
+
+	
 
 	void Enemy::OnShoot()
 	{

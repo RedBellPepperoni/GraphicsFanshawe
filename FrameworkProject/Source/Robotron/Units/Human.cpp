@@ -30,7 +30,7 @@ namespace Robotron
 
 		//targetDirection = UnitManager::;
 
-		
+		SetFacingDirection();
 
 		UpdateMovement();
 
@@ -41,6 +41,28 @@ namespace Robotron
 		{
 			MoveToNewPositionn();
 		}
+
+		
+
+		if (animatorRef)
+		{
+			
+			switch (facingDirection)
+			{
+			case Robotron::FacingDirection::Top: animatorRef->PlayClip("Walk");
+				break;
+			case Robotron::FacingDirection::Left: animatorRef->PlayClip("WalkLeft");
+				break;
+			case Robotron::FacingDirection::Right: animatorRef->PlayClip("WalkRight");
+				break;
+			case Robotron::FacingDirection::Down: animatorRef->PlayClip("WalkBack");
+				break;
+			default:
+				break;
+			}
+		}
+
+		animatorRef->Update(deltaTime);
 
 	}
 

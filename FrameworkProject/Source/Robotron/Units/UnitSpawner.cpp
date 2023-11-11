@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Human.h"
 #include "Player.h"
-
+#include "Robotron/Animation/Animator.h"
 
 using namespace FanshaweGameEngine::Physics;
 
@@ -51,7 +51,7 @@ namespace Robotron
 		transform->SetRotation(Vector3(-90.0f,0.0f,0.0f));
 
 
-		
+		MeshComponent* comp = nullptr;
 
 
 		if (!playerMesh)
@@ -61,7 +61,7 @@ namespace Robotron
 		}
 		else
 		{
-			playerEntity.AddComponent<MeshComponent>(playerMesh);
+			comp = &playerEntity.AddComponent<MeshComponent>(playerMesh);
 			playerEntity.AddComponent<MeshRenderer>();
 		}
 	
@@ -72,6 +72,46 @@ namespace Robotron
 
 		player->SetCallBack();
 
+		Animator* animator = &playerEntity.AddComponent<Animator>();
+
+		animator->SetMeshComponentRef(comp);
+
+		player->SetAnimtor(animator);
+
+		float playback = 0.2f;
+
+		AnimationClip frontwalkclip;
+	
+		frontwalkclip.playback = playback;
+		frontwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerFront01")->GetMeshes()[0]);
+		frontwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerFront")->GetMeshes()[0]);
+		frontwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerFront02")->GetMeshes()[0]);
+
+		animator->AddAnimationClip("WalkFront", frontwalkclip);
+
+		AnimationClip backwalkclip;
+		backwalkclip.playback = playback;
+		backwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerBack01")->GetMeshes()[0]);
+		backwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerBack")->GetMeshes()[0]);
+		backwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerBack02")->GetMeshes()[0]);
+
+		animator->AddAnimationClip("WalkBack", backwalkclip);
+
+
+		AnimationClip leftwalkclip;
+		leftwalkclip.playback = playback;
+		leftwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerLeft01")->GetMeshes()[0]);
+		leftwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerLeft02")->GetMeshes()[0]);
+
+		animator->AddAnimationClip("WalkLeft", leftwalkclip);
+
+
+		AnimationClip rightwalkclip;
+		rightwalkclip.playback = playback;
+		rightwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerRight01")->GetMeshes()[0]);
+		rightwalkclip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("PlayerRight02")->GetMeshes()[0]);
+
+		animator->AddAnimationClip("WalkRight", rightwalkclip);
 
 
 
@@ -157,15 +197,90 @@ namespace Robotron
 			break;
 		}
 
+		MeshComponent* meshComp = nullptr;
 
 		if (mesh)
 		{
-			enemyEntity.AddComponent<MeshComponent>(mesh);
+			meshComp = &enemyEntity.AddComponent<MeshComponent>(mesh);
 			enemyEntity.AddComponent<MeshRenderer>();
 		}
 
 
 		enemy = &enemyEntity.AddComponent<Enemy>(type,rigidBody);
+
+		Animator* animator = &enemyEntity.AddComponent<Animator>();
+
+		if (meshComp)
+		{
+			animator->SetMeshComponentRef(meshComp);
+			enemy->SetAnimtor(animator);
+		}
+
+		AnimationClip clip;
+		
+
+		switch (type)
+		{
+		case Robotron::EnemyType::Grunt:
+			
+			clip.framelist.clear();
+			
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("GruntWalk01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Grunt")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("GruntWalk02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Grunt")->GetMeshes()[0]);
+			clip.playback = 0.2f;
+
+
+			animator->AddAnimationClip("Walk",clip);
+
+			break;
+		case Robotron::EnemyType::Spheroid:
+			break;
+		case Robotron::EnemyType::Enforcer:
+			break;
+		case Robotron::EnemyType::Hulk:
+
+			clip.playback = 0.2f;
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkFront01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Hulk")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkFront02")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("Walk", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkLeft")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkLeft01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkLeft02")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkLeft", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkRight")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkRight01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("HulkRight02")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkRight", clip);
+
+
+
+
+			break;
+		case Robotron::EnemyType::Brain:
+			break;
+		default:
+			break;
+		}
+
+
+		
+
+		
 
 		enemy->SetCallBack();
 
@@ -251,16 +366,122 @@ namespace Robotron
 		}
 
 
+		MeshComponent* meshComp = nullptr;
+
 		if (mesh)
-		{
-			humanEntity.AddComponent<MeshComponent>(mesh);
+		{	meshComp = &humanEntity.AddComponent<MeshComponent>(mesh);
 			humanEntity.AddComponent<MeshRenderer>();
 		}
 
 
 		human = &humanEntity.AddComponent<Human>(type, rigidBody);
 
+
+		Animator* animator = &humanEntity.AddComponent<Animator>();
+
+		if (meshComp)
+		{
+			animator->SetMeshComponentRef(meshComp);
+			human->SetAnimtor(animator);
+		}
+
+		AnimationClip clip;
+
+		switch (type)
+		{
+		case Robotron::HumanType::None:
+			break;
+		case Robotron::HumanType::Daddy: 
+			clip.playback = 0.2f;
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyRight01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyRight")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyRight02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyRight")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkRight", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyLeft01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyLeft")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyLeft02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyLeft")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkLeft", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyFront01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Daddy")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyFront02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Daddy")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("Walk", clip);
+
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyBack01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyBack")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyBack02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("DaddyBack")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkBack", clip);
+
+			break;
+		case Robotron::HumanType::Mommy:
+			break;
+		case Robotron::HumanType::Mikey:
+
+			clip.playback = 0.2f;
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyRight01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyRight")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyRight02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyRight")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkRight", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyLeft01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyLeft")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyLeft02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyLeft")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkLeft", clip);
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyFront01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Mikey")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyFront02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("Mikey")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("Walk", clip);
+
+
+			clip.framelist.clear();
+
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyBack01")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyBack")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyBack02")->GetMeshes()[0]);
+			clip.framelist.push_back(Application::GetCurrent().GetModelLibrary()->GetResource("MikeyBack")->GetMeshes()[0]);
+
+			animator->AddAnimationClip("WalkBack", clip);
+			break;
+		default:
+			break;
+		}
+
 		human->SetCallBack();
+
+
 
 
 		return human;
@@ -310,25 +531,81 @@ namespace Robotron
 		SharedPtr<Model> model = modelLib->LoadModel("PlayerFront","Assets//PlayerFront.ply");
 		playerMesh = model->GetMeshes()[0];
 
+		model = modelLib->LoadModel("PlayerFront01", "Assets//PlayerFront01.ply");
+		model = modelLib->LoadModel("PlayerFront02", "Assets//PlayerFront02.ply");
 
-		model = modelLib->LoadModel("Grunt", "Assets//GruntFront.ply");
+		model = modelLib->LoadModel("PlayerLeft01", "Assets//PlayerLeft01.ply");
+		model = modelLib->LoadModel("PlayerLeft02", "Assets//PlayerLeft02.ply");
+
+		model = modelLib->LoadModel("PlayerRight01", "Assets//PlayerRight01.ply");
+		model = modelLib->LoadModel("PlayerRight02", "Assets//PlayerRight02.ply");
+
+		model = modelLib->LoadModel("PlayerBack", "Assets//PlayerBack.ply");
+		model = modelLib->LoadModel("PlayerBack01", "Assets//PlayerBack01.ply");
+		model = modelLib->LoadModel("PlayerBack02", "Assets//PlayerBack02.ply");
+
+
+		model = modelLib->LoadModel("Grunt", "Assets//grunt1.ply");
 		gruntMesh = model->GetMeshes()[0];
 
-		model = modelLib->LoadModel("Hulk", "Assets//HulkFront.ply");
+		model = modelLib->LoadModel("GruntWalk01", "Assets//grunt2.ply");
+		model = modelLib->LoadModel("GruntWalk02", "Assets//grunt3.ply");
+
+
+		model = modelLib->LoadModel("Hulk", "Assets//hulkFront.ply");
 		hulkMesh = model->GetMeshes()[0];
+
+		model = modelLib->LoadModel("HulkFront01", "Assets//hulkFront01.ply");
+		model = modelLib->LoadModel("HulkFront02", "Assets//hulkFront02.ply");
+		model = modelLib->LoadModel("HulkLeft", "Assets//hulkLeft.ply");
+		model = modelLib->LoadModel("HulkLeft01", "Assets//hulkLeft01.ply");
+		model = modelLib->LoadModel("HulkLeft02", "Assets//hulkLeft02.ply");
+		model = modelLib->LoadModel("HulkRight", "Assets//hulkRight.ply");
+		model = modelLib->LoadModel("HulkRight01", "Assets//hulkRight01.ply");
+		model = modelLib->LoadModel("HulkRight02", "Assets//hulkRight02.ply");
 
 		model = modelLib->LoadModel("Enforcer", "Assets//Enforcer.ply");
 		enforcerMesh = model->GetMeshes()[0];
 
 
-		model = modelLib->LoadModel("Daddy", "Assets//DaddyFront.ply");
+		model = modelLib->LoadModel("Daddy", "Assets//daddyFront.ply");
 		daddyMesh = model->GetMeshes()[0];
+		model = modelLib->LoadModel("DaddyFront01", "Assets//daddyFront01.ply");
+		model = modelLib->LoadModel("DaddyFront02", "Assets//daddyFront02.ply");
+		model = modelLib->LoadModel("DaddyLeft01", "Assets//daddyLeft01.ply");
+		model = modelLib->LoadModel("DaddyLeft02", "Assets//daddyLeft02.ply");
+		model = modelLib->LoadModel("DaddyLeft", "Assets//daddyLeft.ply");
+
+		model = modelLib->LoadModel("DaddyRight01", "Assets//daddyRight01.ply");
+		model = modelLib->LoadModel("DaddyRight02", "Assets//daddyRight02.ply");
+		model = modelLib->LoadModel("DaddyRight", "Assets//daddyRight.ply");
+
+		model = modelLib->LoadModel("DaddyBack01", "Assets//daddyBack01.ply");
+		model = modelLib->LoadModel("DaddyBack02", "Assets//daddyBack02.ply");
+		model = modelLib->LoadModel("DaddyBack", "Assets//daddyBack.ply");
+
 
 		model = modelLib->LoadModel("Mommy", "Assets//MommyFront.ply");
 		mommyMesh = model->GetMeshes()[0];
 
-		model = modelLib->LoadModel("Mikey", "Assets//MikeyFront.ply");
+		model = modelLib->LoadModel("Mikey", "Assets//mikeyFront.ply");
 		mikeyMesh = model->GetMeshes()[0];
+
+		model = modelLib->LoadModel("MikeyFront01", "Assets//mikeyFront01.ply");
+		model = modelLib->LoadModel("MikeyFront02", "Assets//mikeyFront02.ply");
+		model = modelLib->LoadModel("MikeyLeft01", "Assets//mikeyLeft01.ply");
+		model = modelLib->LoadModel("MikeyLeft02", "Assets//mikeyLeft02.ply");
+		model = modelLib->LoadModel("MikeyLeft", "Assets//mikeyLeft.ply");
+
+		model = modelLib->LoadModel("MikeyRight01", "Assets//mikeyRight01.ply");
+		model = modelLib->LoadModel("MikeyRight02", "Assets//mikeyRight02.ply");
+		model = modelLib->LoadModel("MikeyRight", "Assets//mikeyRight.ply");
+
+		model = modelLib->LoadModel("MikeyBack01", "Assets//mikeyBack01.ply");
+		model = modelLib->LoadModel("MikeyBack02", "Assets//mikeyBack02.ply");
+		model = modelLib->LoadModel("MikeyBack", "Assets//mikeyBack.ply");
+
+
 
 		model = modelLib->LoadModel("Score1000", "Assets//Score1000.ply");
 		model = modelLib->LoadModel("Score2000", "Assets//Score2000.ply");

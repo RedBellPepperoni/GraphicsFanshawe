@@ -27,8 +27,8 @@ namespace Robotron
 
 		m_levelDataList.push_back(level01);
 
-		m_spawner->SpawnMesh("GameWin",Vector3(-100.0f,0.0f,-100.0f), Vector3(0.15f), Vector3(0.0f,180.0f,0.0f));
-		m_spawner->SpawnMesh("Gameover",Vector3(-200.0f,0.0f,-200.0f), Vector3(0.15f), Vector3(0.0f, 180.0f, 0.0f));
+		m_spawner->SpawnMesh("GameWin",Vector3(-400.0f,0.0f,-400.0f), Vector3(0.15f), Vector3(0.0f,180.0f,0.0f));
+		m_spawner->SpawnMesh("Gameover",Vector3(400.0f,0.0f,400.0f), Vector3(0.15f), Vector3(0.0f, 180.0f, 0.0f));
 	
 		Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(0.0f, 50.0f, 0.0f));
 
@@ -50,7 +50,6 @@ namespace Robotron
 		LevelData levelData = m_levelDataList[levelId];
 
 		
-		humanCount = levelData.humanCount;
 
 		playerRef = m_spawner->SpawnPlayer();
 
@@ -88,7 +87,9 @@ namespace Robotron
 		displayList.push_back(SpawnDisplayItem(DisplayType::Score5000, Vector2(100.0f)));
 		displayList.push_back(SpawnDisplayItem(DisplayType::HumanDeath, Vector2(100.0f)));
 
-		
+
+		enemyCount = m_enemyUnits.size();
+		humanCount = m_Humans.size();
 
 	}
 
@@ -266,7 +267,7 @@ namespace Robotron
 
 		CheckGameStatus();
 
-		LOG_ERROR("{0}", humanCount);
+		if (humanCount < 0) { humanCount = 0; }
 
 			switch (humanPickupCount)
 			{
@@ -295,16 +296,12 @@ namespace Robotron
 
 	void UnitManager::SetHumanDead(Vector2 deathPosition, bool becameProg)
 	{
-		
-
-		if (!becameProg)
-		{
 			humanCount--;
 			ShowDisplayItem(DisplayType::HumanDeath, deathPosition);
 			CheckGameStatus();
 
-			return;
-		}
+			if (humanCount < 0) { humanCount = 0; }
+		
 	}
 
 	void UnitManager::SetGameOver(bool winCondition)
@@ -313,24 +310,29 @@ namespace Robotron
 
 		if (winCondition)
 		{
-			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(-100.0f, 50.0f, -100.0f));
+			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(-400.0f, 50.0f, -400.0f));
 		}
 
 		else
 		{
-			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(-200.0f, 50.0f, -200.0f));
+			Application::GetCurrent().GetCurrentScene()->SetMainCameraPosition(Vector3(400.0f, 50.0f, 400.0f));
 		}
 
 		
 	}
 
-	void UnitManager::CheckGameStatus()
+	bool UnitManager::CheckGameStatus()
 	{
+		//LOG_WARN("EnemyCount : {0} || HumanCount : {1}", enemyCount, humanCount);
+
 		if (enemyCount <= hulkCount && humanCount <= 0)
 		{
+			
 			SetGameOver(true);
+			return true;
 		}
 
+		return  false;
 	}
 
 	

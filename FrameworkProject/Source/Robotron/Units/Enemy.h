@@ -4,6 +4,7 @@
 #include "BulletPool.h"
 
 
+
 namespace Robotron
 {
 	enum class EnemyType : uint8_t
@@ -17,6 +18,8 @@ namespace Robotron
 
 
 
+
+
 	class Enemy : public BaseUnit
 	{
 	public:
@@ -26,6 +29,10 @@ namespace Robotron
 		void Update(float deltaTime) override;
 		EnemyType& GetType();
 		bool OnCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo) override;
+
+
+		
+		
 
 		void OnShoot();
 
@@ -38,8 +45,12 @@ namespace Robotron
 
 		SharedPtr<BulletPool> bulletPool = nullptr;
 
+		
+
 		float shootCooldown = 1.5f;
 		float shootCounter = 0.0f;
+
+		
 
 	};
 }

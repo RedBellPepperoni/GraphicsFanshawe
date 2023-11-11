@@ -19,11 +19,12 @@ namespace FanshaweGameEngine
 		{
 
 
-			MeshComponent();
-			MeshComponent(const SharedPtr<Mesh>& meshRef);
+			//MeshComponent();
+			explicit MeshComponent(const SharedPtr<Mesh>& meshRef);
 
 
 			const SharedPtr<Mesh>& GetMesh();
+			void SetMesh(SharedPtr<Mesh> mesh);
 				
 			SharedPtr<Mesh> m_handle;
 			bool isVisible = true;

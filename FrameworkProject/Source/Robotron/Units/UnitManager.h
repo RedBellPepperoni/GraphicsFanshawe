@@ -74,7 +74,7 @@ namespace Robotron
 		
 		void SetGameOver(bool winCondition);
 
-		void CheckGameStatus();
+		bool CheckGameStatus();
 
 	private:
 

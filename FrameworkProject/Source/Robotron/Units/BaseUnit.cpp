@@ -11,6 +11,7 @@ namespace Robotron
 
 	void BaseUnit::Update(float deltaTime)
 	{
+
 	}
 
 	void BaseUnit::UpdateMovement()
@@ -71,5 +72,33 @@ namespace Robotron
 	void BaseUnit::SetCallBack()
 	{
 		rigidBodyRef->m_OnCollisionCallback = std::bind(&BaseUnit::OnCollision, this, placeholders::_1, placeholders::_2);
+	}
+
+	void BaseUnit::SetAnimtor(Animator* animator)
+	{
+		animatorRef = animator;
+	}
+
+	void BaseUnit::SetFacingDirection()
+	{
+		Vector2 normalizedDir = Normalize(targetDirection);
+
+		if (normalizedDir.x >= 0.5)
+		{
+			facingDirection = FacingDirection::Right;
+		}
+		else if (normalizedDir.x <= -0.5)
+		{
+			facingDirection = FacingDirection::Left;
+		}
+
+		if (normalizedDir.y > 0.5f)
+		{
+			facingDirection = FacingDirection::Top;
+		}
+		else if (normalizedDir.y < -0.5f)
+		{
+			facingDirection = FacingDirection::Down;
+		}
 	}
 }

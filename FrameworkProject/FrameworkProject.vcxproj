@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Robotron\Animation\Animator.cpp" />
     <ClCompile Include="Source\Robotron\Score\DisplayItem.cpp" />
     <ClCompile Include="Source\Robotron\Units\Human.cpp" />
     <ClCompile Include="Source\Robotron\Units\BulletPool.cpp" />
@@ -160,6 +161,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Robotron\Animation\Animator.h" />
     <ClInclude Include="Source\Robotron\Score\DisplayItem.h" />
     <ClInclude Include="Source\Robotron\Units\Human.h" />
     <ClInclude Include="Source\Robotron\Units\BulletPool.h" />
