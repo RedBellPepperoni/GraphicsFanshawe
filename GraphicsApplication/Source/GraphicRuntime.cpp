@@ -4,24 +4,19 @@
 #include "SceneLoader.h"
 
 
-class PhysicsProject : public Application
+class GraphicProject : public Application
 {
     void OnInit()
     {
         parser = Factory<SceneParser>::Create();
         loader = Factory<SceneLoader>::Create();
 
-
-
-        //loader->LoadModel("Marble", "Assets\\SphereBlender.ply");
-        //loader->LoadModel("Base", "Assets\\Physicsbase.ply");
-
         // parse the scene with the name
         parser->ParseScene("Engine\\Scene\\SceneOne.json");
 
         // Retrives the parsed models
         std::map<std::string, std::string> modelmap = parser->GetModelList();
-
+       
         // Retrives the parsed object data
         std::vector<ObjectData> objectmap = parser->GetObjectList();
 
@@ -35,19 +30,11 @@ class PhysicsProject : public Application
         // Create objects according to the scene data
         for (ObjectData object : objectmap)
         {
-            loader->SpawnMarbles(object.position);
+            loader->SpawnObject(object.meshName, object.position, object.rotation, object.scale);
         }
 
 
-        loader->SpawnPhysicsSpace();
-   
-
     }
-
-
-    
-
-
 
     void OnUpdate(float deltaTime)
     {
@@ -60,7 +47,9 @@ class PhysicsProject : public Application
     }
 
 
-  
+   
+
+    
 
 
 
@@ -76,7 +65,7 @@ private:
 int main(int argc, char* argv)
 {
     // Creating a new Appinstance
-    PhysicsProject* app = new PhysicsProject();
+    GraphicProject* app = new GraphicProject();
 
     //FilePath path = File::GetCurrentPath();
 

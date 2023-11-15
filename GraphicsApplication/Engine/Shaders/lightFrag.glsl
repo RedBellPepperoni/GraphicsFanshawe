@@ -179,16 +179,16 @@ vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
 	vec3 result = CalculateDirectionalLight(viewDir,norm,dirLight) * vColor.xyz;
 	
    
-	/*for(int index = 0; index < MAX_POINT_LIGHTS; index++)
+	for(int index = 0; index < MAX_POINT_LIGHTS; index++)
 	{
 		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]) * vColor.xyz;
-	}*/
+	}
 
      
-	/*for(int index = 0; index < MAX_SPOT_LIGHTS; index++)
+	for(int index = 0; index < MAX_SPOT_LIGHTS; index++)
 	{
 		result += CalcSpotLight(viewDir,norm,vertPosition.xyz,spotLightList[index]) * vColor.xyz;
-	}*/
+	}
 
 
 	vec4 finalColor = vec4(result,1.0f);

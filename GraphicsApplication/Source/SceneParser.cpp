@@ -100,9 +100,9 @@ void SceneParser::ParseObjectData()
 
 		std::string identifier;
 		std::string name;
-		Vector3 position = Vector3(0.0f);
-		Vector3 rotation = Vector3(0.0f);
-		Vector3 scale = Vector3(1.0f);
+		Vector3 position;
+		Vector3 rotation;
+		Vector3 scale;
 		
 
 		assert(attribute.IsObject()); // each attribute is an object

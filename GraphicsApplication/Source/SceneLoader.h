@@ -1,7 +1,6 @@
 #pragma once
 #include "GameEngine.h"
 
-using namespace FanshaweGameEngine::Physics;
 
 class SceneLoader
 {
@@ -12,10 +11,8 @@ public:
 
 	void LoadModel(const std::string& name, const std::string& modelpath);
 
-	void SpawnRenderObject(const std::string& meshName, const Vector3& position, const Vector3& rotation, const Vector3& scale);
-	void SpawnMarbles(const Vector3& position);
-   
-	void SpawnPhysicsSpace();
+	void SpawnObject(const std::string& meshName, const Vector3& position, const Vector3& rotation, const Vector3& scale);
+
 
 private:
 

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e8eeeefd-53ef-4c6c-8974-2e0e9a16036c}</ProjectGuid>
-    <RootNamespace>PhysicsProject</RootNamespace>
+    <ProjectGuid>{5ec3d69e-96f3-44a8-b6d9-448a1a135b40}</ProjectGuid>
+    <RootNamespace>GraphicProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
+    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
+    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,13 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\PhysicsProjectRuntime.cpp" />
-    <ClCompile Include="Source\SceneLoader.cpp" />
-    <ClCompile Include="Source\SceneParser.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Source\SceneLoader.h" />
     <ClInclude Include="Source\SceneParser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\SceneLoader.cpp" />
+    <ClCompile Include="Source\GraphicProjectRuntime.cpp" />
+    <ClCompile Include="Source\SceneParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphicsCode\GraphicsCode.vcxproj">
