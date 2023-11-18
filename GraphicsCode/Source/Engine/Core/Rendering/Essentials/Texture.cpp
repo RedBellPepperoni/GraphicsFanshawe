@@ -1,5 +1,9 @@
 #include "Texture.h"
 #include "Engine/Utils/GLUtils.h"
+#include "Engine/Utils/Loading/File.h"
+#include "Engine/Utils/Loading/ImageLoader.h"
+#include "Engine/Utils/Logging/Log.h"
+
 namespace FanshaweGameEngine
 {
 	namespace Rendering
@@ -74,6 +78,7 @@ namespace FanshaweGameEngine
 		Texture::Texture()
 		{
 			GLDEBUG(glGenTextures(1,&m_textureId));
+			LOG_INFO("Texture : created with Id : {0}", m_textureId);
 		}
 
 
@@ -110,25 +115,163 @@ namespace FanshaweGameEngine
 			return m_textureId;
 		}
 
+		template<>
+		void Texture::Load(const FilePath& path, TextureFormat format)
+		{
+			bool flipImage = true;
+			Image image = ImageLoader::LoadImageFromFile(path, flipImage);
+
+			if (image.GetRawData() == nullptr)
+			{
+				LOG_ERROR("Texture : at [{0}] couldn't be loaded", path.string());
+			}
+
+			m_filePath = std::filesystem::proximate(path).string();
+			std::replace(m_filePath.begin(), m_filePath.end(), '\\', '/');
+
+			m_format = format;
+			m_width = image.GetWidth();
+			m_height = image.GetHeight();
+			m_textureType = GL_TEXTURE_2D;
+
+			size_t channels = image.GetChannelCount();
+			GLenum pixelType = image.IsFloatingPoint() ? GL_FLOAT : GL_UNSIGNED_BYTE;
+
+			GLenum pixelFormat = GL_RGBA;
+
+
+			switch (channels)
+			{
+			case 1:
+				pixelFormat = GL_RED;
+				break;
+			case 2:
+				pixelFormat = GL_RG;
+				break;
+			case 3:
+				pixelFormat = GL_RGB;
+				break;
+			case 4:
+				pixelFormat = GL_RGBA;
+				break;
+			default:
+				LOG_ERROR("Texture : invalid channel count [{0}]", std::to_string(channels));
+				break;
+			}
+
+
+			GLDEBUG(glBindTexture(GL_TEXTURE_2D, m_textureId));
+			GLDEBUG(glTexImage2D(GL_TEXTURE_2D, 0, GetGLFormat(m_format), (GLsizei)m_width, (GLsizei)m_height, 0, pixelFormat, pixelType, image.GetRawData()));
+
+			if (image.GetRawData() != nullptr)
+			{
+				GenerateMipMaps();
+			}
+			else
+			{
+				GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+				GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+			}
+			
+		}
+
 
 		void Texture::Load(uint8_t* data, int width, int height, int channels, bool isFloating, TextureFormat format)
 		{
-			//m_filePath
+			m_filePath = "rawtex";
+			m_width = width;
+			m_height = height;
+			m_textureType = GL_TEXTURE_2D;
+			m_format = format;
+
+			GLenum type = isFloating ? GL_FLOAT : GL_UNSIGNED_BYTE;
+			
+			GLenum dataChannels = GL_RGB;
+
+			switch (channels)
+			{
+			case 1:
+				dataChannels = GL_RED;
+				break;
+			case 2:
+				dataChannels = GL_RG;
+				break;
+			case 3:
+				dataChannels = GL_RGB;
+				break;
+			case 4:
+				dataChannels = GL_RGBA;
+				break;
+			default:
+				LOG_ERROR("Texture : invalid channel count[{0}]", std::to_string(channels));
+				break;
+			}
+
+			GLDEBUG(glBindTexture(GL_TEXTURE_2D, m_textureId));
+			GLDEBUG(glTexImage2D(GL_TEXTURE_2D, 0, GetGLFormat(m_format), (GLsizei)width, (GLsizei)height, 0, dataChannels, type, data));
+
+			if (data != nullptr)
+			{
+				GenerateMipMaps();
+			}
+			else
+			{
+				GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+				GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+			}
+		
+		}
+
+		void Texture::Load(const Image& image, TextureFormat format)
+		{
+			Load(image.GetRawData(), (int)image.GetWidth(), (int)image.GetHeight(), (int)image.GetChannelCount(), image.IsFloatingPoint(), format);
 		}
 
 
 		void Texture::LoadDepth(int width, int height, TextureFormat format)
 		{
+			m_filePath = "depthtex";
+			m_width = width;
+			m_height = height;
+			m_textureType = GL_TEXTURE_2D;
+			m_format = format;
+
+			Bind();
+
+			GLenum type = IsFloatingPoint() ? GL_FLOAT : GL_UNSIGNED_BYTE;
+
+			GLDEBUG(glTexImage2D(GL_TEXTURE_2D, 0, GetGLFormat(format), width, height, 0, GL_DEPTH_COMPONENT, type, nullptr));
+			//SetBorderColor(Vector4(1.0f));
+
+			GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+			GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 
 		}
 
 		void Texture::GenerateMipMaps()
 		{
+			Bind(0);
+			GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+			GLDEBUG(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+			GLDEBUG(glGenerateMipmap(GL_TEXTURE_2D));
 		}
+
+
+		void Texture::SetBorderColor(Vector4 color)
+		{
+			Bind(0);
+
+			Vector4 normalized = Clamp(color, Vector4(0.0f), Vector4(1.0f));
+
+			GLDEBUG(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, &normalized[0]));
+		}
+
+
 		bool Texture::IsMuliSampled() const
 		{
-			return false;
+			return m_textureType == GL_TEXTURE_2D_MULTISAMPLE;
 		}
+
 		bool Texture::IsFloatingPoint() const
 		{
 			switch (m_format)
@@ -178,6 +321,7 @@ namespace FanshaweGameEngine
 		{
 			return m_format == TextureFormat::DEPTH || m_format == TextureFormat::DEPTH32F;
 		}
+		
 		size_t Texture::GetWidth() const
 		{
 			return m_width;
@@ -230,10 +374,20 @@ namespace FanshaweGameEngine
 				return 0;
 			}
 		}
+		Vector4 Texture::GetBorderColor() const
+		{
+			Vector4 result = Vector4(0.0f);
+			Bind(0);
+
+			GLDEBUG(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, &result[0]));
+			return result;
+		}
+
 		size_t Texture::GetSampleCount() const
 		{
 			return m_samples;
 		}
+
 		size_t Texture::GetPixelSize() const
 		{
 			switch (m_format)

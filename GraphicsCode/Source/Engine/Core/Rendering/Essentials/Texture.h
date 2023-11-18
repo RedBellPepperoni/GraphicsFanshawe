@@ -1,10 +1,15 @@
 #pragma once
 #include "Engine/Utils/Math.h"
+#include "Image.h"
 #include <string>
+
 
 
 namespace FanshaweGameEngine
 {
+  
+
+
 	namespace Rendering
 	{
         enum class TextureFormat : uint8_t
@@ -76,23 +81,27 @@ namespace FanshaweGameEngine
             int GetBoundId() const;
             uint32_t GetHandle() const;
 
-
+            template<typename FilePath>
+            void Load(const FilePath& path, TextureFormat format);
 
 
             void Load(uint8_t* data, int width, int height, int channels, bool isFloating, TextureFormat format = TextureFormat::RGB);
+            void Load(const Image& image, TextureFormat format = TextureFormat::RGB);
+
             void LoadDepth(int width, int height, TextureFormat format = TextureFormat::DEPTH);
 
             void GenerateMipMaps();
-
+            
+            void SetBorderColor(Vector4 color);
             bool IsMuliSampled() const;
             bool IsFloatingPoint() const;
             bool IsDepthOnly() const;
 
-
+           
             size_t GetWidth() const;
             size_t GetHeight() const;
             size_t GetChannelCount() const;
-
+            Vector4 GetBorderColor() const;
             size_t GetSampleCount() const;
             size_t GetPixelSize() const;
 

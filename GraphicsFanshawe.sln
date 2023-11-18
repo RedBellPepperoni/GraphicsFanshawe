@@ -5,8 +5,6 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsCode", "GraphicsCode\GraphicsCode.vcxproj", "{2975C24D-CCB2-433F-A91F-5E0C082B113D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsProject", "PhysicsProject\PhysicsProject.vcxproj", "{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsApplication", "GraphicsApplication\GraphicsApplication.vcxproj", "{DDF3179F-E5A4-4059-86D6-8FCECCC99EEE}"
 EndProject
 Global
@@ -23,14 +21,6 @@ Global
 		{2975C24D-CCB2-433F-A91F-5E0C082B113D}.Release|x64.ActiveCfg = Release|x64
 		{2975C24D-CCB2-433F-A91F-5E0C082B113D}.Release|x64.Build.0 = Release|x64
 		{2975C24D-CCB2-433F-A91F-5E0C082B113D}.Release|x86.ActiveCfg = Release|x64
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Debug|x64.ActiveCfg = Debug|x64
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Debug|x64.Build.0 = Debug|x64
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Debug|x86.ActiveCfg = Debug|Win32
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Debug|x86.Build.0 = Debug|Win32
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Release|x64.ActiveCfg = Release|x64
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Release|x64.Build.0 = Release|x64
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Release|x86.ActiveCfg = Release|Win32
-		{E8EEEEFD-53EF-4C6C-8974-2E0E9A16036C}.Release|x86.Build.0 = Release|Win32
 		{DDF3179F-E5A4-4059-86D6-8FCECCC99EEE}.Debug|x64.ActiveCfg = Debug|x64
 		{DDF3179F-E5A4-4059-86D6-8FCECCC99EEE}.Debug|x64.Build.0 = Debug|x64
 		{DDF3179F-E5A4-4059-86D6-8FCECCC99EEE}.Debug|x86.ActiveCfg = Debug|Win32

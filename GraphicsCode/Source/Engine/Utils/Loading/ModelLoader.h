@@ -15,6 +15,38 @@ namespace FanshaweGameEngine
 	using namespace Rendering;
 	using namespace std;
 
+
+	struct MaterialDetails
+	{
+		std::string name;
+
+		// The file path for the diffuse/Albedo texture
+		FilePath albedoMap;
+
+		// The file path for the normal texture
+		FilePath normalMap;
+
+		FilePath emissionMap;
+
+		FilePath heightMap;
+
+		// The file path for the combined maps
+		FilePath metalicRoughAOMap;
+
+		bool alphaMask = false;
+
+		float transparency = 0.0f;
+
+		float emission = 0.0f;
+
+		Vector3 baseColor = Vector3(1.0f);
+
+		Vector2 uvMultiplier = Vector2(1.0f);
+
+		float metalness = 0.0f;
+		float roughness = 0.0f;
+	};
+
 	// FlagEnum
 	enum ModelDetailMode
 	{
@@ -30,6 +62,12 @@ namespace FanshaweGameEngine
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
 
+		MaterialDetails* material = nullptr;
+
+		bool useTexture = false;
+
+		bool useNormal = false;
+
 		// Add Texture and material Details here
 	};
 
@@ -40,7 +78,9 @@ namespace FanshaweGameEngine
 		// All the Submeshes
 		std::vector<MeshDetails> meshes;
 
-		// Add materials list here later
+		// Add materials list here 
+
+		std::vector<MaterialDetails> materials;
 	};
 
 
@@ -73,6 +113,8 @@ namespace FanshaweGameEngine
 		// Loaded Function to use string paths
 		//static ModelDetail LoadPlyModel(const string& stringPath);
 
+
+		//static std::vector<MaterialDetails> LoadMaterials(const FilePath& path);
 
 
 	};
