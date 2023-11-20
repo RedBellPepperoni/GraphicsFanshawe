@@ -2,13 +2,13 @@
 #include "Engine/Utils/Math.h"
 #include "Image.h"
 #include <string>
-
+#include "Engine/Utils/Loading/File.h"
 
 
 namespace FanshaweGameEngine
 {
   
-
+    
 
 	namespace Rendering
 	{
@@ -74,6 +74,8 @@ namespace FanshaweGameEngine
             Texture();
             ~Texture();
 
+           
+            Texture(const std::string& filePath, TextureFormat format);
 
             void Bind() const;
             void Bind(int id) const;
@@ -81,7 +83,7 @@ namespace FanshaweGameEngine
             int GetBoundId() const;
             uint32_t GetHandle() const;
 
-            template<typename FilePath>
+            
             void Load(const FilePath& path, TextureFormat format);
 
 

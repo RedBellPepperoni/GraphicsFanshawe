@@ -2,62 +2,75 @@
   "Scene":  "SceneOne",
   "Models": [
 
-    {
-      "Name": "Ground",
-      "Path": "Assets\\Ground.ply"
-    },
 
     {
       "Name": "Car",
-      "Path": "Assets\\Car.ply"
+      "Path": "Assets\\Models\\Car.fbx"
     },
 
     {
+      "Name": "Ground",
+      "Path": "Assets\\Models\\Ground.ply"
+    },
+
+
+
+    {
       "Name": "Tree",
-      "Path": "Assets\\Tree.ply"
+      "Path": "Assets\\Models\\Tree.ply"
     },
 
     {
       "Name": "PineTree",
-      "Path": "Assets\\PineTree.ply"
+      "Path": "Assets\\Models\\PineTree.ply"
     },
-    
+
     {
       "Name": "TreeTrunk",
-      "Path": "Assets\\TreeTrunk.ply"
+      "Path": "Assets\\Models\\TreeTrunk.ply"
     },
 
     {
       "Name": "Log",
-      "Path": "Assets\\Log.ply"
+      "Path": "Assets\\Models\\Log.ply"
     },
 
     {
       "Name": "Rocks",
-      "Path": "Assets\\Rocks.ply"
+      "Path": "Assets\\Models\\Rocks.ply"
     },
 
     {
       "Name": "BBQ",
-      "Path": "Assets\\BBQ.ply"
+      "Path": "Assets\\Models\\BBQ.ply"
     }
 
 
-   
-    
 
+
+
+
+  ],
+
+  "Textures": [
+
+    {
+      "Name": "CarAlbedo",
+      "Path": "Textures\\car.png"
+    }
 
   ],
 
 
   "Objects" :[
 
-  { 
-    "Mesh" : "Car",
-    "Position" : [-1.2,0.0,-1.0],
-    "Rotation" : [-3.0,88.0,-4.0],
-    "Scale" : [1.0,1.0,1.0]
-  } ,
+    {
+      "Mesh": "Car",
+      "Position": [ -1.2, 0.0, -1.0 ],
+      "Rotation": [-3.0,88.0,-4.0],
+      "Scale": [ 1.0, 1.0, 1.0 ],
+      "Albedo": "CarAlbedo"
+    } ,
 
   { 
     "Mesh" : "Ground",

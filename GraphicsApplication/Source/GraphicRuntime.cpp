@@ -30,7 +30,7 @@ class GraphicProject : public Application
         // Create objects according to the scene data
         for (ObjectData object : objectmap)
         {
-            loader->SpawnObject(object.meshName, object.position, object.rotation, object.scale);
+            loader->SpawnObject(object);
         }
 
 

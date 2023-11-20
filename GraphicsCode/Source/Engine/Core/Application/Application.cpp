@@ -42,7 +42,10 @@ namespace FanshaweGameEngine
 		m_renderManager->Init();
 
 		// Setting up teh Model and Object Library
-		m_modelLibrary   = MakeShared<ModelLibrary>();
+		m_modelLibrary   = Factory<ModelLibrary>::Create();
+
+		m_textureLibrary = Factory<TextureLibrary>::Create();
+
 		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
 		m_currentScene = MakeShared<Scene>("testScene");
@@ -247,6 +250,11 @@ namespace FanshaweGameEngine
 	SharedPtr<ModelLibrary>& Application::GetModelLibrary()
 	{
 		return m_modelLibrary;
+	}
+
+	SharedPtr<TextureLibrary>& Application::GetTextureLibrary()
+	{
+		return m_textureLibrary;
 	}
 
 	float Application::GetGLFWTime()

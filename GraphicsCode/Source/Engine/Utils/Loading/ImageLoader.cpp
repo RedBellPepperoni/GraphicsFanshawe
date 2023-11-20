@@ -2,7 +2,7 @@
 #include "File.h"
 #include "Engine/Utils/Logging/Log.h"
 
-#define STB_IMAGE_IMPL
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 

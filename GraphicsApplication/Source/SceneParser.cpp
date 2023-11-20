@@ -90,6 +90,48 @@ void SceneParser::ParseModelData()
 
 }
 
+void SceneParser::ParseTextureData()
+{
+
+	const Value& textureArray = m_document["Textures"];
+
+	for (Value::ConstValueIterator itr = textureArray.Begin(); itr != textureArray.End(); ++itr)
+	{
+		const rapidjson::Value& attribute = *itr;
+
+		std::string name;
+		std::string path;
+		std::string identifier;
+
+		assert(attribute.IsObject()); // each attribute is an object
+		for (rapidjson::Value::ConstMemberIterator itr2 = attribute.MemberBegin(); itr2 != attribute.MemberEnd(); ++itr2)
+		{
+
+			identifier = itr2->name.GetString();
+
+			if (identifier == "Name")
+			{
+				name = itr2->value.GetString();
+			}
+
+			else if (identifier == "Path")
+			{
+				path = itr2->value.GetString();
+			}
+
+
+
+
+		}
+
+		TextureList[name] = path;
+
+
+	}
+
+
+}
+
 void SceneParser::ParseObjectData()
 {
 	const Value& modelArray = m_document["Objects"];
@@ -100,9 +142,10 @@ void SceneParser::ParseObjectData()
 
 		std::string identifier;
 		std::string name;
-		Vector3 position;
-		Vector3 rotation;
-		Vector3 scale;
+		Vector3 position = Vector3(0.0f);
+		Vector3 rotation = Vector3(0.0f);
+		Vector3 scale = Vector3(1.0f);
+		std::string albedoTexture = "";
 		
 
 		assert(attribute.IsObject()); // each attribute is an object
@@ -142,8 +185,10 @@ void SceneParser::ParseObjectData()
 				scale.z = scaleArray[2].GetFloat();
 			}
 
-
-
+			else if (identifier == "Albedo")
+			{
+				albedoTexture = itr2->value.GetString();
+			}
 
 		}
 
@@ -156,6 +201,7 @@ void SceneParser::ParseObjectData()
 		data.position = position;
 		data.rotation = rotation;
 		data.scale = scale;
+		data.albedoTexture = albedoTexture;
 
 
 	}

@@ -1,4 +1,7 @@
 #pragma once
+
+
+
 #include "Engine/Utils/Loading/File.h"
 #include "Engine/Core/Rendering/Definitions.h"
 
@@ -30,8 +33,15 @@ namespace FanshaweGameEngine
 
 		FilePath heightMap;
 
-		// The file path for the combined maps
-		FilePath metalicRoughAOMap;
+		// The file path for the combined maps 
+		// 
+		// (Refering to Unreal Engine for Packing these textures)
+		// Green channel has the best compression so using it for Roughness
+		// 
+		// Red Ch = Ambient Occlusion
+		// Green Ch = Roughness
+		// Blue Ch = Metallic
+		FilePath aoRoughMetalMap;
 
 		bool alphaMask = false;
 
@@ -67,6 +77,8 @@ namespace FanshaweGameEngine
 		bool useTexture = false;
 
 		bool useNormal = false;
+
+		bool useColor = false;
 
 		// Add Texture and material Details here
 	};

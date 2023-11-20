@@ -15,6 +15,7 @@ struct ObjectData
 	Vector3 position;
 	Vector3 rotation;
 	Vector3 scale;
+	std::string albedoTexture;
 
 };
 
@@ -32,11 +33,13 @@ public:
 
 
 	std::map<std::string, std::string> GetModelList() { return ModelList; }
+	std::map<std::string, std::string> GetTextureList() { return TextureList; }
 	std::vector<ObjectData> GetObjectList() { return ObjectDataList; }
 
 private:
 
 	void ParseModelData();
+	void ParseTextureData();
 	void ParseObjectData();
 
 	const std::string GetStringValue(const std::string& key) const;
@@ -44,6 +47,7 @@ private:
 	const bool GetBoolValue(const std::string& key) const;
 
 	std::map<std::string, std::string> ModelList;
+	std::map < std::string, std::string> TextureList;
 
 	std::vector<ObjectData> ObjectDataList;
 

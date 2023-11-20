@@ -2,6 +2,7 @@
 #include "Engine/Core/Rendering/Shader/Shader.h"
 #include "Engine/Utils/Loading/Model.h"
 #include "Engine/Core/Rendering/Essentials/Material.h"
+#include "Engine/Core/Rendering/Essentials/Texture.h"
 #include "Engine/Utils/Logging/Log.h"
 
 
@@ -54,8 +55,6 @@ namespace FanshaweGameEngine
 			ModelLibrary::CreateResource(friendlyName, newModel);
 		}
 
-		LOG_INFO("ModelLibrary : Loaded [{0}] from path  [{1}]", friendlyName, modelpath);
-
 		// Returning the model if created successfuly , nullptr otherwise
 		return newModel;
 	}
@@ -72,6 +71,23 @@ namespace FanshaweGameEngine
 		}
 
 		return newMaterial;
+	}
+
+	SharedPtr<Texture> TextureLibrary::LoadTexture(const std::string& filePath, TextureFormat format)
+	{
+		SharedPtr<Texture> newTexture = Factory<Texture>::Create(filePath, format);
+
+		if (newTexture != nullptr)
+		{
+			FilePath path = File::GetFilePathfromString(filePath);
+			
+			std::string name = File::GetFileName(path);
+
+			TextureLibrary::CreateResource(name, newTexture);
+		}
+
+
+		return newTexture;
 	}
 
 }

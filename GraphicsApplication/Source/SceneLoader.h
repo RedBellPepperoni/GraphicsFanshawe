@@ -2,6 +2,8 @@
 #include "GameEngine.h"
 
 
+struct ObjectData;
+
 class SceneLoader
 {
 public:
@@ -11,12 +13,14 @@ public:
 
 	void LoadModel(const std::string& name, const std::string& modelpath);
 
-	void SpawnObject(const std::string& meshName, const Vector3& position, const Vector3& rotation, const Vector3& scale);
+	void SpawnObject(const ObjectData& data);
 
 
 private:
 
 	SharedPtr<ModelLibrary> modelLibrary = nullptr;
+	SharedPtr<TextureLibrary> textureLibrary = nullptr;
+
 	Scene* sceneRef = nullptr;
 
 	int entityCount = 0;

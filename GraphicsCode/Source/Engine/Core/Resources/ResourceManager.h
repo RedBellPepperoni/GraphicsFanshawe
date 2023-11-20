@@ -12,6 +12,8 @@ namespace FanshaweGameEngine
 	{
 		class Shader;
 		class Material;
+		class Texture;
+		enum class TextureFormat : uint8_t;
 	}
 
 	class Model;
@@ -19,6 +21,9 @@ namespace FanshaweGameEngine
 	using Rendering::Shader;
 
 	using Rendering::Material;
+
+	using Rendering::Texture;
+	using Rendering::TextureFormat;
 
 
 	// generic Class to make Resource Libraries of different types of resources
@@ -167,6 +172,23 @@ namespace FanshaweGameEngine
 		}
 
 		SharedPtr<Material> CreateMaterial(const std::string& friendlyName);
+	};
+
+	class TextureLibrary : public ResourceLibrary<Texture>
+	{
+	public:
+		TextureLibrary()
+		{
+
+		}
+
+		virtual ~TextureLibrary()
+		{
+
+		}
+
+		SharedPtr<Texture> LoadTexture(const std::string& filePath, TextureFormat format);
+
 	};
 
 

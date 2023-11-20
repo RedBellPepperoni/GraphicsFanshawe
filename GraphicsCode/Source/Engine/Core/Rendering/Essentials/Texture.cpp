@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "Engine/Utils/GLUtils.h"
-#include "Engine/Utils/Loading/File.h"
+
 #include "Engine/Utils/Loading/ImageLoader.h"
 #include "Engine/Utils/Logging/Log.h"
 
@@ -115,7 +115,13 @@ namespace FanshaweGameEngine
 			return m_textureId;
 		}
 
-		template<>
+		
+		Texture::Texture(const std::string& filePath, TextureFormat format)
+		{
+			Load(filePath, format);
+		}
+
+		
 		void Texture::Load(const FilePath& path, TextureFormat format)
 		{
 			bool flipImage = true;
