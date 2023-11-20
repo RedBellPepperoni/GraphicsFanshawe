@@ -9,18 +9,22 @@ namespace FanshaweGameEngine
 	namespace Components
 	{
 		MeshComponent::MeshComponent()
-			:meshHandle(Factory<Mesh>::Create())
+			:m_handle(Factory<Mesh>::Create())
 		{
 
 		}
+
 		MeshComponent::MeshComponent(const SharedPtr<Mesh>& meshRef)
-			:meshHandle(meshRef)
+			: m_handle(meshRef)
+			
 		{
+
 		}
+	
 
 		const SharedPtr<Mesh>& MeshComponent::GetMesh()
 		{
-			return meshHandle;
+			return m_handle;
 		}
 	}
 

@@ -40,9 +40,10 @@ namespace FanshaweGameEngine
 
 
 			void Init();
-			void Update(const float deltatime, Scene* scene);
+			void Update(const float deltatime);
+			void UpdateScene(Scene* scene);
 
-			void UpdateECSTransforms(Scene* scene);
+			void UpdateECSTransforms();
 
 
 			const bool GetIsPaused() const;
@@ -53,6 +54,10 @@ namespace FanshaweGameEngine
 
 			static float GetDeltaTime();
 
+			void UpdateRigidBodyCache();
+
+
+			RigidBody3D* CreateRigidBody(Entity& entity, PhysicsProperties properties);
 
 
 		protected:
@@ -67,21 +72,30 @@ namespace FanshaweGameEngine
 
 			void UpdateRigidBody(RigidBody3D* body) const;
 
+			void SolveManifolds();
+
+		protected:
 
 			bool m_paused = false;
 			Vector3 m_gravity;
-
 			float m_dampingFactor;
 
+			uint32_t m_positionIterations = 1;
+			uint32_t m_velocityIterations = 50;
 
-			std::vector<RigidBody3D*> m_rigidBodies;
+
+			std::vector<RigidBody3D*> m_rigidBodies{};
+			std::vector<Transform*> m_transforms{};
+
 			std::vector<CollisionPair> m_broadPhasePairs;
 
+
+			std::vector<Manifold> m_manifoldList;
+
+			std::mutex m_manifoldLock;
+
+
 			SharedPtr<BroadPhase> m_broadPhaseDetection;
-
-			
-
-			RigidBody3D* m_rootBody;
 
 
 			PhysicsStats m_debugStats;
@@ -89,8 +103,11 @@ namespace FanshaweGameEngine
 			static float m_physicsTimeStep;
 			float m_timeStepCounter = 0.0f;
 
-			int m_maxSubstepsPerUpdate = 5;
+			uint8_t m_maxSubstepsPerUpdate = 5;
 
+
+
+			Scene* m_scene = nullptr;
 
 		};
 	}

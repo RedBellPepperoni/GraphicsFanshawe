@@ -36,18 +36,27 @@ namespace FanshaweGameEngine
 
 		m_window->Initialize();
 
-		// Initializing teh Render manager
-		m_renderManager = MakeUnique<RenderManager>();
-
-		m_renderManager->Init();
-
 		// Setting up teh Model and Object Library
-		m_modelLibrary   = MakeShared<ModelLibrary>();
+		m_modelLibrary = MakeShared<ModelLibrary>();
+
+		m_textureLibrary = MakeShared<TextureLibrary>();
+
+
+		
+
+
 		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
 		m_currentScene = MakeShared<Scene>("testScene");
 
 		m_physicsSystem = MakeUnique<PhysicsEngine>();
+
+		// Initializing teh Render manager
+		m_renderManager = MakeUnique<RenderManager>();
+
+		
+
+		
 
 		// Setting the Instance reference of the creatd application
 		m_currentApplication = this;
@@ -140,8 +149,15 @@ namespace FanshaweGameEngine
 		return m_currentScene.get();
 	}
 
+	PhysicsEngine* Application::GetPhysicsEngine() const
+	{
+		return m_physicsSystem.get();
+	}
+
 	void Application::Initialize()
 	{
+
+		
 		
 		this->m_window->SetEventCallback(BIND_FN(Application::ProcessEvent));
 
@@ -151,7 +167,11 @@ namespace FanshaweGameEngine
 		m_mainCameraIndex = 0;
 
 		m_physicsSystem->Init();
-		//m_physicsSystem->SetPaused(false);
+		m_physicsSystem->UpdateScene(m_currentScene.get());
+
+		m_physicsSystem->SetPaused(false);
+
+		m_renderManager->Init();
 
 		// Calling Init on the child applications
 		OnInit();
@@ -205,9 +225,9 @@ namespace FanshaweGameEngine
 			m_window->SwapBuffers();
 			
 
-			m_physicsSystem->Update(m_deltaTime, m_currentScene.get());
+			m_physicsSystem->Update(m_deltaTime);
 
-			m_physicsSystem->UpdateECSTransforms(m_currentScene.get());
+			m_physicsSystem->UpdateECSTransforms();
 
 			
 			OnUpdate(m_deltaTime);
@@ -240,6 +260,11 @@ namespace FanshaweGameEngine
 	SharedPtr<ModelLibrary>& Application::GetModelLibrary()
 	{
 		return m_modelLibrary;
+	}
+
+	SharedPtr<TextureLibrary>& Application::GetTextureLibrary()
+	{
+		return m_textureLibrary;
 	}
 
 	float Application::GetGLFWTime()

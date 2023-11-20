@@ -2,6 +2,7 @@
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/UniqueId/UniqueId.h"
+#include "Engine/Core/Physics/Collision/NarrowPhase/Manifold.h"
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingBox.h"
 #include <functional>
 
@@ -17,6 +18,18 @@ namespace FanshaweGameEngine
 
 		//typedef  PhysicsCollisionCallback;
 
+		//Hardcoding for now
+		enum CollisionTag
+		{	
+			None,
+			Player,
+			Enemy,
+			Playerbullet,
+			Enemybullet,
+			Human
+
+		};
+
 
 		struct PhysicsProperties
 		{
@@ -29,7 +42,7 @@ namespace FanshaweGameEngine
 
 			float mass;
 
-			bool stationary = true;
+			bool stationary = false;
 
 			// Stic collider are easier to query
 			bool isStatic = false;
@@ -41,12 +54,19 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			Collider* collider = nullptr;
+			SharedPtr<Collider> collider = nullptr;
+
+			CollisionTag tag;
+
 
 		};
 
-		//typedef std::function<bool(RigidBody3D* this_obj, RigidBody3D* colliding_obj)> PhysicsCollisionCallback;
-		typedef std::function<void()> PhysicsCollisionCallback;
+		
+		// Callback for Trigger Checks
+		typedef std::function<bool(RigidBody3D* , RigidBody3D*)> PhysicsCollisionCallback;
+
+		// Callback for Colision response check
+		typedef std::function<void(RigidBody3D*, RigidBody3D*, Manifold*)> ManifoldCollisionCallback;
 
 		class RigidBody3D
 		{
@@ -83,14 +103,16 @@ namespace FanshaweGameEngine
 			//void SetOnCollisionCallback(PhysicsCollisionCallback& callback) { m_OnCollisionCallback = callback; }
 			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
 
+			void OnCollisionManifoldCallback(RigidBody3D* bodyFirst, RigidBody3D* bodySecond, Manifold* manifold);
 
-			void SetCollider(Collider& collider);
+
+			void SetCollider(const SharedPtr<Collider>& collider);
 			void SetCollider(ColliderType type);
-			Collider* GetCollider();
+			SharedPtr<Collider> GetCollider();
 
 			uint64_t GetUniqueId() const;
 
-			
+			const Matrix3 GetInverseinertia() const;
 
 			bool GetIsStatic() const;
 			float GetFriction() const;
@@ -101,6 +123,8 @@ namespace FanshaweGameEngine
 			bool GetIsTrigger() const;
 			void SetIsTrigger(bool trigger);
 
+			float GetElasticity() const;
+			void SetElasticity(const float newElasticity);
 
 			void StationaryCheck();
 
@@ -129,19 +153,26 @@ namespace FanshaweGameEngine
 
 			
 
-
+			// The Callback if the object is a trigger
 			PhysicsCollisionCallback m_OnCollisionCallback;
+
+			// Storage of manifold callbacks (List since there can be multiple)
+			std::vector<ManifoldCollisionCallback> m_onCollisionManifoldCallbacks;
 
 			// ========= Rotational and angular stuff for later on
 			Quaternion m_rotation = Quaternion();
 
 			// If the object's velocity is lower than this it is said to be staionary
-			float m_StationaryVelocityThresholdSquared = 0.05f;
+			float m_StationaryVelocityThresholdSquared = 0.005f;
 
 			float velocitySum = 0.0f;
 
 			// Check to see if a object is not acted by forces, so it doesnt need to update
 			bool m_isStationary = true;
+
+			float m_elasticity = 0.5f;
+
+			Matrix3 m_inverseInertia;
 
 			// Static collider are easier to query
 			bool m_isStatic = false;
@@ -153,7 +184,7 @@ namespace FanshaweGameEngine
 			bool isTrigger = false;
 
 			// teh actual Collider Type
-			Collider* m_collider = nullptr;
+			SharedPtr<Collider> m_collider = nullptr;
 
 			float m_invMass = 0.5;
 
@@ -174,6 +205,8 @@ namespace FanshaweGameEngine
 
 			// Determines if the AABB needs to be updated
 			bool m_AABBDirty = false;
+
+			CollisionTag m_tag;
 
 		};
 

@@ -1,0 +1,86 @@
+#pragma once
+#include "GameEngine.h"
+#include "SceneParser.h"
+#include "SceneLoader.h"
+
+
+class GraphicProject : public Application
+{
+    void OnInit()
+    {
+        parser = Factory<SceneParser>::Create();
+        loader = Factory<SceneLoader>::Create();
+
+        // parse the scene with the name
+        parser->ParseScene("Engine\\Scene\\SceneOne.json");
+
+        // Retrives the parsed models
+        std::map<std::string, std::string> modelmap = parser->GetModelList();
+
+        std::map<std::string, std::string> texturMap = parser->GetTextureList();
+       
+        // Retrives the parsed object data
+        std::vector<ObjectData> objectmap = parser->GetObjectList();
+
+
+        // Load all the models from the model data list
+        for (auto const& data : modelmap)
+        {
+            loader->LoadModel(data.first, data.second);
+        }
+
+        for (auto const& texture : texturMap)
+        {
+            loader->LoadTexture(texture.first, texture.second);
+        }
+
+        // Create objects according to the scene data
+        for (ObjectData object : objectmap)
+        {
+            loader->SpawnObject(object);
+        }
+
+
+    }
+
+    void OnUpdate(float deltaTime)
+    {
+        // Input map for switching between the Wireframe and normal displays
+        if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+        {
+            GetCurrent().GetAppWindow()->ToggleWireframe();
+        }
+
+    }
+
+
+   
+
+    
+
+
+
+private:
+
+    SharedPtr<SceneParser> parser = nullptr;
+    SharedPtr<SceneLoader> loader = nullptr;
+
+
+};
+
+
+int main(int argc, char* argv)
+{
+    // Creating a new Appinstance
+    GraphicProject* app = new GraphicProject();
+
+    //FilePath path = File::GetCurrentPath();
+
+    // Always Initialize the App
+    app->Initialize();
+    // Running the Application
+    app->Run();
+
+
+    delete app;
+}

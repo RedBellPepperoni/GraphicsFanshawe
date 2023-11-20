@@ -13,7 +13,7 @@ namespace FanshaweGameEngine
 			SphereCollider();
 
 			//May be add an explicit here later on if it clashes
-			SphereCollider(float radius);
+			 SphereCollider(float radius);
 
 
 			~SphereCollider();
@@ -24,6 +24,12 @@ namespace FanshaweGameEngine
 			virtual std::vector<ColliderEdge>& GetEdgeList(const RigidBody3D* currentBody) override;
 
 			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) override;
+
+			// gets the face that is closest to the parallel plane of a given axis
+			virtual void GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const override;
+
+
+			virtual Matrix3 BuildInverseInertia(float invMass) const override;
 
 
 			void SetRadius(const float radius);

@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "File.h"
 #include "Engine/Core/Rendering/Essentials/Mesh.h"
 #include "Engine/Utils/Loading/ModelLoader.h"
@@ -15,6 +15,7 @@ namespace FanshaweGameEngine
 		//std::vector<Transform> m_MeshTransform;
 
 		FilePath fileLocation;
+		
 
 	public:
 

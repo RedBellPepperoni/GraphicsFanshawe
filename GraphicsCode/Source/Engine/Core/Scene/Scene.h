@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core/Memory/Memory.h"
 #include <string>
+#include "Engine/Utils/Math.h"
 
 // The Entt Library header
 #include <entt/entity/registry.hpp>
@@ -82,7 +83,7 @@ namespace FanshaweGameEngine
 
 		void SetMainCamera(CameraController* controller, Transform* transform);
 		
-
+		void SetMainCameraPosition(const Vector3 position);
 
 		void Serialize(const std::string& filename);
 		void Deserialize(const std::string filename);

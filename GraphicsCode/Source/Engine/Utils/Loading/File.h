@@ -8,14 +8,46 @@ namespace FanshaweGameEngine
 	// Ask Mr Feeney if using C++17 is allowed for std::filesystem ----->  allowed by Mr Feeney
 	using FilePath = std::filesystem::path;
 
-	
+	using FileStream = std::fstream;
 	
 
 	// Wrapper around the std file system
 	class File
 	{
 
+		FileStream m_fileStream;
+
+		FilePath m_filePath;
+
 	public:
+
+		enum FileMode
+		{
+			READ = 0x1,
+			WRITE = 0x2,
+			BINARY = 0x4
+		};
+
+		File() = default;
+
+		File(const FilePath& path, int mode = FileMode::READ);
+
+		File(const std::string& path, int mode = FileMode::READ);
+
+		FileStream& GetStream();
+
+		bool IsOpen() const;
+
+		void Open(FilePath path, int mode = FileMode::READ);
+		void Open(const std::string& path, int mode = FileMode::READ);
+
+		void Close();
+
+
+		void WriteBytes(const uint8_t* bytes, size_t size);
+
+		void ReadBytes(uint8_t* bytes, size_t size);
+
 
 		static FilePath GetFilePathfromString(const std::string& stringPath);
 
@@ -41,6 +73,9 @@ namespace FanshaweGameEngine
 		static FilePath GetEngineDir();
 		static FilePath GetShaderDir();
 
+
+		static void CreateDir(const FilePath& path);
+		static void CreateDir(const std::string& path);
 
 	};
 }

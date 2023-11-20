@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
+#include "Texture.h"
+#include <string>
 
 namespace FanshaweGameEngine
 {
@@ -22,13 +24,10 @@ namespace FanshaweGameEngine
 
         struct MaterialTextures
         {
-            // Create a Texture Class later ON
-           // SharedPtr<Texture2D> albedo;
-           // SharedPtr<Texture2D> normal;
-           // SharedPtr<Texture2D> metallic;
-           // SharedPtr<Texture2D> roughness;
-           // SharedPtr<Texture2D> ao;
-           // SharedPtr<Texture2D> emissive;
+            SharedPtr<Texture> albedoMap;
+            SharedPtr<Texture> normalMap;
+            SharedPtr<Texture> aoroughMetalMap;
+            SharedPtr<Texture> emissiveMap;
         };
 
 
@@ -37,12 +36,14 @@ namespace FanshaweGameEngine
 
         public:
 
-            // Default Constructor
-            Material();
-            // Destructor
-            ~Material();
+            Material() = default;
+            ~Material() = default;
 
-            Vector4 albedoColour = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+            std::string name = "DefaultMaterial";
+
+            Vector2 uvMultiplier{ 1.0f };
+
+            Vector4 albedoColour{ 0.0f,0.0f,0.0f,1.0f };
             float roughness = 0.8f;
             float metallic = 0.1f;
             float emissive = 0.0f;
@@ -52,7 +53,9 @@ namespace FanshaweGameEngine
 
             MaterialType type = MaterialType::Opaque;
 
+            MaterialTextures textureMaps;
 
+            constexpr static size_t TextureCount = 4;
 
 		};
 	}

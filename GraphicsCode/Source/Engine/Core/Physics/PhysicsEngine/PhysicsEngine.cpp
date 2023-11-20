@@ -18,7 +18,7 @@ namespace FanshaweGameEngine
 	{
 
 
-		float PhysicsEngine::m_physicsTimeStep = 1.0f / 30.0f;
+		float PhysicsEngine::m_physicsTimeStep = 1.0f / 50.0f;
 
 
 
@@ -27,11 +27,11 @@ namespace FanshaweGameEngine
 			, m_paused(true)
 			, m_dampingFactor(0.999f)
 			, m_broadPhaseDetection(nullptr)
-			, m_rootBody(nullptr)
+			
 		{
 			m_timeStepCounter = 0.0f;
-			m_rigidBodies.reserve(50);
-			m_broadPhasePairs.reserve(500);
+			//m_rigidBodies.reserve(50);
+			//m_broadPhasePairs.reserve(500);
 
 		}
 
@@ -44,19 +44,19 @@ namespace FanshaweGameEngine
 		void PhysicsEngine::Init()
 		{
 			m_timeStepCounter = 0.0f;
-			//m_gravity = Vector3(0.0f, -9.81f, 0.0f);
-			m_gravity = Vector3(0.0f, 0.0f, 0.0f);
+			m_gravity = Vector3(0.0f, -9.81f, 0.0f);
+			//m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
 			m_dampingFactor = 0.98f;
-			m_physicsTimeStep = 1.0f / 30.0f;
+			m_physicsTimeStep = 1.0f / 50.0f;
 
 			m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
 		}
 
-		void PhysicsEngine::Update(const float deltatime, Scene* scene)
+		void PhysicsEngine::Update(const float deltatime)
 		{
-			m_rigidBodies.clear();
+			//m_rigidBodies.clear();
 
 			// Dont update if paused
 			if (m_paused)
@@ -64,19 +64,7 @@ namespace FanshaweGameEngine
 				return;
 			}
 			
-			ComponentView<RigidBody3D> rigidBodyView = scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
-
-
-			for (Entity rigidbodyEntity : rigidBodyView)
-			{
-				//m_rigidBodies.push_back(rigidbodyEntity-)
-
-				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
-
-				// get all the rigidBodies
-				m_rigidBodies.push_back(rigidBody);
-
-			}
+			
 
 			if (m_rigidBodies.empty())
 			{
@@ -84,11 +72,11 @@ namespace FanshaweGameEngine
 				return;
 			}
 
+			
+
+
 			m_debugStats.rigidBodyCount = (uint32_t)m_rigidBodies.size();
-
-			//LOG_WARN("Nodies : {0}", m_debugStats.rigidBodyCount);
-
-
+			
 			m_timeStepCounter += deltatime;
 
 			for (uint32_t i = 0; (m_timeStepCounter >= m_physicsTimeStep) && (i < m_maxSubstepsPerUpdate); i++)
@@ -107,44 +95,42 @@ namespace FanshaweGameEngine
 
 		}
 
-		void PhysicsEngine::UpdateECSTransforms(Scene* scene)
+		void PhysicsEngine::UpdateScene(Scene* scene)
+		{
+			m_scene = scene;
+		}
+
+		void PhysicsEngine::UpdateECSTransforms()
 		{
 
-			if (!scene)
+			if (!m_scene)
 			{
 				// No scene , so why update anything
 				return;
 			}
 
-			ComponentView<RigidBody3D> rigidBodyView = scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
 
-
-			
-			for (Entity rigidbodyEntity : rigidBodyView)
+			if(m_transforms.empty() || m_rigidBodies.empty())
 			{
-				
+				return;
+			}
 
-				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
 
-				if (!rigidBody->GetIsStatic() && !rigidBody->GetIsStationary())
+			// Optimised this step by a lot
+			for (int index = 0; index < m_transforms.size(); index ++)
+			{
+				RigidBody3D* body = m_rigidBodies[index];
+
+				if (!body->GetIsStatic() && !body->GetIsStationary())
 				{
-					Transform* transform = &rigidbodyEntity.GetComponent<Transform>();
+					m_transforms[index]->SetPosition(body->GetPosition());
 
-					transform->SetPosition(rigidBody->GetPosition());
-					//transform->SetRotation(rigidBody->GetRotation());
+					
 
 				}
 
-				
-
-
 			}
 		
-
-
-
-
-
 
 		}
 
@@ -170,17 +156,76 @@ namespace FanshaweGameEngine
 
 		float PhysicsEngine::GetDeltaTime()
 		{
-			return 0.0f;
+			return m_physicsTimeStep;
 		}
+
+		// Call this when you create or Delete a rigidbody
+		void PhysicsEngine::UpdateRigidBodyCache()
+		{
+
+			//m_rigidBodies.clear();
+
+			if (!m_scene)
+			{
+				return;
+			}
+
+			ComponentView<RigidBody3D> rigidBodyView = m_scene->GetEntityManager()->GetComponentsOfType<RigidBody3D>();
+
+
+			for (Entity rigidbodyEntity : rigidBodyView)
+			{			
+
+				RigidBody3D* rigidBody = &rigidbodyEntity.GetComponent<RigidBody3D>();
+				Transform* transform = &rigidbodyEntity.GetComponent<Transform>();
+
+				// get all the rigidBodies
+				m_rigidBodies.push_back(rigidBody);
+				m_transforms.push_back(transform);
+
+			}
+
+			
+
+		}
+
+		RigidBody3D* PhysicsEngine::CreateRigidBody(Entity& entity, PhysicsProperties properties)
+		{
+
+			RigidBody3D* body = &entity.AddComponent<RigidBody3D>(properties);
+			Transform* transform = &entity.AddComponent<Transform>();
+
+			body->SetPosition(properties.position);
+
+			transform->SetPosition(properties.position);
+			transform->SetRotation(properties.rotation);
+			transform->SetScale(Vector3(1.0f));
+
+			if (!m_rigidBodies.empty())
+			{
+				m_rigidBodies.clear();
+				m_transforms.clear();
+			}
+
+			UpdateRigidBodyCache();
+
+			return body;
+		}
+
+	
 
 		// Initial Check to get pairs of potential collision using AABBs
 		
 		void PhysicsEngine::UpdatePhysics()
 		{
 
+			m_manifoldList.clear();
+
 			BroadPhaseCollision();
 
 			NarrowPhaseCollision();
+
+			SolveManifolds();
 
 			UpdateAllBodies();
 
@@ -200,34 +245,15 @@ namespace FanshaweGameEngine
 				return;
 			}
 
+			
+			m_rigidBodies;
 
 			// get the potential Collison pairs
 			m_broadPhasePairs = m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
 
-			
-			for (CollisionPair& pair : m_broadPhasePairs)
-			{
-				Collider* colliderOne = pair.firstBody->GetCollider();
-				Collider* colliderTwo = pair.secondBody->GetCollider();
+		
 
-
-				if (colliderOne && colliderTwo)
-				{
-					CollisionData coldata;
-
-
-					if (NarrowPhase::Get().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
-					{
-						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
-						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
-
-					}
-
-				}
-
-			}
-		   
-
+		
 
 		}
 		void PhysicsEngine::NarrowPhaseCollision()
@@ -238,7 +264,61 @@ namespace FanshaweGameEngine
 			}
 
 
-			m_debugStats.collisionCount = 0;
+			for (CollisionPair& pair : m_broadPhasePairs)
+			{
+				Collider* colliderOne = pair.firstBody->GetCollider().get();
+				Collider* colliderTwo = pair.secondBody->GetCollider().get();
+
+
+				if (colliderOne && colliderTwo)
+				{
+					CollisionData coldata;
+
+
+					if (NarrowPhase::Get().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
+					{
+						//const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
+						//const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
+
+
+						//if (callfirst && callSecond)
+						if (true)
+						{
+
+							m_manifoldLock.lock();
+							Manifold& manifold = m_manifoldList.emplace_back();
+							manifold.Initilize(pair.firstBody, pair.secondBody);
+
+							if (NarrowPhase::Get().BuildCollisionManifold(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, coldata, &manifold))
+							{
+								pair.firstBody->OnCollisionManifoldCallback(pair.firstBody, pair.secondBody, &manifold);
+								pair.secondBody->OnCollisionManifoldCallback(pair.firstBody, pair.secondBody, &manifold);
+
+								m_debugStats.collisionCount++;
+							}
+
+							else
+							{
+								m_manifoldList.pop_back();
+							}
+
+
+							m_manifoldLock.unlock();
+
+						}
+
+
+						
+
+					}
+
+				}
+
+			}
+
+
+
+			
 
 		}
 		void PhysicsEngine::UpdateAllBodies()
@@ -252,12 +332,24 @@ namespace FanshaweGameEngine
 			for (RigidBody3D* body : m_rigidBodies)
 			{
 				UpdateRigidBody(body);
+
+				m_debugStats.rigidBodyCount++;
+
+				// make it stationary if the velocity is too low
+				body->StationaryCheck();
 			}
 
 
+			m_debugStats.rigidBodyCount;
+
 		}
+
+
 		void PhysicsEngine::UpdateRigidBody(RigidBody3D* body) const
 		{
+			
+
+
 			if (!body->GetIsStatic() && !body->GetIsStationary())
 			{
 				
@@ -290,6 +382,27 @@ namespace FanshaweGameEngine
 				body->m_transformDirty = true;
 			}
 
+			m_physicsTimeStep *= m_positionIterations;
+
 		}
-}
+
+		void PhysicsEngine::SolveManifolds()
+		{
+			for (Manifold& manifold : m_manifoldList)
+			{
+				manifold.SolveElasticity(m_physicsTimeStep);
+				
+			}
+
+
+			for (uint32_t i = 0; i < m_velocityIterations; i++)
+			{
+				for (Manifold& manifold : m_manifoldList)
+				{
+					manifold.ApplyImpulse();
+				}
+			}
+
+		}
+	}
 }

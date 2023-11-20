@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
 		{
 		}
 
-        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs(std::vector<RigidBody3D*> bodies)
+        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs( std::vector<RigidBody3D*> bodies)
         {
             std::vector<CollisionPair> pairs;
 

@@ -16,6 +16,7 @@ namespace FanshaweGameEngine
 
 
 	class ModelLibrary;
+	class TextureLibrary;
 	class GameObjectRegistry;
 	class Scene;
 //
@@ -64,6 +65,10 @@ using Physics::PhysicsEngine;
 	    // The  containers for the loaded models 
 		SharedPtr<ModelLibrary> m_modelLibrary;		
 
+		// The container for all teh loaded texures
+		SharedPtr<TextureLibrary> m_textureLibrary;
+
+
 		// Pointer to the currently loaded scene
 		SharedPtr<Scene> m_currentScene;
 
@@ -98,6 +103,7 @@ using Physics::PhysicsEngine;
 
 	public:
 
+		
 
 		// Destructor
 		virtual ~Application();
@@ -110,6 +116,8 @@ using Physics::PhysicsEngine;
 
 		// Reference Getter for teh current scene
 		Scene* GetCurrentScene() const;
+
+		PhysicsEngine* GetPhysicsEngine() const;
 
 		// The start up setup for the apllication
 		void Initialize();
@@ -126,6 +134,9 @@ using Physics::PhysicsEngine;
 
 		// Reference getter to teh Model Library
 		SharedPtr<ModelLibrary>& GetModelLibrary();
+
+		// Reference getter to the Textue Library
+		SharedPtr<TextureLibrary>& GetTextureLibrary();
 		
 		// Returns the GLFW current time from the current glfwwindow
 		float GetGLFWTime();

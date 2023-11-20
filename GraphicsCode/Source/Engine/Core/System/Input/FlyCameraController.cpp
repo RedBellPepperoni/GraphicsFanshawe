@@ -112,17 +112,17 @@ namespace FanshaweGameEngine
 		// ================ UP CAMERA MOVEMENT =====================
 
 
-		//if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Space))
-		//{
-		//	m_velocity += Vector3(0.0f,1.0f,0.0f) * m_cameraSpeed;
-		//}
+		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Space))
+		{
+			m_velocity += Vector3(0.0f,1.0f,0.0f) * m_cameraSpeed;
+		}
 
-		//// ================ DOWN CAMERA MOVEMENT =====================
-		//
-		//if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::LeftControl))
-		//{
-		//	m_velocity -= Vector3(0.0f, 1.0f, 0.0f) * m_cameraSpeed;
-		//}
+		// ================ DOWN CAMERA MOVEMENT =====================
+		
+		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::LeftControl))
+		{
+			m_velocity -= Vector3(0.0f, 1.0f, 0.0f) * m_cameraSpeed;
+		}
 
 
        // If there is velocity, move the Object

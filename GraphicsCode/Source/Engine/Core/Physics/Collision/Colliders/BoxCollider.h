@@ -25,6 +25,11 @@ namespace FanshaweGameEngine
 			// The Seperated Axis Theorem
 			virtual void GetMinMaxFromAxis(const RigidBody3D* body, const Vector3& axis, Vector3* outMin, Vector3* outMax) override;
 
+            virtual void GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const override;
+
+            virtual Matrix3 BuildInverseInertia(float invMass) const override;
+
+
             void SetHalfWidth(float half_width)
             {
                 m_CuboidHalfDimensions.x = fabs(half_width);

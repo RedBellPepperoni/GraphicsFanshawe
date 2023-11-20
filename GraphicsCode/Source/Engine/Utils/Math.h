@@ -253,6 +253,73 @@ namespace FanshaweGameEngine
             return glm::normalize(value);
         }
 
+
+
+        template<typename T, typename U>
+        inline constexpr decltype(std::declval<T>() + std::declval<U>()) Max(const T& v1, const U& v2)
+        {
+            return (v1 > v2 ? v1 : v2);
+        }
+
+        template<typename T, typename U, typename R>
+        inline constexpr decltype(std::declval<T>() + std::declval<U>() + std::declval<R>()) Max(const T& v1, const U& v2, const R& v3)
+        {
+            return Max(Max(v1, v2), v3);
+        }
+
+        template<typename T, typename U>
+        inline constexpr decltype(std::declval<T>() + std::declval<U>()) Min(const T& v1, const U& v2)
+        {
+            return (v1 < v2 ? v1 : v2);
+        }
+
+        template<typename T, typename U, typename R>
+        inline constexpr decltype(std::declval<T>() + std::declval<U>() + std::declval<R>()) Min(const T& v1, const U& v2, const R& v3)
+        {
+            return Min(Min(v1, v2), v3);
+        }
+
+
+        template<typename T>
+        inline T VectorMax(const T& v1, const T& v2)
+        {
+            T result(0.0f);
+            for (typename T::length_type i = 0; i < result.length(); i++)
+            {
+                result[i] = std::max(v1[i], v2[i]);
+            }
+            return result;
+        }
+
+        template<typename T>
+        inline T VectorMin(const T& v1, const T& v2)
+        {
+            T result(0.0f);
+            for (typename T::length_type i = 0; i < result.length(); i++)
+            {
+                result[i] = std::min(v1[i], v2[i]);
+            }
+            return result;
+        }
+
+
+
+
+
+        // Computes pair of vectors with min and max coordinates in side a vertex array
+
+        inline std::pair<Vector3, Vector3>MinMaxComponents(Vector3* verteces, size_t size)
+        {
+            Vector3 maxCoords(-1.0f * std::numeric_limits<float>::max());
+            Vector3 minCoords(std::numeric_limits<float>::max());
+            for (size_t i = 0; i < size; i++)
+            {
+                minCoords = VectorMin(minCoords, verteces[i]);
+                maxCoords = VectorMax(maxCoords, verteces[i]);
+            }
+            return { minCoords, maxCoords };
+        }
+
         
     }
 

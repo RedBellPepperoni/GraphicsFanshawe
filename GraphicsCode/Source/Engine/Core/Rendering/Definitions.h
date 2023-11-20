@@ -71,9 +71,12 @@ namespace FanshaweGameEngine
 			Vector3 position;
 			Vector4 color;
 			Vector3 normal;
+			Vector2 texCoord;
+			Vector3 tangent;
+			Vector3 bitangent;
 
 
-			static const size_t Stride = sizeof(Vector3) + sizeof(Vector4) + sizeof(Vector3);
+			static const size_t Stride = sizeof(Vector3) + sizeof(Vector4) + sizeof(Vector3) + sizeof(Vector2) + sizeof(Vector3) + sizeof(Vector3);
 		};
 
 		struct Triangle

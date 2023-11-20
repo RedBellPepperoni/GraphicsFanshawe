@@ -17,6 +17,7 @@ namespace FanshaweGameEngine
 			, m_rotation(properties.rotation)
 			, m_isStatic(properties.isStatic)
 			, m_friction(properties.friction)
+			, m_tag(properties.tag)
 		{
 			m_modelboundingBox.Set(Vector3(-0.5f), Vector3(0.5f));
 
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 
 			if (properties.collider)
 			{
-				SetCollider(*properties.collider);
+				SetCollider(properties.collider);
 			}
 
 
@@ -64,7 +65,7 @@ namespace FanshaweGameEngine
 			if (m_transformDirty)
 			{
 				// Update teh cached trasnform
-				m_transform = Translate(Matrix4(1.0f), m_position);
+				m_transform = Translate(Matrix4(1.0f), m_position) * QuatToMatrix(m_rotation);
 			
 				// We just Updated, no it can be cached
 				m_transformDirty = false;
@@ -176,30 +177,48 @@ namespace FanshaweGameEngine
 		{
 			// Work on this
 
-			if (m_OnCollisionCallback)
+			const bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(bodyFirst, bodySecond) : true;
+
+			if (handleCollision)
 			{
-				m_OnCollisionCallback();
+				SetIsStationary(false);
 			}
 
 
-			return false;
+			return handleCollision;
 		}
 
-		void RigidBody3D::SetCollider(Collider& collider)
+		void RigidBody3D::OnCollisionManifoldCallback(RigidBody3D* bodyFirst, RigidBody3D* bodySecond, Manifold* manifold)
 		{
-			m_collider = &collider;
+			// Send a callback for each manifold
+			for (ManifoldCollisionCallback callback : m_onCollisionManifoldCallbacks)
+			{
+				callback(bodyFirst, bodySecond, manifold);
+			}
+
+		}
+
+		void RigidBody3D::SetCollider(const SharedPtr<Collider>& collider)
+		{
+			m_collider = collider;
 
 		}
 		void RigidBody3D::SetCollider(ColliderType type)
 		{
 		}
-		Collider* RigidBody3D::GetCollider()
+
+
+		SharedPtr<Collider> RigidBody3D::GetCollider()
 		{
 			return m_collider;
 		}
 		uint64_t RigidBody3D::GetUniqueId() const
 		{
 			return m_Id.GetId();
+		}
+		const Matrix3 RigidBody3D::GetInverseinertia() const
+		{
+			return m_inverseInertia;
 		}
 		bool RigidBody3D::GetIsStatic() const
 		{
@@ -214,13 +233,25 @@ namespace FanshaweGameEngine
 		}
 		void RigidBody3D::SetStatic(bool isstatic)
 		{
+			m_isStatic = isstatic;
 		}
 		bool RigidBody3D::GetIsTrigger() const
 		{
 			return false;
 		}
+
 		void RigidBody3D::SetIsTrigger(bool trigger)
 		{
+		}
+
+		float RigidBody3D::GetElasticity() const
+		{
+			return m_elasticity;
+		}
+
+		void RigidBody3D::SetElasticity(const float newElasticity)
+		{
+			m_elasticity = newElasticity;
 		}
 
 		void RigidBody3D::StationaryCheck()

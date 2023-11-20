@@ -184,7 +184,7 @@ namespace FanshaweGameEngine
             m_properties.aspectRatio = m_properties.width / (float)m_properties.height;
 
             GLDEBUG(glViewport(0, 0, m_properties.width, m_properties.height));
-            GLDEBUG(glClearColor(0.02f, 0.02f, 0.02f, 1.0f));
+            GLDEBUG(glClearColor(0.2f, 0.2f, 0.2f, 1.0f));
            // GLDEBUG(glClearColor(0.7f, 0.7f, 0.7f, 1.0f));
             GLDEBUG(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
@@ -193,8 +193,7 @@ namespace FanshaweGameEngine
             // While drawing a pixel, see if the pixel that's already there is closer or not?
             GLDEBUG(glEnable(GL_DEPTH_TEST));
             
-            glPolygonMode(GL_FRONT, GL_FILL);
-
+            
 
         }
 
@@ -341,6 +340,20 @@ namespace FanshaweGameEngine
             {
                 glfwSetInputMode(windowHandle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             }
+        }
+        void Window::ToggleWireframe()
+        {
+            wireFrame = !wireFrame;
+
+            if (wireFrame)
+            {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            else
+            {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+
         }
     }
 

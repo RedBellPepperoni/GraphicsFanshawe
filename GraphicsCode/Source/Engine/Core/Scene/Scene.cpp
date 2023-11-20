@@ -37,10 +37,11 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
-		transform->SetPosition(Vector3(112, 65, 172));
-		transform->SetRotation(Vector3(-26, 60, 0));
+		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
+		transform->SetRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
 		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
+		//CameraController* controller = &cameraEntity.AddComponent<CameraController>();
 		controller->SetCamera(camera);
 
 		SetMainCamera(controller, transform);
@@ -129,6 +130,11 @@ namespace FanshaweGameEngine
 
 		//LOG_ERROR("Camera Transform : {0} : {1} : {2}", mainCameraTransform->GetPosition().x, mainCameraTransform->GetPosition().y, mainCameraTransform->GetPosition().z);
 
+	}
+
+	void Scene::SetMainCameraPosition(Vector3 position)
+	{
+		mainCameraTransform->SetPosition(position);
 	}
 
 

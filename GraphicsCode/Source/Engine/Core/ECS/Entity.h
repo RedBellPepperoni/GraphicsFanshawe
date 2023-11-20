@@ -4,6 +4,7 @@
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/UniqueId/UniqueId.h"
 #include "Engine/Utils/Logging/Log.h"
+#include "Components/Transform.h"
 
 __pragma(warning(push))
 // External performant ECS Registry system
@@ -14,6 +15,7 @@ __pragma(warning(pop))
 
 namespace FanshaweGameEngine
 {
+	using namespace FanshaweGameEngine::Components;
 
 	struct IdComponent
 	{
@@ -121,7 +123,10 @@ namespace FanshaweGameEngine
 		}
 
 		
-
+		Transform& GetTransform()
+		{
+			return m_scene->GetRegistry().get<Transform>(m_entityHandle);
+		}
 
 		//Transform&
 
@@ -188,6 +193,25 @@ namespace FanshaweGameEngine
 
 
 
+		operator entt::entity() const
+		{
+			return m_entityHandle;
+		}
+
+		operator bool() const
+		{
+			return( (m_entityHandle != entt::null) && m_scene);
+		}
+
+		bool operator==(const Entity& other) const
+		{
+			return m_entityHandle == other.m_entityHandle && m_scene == other.m_scene;
+		}
+
+		bool operator!=(const Entity& other) const
+		{
+			return !(*this == other);
+		}
 	};
 }
 
