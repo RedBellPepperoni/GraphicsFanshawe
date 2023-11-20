@@ -24,6 +24,7 @@ void SceneParser::ParseScene(const std::string& path)
 	}
 
 	ParseModelData();
+	ParseTextureData();
 	ParseObjectData();
 
 }

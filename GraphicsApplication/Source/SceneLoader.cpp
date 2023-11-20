@@ -17,6 +17,13 @@ void SceneLoader::LoadModel(const std::string& name, const std::string& modelpat
 	modelLibrary->LoadModel(name, modelpath);
 }
 
+void SceneLoader::LoadTexture(const std::string& name, const std::string& path)
+{
+	textureLibrary->LoadTexture(name, path, TextureFormat::RGB);
+}
+
+
+
 void SceneLoader::SpawnObject(const ObjectData& data)
 {
 	if (!sceneRef)

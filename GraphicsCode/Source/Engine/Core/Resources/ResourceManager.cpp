@@ -73,17 +73,13 @@ namespace FanshaweGameEngine
 		return newMaterial;
 	}
 
-	SharedPtr<Texture> TextureLibrary::LoadTexture(const std::string& filePath, TextureFormat format)
+	SharedPtr<Texture> TextureLibrary::LoadTexture(const std::string& friendlyName, const std::string& filePath, TextureFormat format)
 	{
 		SharedPtr<Texture> newTexture = Factory<Texture>::Create(filePath, format);
 
 		if (newTexture != nullptr)
 		{
-			FilePath path = File::GetFilePathfromString(filePath);
-			
-			std::string name = File::GetFileName(path);
-
-			TextureLibrary::CreateResource(name, newTexture);
+			TextureLibrary::CreateResource(friendlyName, newTexture);
 		}
 
 

@@ -12,7 +12,7 @@ public:
 
 
 	void LoadModel(const std::string& name, const std::string& modelpath);
-
+	void LoadTexture(const std::string& name, const std::string& path);
 	void SpawnObject(const ObjectData& data);
 
 

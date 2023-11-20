@@ -68,6 +68,7 @@ using Physics::PhysicsEngine;
 		// The container for all teh loaded texures
 		SharedPtr<TextureLibrary> m_textureLibrary;
 
+
 		// Pointer to the currently loaded scene
 		SharedPtr<Scene> m_currentScene;
 
@@ -102,6 +103,7 @@ using Physics::PhysicsEngine;
 
 	public:
 
+		
 
 		// Destructor
 		virtual ~Application();

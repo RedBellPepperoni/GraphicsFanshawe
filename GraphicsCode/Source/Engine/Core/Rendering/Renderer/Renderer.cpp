@@ -6,6 +6,7 @@
 
 // Forward Declaration Headers
 #include "Engine/Core/Rendering/Essentials/Material.h"
+#include "Engine/Core/Rendering/Essentials/Texture.h"
 #include "Engine/Core/Rendering/Essentials/Mesh.h"
 #include "Engine/Core/ECS/Components/Transform.h"
 #include "Engine/Core/Rendering/Buffers/VertexArray.h"
@@ -36,8 +37,15 @@ namespace FanshaweGameEngine
         void Renderer::Init()
         {
             // Creating a new Vertex Array Object foe the Pipeline
-            m_pipeline.VAO = Factory<VertexArray>::Create();       
+            m_pipeline.VAO = Factory<VertexArray>::Create();    
+
+
+           // SharedPtr<TextureLibrary> lib = Application::GetCurrent().GetTextureLibrary();
+
+           m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->LoadTexture("DefaultTexture", "Engine\\Textures\\DefaultTexture.png", TextureFormat::RGB);
             
+             
+
         }
 
        
@@ -78,6 +86,13 @@ namespace FanshaweGameEngine
             if (material != nullptr)
             {
                 newElement.materialIndex = m_pipeline.MaterialList.size();
+
+                // For now just checking for albedo
+                if (material->textureMaps.albedoMap == nullptr)
+                {
+                    material->textureMaps.albedoMap = m_pipeline.defaultTextureMap;
+                }
+
                 m_pipeline.MaterialList.push_back(material);
             }
 
@@ -228,6 +243,8 @@ namespace FanshaweGameEngine
 
         void Renderer::DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader,const RenderElement& element)
         {
+            int textureBindIndex = 0;
+
             uint32_t shaderId = shader->GetProgramId();
 
 
@@ -236,7 +253,11 @@ namespace FanshaweGameEngine
 
             if (mat != nullptr)
             {
+                mat->textureMaps.albedoMap->Bind(textureBindIndex++);
+
+
                 shader->SetUniform("matColor", mat->albedoColour);
+                shader->SetUniform("mapAlbedo", mat->textureMaps.albedoMap->GetBoundId());
             }
             else
             {

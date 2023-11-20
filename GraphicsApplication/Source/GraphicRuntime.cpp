@@ -16,6 +16,8 @@ class GraphicProject : public Application
 
         // Retrives the parsed models
         std::map<std::string, std::string> modelmap = parser->GetModelList();
+
+        std::map<std::string, std::string> texturMap = parser->GetTextureList();
        
         // Retrives the parsed object data
         std::vector<ObjectData> objectmap = parser->GetObjectList();
@@ -25,6 +27,11 @@ class GraphicProject : public Application
         for (auto const& data : modelmap)
         {
             loader->LoadModel(data.first, data.second);
+        }
+
+        for (auto const& texture : texturMap)
+        {
+            loader->LoadTexture(texture.first, texture.second);
         }
 
         // Create objects according to the scene data

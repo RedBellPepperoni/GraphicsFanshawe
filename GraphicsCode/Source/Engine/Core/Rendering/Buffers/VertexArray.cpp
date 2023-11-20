@@ -47,14 +47,21 @@ namespace FanshaweGameEngine
 
 			GLint position = GLDEBUG(glGetAttribLocation(shaderId, "vPosition"));	// program
 			GLint color = GLDEBUG(glGetAttribLocation(shaderId, "vColor"));
-			GLint nornal = GLDEBUG(glGetAttribLocation(shaderId, "vNormal"));
+			GLint normal = GLDEBUG(glGetAttribLocation(shaderId, "vNormal"));
+			GLint textureCoord = GLDEBUG(glGetAttribLocation(shaderId, "aTexCoord"));
 
 			GLDEBUG(glEnableVertexAttribArray(position));
 			GLDEBUG(glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, position)));
 
 
-			GLDEBUG(glEnableVertexAttribArray(color));
-			GLDEBUG(glVertexAttribPointer(color, 4, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, color)));
+			/*GLDEBUG(glEnableVertexAttribArray(color));
+			GLDEBUG(glVertexAttribPointer(color, 4, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, color)));*/
+
+			GLDEBUG(glEnableVertexAttribArray(normal));
+			GLDEBUG(glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, normal)));
+
+			GLDEBUG(glEnableVertexAttribArray(textureCoord));
+			GLDEBUG(glVertexAttribPointer(textureCoord, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, texCoord)));
 
 		}
 	}

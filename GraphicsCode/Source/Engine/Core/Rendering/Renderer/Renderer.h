@@ -28,6 +28,7 @@ namespace FanshaweGameEngine
 		class VertexArray;
 		class Shader;
 		class Camera;
+		class Texture;
 		
 
 		enum class MaterialType;
@@ -86,6 +87,7 @@ namespace FanshaweGameEngine
 			std::vector<CameraElement> cameraList;
 
 
+			SharedPtr<Texture> defaultTextureMap;
 			
 		};
 

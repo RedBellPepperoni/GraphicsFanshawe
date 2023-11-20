@@ -33,7 +33,7 @@ namespace FanshaweGameEngine
 			// Loading the Default Shader 
 			// Add other Defaultr Shaders below <----
 
-			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "lightVert.glsl", File::GetShaderDir().string() + "lightFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vert.glsl", File::GetShaderDir().string() + "frag.glsl"));
 
 		}
@@ -100,14 +100,10 @@ namespace FanshaweGameEngine
 
 		void RenderManager::Init()
 		{
-			// Initializing Defaults that will be reused / instanced
-			m_renderer = MakeUnique<Renderer>();
-
-			m_renderer->Init();
+			
 
 			// Initializing Shader Library to store all the Loaded Shaders
 			m_ShaderLibrary = MakeShared<ShaderLibrary>();
-
 
 			m_MaterialLibrary = MakeShared<MaterialLibrary>();
 
@@ -115,9 +111,14 @@ namespace FanshaweGameEngine
 			LoadEngineShaders();
 
 
-			//GLDEBUG(glEnable(GL_DEPTH_TEST));
-			//GLDEBUG(glEnable(GL_STENCIL_TEST));
+			GLDEBUG(glEnable(GL_DEPTH_TEST));
+			GLDEBUG(glEnable(GL_STENCIL_TEST));
 			//GLDEBUG(glEnable(GL_CULL_FACE));
+
+			// Initializing Defaults that will be reused / instanced
+			m_renderer = MakeUnique<Renderer>();
+
+			m_renderer->Init();
 		
 			
 

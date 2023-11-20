@@ -12,8 +12,10 @@ namespace FanshaweGameEngine
 	{
 		class Shader;
 		class Material;
-		class Texture;
+
 		enum class TextureFormat : uint8_t;
+		class Texture;
+		
 	}
 
 	class Model;
@@ -187,7 +189,7 @@ namespace FanshaweGameEngine
 
 		}
 
-		SharedPtr<Texture> LoadTexture(const std::string& filePath, TextureFormat format);
+		SharedPtr<Texture> LoadTexture(const std::string& friendlyName,const std::string& filePath, TextureFormat format);
 
 	};
 

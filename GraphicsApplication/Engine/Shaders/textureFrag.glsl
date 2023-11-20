@@ -3,6 +3,7 @@
 in vec4 vertColor;
 in vec4 vertPosition;
 in vec4 vertexNormal;
+in vec2 texCoord;
 out vec4 FragColor;
 
 
@@ -58,6 +59,7 @@ struct SpotLight {
     vec3 specular;       
 };
 
+uniform sampler2D mapAlbedo;
 
 uniform DirLight dirLight;
 
@@ -104,8 +106,8 @@ vec3 CalculateDirectionalLight(vec3 viewDir ,vec3 normal,  DirLight light)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 
     // combine results
-    vec3 ambient  = light.intensity  * vertColor.xyz;
-    vec3 diffuse  = light.color  * diff * vertColor.xyz;
+    vec3 ambient  = light.intensity  * vec3(texture(mapAlbedo, texCoord));
+    vec3 diffuse  = light.color  * diff * vec3(texture(mapAlbedo, texCoord));
     vec3 specular = light.specular * spec * vec3(0.25f);
    
     vec3 result = (ambient + diffuse + specular);
@@ -128,9 +130,9 @@ vec3 CalculatePointLight(vec3 viewDir, vec3 normal, vec3 vPos, PointLight light)
     float distance    = length(light.position - vPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
     // combine results
-    vec3 ambient  = light.intensity  * vertColor.xyz;
-    vec3 diffuse  = light.color  * diff * vertColor.xyz;
-    vec3 specular = light.specular * spec * vertColor.xyz;
+    vec3 ambient  = light.intensity  * vec3(texture(mapAlbedo, texCoord));
+    vec3 diffuse  = light.color  * diff * vec3(texture(mapAlbedo, texCoord));
+    vec3 specular = light.specular * spec * vec3(texture(mapAlbedo, texCoord));
 
     ambient  *= attenuation;
     diffuse  *= attenuation;
@@ -160,9 +162,9 @@ vec3 CalcSpotLight(vec3 viewDir, vec3 normal, vec3 vPos, SpotLight light)
     float epsilon = light.cutOff - light.outerCutOff;
     float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
     // combine results
-    vec3 ambient = light.intensity * vertColor.xyz;
-    vec3 diffuse = light.color * diff * vertColor.xyz;
-    vec3 specular = light.specular * spec * vertColor.xyz;
+    vec3 ambient = light.intensity * vec3(texture(mapAlbedo, texCoord));
+    vec3 diffuse = light.color * diff * vec3(texture(mapAlbedo, texCoord));
+    vec3 specular = light.specular * spec * vec3(texture(mapAlbedo, texCoord));
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
@@ -175,18 +177,18 @@ vec4 CalculateLighting(vec4 vPos, vec4 vColor, vec4 vNormal)
  	vec3 norm = normalize(vNormal.xyz);
 	vec3 viewDir = normalize(cameraView - vPos.xyz);
 
-	vec3 result = CalculateDirectionalLight(viewDir,norm,dirLight) * vColor.xyz;
+	vec3 result = CalculateDirectionalLight(viewDir,norm,dirLight);
 	
    
 	for(int index = 0; index < MAX_POINT_LIGHTS; index++)
 	{
-		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]) * vColor.xyz;
+		result += CalculatePointLight(viewDir,norm,vertPosition.xyz,pointLightList[index]);
 	}
 
      
 	for(int index = 0; index < MAX_SPOT_LIGHTS; index++)
 	{
-		result += CalcSpotLight(viewDir,norm,vertPosition.xyz,spotLightList[index]) * vColor.xyz;
+		result += CalcSpotLight(viewDir,norm,vertPosition.xyz,spotLightList[index]);
 	}
 
 

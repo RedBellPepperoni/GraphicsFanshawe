@@ -36,21 +36,27 @@ namespace FanshaweGameEngine
 
 		m_window->Initialize();
 
-		// Initializing teh Render manager
-		m_renderManager = MakeUnique<RenderManager>();
-
-		m_renderManager->Init();
-
 		// Setting up teh Model and Object Library
-		m_modelLibrary   = Factory<ModelLibrary>::Create();
+		m_modelLibrary = MakeShared<ModelLibrary>();
 
-		m_textureLibrary = Factory<TextureLibrary>::Create();
+		m_textureLibrary = MakeShared<TextureLibrary>();
+
+
+		
+
 
 		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
 		m_currentScene = MakeShared<Scene>("testScene");
 
 		m_physicsSystem = MakeUnique<PhysicsEngine>();
+
+		// Initializing teh Render manager
+		m_renderManager = MakeUnique<RenderManager>();
+
+		
+
+		
 
 		// Setting the Instance reference of the creatd application
 		m_currentApplication = this;
@@ -150,6 +156,8 @@ namespace FanshaweGameEngine
 
 	void Application::Initialize()
 	{
+
+		
 		
 		this->m_window->SetEventCallback(BIND_FN(Application::ProcessEvent));
 
@@ -162,6 +170,8 @@ namespace FanshaweGameEngine
 		m_physicsSystem->UpdateScene(m_currentScene.get());
 
 		m_physicsSystem->SetPaused(false);
+
+		m_renderManager->Init();
 
 		// Calling Init on the child applications
 		OnInit();
