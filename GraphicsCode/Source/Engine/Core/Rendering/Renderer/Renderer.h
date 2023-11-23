@@ -87,6 +87,8 @@ namespace FanshaweGameEngine
 			std::vector<CameraElement> cameraList;
 
 
+			int textureBindIndex = 0;
+
 			SharedPtr<Texture> defaultTextureMap;
 			
 		};

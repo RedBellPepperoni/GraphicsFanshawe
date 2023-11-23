@@ -144,6 +144,7 @@ namespace FanshaweGameEngine
             m_pipeline.opaqueElementList.clear();
             m_pipeline.renderElementList.clear();
             m_pipeline.VAO = nullptr;
+            m_pipeline.textureBindIndex = 0;
 
         }
 
@@ -243,7 +244,7 @@ namespace FanshaweGameEngine
 
         void Renderer::DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader,const RenderElement& element)
         {
-            int textureBindIndex = 0;
+            m_pipeline.textureBindIndex = 0;
 
             uint32_t shaderId = shader->GetProgramId();
 
@@ -253,9 +254,7 @@ namespace FanshaweGameEngine
 
             if (mat != nullptr)
             {
-                mat->textureMaps.albedoMap->Bind(textureBindIndex++);
-
-
+                mat->textureMaps.albedoMap->Bind(m_pipeline.textureBindIndex++);
                 shader->SetUniform("matColor", mat->albedoColour);
                 shader->SetUniform("mapAlbedo", mat->textureMaps.albedoMap->GetBoundId());
             }
@@ -264,7 +263,7 @@ namespace FanshaweGameEngine
                 shader->SetUniform("matColor",Vector4(1.0f));
             }
           
-
+           // mat->textureMaps.albedoMap->UnBind();
         
            
             shader->SetUniform("model", element.ModelMatrix);
@@ -290,9 +289,13 @@ namespace FanshaweGameEngine
 
             DrawIndices(mesh->GetIndexCount(), 0);
 
+
+
             // Unbind all the bound buffers 
             mesh->GetIBO()->UnBind();
             mesh->GetVBO()->UnBind();
+
+           
 
         }
 
@@ -314,12 +317,12 @@ namespace FanshaweGameEngine
 
         void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
         {
-            Vector3 intensity = Vector3(0.9f);
+            Vector3 intensity = Vector3(0.4f);
 
 
             std::string uniformName = "pointLightList[0]";
 
-            shader->SetUniform(uniformName + ".position", Vector3(-1.0f, 1.0f, 3.0f));
+            shader->SetUniform(uniformName + ".position", Vector3(0.8f, 1.0f, 1.2f));
             shader->SetUniform(uniformName + ".color", Vector3(20.0f,1.0f,0.0f));
             shader->SetUniform(uniformName + ".intensity", intensity);
             shader->SetUniform(uniformName + ".constant", 1.0f);
@@ -342,7 +345,7 @@ namespace FanshaweGameEngine
         void Renderer::SetUpSpotLights(SharedPtr<Shader>& shader)
         {
             Vector3 SpotLightPos_01 = Vector3(0.4f, 0.95f,-0.4f);
-            Vector3 SpotLightColor_01 = Vector3(5.0f, 5.0f,0.0f);
+            Vector3 SpotLightColor_01 = Vector3(1.0f, 1.0f,0.0f);
 
             Vector3 SpotLightPos_02 = Vector3(0.4f, 0.95f, -1.6f);
 
@@ -350,7 +353,7 @@ namespace FanshaweGameEngine
            
           
 
-            Vector3 intensity = Vector3(0.8f);
+            Vector3 intensity = Vector3(0.6f);
 
 
             std::string uniformName = "spotLightList[0]";
@@ -361,8 +364,8 @@ namespace FanshaweGameEngine
             shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(30.5f)));
             shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.5f)));
             shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.01f);
-            shader->SetUniform(uniformName + ".quadratic", 0.032f);
+            shader->SetUniform(uniformName + ".linear", 0.09f);
+            shader->SetUniform(uniformName + ".quadratic", 0.022f);
 
 
             // Hard Penumbra
@@ -375,8 +378,8 @@ namespace FanshaweGameEngine
             shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(20.5f)));
             shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.0f)));
             shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.01f);
-            shader->SetUniform(uniformName + ".quadratic", 0.032f);
+            shader->SetUniform(uniformName + ".linear", 0.09f);
+            shader->SetUniform(uniformName + ".quadratic", 0.022f);
 
 
             

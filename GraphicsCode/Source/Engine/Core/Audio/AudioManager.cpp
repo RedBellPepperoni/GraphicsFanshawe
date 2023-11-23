@@ -28,7 +28,7 @@ namespace FanshaweGameEngine
 		}
 
 
-		std::string& ErrorCheckFMod(FMOD_RESULT result, int line)
+		std::string ErrorCheckFMod(FMOD_RESULT result, int line)
 		{
 			// There is some Actual FMOD API error which is Real Bad
 			if (result != FMOD_OK)
@@ -37,6 +37,8 @@ namespace FanshaweGameEngine
 				std::string errorMsg = "FMOD ERROR: AudioManager [Line : " + std::to_string(line) + "] " + std::to_string(result) + " - " + FMOD_ErrorString(result);
 				return errorMsg;
 			}
+
+			return "";
 		}
 
 

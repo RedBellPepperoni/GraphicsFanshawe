@@ -117,6 +117,7 @@ namespace FanshaweGameEngine
 
 		
 		Texture::Texture(const std::string& filePath, TextureFormat format)
+			: Texture()
 		{
 			Load(filePath, format);
 		}

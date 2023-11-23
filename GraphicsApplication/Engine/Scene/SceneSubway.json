@@ -10,7 +10,7 @@
 
     {
       "Name": "Ground",
-      "Path": "Assets\\Models\\Ground.ply"
+      "Path": "Assets\\Models\\Ground.fbx"
     },
 
     {
@@ -20,12 +20,12 @@
 
     {
       "Name": "Tree",
-      "Path": "Assets\\Models\\Tree.ply"
+      "Path": "Assets\\Models\\Tree.fbx"
     },
 
     {
       "Name": "PineTree",
-      "Path": "Assets\\Models\\PineTree.ply"
+      "Path": "Assets\\Models\\PineTree.fbx"
     },
 
     {
@@ -35,17 +35,17 @@
 
     {
       "Name": "Log",
-      "Path": "Assets\\Models\\Log.ply"
+      "Path": "Assets\\Models\\Log.fbx"
     },
 
     {
       "Name": "Rocks",
-      "Path": "Assets\\Models\\Rocks.ply"
+      "Path": "Assets\\Models\\Rocks.fbx"
     },
 
     {
       "Name": "BBQ",
-      "Path": "Assets\\Models\\BBQ.ply"
+      "Path": "Assets\\Models\\BBQ.fbx"
     }
 
 
@@ -60,7 +60,41 @@
     {
       "Name": "CarAlbedo",
       "Path": "Assets\\Textures\\car.png"
+    },
+
+    {
+      "Name": "TreeAlbedo",
+      "Path": "Assets\\Textures\\Tree.png"
+    },
+
+
+    {
+      "Name": "PineAlbedo",
+      "Path": "Assets\\Textures\\Fir.png"
+    },
+
+    {
+      "Name": "LogAlbedo",
+      "Path": "Assets\\Textures\\Log.png"
+    },
+
+    {
+      "Name": "GroundAlbedo",
+      "Path": "Assets\\Textures\\Ground.png"
+    },
+    {
+      "Name": "BBQAlbedo",
+      "Path": "Assets\\Textures\\BBQ.png"
+    },
+
+    {
+      "Name": "RocksAlbedo",
+      "Path": "Assets\\Textures\\Rocks.png"
     }
+
+
+
+
 
   ],
 
@@ -78,8 +112,9 @@
   { 
     "Mesh" : "Ground",
     "Position" : [0.0,0.0,0.0],
-    "Rotation" : [0.0,0.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Rotation" : [0.0,180.0,0.0],
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "GroundAlbedo" 
   },
 
 
@@ -87,57 +122,65 @@
     "Mesh" : "Tree",
     "Position" : [4.0,-0.5,-2.3],
     "Rotation" : [0.0,20.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "TreeAlbedo"
   },
 
   { 
     "Mesh" : "Tree",
     "Position" : [-0.3,-0.2,5.0],
     "Rotation" : [0.0,0.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "TreeAlbedo"
   },
 
   { 
     "Mesh" : "Tree",
     "Position" : [-2.7,-0.2,-3.5],
     "Rotation" : [0.0,0.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "TreeAlbedo"
   },
 
   { 
     "Mesh" : "PineTree",
     "Position" : [-2.8,-0.2,3.8],
     "Rotation" : [0.0,0.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "PineAlbedo"
   },
 
   { 
     "Mesh" : "PineTree",
     "Position" : [-1.0,0.0,2.45],
     "Rotation" : [0.0,0.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "PineAlbedo"
   },
   
 
   { 
     "Mesh" : "Log",
     "Position" : [3.3,0.0,0.01],
-    "Rotation" : [0.0,-45.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Rotation" : [0.0,45.0,0.0],
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "LogAlbedo"
   },
 
   { 
     "Mesh" : "Rocks",
     "Position" : [4.3,-0.6,-0.4],
-    "Rotation" : [0.0,-45.0,-15.0],
-    "Scale" : [2.5,2.5,2.5]
+    "Rotation" : [0.0,-75.0,-15.0],
+    "Scale" : [2.0,2.0,2.0],
+    "Albedo" : "RocksAlbedo"
   },
 
   { 
     "Mesh" : "Rocks",
     "Position" : [-2.5,-0.2,4.3],
     "Rotation" : [0.0,80.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "RocksAlbedo"
   },
 
 
@@ -146,9 +189,10 @@
   { 
     "Mesh" : "BBQ",
    
-    "Position" : [ -0.8,-0.2,1.4],
+    "Position" : [ 0.8,0.0,1.2],
     "Rotation" : [0.0,-45.0,0.0],
-    "Scale" : [1.0,1.0,1.0]
+    "Scale" : [1.0,1.0,1.0],
+    "Albedo" : "BBQAlbedo"
   }
   
   ]

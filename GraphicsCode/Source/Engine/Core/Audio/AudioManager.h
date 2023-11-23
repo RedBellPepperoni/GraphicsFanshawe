@@ -55,7 +55,7 @@ namespace FanshaweGameEngine
 
 		};
 
-		static std::string& ErrorCheckFMod(FMOD_RESULT result, int line);
+		static std::string ErrorCheckFMod(FMOD_RESULT result, int line);
 
 
 #define CHECKFMODERR(fModResult) ErrorCheckFMod(fModResult,__LINE__); 
