@@ -25,8 +25,8 @@ namespace FanshaweGameEngine
 		if (Input::InputSystem::GetInstance().GetMouseBtnClicked(Input::MouseButton::Right))
 		{
 			mouseHeld = true;
-			// Makes the Mouse nap to the Screen Edge
 			Application::GetCurrent().GetAppWindow()->SetMouseHidden(true);
+			
 			m_storedCursorPosition = mousePosition;
 			m_previousCurserPos = m_storedCursorPosition;
 
@@ -57,18 +57,19 @@ namespace FanshaweGameEngine
 
 			Quaternion rotation = transform->GetRotation();
 
-			/*	rotation = Rotate(rotation, -m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
-				rotation = Rotate(rotation, -m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));*/
 
 			Quaternion Pitch = glm::angleAxis(-m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
 			Quaternion Yaw = glm::angleAxis(-m_rotationvelocity.x, Vector3(0.0f, 1.0f, 0.0f));
+			
 
 			rotation = Yaw * rotation;
 			rotation = rotation * Pitch;
-
+		
 			transform->SetRotation(rotation);
 	
 			m_previousCurserPos = mousePosition;
+
+
 
 		}
 		else

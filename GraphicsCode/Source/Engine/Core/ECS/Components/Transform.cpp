@@ -52,11 +52,6 @@ namespace FanshaweGameEngine
 		{
 			// Just incase
 			UpdateMatrix(m_localMatrix);
-
-			/*if (m_scale.x == m_scale.y && m_scale.y == m_scale.z)
-			{
-				return (Matrix3(m_localMatrix));
-			}*/
 				
 			m_normalMatrix =  Transpose(Inverse(m_localMatrix));
 
