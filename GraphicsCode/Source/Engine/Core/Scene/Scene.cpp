@@ -71,7 +71,8 @@ namespace FanshaweGameEngine
 		{
 			
 			//Vector3 pos = cameraTransform->GetPosition();
-
+			/*Vector3 rot =mainCameraTransform->GetEulerRotation();
+			Quaternion qRot = mainCameraTransform->GetRotation();*/
 
 			mainCameraController->KeyboardInput(mainCameraTransform, deltaTime);
 			mainCameraController->MouseInput(mainCameraTransform, mousePosition, deltaTime);
@@ -147,5 +148,10 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Deserialize(const std::string filename)
 	{
+	}
+
+	Transform* Scene::GetMainCameraTransform() const
+	{
+		return mainCameraTransform;
 	}
 }

@@ -12,6 +12,7 @@
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 
+#include "Engine/Core/Audio/AudioManager.h"
 
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
 
@@ -41,9 +42,8 @@ namespace FanshaweGameEngine
 
 		m_textureLibrary = MakeShared<TextureLibrary>();
 
-
+		m_audioLibrary = MakeShared<AudioLibrary>();
 		
-
 
 		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
@@ -173,6 +173,8 @@ namespace FanshaweGameEngine
 
 		m_renderManager->Init();
 
+		Audio::AudioManager::GetInstance().Init();
+
 		// Calling Init on the child applications
 		OnInit();
 	}
@@ -265,6 +267,11 @@ namespace FanshaweGameEngine
 	SharedPtr<TextureLibrary>& Application::GetTextureLibrary()
 	{
 		return m_textureLibrary;
+	}
+
+	SharedPtr<AudioLibrary>& Application::GetAudioLibrary()
+	{
+		return m_audioLibrary;
 	}
 
 	float Application::GetGLFWTime()

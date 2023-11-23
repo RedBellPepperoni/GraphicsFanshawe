@@ -48,7 +48,7 @@ void SceneLoader::SpawnObject(const ObjectData& data)
 	transform->SetRotation(data.rotation);
 	transform->SetScale(data.scale);
 
-	modelLibrary;
+	
 
 	SharedPtr<Mesh> mesh = modelLibrary->GetResource(data.meshName)->GetMeshes()[0];
 	//SharedPtr<Mesh> mesh = modelLibrary->GetResource("Ground")->GetMeshes()[0];

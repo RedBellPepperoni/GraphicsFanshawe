@@ -17,11 +17,11 @@ namespace FanshaweGameEngine
 		Transform::~Transform()
 		{
 		}
-		const Vector3 Transform::GetPosition() const
+		const Vector3& Transform::GetPosition() const
 		{
 			return m_position;
 		}
-		const Quaternion Transform::GetRotation() const
+		const Quaternion& Transform::GetRotation() const
 		{
 			return m_rotation;
 		}
@@ -42,13 +42,13 @@ namespace FanshaweGameEngine
 
 		}
 
-	    Matrix4 Transform::GetLocalMatrix()
+	    Matrix4& Transform::GetLocalMatrix()
 		{
 			UpdateMatrix(m_localMatrix);
 			return m_localMatrix;
 		}
 
-		Matrix4 Transform::GetNormalMatrix()
+		Matrix4& Transform::GetNormalMatrix()
 		{
 			// Just incase
 			UpdateMatrix(m_localMatrix);
@@ -100,9 +100,7 @@ namespace FanshaweGameEngine
 		{
 			Vector3 newUp = Vector3(0.0f, 1.0f, 0.0f);
 
-			newUp = Math::GetQuaternion(m_localMatrix) * newUp;
-
-			return newUp;
+			return (GetRotation() * newUp);
 		}
 
 		Vector3 Transform::GetRightVector()
@@ -119,9 +117,7 @@ namespace FanshaweGameEngine
 			// Open GL is stupid and has -z as forward
 			Vector3 newForward = Vector3(0.0f, 0.0f, -1.0f);
 
-			newForward = Math::GetQuaternion(m_localMatrix) * newForward;
-
-			return newForward;
+			return (GetRotation() * newForward);
 		}
 
 	}

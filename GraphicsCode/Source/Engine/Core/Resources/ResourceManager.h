@@ -8,6 +8,13 @@
 
 namespace FanshaweGameEngine
 {
+	namespace Audio
+	{
+		struct AudioClip;
+		class AudioManager;
+	}
+
+
 	namespace Rendering
 	{
 		class Shader;
@@ -26,6 +33,9 @@ namespace FanshaweGameEngine
 
 	using Rendering::Texture;
 	using Rendering::TextureFormat;
+
+	using Audio::AudioClip;
+	using Audio::AudioManager;
 
 
 	// generic Class to make Resource Libraries of different types of resources
@@ -191,6 +201,16 @@ namespace FanshaweGameEngine
 
 		SharedPtr<Texture> LoadTexture(const std::string& friendlyName,const std::string& filePath, TextureFormat format);
 
+	};
+
+	class AudioLibrary : public ResourceLibrary<AudioClip>
+	{
+	public:
+
+		AudioLibrary() {};
+		virtual ~AudioLibrary() {};
+
+		SharedPtr<AudioClip> LoadAudio(const std::string friendlyName, const std::string& filePath);
 	};
 
 

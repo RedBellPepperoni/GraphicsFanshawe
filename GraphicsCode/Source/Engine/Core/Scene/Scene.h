@@ -88,6 +88,8 @@ namespace FanshaweGameEngine
 		void Serialize(const std::string& filename);
 		void Deserialize(const std::string filename);
 
+		Transform* GetMainCameraTransform() const;
+
 	};
 
 }

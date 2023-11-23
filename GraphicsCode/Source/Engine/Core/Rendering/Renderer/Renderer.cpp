@@ -248,8 +248,8 @@ namespace FanshaweGameEngine
             uint32_t shaderId = shader->GetProgramId();
 
 
-            SharedPtr<Mesh> mesh = m_pipeline.MeshList[element.meshIndex];
-            SharedPtr<Material> mat = m_pipeline.MaterialList[element.materialIndex];
+            SharedPtr<Mesh>& mesh = m_pipeline.MeshList[element.meshIndex];
+            SharedPtr<Material>& mat = m_pipeline.MaterialList[element.materialIndex];
 
             if (mat != nullptr)
             {

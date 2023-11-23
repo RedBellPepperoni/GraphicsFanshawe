@@ -225,6 +225,11 @@ namespace FanshaweGameEngine
             return glm::rotate(matrix, angle, axis);
         }
 
+        inline Quaternion Rotate(const Quaternion& quat, float angle, const Vector3& axis)
+        {
+            return glm::rotate(quat, angle, axis);
+        }
+
         inline Matrix4 QuatToMatrix(const Quaternion& quat)
         {
             return glm::toMat4(quat);
@@ -243,6 +248,7 @@ namespace FanshaweGameEngine
         {
             return glm::eulerAngles(quat);
         }
+
 
 
 

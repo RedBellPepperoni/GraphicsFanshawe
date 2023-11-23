@@ -46,12 +46,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -68,8 +68,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -91,14 +91,16 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioSource.cpp" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Resources\ImageManager.cpp" />
     <ClCompile Include="Source\Engine\Utils\Loading\ImageLoader.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Image.cpp" />
@@ -156,6 +158,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
+    <ClInclude Include="Source\Engine\Core\Audio\AudioManager.h" />
     <ClInclude Include="Source\Engine\Core\Resources\ImageManager.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\ImageLoader.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Image.h" />

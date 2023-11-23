@@ -12,7 +12,7 @@ class GraphicProject : public Application
         loader = Factory<SceneLoader>::Create();
 
         // parse the scene with the name
-        parser->ParseScene("Engine\\Scene\\SceneOne.json");
+        parser->ParseScene("Engine\\Scene\\SceneSubway.json");
 
         // Retrives the parsed models
         std::map<std::string, std::string> modelmap = parser->GetModelList();
@@ -41,6 +41,46 @@ class GraphicProject : public Application
         }
 
 
+        AddAudio("Assets\\Audio\\EnchantedFestival.mp3", Vector3(1.0f));
+
+
+        playerTransform = GetCurrent().GetCurrentScene()->GetMainCameraTransform();
+
+    }
+
+
+    void AddAudio(const std::string& filePath, const Vector3& position)
+    {
+        Entity audioEntity = m_currentScene->CreateEntity("AudioSource");
+
+        Transform* transform = &audioEntity.AddComponent<Transform>();
+
+        transform->SetPosition(position);
+
+        Audio::AudioSource* source = &audioEntity.AddComponent<Audio::AudioSource>(transform);
+
+
+        
+
+        SharedPtr<AudioClip> clip = GetCurrent().GetAudioLibrary()->LoadAudio("RadioMusic",filePath);
+   
+
+        if (clip != nullptr)
+        {
+            source->SetAudioClip(clip);
+            source->PlayClip();
+        }
+
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+        //SharedPtr<Mesh> mesh = modelLibrary->GetResource("Ground")->GetMeshes()[0];
+
+        audioEntity.AddComponent<MeshComponent>(mesh);
+        SharedPtr<Material> material = audioEntity.AddComponent<MeshRenderer>().GetMaterial();
+
+      
+       
+
     }
 
     void OnUpdate(float deltaTime)
@@ -50,6 +90,13 @@ class GraphicProject : public Application
         {
             GetCurrent().GetAppWindow()->ToggleWireframe();
         }
+
+       
+
+        Audio::AudioManager::GetInstance().SetListenerAttributes(playerTransform->GetPosition(), Vector3(0.0f), playerTransform->GetRotation() * Vector3(0.0f,0.0f,1.0f), Vector3(0.0f, 1.0f, 0.0f));
+        Audio::AudioManager::GetInstance().GetListernerAttributes();
+
+        Audio::AudioManager::GetInstance().Update();
 
     }
 
@@ -65,7 +112,7 @@ private:
     SharedPtr<SceneParser> parser = nullptr;
     SharedPtr<SceneLoader> loader = nullptr;
 
-
+    Transform* playerTransform = nullptr;
 };
 
 
