@@ -8,9 +8,10 @@ namespace FanshaweGameEngine
 	{
 		void DrawApplicationEditor(const char* name, bool* isOpen)
 		{
-			Application& app = Application::GetCurrent();
 
 			ImGui::Begin(name, isOpen);
+			
+			ImGui::SetWindowFontScale(1.8f);
 			ImGui::AlignTextToFramePadding();
 
 			ImGui::Text("current FPS: %d | total elapsed time: %f seconds", (int)Time::GetFPS(), Time::CurrentTime());

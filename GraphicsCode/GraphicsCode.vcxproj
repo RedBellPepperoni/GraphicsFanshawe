@@ -44,9 +44,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)Externals\imgui\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(SolutionDir)Externals\imgui\;$(IncludePath)</IncludePath>
@@ -103,6 +103,13 @@
     <ClCompile Include="..\Externals\glad\src\glad.c" />
     <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
     <ClCompile Include="Source\Editor\GUI\RuntimeEditor.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioSource.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Resources\ImageManager.cpp" />
@@ -162,6 +169,14 @@
   <ItemGroup>
     <ClInclude Include="Source\Editor\GUI\ApplicationEditor.h" />
     <ClInclude Include="Source\Editor\GUI\RuntimeEditor.h" />
+    <ClInclude Include="Source\Editor\Imgui\imconfig.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_internal.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_textedit.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Editor\Utils\ImGuiUtils.h" />
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
     <ClInclude Include="Source\Engine\Core\Audio\AudioManager.h" />

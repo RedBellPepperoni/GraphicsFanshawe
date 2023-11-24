@@ -176,6 +176,8 @@ namespace FanshaweGameEngine
 
 		Audio::AudioManager::GetInstance().Init();
 
+		m_editor->Toggle(false);
+
 		// Calling Init on the child applications
 		OnInit();
 	}
@@ -209,9 +211,9 @@ namespace FanshaweGameEngine
 
 			m_currentScene->Update(m_deltaTime);
 
-		
 
 			Input::InputSystem::GetInstance().ResetKeyPressed();
+
 
 
 			m_window->PollEvents();
@@ -219,11 +221,15 @@ namespace FanshaweGameEngine
 
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
+			m_window->UpdateImGui();
+
+			m_editor->OnUpdate();
 
 
 			// Render all the vertices in the current Render array
 			RenderObjects();
 
+			m_window->RenderImGui();
 			m_window->SwapBuffers();
 			
 
@@ -232,10 +238,12 @@ namespace FanshaweGameEngine
 			m_physicsSystem->UpdateECSTransforms();
 
 			
+
+			
 			OnUpdate(m_deltaTime);
 
 
-			if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Accent))
+			if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::GraveAccent))
 			{
 				m_editorVisible = !m_editorVisible;
 

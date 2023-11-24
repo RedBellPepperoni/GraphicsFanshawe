@@ -1,5 +1,5 @@
 #include "RuntimeEditor.h"
-//#include "ApplicationEditor.h"
+#include "ApplicationEditor.h"
 
 
 namespace FanshaweGameEngine
@@ -32,7 +32,7 @@ namespace FanshaweGameEngine
 			static bool isAppEditorOpen = true;
 
 			
-			//DrawApplicationEditor("Applicaion Editor", &isAppEditorOpen);
+			DrawApplicationEditor("Applicaion Editor", &isAppEditorOpen);
 		}
 	}
 }

@@ -57,6 +57,15 @@
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\SphereCollider.cpp" />
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
+    <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
+    <ClCompile Include="Source\Editor\GUI\RuntimeEditor.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -413,6 +422,16 @@
     <ClInclude Include="Source\Engine\Utils\Time\Time.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Texture.h" />
     <ClInclude Include="Source\Editor\Utils\ImGuiUtils.h" />
+    <ClInclude Include="Source\Editor\GUI\ApplicationEditor.h" />
+    <ClInclude Include="Source\Editor\GUI\RuntimeEditor.h" />
+    <ClInclude Include="Source\Editor\Imgui\imconfig.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_internal.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_textedit.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />
