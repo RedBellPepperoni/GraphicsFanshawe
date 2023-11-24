@@ -246,9 +246,9 @@ namespace FanshaweGameEngine
 			if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::GraveAccent))
 			{
 				m_editorVisible = !m_editorVisible;
-
 				m_editor->Toggle(m_editorVisible);
 			}
+
 
 
 

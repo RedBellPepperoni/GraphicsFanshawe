@@ -163,6 +163,9 @@ namespace FanshaweGameEngine
 			// Here the first channel (m_channel[0]) is always reserved for one shot sounds;
 			ChannelList m_channels;
 
+
+
+
 		};
 	}
 }

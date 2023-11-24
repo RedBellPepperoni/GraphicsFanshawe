@@ -79,6 +79,21 @@ namespace FanshaweGameEngine
 		return Entity();
 	}
 
+	Entity EntityManager::GetEntitybyHandle(const uint32_t& handle)
+	{
+		entt::entity derefEntity = (entt::entity)handle;
+
+		if (m_registry.valid(derefEntity))
+		{
+			return Entity(derefEntity, m_scene);
+		}
+
+		LOG_WARN("No entity with the Given handle was found");
+		return Entity();
+	}
+
+	
+
 
 
 

@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
     <ClCompile Include="Source\Editor\GUI\RuntimeEditor.cpp" />
     <ClCompile Include="Source\Editor\Imgui\imgui.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />
     <ClInclude Include="Source\Editor\GUI\ApplicationEditor.h" />
     <ClInclude Include="Source\Editor\GUI\RuntimeEditor.h" />
     <ClInclude Include="Source\Editor\Imgui\imconfig.h" />

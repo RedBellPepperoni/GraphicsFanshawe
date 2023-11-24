@@ -20,7 +20,13 @@ namespace FanshaweGameEngine
 		class Transform;
 	}
 
+	namespace Audio
+	{
+		class AudioListener;
+	}
+
 	using Components::Transform;
+	using Audio::AudioListener;
 
 
 	class Scene
@@ -38,6 +44,7 @@ namespace FanshaweGameEngine
 
 		Transform* mainCameraTransform = nullptr;
 		CameraController* mainCameraController = nullptr;
+		AudioListener* mainAudioListener = nullptr;
 
 
 	public:
@@ -81,7 +88,7 @@ namespace FanshaweGameEngine
 		// Loops through all the Entitys in the scene and destroys them
 		void DestroyAllGameObjects();
 
-		void SetMainCamera(CameraController* controller, Transform* transform);
+		void SetMainCamera(CameraController* controller, Transform* transform,AudioListener* listener);
 		
 		void SetMainCameraPosition(const Vector3 position);
 

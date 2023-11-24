@@ -93,8 +93,12 @@ class GraphicProject : public Application
 
        
 
-        Audio::AudioManager::GetInstance().SetListenerAttributes(playerTransform->GetPosition(), Vector3(0.0f), playerTransform->GetRotation() * Vector3(0.0f,0.0f,1.0f), Vector3(0.0f, 1.0f, 0.0f));
+       // Audio::AudioManager::GetInstance().SetListenerAttributes(playerTransform->GetPosition(), Vector3(0.0f), playerTransform->GetRotation() * Vector3(0.0f,0.0f,1.0f), Vector3(0.0f, 1.0f, 0.0f));
        // Audio::AudioManager::GetInstance().GetListernerAttributes();
+
+
+      
+
 
         Audio::AudioManager::GetInstance().Update();
 

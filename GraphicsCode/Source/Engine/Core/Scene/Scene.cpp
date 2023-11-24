@@ -11,6 +11,9 @@
 
 
 
+#include "Engine/Core/Audio/AudioListener.h"
+
+
 namespace FanshaweGameEngine
 {
 
@@ -40,6 +43,9 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
+		AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
+
+
 		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
 		transform->SetRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
@@ -47,7 +53,7 @@ namespace FanshaweGameEngine
 		//CameraController* controller = &cameraEntity.AddComponent<CameraController>();
 		controller->SetCamera(camera);
 
-		SetMainCamera(controller, transform);
+		SetMainCamera(controller, transform, listener);
 
 
 		
@@ -77,6 +83,7 @@ namespace FanshaweGameEngine
 
 		mainCameraController->KeyboardInput(*mainCameraTransform, deltaTime);
 		mainCameraController->MouseInput(*mainCameraTransform, mousePosition, deltaTime);
+		mainAudioListener->Update(deltaTime);
 
 		Vector3 pos = mainCameraTransform->GetPosition();
 		Vector3 rot = mainCameraTransform->GetEulerRotation();
@@ -125,11 +132,11 @@ namespace FanshaweGameEngine
 	}
 
 
-	void Scene::SetMainCamera(CameraController* controller, Transform* transform)
+	void Scene::SetMainCamera(CameraController* controller, Transform* transform, AudioListener* listener)
 	{
 		mainCameraTransform = transform;
 		mainCameraController = controller;
-
+		mainAudioListener = listener;
 		//LOG_ERROR("Camera Transform : {0} : {1} : {2}", mainCameraTransform->GetPosition().x, mainCameraTransform->GetPosition().y, mainCameraTransform->GetPosition().z);
 
 	}
