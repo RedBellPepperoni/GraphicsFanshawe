@@ -4,10 +4,9 @@
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
 #include "Engine/Core/System/Input/inputSystem.h"
-#include "Engine/Core/Rendering/Lights/DirectionLight.h"
+#include "Engine/Core/Rendering/Lights/Light.h"
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
-
 #include "Engine/Core/Application/Application.h"
 
 
@@ -15,15 +14,19 @@
 namespace FanshaweGameEngine
 {
 
+	enum MyEnum
+	{
+		TWO,
+		Forty,
+		Six
+
+	};
+
 	Scene::Scene(const std::string& name)
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
 		m_EntityManager = MakeUnique<EntityManager>(this);
-		m_directionLight = Factory<DirectionLight>::Create();
-
-
-	//	m_EntityManager->AddDependency<Camera, Components::Transform>();
-		//m_EntityManager->AddDependency<Components::MeshComponent, Components::Transform>();
+		//m_directionLight = Factory<DirectionLight>::Create();
 
 	}
 	Scene::~Scene()
@@ -49,7 +52,6 @@ namespace FanshaweGameEngine
 
 		
 
-
 		// Setup systems here
 	}
 	void Scene::CleanUp()
@@ -67,22 +69,21 @@ namespace FanshaweGameEngine
 
 		
 
-		if (mainCameraTransform)
+		if (mainCameraTransform == nullptr)
 		{
-			
-			//Vector3 pos = cameraTransform->GetPosition();
-			/*Vector3 rot =mainCameraTransform->GetEulerRotation();
-			Quaternion qRot = mainCameraTransform->GetRotation();*/
-
-			mainCameraController->KeyboardInput(mainCameraTransform, deltaTime);
-			mainCameraController->MouseInput(mainCameraTransform, mousePosition, deltaTime);
+			return;	
 		}
 
 
+		mainCameraController->KeyboardInput(*mainCameraTransform, deltaTime);
+		mainCameraController->MouseInput(*mainCameraTransform, mousePosition, deltaTime);
+
 		Vector3 pos = mainCameraTransform->GetPosition();
 		Vector3 rot = mainCameraTransform->GetEulerRotation();
+		
+		string fps = std::to_string(Application::GetCurrent().GetFPS());
 
-		std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
+		std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z) + "FPS: " + fps ;
 
 		Application::GetCurrent().SetWindowTitle(position);
 		

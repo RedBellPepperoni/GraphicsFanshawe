@@ -102,9 +102,7 @@ namespace FanshaweGameEngine
 		{
 			Vector3 newRight = Vector3(1.0f, 0.0f, 0.0f);
 
-			newRight = Math::GetQuaternion(m_localMatrix) * newRight;
-
-			return newRight;
+			return (GetRotation()* newRight);
 		}
 
 		Vector3 Transform::GetForwardVector()

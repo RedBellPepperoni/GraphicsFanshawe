@@ -4,6 +4,7 @@
 #include "Engine/Utils/Math.h"
 #include <vector>
 #include <string>
+#include "Engine/Utils/Time/Time.h"
 
 
 
@@ -27,6 +28,13 @@ namespace FanshaweGameEngine
 		class RenderManager;
 		class Camera;
     }
+
+	namespace EditorGUI
+	{
+		class RuntimeEditor;
+	}
+
+	using EditorGUI::RuntimeEditor;
 
 	namespace Physics
 	{
@@ -55,6 +63,8 @@ using Physics::PhysicsEngine;
 		UniquePtr<Window> m_window = nullptr;
 
 		UniquePtr<PhysicsEngine> m_physicsSystem = nullptr;
+
+		UniquePtr<RuntimeEditor> m_editor = nullptr;
 
 
 		bool m_isRunning = false;
@@ -102,6 +112,7 @@ using Physics::PhysicsEngine;
 
 		void UpdateDeltaTime(float& lastFrameEnd, float& lastSecondEnd, size_t& fps);
 		
+		bool m_editorVisible = false;
 
 	public:
 
@@ -161,6 +172,8 @@ using Physics::PhysicsEngine;
 		void SetWindowTitle(const std::string& newTitle);
 
 		void StartPhysics(bool shouldstart);
+
+
 	};
 }
 

@@ -113,7 +113,8 @@ namespace FanshaweGameEngine
 
 			GLDEBUG(glEnable(GL_DEPTH_TEST));
 			GLDEBUG(glEnable(GL_STENCIL_TEST));
-			//GLDEBUG(glEnable(GL_CULL_FACE));
+			GLDEBUG(glEnable(GL_CULL_FACE));
+			GLDEBUG(glCullFace(GL_BACK));
 
 			// Initializing Defaults that will be reused / instanced
 			m_renderer = MakeUnique<Renderer>();

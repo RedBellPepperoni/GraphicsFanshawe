@@ -17,7 +17,7 @@ namespace FanshaweGameEngine
 
 	}
 
-	void FlyCameraController::MouseInput(Components::Transform* transform, Vector2 mousePosition, float deltaTime)
+	void FlyCameraController::MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime)
 	{
 		
 		static bool mouseHeld = false;
@@ -55,7 +55,7 @@ namespace FanshaweGameEngine
 		{
 			
 
-			Quaternion rotation = transform->GetRotation();
+			Quaternion rotation = transform.GetRotation();
 
 
 			Quaternion Pitch = glm::angleAxis(-m_rotationvelocity.y, Vector3(1.0f, 0.0f, 0.0f));
@@ -65,7 +65,7 @@ namespace FanshaweGameEngine
 			rotation = Yaw * rotation;
 			rotation = rotation * Pitch;
 		
-			transform->SetRotation(rotation);
+			transform.SetRotation(rotation);
 	
 			m_previousCurserPos = mousePosition;
 
@@ -84,7 +84,7 @@ namespace FanshaweGameEngine
 		UpdateCameraView(transform, deltaTime);
 	}
 
-	void FlyCameraController::KeyboardInput(Components::Transform* transform, float deltaTime)
+	void FlyCameraController::KeyboardInput(Components::Transform& transform, float deltaTime)
 	{
 		// Defalut speed
 		m_cameraSpeed = 80.0f * deltaTime;
@@ -102,7 +102,7 @@ namespace FanshaweGameEngine
 
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::W))
         {
-            m_velocity += transform->GetForwardVector() * m_cameraSpeed;
+            m_velocity += transform.GetForwardVector() * m_cameraSpeed;
 
 			
         }
@@ -111,7 +111,7 @@ namespace FanshaweGameEngine
 
         if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::S))
         {
-            m_velocity -= transform->GetForwardVector() * m_cameraSpeed;
+            m_velocity -= transform.GetForwardVector() * m_cameraSpeed;
 			
         }
 
@@ -119,7 +119,7 @@ namespace FanshaweGameEngine
 
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::A))
 		{
-			m_velocity -= transform->GetRightVector() * m_cameraSpeed;
+			m_velocity -= transform.GetRightVector() * m_cameraSpeed;
 		}
 
 		// ================ LEFT CAMERA MOVEMENT =====================
@@ -127,7 +127,7 @@ namespace FanshaweGameEngine
 
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::D))
 		{
-			m_velocity += transform->GetRightVector () * m_cameraSpeed;
+			m_velocity += transform.GetRightVector () * m_cameraSpeed;
 		}
 
 		// ================ UP CAMERA MOVEMENT =====================
@@ -150,9 +150,9 @@ namespace FanshaweGameEngine
 
         if (m_velocity.length() > 0.00001f)
         {
-            glm::vec3 position = transform->GetPosition();
+            glm::vec3 position = transform.GetPosition();
             position += m_velocity * deltaTime;
-            transform->SetPosition(position);
+            transform.SetPosition(position);
             m_velocity = m_velocity * pow(m_dampeningFactor, deltaTime);
         }
 
@@ -164,12 +164,12 @@ namespace FanshaweGameEngine
 
 	}
 
-	void FlyCameraController::UpdateCameraView(Components::Transform* transform, float delta)
+	void FlyCameraController::UpdateCameraView(Components::Transform& transform, float delta)
 	{
-		const float YawSign = transform->GetUpVector().y < 0 ? -1.0f : 1.0f;
+		const float YawSign = transform.GetUpVector().y < 0 ? -1.0f : 1.0f;
 
 		// Extra step to handle the problem when the camera direction is the same as the up vector
-		const float cosAngle = glm::dot(transform->GetForwardVector(), transform->GetUpVector());
+		const float cosAngle = glm::dot(transform.GetForwardVector(), transform.GetUpVector());
 		if (cosAngle * YawSign > 0.99f)
 			m_PitchDelta = 0.f;
 

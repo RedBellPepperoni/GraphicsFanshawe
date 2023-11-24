@@ -128,7 +128,10 @@ namespace FanshaweGameEngine
 			return m_scene->GetRegistry().get<Transform>(m_entityHandle);
 		}
 
-		//Transform&
+		const Transform& GetTransfomr() const
+		{
+			return m_scene->GetRegistry().get<Transform>(m_entityHandle);
+		}
 
 		uint64_t GetId()
 		{

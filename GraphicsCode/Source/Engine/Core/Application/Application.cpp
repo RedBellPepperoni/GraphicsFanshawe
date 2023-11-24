@@ -17,6 +17,9 @@
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
 
 
+#include "Editor/GUI/RuntimeEditor.h"
+
+
 namespace FanshaweGameEngine
 {
 	Application* Application::m_currentApplication = nullptr;
@@ -55,7 +58,7 @@ namespace FanshaweGameEngine
 		m_renderManager = MakeUnique<RenderManager>();
 
 		
-
+		m_editor = MakeUnique<RuntimeEditor>();
 		
 
 		// Setting the Instance reference of the creatd application
@@ -119,8 +122,6 @@ namespace FanshaweGameEngine
 	{
 		// Tell the Render Manager to Do Drawing
 		m_renderManager->ProcessScene(GetCurrentScene());
-
-
 		m_renderManager->RenderFrame();
 
 	}
@@ -215,7 +216,6 @@ namespace FanshaweGameEngine
 
 			m_window->PollEvents();
 			
-			
 
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
@@ -233,6 +233,14 @@ namespace FanshaweGameEngine
 
 			
 			OnUpdate(m_deltaTime);
+
+
+			if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::Accent))
+			{
+				m_editorVisible = !m_editorVisible;
+
+				m_editor->Toggle(m_editorVisible);
+			}
 
 
 

@@ -1,5 +1,7 @@
 #include "Window.h"
+
 #include "Engine/Utils/GLUtils.h"
+#include "Editor/Utils/ImGuiUtils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -7,6 +9,8 @@
 #include "Engine/Core/System/Events/KeyEvent.h"
 #include "Engine/Core/System/Events/MouseEvent.h"
 #include "Engine/Core/System/Input/InputKeyCodes.h"
+
+
 
 
 namespace FanshaweGameEngine
@@ -276,10 +280,19 @@ namespace FanshaweGameEngine
 
             
 
+        }
 
+        void Window::InitializeImGui()
+        {
+          /*  ImGuiContext* context = ImGui::CreateContext();
+            ImGui::SetCurrentContext(context);
 
+            ImGuiIO& imguiIO = ImGui::GetIO();
+            ImGui_ImplGlfw_InitForOpenGL(windowHandle, true);
+            
+            ImGui_ImplOpenGL3_Init();
 
-
+            ImGui::StyleColorsDark();*/
 
         }
 

@@ -16,9 +16,9 @@ namespace FanshaweGameEngine
 		CameraController() = default;
 		virtual ~CameraController() = default;
 
-		virtual void MouseInput(Components::Transform* transform, Vector2 mousePosition, float deltaTime) {};
+		virtual void MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime) {};
 
-		virtual void KeyboardInput(Components::Transform* transform, float deltaTime) {};
+		virtual void KeyboardInput(Components::Transform& transform, float deltaTime) {};
 
 		void SetCamera(Camera* camera) { m_camera = camera; }
 		Camera* GetCamera() { return m_camera; };

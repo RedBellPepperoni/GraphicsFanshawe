@@ -13,7 +13,6 @@
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 #include "Engine/Core/Rendering/Shader/Shader.h"
-#include "Engine/Core/Rendering/Lights/PointLight.h"
 
 
 namespace FanshaweGameEngine

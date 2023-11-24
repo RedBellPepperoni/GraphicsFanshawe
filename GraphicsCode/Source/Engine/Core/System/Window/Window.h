@@ -81,6 +81,8 @@ namespace FanshaweGameEngine
 
 			void Initialize();
 
+			void InitializeImGui();
+
 			bool isOpen();
 
 			void SwapBuffers();
