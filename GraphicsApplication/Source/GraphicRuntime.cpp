@@ -41,10 +41,30 @@ class GraphicProject : public Application
         }
 
 
+
+        
+
+
+
         AddAudio("Assets\\Audio\\EnchantedFestival.mp3", Vector3(-1.2f,1.0f,-1.0));
 
 
         playerTransform = GetCurrent().GetCurrentScene()->GetMainCameraTransform();
+
+
+
+        Entity audioOccluder = m_currentScene->CreateEntity("AudioOccluder");
+
+        Transform* transform = &audioOccluder.AddComponent<Transform>();
+        transform->SetPosition(Vector3(3.0f, 2.0f, 0.0f));
+
+        AudioManager::GetInstance().CreateGeometry(audioOccluder);
+
+        SharedPtr<Mesh> audioMesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+
+
+        audioOccluder.AddComponent<MeshComponent>(audioMesh);
+        audioOccluder.AddComponent<MeshRenderer>();
 
     }
 
@@ -70,18 +90,22 @@ class GraphicProject : public Application
             source->SetAudioClip(clip);
             source->PlayClip();
         }
-
-
-     //   SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
-        //SharedPtr<Mesh> mesh = modelLibrary->GetResource("Ground")->GetMeshes()[0];
-
-      //  audioEntity.AddComponent<MeshComponent>(mesh);
-       // SharedPtr<Material> material = audioEntity.AddComponent<MeshRenderer>().GetMaterial();
-
-      
-       
+ 
 
     }
+
+
+    void AddWall(const Vector3& position, const Vector3 rotation)
+    {
+        Entity wallEntity = m_currentScene->CreateEntity("Wall");
+        Transform* transform = &wallEntity.AddComponent<Transform>();
+
+        transform->SetPosition(position);
+        transform->SetRotation(rotation);
+
+       // wallEntity.AddComponent<>
+    }
+
 
     void OnUpdate(float deltaTime)
     {

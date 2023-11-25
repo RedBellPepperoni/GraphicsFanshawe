@@ -6,13 +6,30 @@
 #include "Engine/Core/Memory/Memory.h"
 #include "Engine/Utils/Singleton.h"
 #include "Engine/Utils/Math.h"
+#include "Engine/Core/ECS/EntityManager.h"
 
 
 namespace FanshaweGameEngine
 {
 
+
 	namespace Audio
 	{
+
+		
+
+		struct AudioGeometry
+		{
+
+			FMOD::Geometry* geometry = nullptr;
+
+			Transform* transform = nullptr;
+
+			int polyIndex;
+
+		};
+
+
 		struct AudioClip
 		{
 
@@ -138,6 +155,12 @@ namespace FanshaweGameEngine
 			void SetListenerAttributes(const Vector3& position, const Vector3& velocity, const Vector3& forward, const Vector3& up);
 
 
+			void AddOcclusionPolygon(AudioGeometry* geo,const Vector2& size, const Vector3& position );
+
+
+			AudioGeometry* CreateGeometry(Entity& entity);
+
+
 			void GetListernerAttributes();
 
 
@@ -164,7 +187,7 @@ namespace FanshaweGameEngine
 			ChannelList m_channels;
 
 
-
+			std::vector<AudioGeometry*> m_GeometryList;
 
 		};
 	}

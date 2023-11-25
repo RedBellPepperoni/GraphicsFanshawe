@@ -28,11 +28,7 @@
       "Path": "Assets\\Models\\PineTree.fbx"
     },
 
-    {
-      "Name": "TreeTrunk",
-      "Path": "Assets\\Models\\TreeTrunk.ply"
-    },
-
+  
     {
       "Name": "Log",
       "Path": "Assets\\Models\\Log.fbx"
@@ -46,7 +42,13 @@
     {
       "Name": "BBQ",
       "Path": "Assets\\Models\\BBQ.fbx"
+    },
+
+    {
+      "Name": "Wall",
+      "Path": "Assets\\Models\\BBQ.fbx"
     }
+
 
 
 
@@ -91,9 +93,6 @@
       "Name": "RocksAlbedo",
       "Path": "Assets\\Textures\\Rocks.png"
     }
-
-
-
 
 
   ],

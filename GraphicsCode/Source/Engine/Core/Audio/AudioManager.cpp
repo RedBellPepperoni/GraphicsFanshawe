@@ -3,6 +3,7 @@
 #include "Engine/Utils/Logging/Log.h"
 
 
+
 namespace FanshaweGameEngine
 {
 
@@ -75,6 +76,7 @@ namespace FanshaweGameEngine
 				LOG_ERROR("FMOD: No Audio System");
 				return;
 			}
+
 
 			CHECKFMODERR(GetInstance().m_audiosystem->update());
 
@@ -304,6 +306,57 @@ namespace FanshaweGameEngine
 			//CHECKFMODERR(m_audiosystem->getGeometryOcclusion(&fModPosition, &origin, &direct, &reverb));
 
 		}
+
+		void AudioManager::AddOcclusionPolygon(AudioGeometry* geo,const Vector2& size, const Vector3& position)
+		{
+			int index = 0;
+
+			// For now for simplicity lets just have a quad as the occluding polygon
+			const int numberVertices = 4;
+
+			const float halfSizeX = size.x / 2;
+			const float halfSizeY = size.y / 2;
+
+
+			FMOD_VECTOR quad[numberVertices] =
+			{
+				{halfSizeX, halfSizeY, 0.0f}, // 
+				{halfSizeX,-halfSizeY,0.0f},
+				{-halfSizeX, -halfSizeY,0.0f},
+				{-halfSizeX, halfSizeY,0.0f}
+			};
+
+			CHECKFMODERR(geo->geometry->addPolygon(0.95f, 0.95f, true, 4, quad, &geo->polyIndex));
+
+			FMOD_VECTOR geoposition = GetFmodVector(position);
+
+			geo->geometry->setPosition(&geoposition);
+
+
+		}
+
+		AudioGeometry* AudioManager::CreateGeometry(Entity& entity)
+		{
+
+			AudioGeometry* audioGeo = &entity.AddComponent<AudioGeometry>();
+			audioGeo->transform = &entity.GetComponent<Transform>();
+
+		
+
+			CHECKFMODERR(m_audiosystem->createGeometry(2, 6, &audioGeo->geometry));
+
+			AddOcclusionPolygon(audioGeo, Vector2(10, 4), audioGeo->transform->GetPosition());
+
+
+			m_GeometryList.push_back(audioGeo);
+
+
+			audioGeo->geometry->setActive(true);
+
+			return audioGeo;
+		}
+
+		
 
 		void AudioManager::GetListernerAttributes()
 		{
