@@ -67,6 +67,7 @@
     <ClCompile Include="Source\Editor\Imgui\imgui_tables.cpp" />
     <ClCompile Include="Source\Editor\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
+    <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -434,6 +435,8 @@
     <ClInclude Include="Source\Editor\Imgui\imstb_textedit.h" />
     <ClInclude Include="Source\Editor\Imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />
+    <ClInclude Include="Source\Editor\GUI\AudioEditor.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3_loader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

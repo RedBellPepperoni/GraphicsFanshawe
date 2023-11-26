@@ -1,8 +1,9 @@
 #include "AudioManager.h"
 #include <fmod_errors.h>
 #include "Engine/Utils/Logging/Log.h"
+#include "AudioSource.h"
 
-
+#include "Engine/Core/ECS/Components/Transform.h"
 
 namespace FanshaweGameEngine
 {
@@ -59,22 +60,25 @@ namespace FanshaweGameEngine
 			CHECKFMODERR(FMOD::System_Create(&GetInstance().m_audiosystem));
 			CHECKFMODERR(GetInstance().m_audiosystem->init(MAX_AUDIO_CHANNELS, FMOD_INIT_NORMAL, nullptr));
 
-			// Initialing Channels
-			for (int i = 0; i < MAX_AUDIO_CHANNELS; i++)
-			{
-				// making a shared smart pointers for all the playback channels 
-				GetInstance().m_channels.push_back(MakeShared<Channel>());
-			}
 
 		}
 
 
-		void AudioManager::Update()
+		void AudioManager::Update(const float deltaTime)
 		{
 			if (!GetInstance().m_audiosystem)
 			{
 				LOG_ERROR("FMOD: No Audio System");
 				return;
+			}
+
+
+			if (!GetInstance().m_AudioSources.empty())
+			{
+				for (AudioSource* source : GetInstance().m_AudioSources)
+				{
+					source->Update(deltaTime);
+				}
 			}
 
 
@@ -97,6 +101,23 @@ namespace FanshaweGameEngine
 
 		}
 
+		int AudioManager::GetNewChannelIndex()
+		{
+			// for now 
+			int newChannelIndex = m_channelMap.size();
+
+			// Create a new Channel 
+			SharedPtr<Channel> newChannel = MakeShared<Channel>();
+
+			// Adding the created channel to the map
+			m_channelMap[newChannelIndex] = newChannel;
+
+
+			return newChannelIndex;
+		}
+
+		
+
 		bool AudioManager::LoadSound(const AudioClip& clip, SoundType mode, LoadType type)
 		{
 			// initial Check t osee if the Sound clip file is already loaded
@@ -107,7 +128,7 @@ namespace FanshaweGameEngine
 			}
 
 
-			typename SoundList::iterator itr = m_audioClips.find(clip.name);
+			typename SoundMap::iterator itr = m_audioClips.find(clip.name);
 
 			// Secondary check to see if the same file is not load from differnt sources
 			if (itr != m_audioClips.end())
@@ -119,7 +140,7 @@ namespace FanshaweGameEngine
 			// Creating a new sound pointer to load the sound usingthe Api
 			FMOD::Sound* newSound = nullptr;
 			
-			FMOD_MODE audioMode = ((mode == SoundType::Sound2D) ? (FMOD_DEFAULT) : (FMOD_3D | FMOD_LOOP_NORMAL));
+			FMOD_MODE audioMode = ((mode == SoundType::Sound2D) ? (FMOD_DEFAULT) : (FMOD_3D | FMOD_LOOP_NORMAL | FMOD_3D_LINEARROLLOFF));
 
 			switch (type)
 			{
@@ -155,11 +176,6 @@ namespace FanshaweGameEngine
 
 			m_audioClips[clip.name] = newSound;
 
-			if (mode == SoundType::Sound3D)
-			{
-				SetClip3DMinMaxDist(clip, 0.5f, 10.0f);
-			}
-
 
 			// Updating the data in the audio clip to show that the clip ha successfully loaded
 			clip.hasLoaded = true;
@@ -174,7 +190,7 @@ namespace FanshaweGameEngine
 		void AudioManager::UnloadSound(const AudioClip& clip)
 		{
 
-			typename SoundList::iterator itr = m_audioClips.find(clip.name);
+			typename SoundMap::iterator itr = m_audioClips.find(clip.name);
 
 			if (itr == m_audioClips.end())
 			{
@@ -192,42 +208,33 @@ namespace FanshaweGameEngine
 		}
 
 
-		int AudioManager::PlaySound(const AudioClip& clip)
+		int AudioManager::PlaySound(const AudioClip& clip, const int channelId)
 		{
 			// Iterator for finding the loaded sound from clip list
-			typename SoundList::iterator itr = m_audioClips.find(clip.name);
+			typename SoundMap::iterator itr = m_audioClips.find(clip.name);
 
-			// If the give nsound is not found 
+			// If the given sound is not found 
 			if (itr == m_audioClips.end())
 			{
 				LOG_ERROR("Sound doesnt exist : {0}", clip.name);
-				return m_nextChannelId;
+				return channelId;
 			}
 
 
-
-			// Setting Looping Bit Flag
-			itr->second->setMode(clip.m_shouldLoop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
+		
 
 			// Get a refence to the channel we are about to use
-			SharedPtr<Channel> selectedChannel;
+			SharedPtr<Channel> selectedChannel = m_channelMap[channelId];
 
-			// Calculte the next Channel Id if needed
-			int channelId = m_nextChannelId;
-
-			// Calculte the next Channel Id
-			m_nextChannelId = (m_nextChannelId + 1) % MAX_AUDIO_CHANNELS;
-			selectedChannel = m_channels[channelId];
-
+				// Setting Looping Bit Flag
+			itr->second->setMode(clip.m_shouldLoop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
 
 			// Set up the playback but pause the sound initially
 			//CHECKFMODERR(m_audiosystem->playSound(itr->second, 0, true, &channelRef));
 			CHECKFMODERR(GetInstance().m_audiosystem->playSound(itr->second, 0, true, &selectedChannel->fmodCh));
 
-
 			// Start the play back
 			CHECKFMODERR(selectedChannel->fmodCh->setPaused(false));
-
 
 
 			return channelId;
@@ -244,7 +251,7 @@ namespace FanshaweGameEngine
 		}
 		const float AudioManager::GetChannelVolume(const int id) const
 		{
-			return 0.0f;
+			return GetInstance().m_channelMap[id]->volume;
 		}
 		const float AudioManager::GetChannelPitch(const int id) const
 		{
@@ -261,6 +268,8 @@ namespace FanshaweGameEngine
 
 		void AudioManager::SetChannelVolume(const float value, const int id)
 		{
+			m_channelMap[id]->volume = value;
+			m_channelMap[id]->fmodCh->setVolume(value);
 		}
 
 		void AudioManager::SetChannelPitch(const float value, const int id)
@@ -272,26 +281,106 @@ namespace FanshaweGameEngine
 
 		}
 
-		void AudioManager::SetClip3DMinMaxDist(const AudioClip& clip, const float min, const float max)
+		void AudioManager::AddDSPFilter(int channelId, DSPEffects filter)
 		{
-			typename SoundList::iterator itr = m_audioClips.find(clip.name);
+			int chainIndex = 0;
+			GetInstance().m_channelMap[channelId]->fmodCh->getNumDSPs(&chainIndex);
 
-			// Secondary check to see if the same file is not load from differnt sources
-			if (itr == m_audioClips.end())
+
+
+			switch (filter)
 			{
-				LOG_WARN("AudioManager: {0} Clip doesnt exist", clip.name);
-				return;
+			case FanshaweGameEngine::Audio::REVERB:
+
+				CHECKFMODERR(GetInstance().m_audiosystem->createDSPByType((FMOD_DSP_TYPE)filter, &m_DSP_Reverb));
+				
+				GetInstance().m_channelMap[channelId]->fmodCh->addDSP(chainIndex -1 , m_DSP_Reverb);
+
+				break;
+			case FanshaweGameEngine::Audio::HIGHPASS:
+
+				CHECKFMODERR(GetInstance().m_audiosystem->createDSPByType((FMOD_DSP_TYPE)filter, &m_DSP_HighPass));
+				CHECKFMODERR(m_DSP_HighPass->setParameterFloat(FMOD_DSP_HIGHPASS_CUTOFF, 500.0f));
+				GetInstance().m_channelMap[channelId]->fmodCh->addDSP(chainIndex - 1, m_DSP_HighPass);
+
+				break;
+			case FanshaweGameEngine::Audio::LOWPASS:
+
+				CHECKFMODERR(GetInstance().m_audiosystem->createDSPByType((FMOD_DSP_TYPE)filter, &m_DSP_LowPass));
+				CHECKFMODERR(m_DSP_LowPass->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, 1000.0f));
+				GetInstance().m_channelMap[channelId]->fmodCh->addDSP(chainIndex - 1,m_DSP_LowPass);
+				break;
+			case FanshaweGameEngine::Audio::DISTORTION:
+
+				CHECKFMODERR(GetInstance().m_audiosystem->createDSPByType((FMOD_DSP_TYPE)filter, &m_DSP_Distortion));
+				CHECKFMODERR(m_DSP_Distortion->setParameterFloat(FMOD_DSP_DISTORTION_LEVEL, 0.7f));
+				GetInstance().m_channelMap[channelId]->fmodCh->addDSP(chainIndex - 1, m_DSP_Distortion);
+				
+				break;
+
+			case FanshaweGameEngine::Audio::ECHO:
+
+				CHECKFMODERR(GetInstance().m_audiosystem->createDSPByType((FMOD_DSP_TYPE)filter, &m_DSP_Echo));
+				CHECKFMODERR(m_DSP_Echo->setParameterFloat(FMOD_DSP_ECHO_DELAY, 500.0f));
+				CHECKFMODERR(m_DSP_Echo->setParameterFloat(FMOD_DSP_ECHO_FEEDBACK, 60.0f));
+				GetInstance().m_channelMap[channelId]->fmodCh->addDSP(chainIndex - 1, m_DSP_Echo);
+				
+				break;
+			default:
+				break;
 			}
 
-			m_audioClips[clip.name]->set3DMinMaxDistance(min, max);
+
+			SetDSPState(channelId, filter, false);
 		}
 
-		void AudioManager::SetClip3DAttributes(const int channelId, const Vector3& position, const Vector3& velocity)
+		void AudioManager::SetDSPState(int channelId, DSPEffects filter, bool isActive)
+		{
+			//For now since there int a lot of time the DSP effets are hardcoded,
+			
+			// Later need to have the effects on teh actual source
+
+			switch (filter)
+			{
+			case FanshaweGameEngine::Audio::REVERB:  GetInstance().m_DSP_Reverb->setBypass(!isActive);
+
+				break;
+			case FanshaweGameEngine::Audio::HIGHPASS:  GetInstance().m_DSP_HighPass->setBypass(!isActive);
+				break;
+			case FanshaweGameEngine::Audio::LOWPASS:  GetInstance().m_DSP_LowPass->setBypass(!isActive);
+				break;
+
+			case FanshaweGameEngine::Audio::DISTORTION: GetInstance().m_DSP_Distortion->setBypass(!isActive);
+
+				break;
+			case FanshaweGameEngine::Audio::ECHO: GetInstance().m_DSP_Echo->setBypass(!isActive);
+				break;
+			default:
+				break;
+			}
+		}
+	
+
+		void AudioManager::SetSource3DMinMaxDist(const int channelId, const float min, const float max)
+		{
+			GetInstance().m_channelMap[channelId]->fmodCh->set3DMinMaxDistance(min, max);
+
+			float minTest;
+			float maxtest;
+			GetInstance().m_channelMap[channelId]->fmodCh->get3DMinMaxDistance(&minTest, &maxtest);
+
+			LOG_WARN("{0} || {1}",std::to_string(minTest), std::to_string(maxtest));
+
+
+			GetInstance().m_channelMap[channelId]->fmodCh->set3DDopplerLevel(5.0f);
+		}
+
+		void AudioManager::SetSource3DAttributes(const int channelId, const Vector3& position, const Vector3& velocity)
 		{
 			FMOD_VECTOR pos = GetFmodVector(position);
 			FMOD_VECTOR vel = GetFmodVector(velocity);
 
-			CHECKFMODERR(m_channels[channelId]->fmodCh->set3DAttributes(&pos, &vel));
+			CHECKFMODERR(GetInstance().m_channelMap[channelId]->fmodCh->set3DAttributes(&pos, &vel));
 		}
 
 		void AudioManager::SetListenerAttributes(const Vector3& position, const Vector3& velocity, const Vector3& forward, const Vector3& up)
@@ -301,21 +390,21 @@ namespace FanshaweGameEngine
 			FMOD_VECTOR fModForward = GetFmodVector(forward);
 			FMOD_VECTOR fModUp = GetFmodVector(up);
 
-			CHECKFMODERR(m_audiosystem->set3DListenerAttributes(0, &fModPosition, &fModVelocity, &fModForward, &fModUp));
+			CHECKFMODERR(GetInstance().m_audiosystem->set3DListenerAttributes(0, &fModPosition, &fModVelocity, &fModForward, &fModUp));
 
 			//CHECKFMODERR(m_audiosystem->getGeometryOcclusion(&fModPosition, &origin, &direct, &reverb));
 
 		}
 
-		void AudioManager::AddOcclusionPolygon(AudioGeometry* geo,const Vector2& size, const Vector3& position)
+		void AudioManager::AddOcclusionPolygon(AudioGeometry* geo, const Transform* transform, const Vector2& dim)
 		{
 			int index = 0;
 
 			// For now for simplicity lets just have a quad as the occluding polygon
 			const int numberVertices = 4;
 
-			const float halfSizeX = size.x / 2;
-			const float halfSizeY = size.y / 2;
+			const float halfSizeX = dim.x / 2;
+			const float halfSizeY = dim.y / 2;
 
 
 			FMOD_VECTOR quad[numberVertices] =
@@ -326,11 +415,18 @@ namespace FanshaweGameEngine
 				{-halfSizeX, halfSizeY,0.0f}
 			};
 
-			CHECKFMODERR(geo->geometry->addPolygon(0.95f, 0.95f, true, 4, quad, &geo->polyIndex));
+			CHECKFMODERR(geo->geometry->addPolygon(0.9f, 0.9f, true, 4, quad, &geo->polyIndex));
 
-			FMOD_VECTOR geoposition = GetFmodVector(position);
+			Vector3 forward = transform->GetRotation() * Vector3(0.0f, 0.0f, 1.0f);
+			forward.y = 0;
+
+			FMOD_VECTOR geoposition = GetFmodVector(transform->GetPosition());
+			FMOD_VECTOR geoForward = GetFmodVector(forward);
+			FMOD_VECTOR geoUp = GetFmodVector(Vector3(0.0f, 1.0f, 0.0f));
+
 
 			geo->geometry->setPosition(&geoposition);
+			geo->geometry->setRotation(&geoForward, &geoUp);
 
 
 		}
@@ -341,19 +437,28 @@ namespace FanshaweGameEngine
 			AudioGeometry* audioGeo = &entity.AddComponent<AudioGeometry>();
 			audioGeo->transform = &entity.GetComponent<Transform>();
 
-		
-
-			CHECKFMODERR(m_audiosystem->createGeometry(2, 6, &audioGeo->geometry));
-
-			AddOcclusionPolygon(audioGeo, Vector2(10, 4), audioGeo->transform->GetPosition());
+			CHECKFMODERR(GetInstance().m_audiosystem->createGeometry(2, 6, &audioGeo->geometry));
 
 
-			m_GeometryList.push_back(audioGeo);
+			GetInstance().m_GeometryList.push_back(audioGeo);
 
 
 			audioGeo->geometry->setActive(true);
 
 			return audioGeo;
+		}
+
+		AudioSource* AudioManager::CreateSource(Entity& entity)
+		{
+			Transform* transform = &entity.GetComponent<Transform>();
+
+			AudioSource* audioSource = &entity.AddComponent<AudioSource>(transform);
+			audioSource->RegisterSource();
+
+			SetSource3DMinMaxDist(audioSource->GetChannelIndex(), audioSource->Get3DMinDist(), audioSource->Get3DMaxDist());
+			
+			m_AudioSources.push_back(audioSource);
+			return audioSource;
 		}
 
 		

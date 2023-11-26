@@ -176,7 +176,7 @@ namespace FanshaweGameEngine
 
 		Audio::AudioManager::GetInstance().Init();
 
-		m_editor->Toggle(false);
+		m_editor->Toggle(true);
 
 		// Calling Init on the child applications
 		OnInit();

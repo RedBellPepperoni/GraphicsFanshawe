@@ -45,8 +45,8 @@
     },
 
     {
-      "Name": "Wall",
-      "Path": "Assets\\Models\\BBQ.fbx"
+      "Name": "Radio",
+      "Path": "Assets\\Models\\Radio.fbx"
     }
 
 
@@ -92,6 +92,10 @@
     {
       "Name": "RocksAlbedo",
       "Path": "Assets\\Textures\\Rocks.png"
+    },
+    {
+      "Name": "RadioAlbedo",
+      "Path": "Assets\\Textures\\Radio.png"
     }
 
 
@@ -192,6 +196,15 @@
     "Rotation" : [0.0,-45.0,0.0],
     "Scale" : [1.0,1.0,1.0],
     "Albedo" : "BBQAlbedo"
+  },
+
+  { 
+    "Mesh" : "Radio",
+   
+    "Position" : [ 0.02, 1.03,-0.4],
+    "Rotation" : [0.0,-125.0,0.0],
+    "Scale" : [0.4,0.4,0.4],
+    "Albedo" : "RadioAlbedo"
   }
   
   ]

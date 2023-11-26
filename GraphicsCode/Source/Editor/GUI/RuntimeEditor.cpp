@@ -1,5 +1,6 @@
 #include "RuntimeEditor.h"
 #include "ApplicationEditor.h"
+#include "AudioEditor.h"
 
 
 namespace FanshaweGameEngine
@@ -8,6 +9,7 @@ namespace FanshaweGameEngine
 	{
 		RuntimeEditor::RuntimeEditor()
 		{
+			
 		}
 		RuntimeEditor::~RuntimeEditor()
 		{
@@ -33,6 +35,7 @@ namespace FanshaweGameEngine
 
 			
 			DrawApplicationEditor("Applicaion Editor", &isAppEditorOpen);
+			DrawEffectEditor("Audio Editor", &isAppEditorOpen);
 		}
 	}
 }

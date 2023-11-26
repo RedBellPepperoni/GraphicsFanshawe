@@ -11,11 +11,16 @@
 
 namespace FanshaweGameEngine
 {
+	namespace Components
+	{
+		class Transform;
+	}
 
+	using Components::Transform;
 
 	namespace Audio
 	{
-
+		class AudioSource;
 		
 
 		struct AudioGeometry
@@ -50,8 +55,6 @@ namespace FanshaweGameEngine
 			// Store if the Sound is OneShot or looping
 			bool m_shouldLoop = false;
 
-			// The actual audio data
-			FMOD::Sound* audio = nullptr;
 
 		};
 
@@ -78,6 +81,19 @@ namespace FanshaweGameEngine
 #define CHECKFMODERR(fModResult) ErrorCheckFMod(fModResult,__LINE__); 
 
 		
+#define CHGROUP_MASTER	0
+#define CHGROUP_MUSIC	1
+#define CHGROUP_SFX		2
+
+
+		enum DSPEffects : uint8_t
+		{
+			REVERB = FMOD_DSP_TYPE_SFXREVERB,
+			HIGHPASS = FMOD_DSP_TYPE_HIGHPASS,
+			LOWPASS = FMOD_DSP_TYPE_LOWPASS,
+			DISTORTION = FMOD_DSP_TYPE_DISTORTION,
+			ECHO = FMOD_DSP_TYPE_ECHO
+		};
 
 
 		class AudioManager : public Singleton<AudioManager>
@@ -99,8 +115,8 @@ namespace FanshaweGameEngine
 
 
 			// Type Definitions for readability
-			typedef std::map<std::string, FMOD::Sound*> SoundList;
-			typedef std::vector<SharedPtr<Channel>> ChannelList;
+			typedef std::unordered_map<std::string, FMOD::Sound*> SoundMap;
+			typedef std::unordered_map<int, SharedPtr<Channel>> ChannelMap;
 
 			// Constructor
 			AudioManager();
@@ -112,12 +128,13 @@ namespace FanshaweGameEngine
 			static void Init();
 
 			// Called every Frame of the Gameloop
-			static void Update();
+			static void Update(const float deltaTime);
 
 			// Called to Deactivate/ Shutdown the System after use
 			static void Shutdown();
 
 
+			int GetNewChannelIndex();
 			
 
 			// Sound Loading / Unloading
@@ -127,7 +144,7 @@ namespace FanshaweGameEngine
 			void UnloadSound(const AudioClip& clip);
 
 			// Sound PlayBack
-			int PlaySound(const AudioClip& clip);
+			int PlaySound(const AudioClip& clip, const int channelId);
 
 			
 
@@ -149,22 +166,45 @@ namespace FanshaweGameEngine
 			void SetChannelPitch(const float value, const int id = 0);
 			void SetChannelPan(const float value, const int id = 0);
 
-			void SetClip3DMinMaxDist(const AudioClip& clip, const float min, const float max);
-			void SetClip3DAttributes(const int channelId,const Vector3& position, const Vector3& velocity);
+
+			void AddDSPFilter(int channelId , DSPEffects filter);
+			void SetDSPState(int channelId, DSPEffects filter, bool isActive);
+			
+
+			void SetSource3DMinMaxDist(const int channelId, const float min, const float max);
+			void SetSource3DAttributes(const int channelId,const Vector3& position, const Vector3& velocity);
 
 			void SetListenerAttributes(const Vector3& position, const Vector3& velocity, const Vector3& forward, const Vector3& up);
 
 
-			void AddOcclusionPolygon(AudioGeometry* geo,const Vector2& size, const Vector3& position );
+			void AddOcclusionPolygon(AudioGeometry* geo, const Transform* transform, const Vector2& dim);
 
 
 			AudioGeometry* CreateGeometry(Entity& entity);
+
+			AudioSource* CreateSource(Entity& entity);
 
 
 			void GetListernerAttributes();
 
 
 		private:
+
+			inline FMOD::ChannelGroup* GetMasterChannelGroup()
+			{
+				if (m_channelGroupList.size() < CHGROUP_MASTER)
+				{
+					LOG_ERROR("Master Channel Group doesn't exist");
+					return nullptr;
+				}
+
+				return m_channelGroupList[CHGROUP_MASTER];
+			}
+
+
+
+		private:
+
 			// The maximum number of Channels for the audio engine 
 			static const uint32_t MAX_AUDIO_CHANNELS = 16;
 
@@ -180,14 +220,27 @@ namespace FanshaweGameEngine
 
 
 			// The list of all the currently loaded (playable sounds)
-			SoundList m_audioClips;
+			SoundMap m_audioClips;
 
 			// Extera storage for channels if multiple audio playback is needed
 			// Here the first channel (m_channel[0]) is always reserved for one shot sounds;
-			ChannelList m_channels;
+			ChannelMap m_channelMap;
 
 
 			std::vector<AudioGeometry*> m_GeometryList;
+
+
+			std::vector<FMOD::ChannelGroup*> m_channelGroupList;
+
+
+			std::vector<AudioSource*> m_AudioSources;
+
+
+			FMOD::DSP* m_DSP_Reverb;
+			FMOD::DSP* m_DSP_LowPass ;
+			FMOD::DSP* m_DSP_HighPass;
+			FMOD::DSP* m_DSP_Echo;
+			FMOD::DSP* m_DSP_Distortion ;
 
 		};
 	}

@@ -2,6 +2,7 @@
 #include "GameEngine.h"
 #include "SceneParser.h"
 #include "SceneLoader.h"
+#include "Editor/GUI/AudioEditor.h"
 
 
 class GraphicProject : public Application
@@ -41,35 +42,55 @@ class GraphicProject : public Application
         }
 
 
+        //Trees
+        AddOccluder(Vector3(3.9f, 3.0f, -2.0f),Vector3(0.0f, 70.0f,0.0f), Vector2(1.6,6));
+        AddOccluder(Vector3(-2.5f, 3.0f, -3.6f), Vector3(0.0f, -30.0f, 0.0f), Vector2(1.6, 6));
+        AddOccluder(Vector3(-0.9f, 3.0f, 2.3f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
+        AddOccluder(Vector3(-2.9f, 3.0f, 3.9f), Vector3(0.0f, -30.0f, 0.0f), Vector2(2, 6));
+        AddOccluder(Vector3(0.4f, 3.0f, 5.0f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
+
+
+        // Rock Big
+        AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f, 70.0f,0.0f), Vector2(3,1));
+        
+        //AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f), Vector2(3,1));
+
+
+
+        AudioSource* source =  AddAudio("RadioMusic","Assets\\Audio\\EnchantedFestival.mp3", Vector3(-0.04f,1.53f,-0.4f));
+
+
+        source->PlayClip();
+        source->Set3DMinDist(1.0f);
+        source->Set3DMaxDist(10.0f);
+
+        source->AddDSPEffect(Audio::DSPEffects::REVERB);
+        source->AddDSPEffect(Audio::DSPEffects::DISTORTION);
+        source->AddDSPEffect(Audio::DSPEffects::LOWPASS);
+        source->AddDSPEffect(Audio::DSPEffects::HIGHPASS);
+        source->AddDSPEffect(Audio::DSPEffects::ECHO);
+
+
+        int index= source->GetChannelIndex();
+
+        source = AddAudio("Fire", "Assets\\Audio\\Fire.mp3", Vector3(0.8f, 1.0f, 1.2f));
+
+        source->PlayClip();
+        source->Set3DMinDist(1.0f);
+        source->Set3DMaxDist(5.0f);
 
         
-
-
-
-        AddAudio("Assets\\Audio\\EnchantedFestival.mp3", Vector3(-1.2f,1.0f,-1.0));
-
 
         playerTransform = GetCurrent().GetCurrentScene()->GetMainCameraTransform();
 
 
 
-        Entity audioOccluder = m_currentScene->CreateEntity("AudioOccluder");
-
-        Transform* transform = &audioOccluder.AddComponent<Transform>();
-        transform->SetPosition(Vector3(3.0f, 2.0f, 0.0f));
-
-        AudioManager::GetInstance().CreateGeometry(audioOccluder);
-
-        SharedPtr<Mesh> audioMesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
-
-
-        audioOccluder.AddComponent<MeshComponent>(audioMesh);
-        audioOccluder.AddComponent<MeshRenderer>();
+      
 
     }
 
 
-    void AddAudio(const std::string& filePath, const Vector3& position)
+    AudioSource*  AddAudio(const std::string& name ,const std::string& filePath, const Vector3& position)
     {
         Entity audioEntity = m_currentScene->CreateEntity("AudioSource");
 
@@ -77,31 +98,38 @@ class GraphicProject : public Application
 
         transform->SetPosition(position);
 
-        Audio::AudioSource* source = &audioEntity.AddComponent<Audio::AudioSource>(transform);
+        Audio::AudioSource* source = AudioManager::GetInstance().CreateSource(audioEntity);
 
 
+        SharedPtr<AudioClip> clip = GetCurrent().GetAudioLibrary()->LoadAudio(name,filePath);
         
-
-        SharedPtr<AudioClip> clip = GetCurrent().GetAudioLibrary()->LoadAudio("RadioMusic",filePath);
-   
 
         if (clip != nullptr)
         {
             source->SetAudioClip(clip);
-            source->PlayClip();
+            source->SetLoop(true);
+            
         }
  
+        return source;
 
     }
 
 
-    void AddWall(const Vector3& position, const Vector3 rotation)
+    void AddOccluder(const Vector3& position, const Vector3 rotation, const Vector2& dimentions)
     {
-        Entity wallEntity = m_currentScene->CreateEntity("Wall");
-        Transform* transform = &wallEntity.AddComponent<Transform>();
+
+        Entity audioOccluder = m_currentScene->CreateEntity("AudioOccluder");
+
+        Transform* transform = &audioOccluder.AddComponent<Transform>();
 
         transform->SetPosition(position);
         transform->SetRotation(rotation);
+
+
+        Audio::AudioGeometry* geo = AudioManager::GetInstance().CreateGeometry(audioOccluder);
+
+        AudioManager::GetInstance().AddOcclusionPolygon(geo, transform, dimentions);
 
        // wallEntity.AddComponent<>
     }
@@ -115,16 +143,8 @@ class GraphicProject : public Application
             GetCurrent().GetAppWindow()->ToggleWireframe();
         }
 
-       
 
-       // Audio::AudioManager::GetInstance().SetListenerAttributes(playerTransform->GetPosition(), Vector3(0.0f), playerTransform->GetRotation() * Vector3(0.0f,0.0f,1.0f), Vector3(0.0f, 1.0f, 0.0f));
-       // Audio::AudioManager::GetInstance().GetListernerAttributes();
-
-
-      
-
-
-        Audio::AudioManager::GetInstance().Update();
+        Audio::AudioManager::GetInstance().Update(deltaTime);
 
     }
 
