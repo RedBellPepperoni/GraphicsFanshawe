@@ -275,7 +275,7 @@ namespace FanshaweGameEngine
 					CollisionData coldata;
 
 
-					if (NarrowPhase::Get().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
+					if (NarrowPhase::GetInstance().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
 					{
 						//const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
 						//const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
@@ -289,7 +289,7 @@ namespace FanshaweGameEngine
 							Manifold& manifold = m_manifoldList.emplace_back();
 							manifold.Initilize(pair.firstBody, pair.secondBody);
 
-							if (NarrowPhase::Get().BuildCollisionManifold(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, coldata, &manifold))
+							if (NarrowPhase::GetInstance().BuildCollisionManifold(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, coldata, &manifold))
 							{
 								pair.firstBody->OnCollisionManifoldCallback(pair.firstBody, pair.secondBody, &manifold);
 								pair.secondBody->OnCollisionManifoldCallback(pair.firstBody, pair.secondBody, &manifold);

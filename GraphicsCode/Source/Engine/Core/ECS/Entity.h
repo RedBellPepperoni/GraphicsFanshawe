@@ -73,8 +73,7 @@ namespace FanshaweGameEngine
 
 
 		template<typename T, typename... Args>
-
-		T& AddComponent(Args&... args)
+		T& AddComponent(Args&&... args)
 		{
 			if (HasComponent<T>())
 			{

@@ -115,6 +115,7 @@
     <ClCompile Include="Source\Engine\Core\Audio\AudioSource.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Resources\ImageManager.cpp" />
+    <ClCompile Include="Source\Engine\Core\Scene\DefaultCameraController.h" />
     <ClCompile Include="Source\Engine\Utils\Loading\ImageLoader.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Image.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\Plane.cpp" />

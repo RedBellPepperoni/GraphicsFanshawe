@@ -68,6 +68,7 @@
     <ClCompile Include="Source\Editor\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
+    <ClCompile Include="Source\Engine\Core\Scene\DefaultCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />

@@ -8,6 +8,7 @@
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 #include "Engine/Core/Application/Application.h"
+#include "DefaultCameraController.h"
 
 
 
@@ -49,11 +50,8 @@ namespace FanshaweGameEngine
 		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
 		transform->SetRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
-		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
-		//CameraController* controller = &cameraEntity.AddComponent<CameraController>();
-		controller->SetCamera(camera);
-
-		SetMainCamera(controller, transform, listener);
+		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
+		
 
 
 		
@@ -74,25 +72,63 @@ namespace FanshaweGameEngine
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
 		
+		ComponentView cameraControllerView = m_EntityManager->GetComponentsOfType<DefaultCameraController>();
+		ComponentView cameraview = m_EntityManager->GetComponentsOfType<Camera>();
+		ComponentView audioListenerView = m_EntityManager->GetComponentsOfType<AudioListener>();
 
-		if (mainCameraTransform == nullptr)
+
+		Camera* camera = nullptr;
+
+		if (!cameraview.IsEmpty())
 		{
-			return;	
+			camera = &cameraview[0].GetComponent<Camera>();
 		}
 
 
-		mainCameraController->KeyboardInput(*mainCameraTransform, deltaTime);
-		mainCameraController->MouseInput(*mainCameraTransform, mousePosition, deltaTime);
-		mainAudioListener->Update(deltaTime);
 
-		Vector3 pos = mainCameraTransform->GetPosition();
-		Vector3 rot = mainCameraTransform->GetEulerRotation();
+
+		if (!cameraControllerView.IsEmpty())
+		{
+			DefaultCameraController& controller = cameraControllerView[0].GetComponent<DefaultCameraController>();
+			Transform* transform = cameraControllerView[0].TryGetComponent<Transform>();
+
+			if (transform && controller.GetController())
+			{
+
+				controller.GetController()->SetCamera(camera);
+				controller.GetController()->KeyboardInput(*transform, deltaTime);
+				controller.GetController()->MouseInput(*transform, mousePosition, deltaTime);
+
+				Vector3 pos = transform->GetPosition();
+				Vector3 rot = transform->GetEulerRotation();
+
+				string fps = std::to_string(Application::GetCurrent().GetFPS());
+
+				std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
+
+				Application::GetCurrent().SetWindowTitle(position);
+
+			}
+
+
+
+		}
 		
-		string fps = std::to_string(Application::GetCurrent().GetFPS());
 
-		std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z) + "FPS: " + fps ;
+		if (!audioListenerView.IsEmpty())
+		{
+			if (audioListenerView.Size() > 1)
+			{
+				LOG_WARN("More than One Audio Listeners in the scene");
+			}
 
-		Application::GetCurrent().SetWindowTitle(position);
+			AudioListener* listener = &audioListenerView[0].GetComponent<AudioListener>();
+
+			listener->Update(deltaTime);
+		}
+		
+
+		
 		
 	}
 	const std::string& Scene::GetName() const

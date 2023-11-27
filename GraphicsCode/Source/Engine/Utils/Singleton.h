@@ -45,7 +45,7 @@ namespace FanshaweGameEngine
     {
     public:
         // Provide global access to the only instance of this class
-        static T& Get()
+        static T& GetInstance()
         {
             if (!m_pInstance) // This if statement prevents the costly Lock-step being required each time the instance is requested
             {
