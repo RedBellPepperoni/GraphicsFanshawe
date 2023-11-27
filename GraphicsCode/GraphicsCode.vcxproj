@@ -44,14 +44,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -68,8 +68,10 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -91,15 +93,29 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
+    <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
+    <ClCompile Include="Source\Editor\GUI\RuntimeEditor.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="Source\Editor\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioSource.cpp" />
+    <ClCompile Include="Source\Engine\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Engine\Core\Resources\ImageManager.cpp" />
+    <ClCompile Include="Source\Engine\Core\Scene\DefaultCameraController.h" />
     <ClCompile Include="Source\Engine\Utils\Loading\ImageLoader.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Image.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\Plane.cpp" />
@@ -109,8 +125,6 @@
     <ClCompile Include="Source\Engine\Core\Scene\SceneGraph.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\BoxCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.cpp" />
-    <ClCompile Include="Source\Engine\Core\Rendering\Lights\PointLight.cpp" />
-    <ClCompile Include="Source\Engine\Core\Rendering\Lights\DirectionLight.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Lights\Light.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.cpp" />
@@ -156,6 +170,22 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Editor\GUI\AudioEditor.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />
+    <ClInclude Include="Source\Editor\GUI\ApplicationEditor.h" />
+    <ClInclude Include="Source\Editor\GUI\RuntimeEditor.h" />
+    <ClInclude Include="Source\Editor\Imgui\imconfig.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Editor\Imgui\imgui_internal.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_textedit.h" />
+    <ClInclude Include="Source\Editor\Imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\Editor\Utils\ImGuiUtils.h" />
+    <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
+    <ClInclude Include="Source\Engine\Core\Audio\AudioManager.h" />
     <ClInclude Include="Source\Engine\Core\Resources\ImageManager.h" />
     <ClInclude Include="Source\Engine\Utils\Loading\ImageLoader.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Image.h" />
@@ -166,8 +196,6 @@
     <ClInclude Include="Source\Engine\Core\Scene\SceneGraph.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\BoxCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\NarrowPhase\NarrowPhase.h" />
-    <ClInclude Include="Source\Engine\Core\Rendering\Lights\PointLight.h" />
-    <ClInclude Include="Source\Engine\Core\Rendering\Lights\DirectionLight.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Lights\Light.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\FlyCameraController.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\CameraController.h" />

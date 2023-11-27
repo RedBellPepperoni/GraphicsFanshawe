@@ -21,7 +21,7 @@ namespace FanshaweGameEngine
 #define MAX_KEYBOARD_KEYS 350
 #define MAX_MOUSE_BUTTONS 16
 
-		class InputSystem : public Singleton<InputSystem>
+		class InputSystem : public ThreadSafeSingleton<InputSystem>
 		{
 		public:
 			 InputSystem();

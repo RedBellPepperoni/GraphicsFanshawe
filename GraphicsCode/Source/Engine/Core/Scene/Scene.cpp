@@ -4,26 +4,33 @@
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
 #include "Engine/Core/System/Input/inputSystem.h"
-#include "Engine/Core/Rendering/Lights/DirectionLight.h"
+#include "Engine/Core/Rendering/Lights/Light.h"
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
-
 #include "Engine/Core/Application/Application.h"
+#include "DefaultCameraController.h"
 
+
+
+#include "Engine/Core/Audio/AudioListener.h"
 
 
 namespace FanshaweGameEngine
 {
 
+	enum MyEnum
+	{
+		TWO,
+		Forty,
+		Six
+
+	};
+
 	Scene::Scene(const std::string& name)
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
 		m_EntityManager = MakeUnique<EntityManager>(this);
-		m_directionLight = Factory<DirectionLight>::Create();
-
-
-	//	m_EntityManager->AddDependency<Camera, Components::Transform>();
-		//m_EntityManager->AddDependency<Components::MeshComponent, Components::Transform>();
+		//m_directionLight = Factory<DirectionLight>::Create();
 
 	}
 	Scene::~Scene()
@@ -37,18 +44,17 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
+		AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
+
+
 		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
 		transform->SetRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
-		FlyCameraController* controller = &cameraEntity.AddComponent<FlyCameraController>();
-		//CameraController* controller = &cameraEntity.AddComponent<CameraController>();
-		controller->SetCamera(camera);
-
-		SetMainCamera(controller, transform);
+		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
+		
 
 
 		
-
 
 		// Setup systems here
 	}
@@ -66,24 +72,63 @@ namespace FanshaweGameEngine
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
 		
+		ComponentView cameraControllerView = m_EntityManager->GetComponentsOfType<DefaultCameraController>();
+		ComponentView cameraview = m_EntityManager->GetComponentsOfType<Camera>();
+		ComponentView audioListenerView = m_EntityManager->GetComponentsOfType<AudioListener>();
 
-		if (mainCameraTransform)
+
+		Camera* camera = nullptr;
+
+		if (!cameraview.IsEmpty())
 		{
-			
-			//Vector3 pos = cameraTransform->GetPosition();
-
-
-			mainCameraController->KeyboardInput(mainCameraTransform, deltaTime);
-			mainCameraController->MouseInput(mainCameraTransform, mousePosition, deltaTime);
+			camera = &cameraview[0].GetComponent<Camera>();
 		}
 
 
-		Vector3 pos = mainCameraTransform->GetPosition();
-		Vector3 rot = mainCameraTransform->GetEulerRotation();
 
-		std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
 
-		Application::GetCurrent().SetWindowTitle(position);
+		if (!cameraControllerView.IsEmpty())
+		{
+			DefaultCameraController& controller = cameraControllerView[0].GetComponent<DefaultCameraController>();
+			Transform* transform = cameraControllerView[0].TryGetComponent<Transform>();
+
+			if (transform && controller.GetController())
+			{
+
+				controller.GetController()->SetCamera(camera);
+				controller.GetController()->KeyboardInput(*transform, deltaTime);
+				controller.GetController()->MouseInput(*transform, mousePosition, deltaTime);
+
+				Vector3 pos = transform->GetPosition();
+				Vector3 rot = transform->GetEulerRotation();
+
+				string fps = std::to_string(Application::GetCurrent().GetFPS());
+
+				std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
+
+				Application::GetCurrent().SetWindowTitle(position);
+
+			}
+
+
+
+		}
+		
+
+		if (!audioListenerView.IsEmpty())
+		{
+			if (audioListenerView.Size() > 1)
+			{
+				LOG_WARN("More than One Audio Listeners in the scene");
+			}
+
+			AudioListener* listener = &audioListenerView[0].GetComponent<AudioListener>();
+
+			listener->Update(deltaTime);
+		}
+		
+
+		
 		
 	}
 	const std::string& Scene::GetName() const
@@ -123,11 +168,11 @@ namespace FanshaweGameEngine
 	}
 
 
-	void Scene::SetMainCamera(CameraController* controller, Transform* transform)
+	void Scene::SetMainCamera(CameraController* controller, Transform* transform, AudioListener* listener)
 	{
 		mainCameraTransform = transform;
 		mainCameraController = controller;
-
+		mainAudioListener = listener;
 		//LOG_ERROR("Camera Transform : {0} : {1} : {2}", mainCameraTransform->GetPosition().x, mainCameraTransform->GetPosition().y, mainCameraTransform->GetPosition().z);
 
 	}
@@ -147,5 +192,10 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Deserialize(const std::string filename)
 	{
+	}
+
+	Transform* Scene::GetMainCameraTransform() const
+	{
+		return mainCameraTransform;
 	}
 }

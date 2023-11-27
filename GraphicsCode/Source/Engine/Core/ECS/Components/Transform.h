@@ -42,19 +42,19 @@ namespace FanshaweGameEngine
 			// ================ GETTERS ========================
 
 			// Get the world Position of the object
-			const Vector3 GetPosition() const;
+			const Vector3& GetPosition() const;
 
 			// Get the world Rotation of the Object in Quaternion
-			const Quaternion GetRotation() const;
+			const Quaternion& GetRotation() const;
 
 			// Get the world Rotation in Euler angles
 			const Vector3 GetEulerRotation() const;
 
 
 
-			Matrix4 GetLocalMatrix();
+			Matrix4& GetLocalMatrix();
 
-			Matrix4 GetNormalMatrix();
+			Matrix4& GetNormalMatrix();
 
 			const Vector3 GetScale() const;
 

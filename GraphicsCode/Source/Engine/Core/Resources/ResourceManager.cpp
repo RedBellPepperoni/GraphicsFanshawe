@@ -3,6 +3,7 @@
 #include "Engine/Utils/Loading/Model.h"
 #include "Engine/Core/Rendering/Essentials/Material.h"
 #include "Engine/Core/Rendering/Essentials/Texture.h"
+#include "Engine/Core/Audio/AudioManager.h"
 #include "Engine/Utils/Logging/Log.h"
 
 
@@ -84,6 +85,18 @@ namespace FanshaweGameEngine
 
 
 		return newTexture;
+	}
+
+	SharedPtr<AudioClip> AudioLibrary::LoadAudio(const std::string friendlyName, const std::string& filePath)
+	{
+		SharedPtr<AudioClip> newAudio = Factory<AudioClip>::Create(friendlyName,filePath);
+
+		if (newAudio != nullptr)
+		{
+			AudioLibrary::CreateResource(friendlyName, newAudio);
+		}
+
+		return newAudio;
 	}
 
 }

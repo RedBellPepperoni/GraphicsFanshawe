@@ -139,7 +139,7 @@ namespace FanshaweGameEngine
 		
 		Entity GetEntitybyId(uint64_t id);
 		
-
+		Entity GetEntitybyHandle(const uint32_t& handle);
 	
 	};
 

@@ -1,5 +1,7 @@
 #include "Window.h"
+
 #include "Engine/Utils/GLUtils.h"
+#include "Editor/Utils/ImGuiUtils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -7,6 +9,8 @@
 #include "Engine/Core/System/Events/KeyEvent.h"
 #include "Engine/Core/System/Events/MouseEvent.h"
 #include "Engine/Core/System/Input/InputKeyCodes.h"
+
+
 
 
 namespace FanshaweGameEngine
@@ -64,9 +68,7 @@ namespace FanshaweGameEngine
         {
 
 
-            Window& handle = *static_cast<Window*>((glfwGetWindowUserPointer(window)));
-
-        
+            Window& handle = *static_cast<Window*>((glfwGetWindowUserPointer(window)));  
 
             switch (action)
             {
@@ -192,6 +194,9 @@ namespace FanshaweGameEngine
 
             // While drawing a pixel, see if the pixel that's already there is closer or not?
             GLDEBUG(glEnable(GL_DEPTH_TEST));
+
+
+
             
             
 
@@ -210,8 +215,6 @@ namespace FanshaweGameEngine
 
         void Window::CallEvent(EventBase& event)
         {
-
-
             if (!m_properties.eventHandler)
             { return; }
 
@@ -220,6 +223,8 @@ namespace FanshaweGameEngine
 
         void Window::Initialize()
         {
+           
+
 
             const unsigned int NumOfVertices = 3;
 
@@ -274,12 +279,47 @@ namespace FanshaweGameEngine
 
             glfwSwapInterval(1);
 
+
+            InitializeImGui();
             
 
+        }
+
+        void Window::InitializeImGui()
+        {
+            ImGuiContext* context = ImGui::CreateContext();
+            ImGui::SetCurrentContext(context);
+
+            ImGuiIO& imguiIO = ImGui::GetIO();
+
+            imguiIO.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
+            //imguiIO.ConfigDockingAlwaysTabBar = true;
+
+            ImGui_ImplGlfw_InitForOpenGL(windowHandle, true);
+            
+            ImGui_ImplOpenGL3_Init();
+
+            ImGui::StyleColorsDark();
+
+           
+           // ImGui::PushFont(ImGui::GetFont());
+
+        }
+
+        void Window::UpdateImGui()
+        {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
 
 
 
+        }
 
+        void Window::RenderImGui()
+        {
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         }
 

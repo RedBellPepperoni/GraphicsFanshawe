@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
-    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\</ExternalIncludePath>
+    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\</ExternalIncludePath>
-    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\</ExternalIncludePath>
+    <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,8 +117,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\assimp\libs\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GraphicsCode.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GraphicsCode.lib;glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

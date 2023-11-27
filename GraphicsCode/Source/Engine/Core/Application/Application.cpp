@@ -12,8 +12,12 @@
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 
+#include "Engine/Core/Audio/AudioManager.h"
 
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
+
+
+#include "Editor/GUI/RuntimeEditor.h"
 
 
 namespace FanshaweGameEngine
@@ -41,9 +45,8 @@ namespace FanshaweGameEngine
 
 		m_textureLibrary = MakeShared<TextureLibrary>();
 
-
+		m_audioLibrary = MakeShared<AudioLibrary>();
 		
-
 
 		//m_objectRegistry = MakeShared<GameObjectRegistry>();
 
@@ -55,7 +58,7 @@ namespace FanshaweGameEngine
 		m_renderManager = MakeUnique<RenderManager>();
 
 		
-
+		m_editor = MakeUnique<RuntimeEditor>();
 		
 
 		// Setting the Instance reference of the creatd application
@@ -119,8 +122,6 @@ namespace FanshaweGameEngine
 	{
 		// Tell the Render Manager to Do Drawing
 		m_renderManager->ProcessScene(GetCurrentScene());
-
-
 		m_renderManager->RenderFrame();
 
 	}
@@ -173,6 +174,10 @@ namespace FanshaweGameEngine
 
 		m_renderManager->Init();
 
+		Audio::AudioManager::GetInstance().Init();
+
+		m_editor->Toggle(true);
+
 		// Calling Init on the child applications
 		OnInit();
 	}
@@ -206,22 +211,25 @@ namespace FanshaweGameEngine
 
 			m_currentScene->Update(m_deltaTime);
 
-		
 
 			Input::InputSystem::GetInstance().ResetKeyPressed();
 
 
+
 			m_window->PollEvents();
-			
 			
 
 			// Update window and listen and process window events
 			m_window->UpdateViewPort();
+			m_window->UpdateImGui();
+
+			m_editor->OnUpdate();
 
 
 			// Render all the vertices in the current Render array
 			RenderObjects();
 
+			m_window->RenderImGui();
 			m_window->SwapBuffers();
 			
 
@@ -230,7 +238,17 @@ namespace FanshaweGameEngine
 			m_physicsSystem->UpdateECSTransforms();
 
 			
+
+			
 			OnUpdate(m_deltaTime);
+
+
+			if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::GraveAccent))
+			{
+				m_editorVisible = !m_editorVisible;
+				m_editor->Toggle(m_editorVisible);
+			}
+
 
 
 
@@ -265,6 +283,11 @@ namespace FanshaweGameEngine
 	SharedPtr<TextureLibrary>& Application::GetTextureLibrary()
 	{
 		return m_textureLibrary;
+	}
+
+	SharedPtr<AudioLibrary>& Application::GetAudioLibrary()
+	{
+		return m_audioLibrary;
 	}
 
 	float Application::GetGLFWTime()

@@ -73,8 +73,7 @@ namespace FanshaweGameEngine
 
 
 		template<typename T, typename... Args>
-
-		T& AddComponent(Args&... args)
+		T& AddComponent(Args&&... args)
 		{
 			if (HasComponent<T>())
 			{
@@ -128,7 +127,10 @@ namespace FanshaweGameEngine
 			return m_scene->GetRegistry().get<Transform>(m_entityHandle);
 		}
 
-		//Transform&
+		const Transform& GetTransfomr() const
+		{
+			return m_scene->GetRegistry().get<Transform>(m_entityHandle);
+		}
 
 		uint64_t GetId()
 		{

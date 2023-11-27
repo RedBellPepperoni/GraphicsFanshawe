@@ -1,39 +1,34 @@
 #pragma once
 #include "Engine/Utils/Math.h"
+#include <string>
 
 namespace FanshaweGameEngine
 {
+	enum class LightType : uint8_t
+	{
+		DirectionLight = 0,
+		SpotLight = 1,
+		PointLight = 2
+	};
+
 	
-		class Light
-		{
+	struct Light
+	{
+
+		static std::string GetStringfromType(const LightType& type);
+
+		Vector3 color = Vector3(1.0f);
+		Vector3 position = Vector3(0.0f);
+		Vector3 direction = Vector3(0.0f);
+
+		float intensity = 10.0f;
+		float radius = 0.0f;
+		LightType type = LightType::PointLight;
+		float innerAngle;
+		float outerAngle;
 
 
-		public:
-
-			Light() {};
-			virtual ~Light() {};
-
-			void SetColor(const Vector3 color);
-			void SetIntensity(const float newIntensity);
-			void SetSpecular(const float newSpec);
-
-
-
-			const Vector3 GetColor() const;
-			const float GetIntenstity() const;
-			const float GetSpecular() const;
-
-
-		private:
-
-
-			
-			float m_intensity = 0.7f;
-			float m_specular = 0.5f;
-
-			Vector3 m_color = Vector3(1.0f);
-
-		};
+	};
 	
 }
 

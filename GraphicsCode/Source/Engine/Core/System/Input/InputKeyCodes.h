@@ -61,7 +61,7 @@ namespace FanshaweGameEngine
             LeftSqBracket = 91, /* [ */
             Backslash = 92, /* \ */
             RightSqBracket = 93, /* ] */
-            Accent = 96, /* ` */
+            GraveAccent = 96, /* ` */
 
             /* Function keys */
             Escape = 256,
@@ -200,7 +200,9 @@ namespace FanshaweGameEngine
                     { GLFW_KEY_RIGHT_ALT, Key::RightAlt },
                     { GLFW_KEY_LEFT_CONTROL, Key::LeftControl },
                     { GLFW_KEY_RIGHT_CONTROL, Key::RightControl },
-                    { GLFW_KEY_TAB, Key::Tab }
+                    { GLFW_KEY_TAB, Key::Tab },
+
+                    { GLFW_KEY_GRAVE_ACCENT, Key::GraveAccent}
 
 
                 };

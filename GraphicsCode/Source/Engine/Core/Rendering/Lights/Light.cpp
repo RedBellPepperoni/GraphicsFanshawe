@@ -3,48 +3,22 @@
 namespace FanshaweGameEngine
 {
 	
-		void Light::SetColor(const Vector3 color)
+		std::string Light::GetStringfromType(const LightType& type)
 		{
-			m_color = color;
-		}
-		
-		void Light::SetIntensity(const float newIntensity)
-		{
-			if (newIntensity < 0.0f)
+			switch (type)
 			{
-				m_intensity = 0.0f;
-			}
-			else
-			{
-				m_intensity = newIntensity;
+			case FanshaweGameEngine::LightType::DirectionLight: 
+				return "Directional";
+				
+			case FanshaweGameEngine::LightType::SpotLight:
+				return "Spot";
+
+			case FanshaweGameEngine::LightType::PointLight:
+				return "Point";
+
+			default:
+				return "UndefinedType";
 			}
 		}
 
-		void Light::SetSpecular(const float newSpec)
-		{
-			if (newSpec < 0.0f)
-			{
-				m_specular = 0.0f;
-			}
-			else
-			{
-				m_specular = newSpec;
-			}
-		}
-
-
-		const Vector3 Light::GetColor() const
-		{
-			return m_color;
-		}
-		
-		const float Light::GetIntenstity() const
-		{
-			return m_intensity;
-		}
-		const float Light::GetSpecular() const
-		{
-			return 0.0f;
-		}
-	
 }
