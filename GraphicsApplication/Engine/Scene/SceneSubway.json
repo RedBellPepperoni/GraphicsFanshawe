@@ -47,6 +47,11 @@
     {
       "Name": "Radio",
       "Path": "Assets\\Models\\Radio.fbx"
+    },
+
+    {
+      "Name": "Backpack",
+      "Path": "Assets\\Models\\backpack.obj"
     }
 
 
@@ -96,6 +101,11 @@
     {
       "Name": "RadioAlbedo",
       "Path": "Assets\\Textures\\Radio.png"
+    },
+
+    {
+      "Name": "BackpackAlbedo",
+      "Path": "Assets\\Textures\\diffuse.jpg"
     }
 
 
@@ -198,18 +208,26 @@
     "Albedo" : "BBQAlbedo"
   },
 
-  { 
-    "Mesh" : "Radio",
-   
-    "Position" : [ 0.02, 1.03,-0.4],
-    "Rotation" : [0.0,-125.0,0.0],
-    "Scale" : [0.4,0.4,0.4],
-    "Albedo" : "RadioAlbedo"
-  }
+   {
+     "Mesh": "Radio",
+
+     "Position": [ 0.02, 1.03, -0.4 ],
+     "Rotation": [ 0.0, -125.0, 0.0 ],
+     "Scale": [ 0.4, 0.4, 0.4 ],
+     "Albedo": "RadioAlbedo"
+   },
+
+   {
+     "Mesh": "Backpack",
+
+     "Position": [ 0.02, 3.03, -0.4 ],
+     "Rotation": [ 0.0, -125.0, 0.0 ],
+     "Scale": [ 0.4, 0.4, 0.4 ],
+     "Albedo": "BackpackAlbedo"
+   }
   
   ]
 
 
 
 }
-
