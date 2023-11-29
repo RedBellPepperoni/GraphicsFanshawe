@@ -24,8 +24,8 @@ namespace FanshaweGameEngine
 		float intensity = 10.0f;
 		float radius = 0.0f;
 		LightType type = LightType::PointLight;
-		float innerAngle;
-		float outerAngle;
+		float innerAngle = 0.0f;
+		float outerAngle = 0.0f;
 
 
 	};

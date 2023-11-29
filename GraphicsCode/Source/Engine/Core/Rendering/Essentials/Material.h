@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
 #include "Texture.h"
@@ -26,7 +26,9 @@ namespace FanshaweGameEngine
         {
             SharedPtr<Texture> albedoMap;
             SharedPtr<Texture> normalMap;
-            SharedPtr<Texture> aoroughMetalMap;
+            SharedPtr<Texture> metallicMap;
+            SharedPtr<Texture> aoMap;
+            SharedPtr<Texture> roughnessMap;
             SharedPtr<Texture> emissiveMap;
         };
 
@@ -47,9 +49,17 @@ namespace FanshaweGameEngine
             float roughness = 0.8f;
             float metallic = 0.1f;
             float emissive = 0.0f;
+            float ao = 1.0f;
+            float normalMultiplier = 1.0f;
+            float emissiveMultiplier = 1.0f;
 
-            float normalMapMultiplier = 1.0f;
-            float emissiveMapMultiplier = 1.0f;
+            float albedomapFactor = 1.0f;
+            float roughnessmapFactor = 1.0f;
+            float metallicmapFactor = 1.0f;
+            float aomapFactor = 1.0f;
+            float normalmapFactor = 1.0f;
+            float emissivemapFactor = 1.0f;
+
 
             MaterialType type = MaterialType::Opaque;
 

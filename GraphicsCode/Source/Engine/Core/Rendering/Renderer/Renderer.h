@@ -18,7 +18,9 @@ namespace FanshaweGameEngine
 	
 	using Components::Transform;
 	
-	class PointLight;
+	
+	struct Light;
+	enum class LightType : uint8_t;
 
 	namespace Rendering
 	{
@@ -50,6 +52,21 @@ namespace FanshaweGameEngine
 			Matrix4 NormalMatrix;
 		};
 
+		struct LightElement
+		{
+			std::string uniformName;
+			Vector3 color;
+			Vector3 position;
+			Vector3 direction;
+
+			float intensity;
+			float radius;
+			LightType type;
+			float innerAngle;
+			float outerAngle;
+		};
+
+
 		// Data Structure to define main camera properties
 		struct CameraElement
 		{
@@ -72,6 +89,8 @@ namespace FanshaweGameEngine
 
 			// All the Render Elements that need to be drawn
 			std::vector<RenderElement> renderElementList;
+
+			std::vector<LightElement> lightElementList;
 		
 			// All the Material for the current loaded Render Elements
 			std::vector<SharedPtr<Material>> MaterialList;
@@ -115,11 +134,8 @@ namespace FanshaweGameEngine
 			void DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader, const RenderElement& element);
 
 			
-			void SetUpDirLightUniform(SharedPtr<Shader>& shader);
-			void SetUpPointLightUniform(SharedPtr<Shader>& shader);
+			void SetLightUniform(SharedPtr<Shader>& shader);
 			
-
-			void SetUpSpotLights(SharedPtr<Shader>& shader);
 			
 		public:
 
@@ -134,6 +150,7 @@ namespace FanshaweGameEngine
 
 			// Adds a Render Element to the Queue
 			void ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material, Transform& transform);
+			void ProcessLightElement(Light& light, Transform& transform);
 
 			
 			void ClearRenderCache();

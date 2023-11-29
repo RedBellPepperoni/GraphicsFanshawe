@@ -69,6 +69,7 @@
     <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
     <ClCompile Include="Source\Engine\Core\Scene\DefaultCameraController.h" />
+    <ClCompile Include="DebugRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -438,6 +439,7 @@
     <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />
     <ClInclude Include="Source\Editor\GUI\AudioEditor.h" />
     <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="DebugRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

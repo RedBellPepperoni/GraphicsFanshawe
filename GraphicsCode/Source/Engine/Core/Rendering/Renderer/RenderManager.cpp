@@ -17,6 +17,7 @@
 #include "Engine/Core/ECS/Components/MeshRenderer.h"
 
 #include "Engine/Core/Rendering/Essentials/Material.h"
+#include "Engine/Core/Rendering/Lights/Light.h"
 
 
 
@@ -33,7 +34,8 @@ namespace FanshaweGameEngine
 			// Loading the Default Shader 
 			// Add other Defaultr Shaders below <----
 
-			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "forwardFrag.glsl"));
+			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vert.glsl", File::GetShaderDir().string() + "frag.glsl"));
 
 		}
@@ -69,7 +71,6 @@ namespace FanshaweGameEngine
 			ComponentView meshView = scene->GetEntityManager()->GetComponentsOfType<MeshComponent>();
 			
 			// Looping through all the entities that have a mesh component
-
 			for (Entity meshObject : meshView)
 			{
 
@@ -89,6 +90,15 @@ namespace FanshaweGameEngine
 				// Sending the mesh data for processing
 				m_renderer->ProcessRenderElement(meshComp.GetMesh(), materialComp.GetMaterial(), transform);
 
+			}
+
+			ComponentView lightView = scene->GetEntityManager()->GetComponentsOfType<Light>();
+
+			for (Entity lightObject : lightView)
+			{
+				Light& lightComponent = lightObject.GetComponent<Light>();
+				Transform& transform = lightObject.GetComponent<Transform>();
+				m_renderer->ProcessLightElement(lightComponent, transform);
 			}
 
 					

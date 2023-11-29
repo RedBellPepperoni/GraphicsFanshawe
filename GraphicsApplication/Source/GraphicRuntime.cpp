@@ -85,7 +85,8 @@ class GraphicProject : public Application
 
 
 
-      
+        //AddDirLight(Vector3(0.0f,0.0f,0.0f), Vector3(-30.0f,10.0f,0.0f), Vector3(1.0f,1.0f,0.0f), 0.4f);
+        AddPointLight(Vector3(0.8f, 1.0f, 1.2f), Vector3(1.0f, 0.0f, 0.0f), 1.7f, 2.0f);
 
     }
 
@@ -132,6 +133,36 @@ class GraphicProject : public Application
         AudioManager::GetInstance().AddOcclusionPolygon(geo, transform, dimentions);
 
        // wallEntity.AddComponent<>
+    }
+
+    void AddDirLight(const Vector3& position, const Vector3& rotation,const Vector3& color, const float intensity)
+    {
+        Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
+
+        Transform& transform = dirLight.AddComponent<Transform>();
+        transform.SetPosition(position);
+        transform.SetRotation(rotation);
+
+        Light& light = dirLight.AddComponent<Light>();
+        light.type = LightType::DirectionLight;
+        light.intensity = intensity < 0.0f ? 0.0f : intensity;
+
+    }
+
+    void AddPointLight(const Vector3& position,const Vector3& color, const float intensity, const float radius)
+    {
+        Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
+
+        Transform& transform = dirLight.AddComponent<Transform>();
+        transform.SetPosition(position);
+        transform.SetRotation(Vector3(0.0f));
+
+        Light& light = dirLight.AddComponent<Light>();
+        light.type = LightType::PointLight;
+        light.intensity = intensity <= 0.0f ? 0.0f : intensity;
+
+        light.radius = radius <= 0.0f ? 0.0f : radius;
+
     }
 
 
