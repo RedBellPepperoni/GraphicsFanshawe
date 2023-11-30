@@ -307,17 +307,22 @@ namespace FanshaweGameEngine
 
                 shader->SetUniform(colorUniform, element.color);
                
-                shader->SetUniform(directionUniform, element.direction);
+               
                 shader->SetUniform(intensityUniform, element.intensity);
                 shader->SetUniform(typeUniform, (int)element.type);
 
                 switch (element.type)
                 {
+                case FanshaweGameEngine::LightType::DirectionLight :
+                    shader->SetUniform(directionUniform, element.direction);
+
+                        break;
               
                 case FanshaweGameEngine::LightType::SpotLight:
                     shader->SetUniform(innerAngleUniform, element.innerAngle);
                     shader->SetUniform(outerAngleUniform, element.outerAngle);
                     shader->SetUniform(positionUniform, element.position);
+                    shader->SetUniform(directionUniform, element.direction);
 
                     break;
                 case FanshaweGameEngine::LightType::PointLight:
@@ -488,6 +493,7 @@ namespace FanshaweGameEngine
             lightElement.intensity = light.intensity;
             lightElement.position = light.position = transform.GetPosition();
             lightElement.radius = light.radius;
+            lightElement.type = light.type;
 
             lightElement.uniformName = "uboLights.lights[" + std::to_string(currentIndex) + "]";
 

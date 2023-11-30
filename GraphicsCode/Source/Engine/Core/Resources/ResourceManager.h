@@ -19,6 +19,7 @@ namespace FanshaweGameEngine
 	{
 		class Shader;
 		class Material;
+		class CubeMap;
 
 		enum class TextureFormat : uint8_t;
 		class Texture;
@@ -33,6 +34,7 @@ namespace FanshaweGameEngine
 
 	using Rendering::Texture;
 	using Rendering::TextureFormat;
+	using Rendering::CubeMap;
 
 	using Audio::AudioClip;
 	using Audio::AudioManager;
@@ -201,6 +203,21 @@ namespace FanshaweGameEngine
 
 		SharedPtr<Texture> LoadTexture(const std::string& friendlyName,const std::string& filePath, TextureFormat format);
 
+	};
+
+	class CubeMapLibrary : public ResourceLibrary<CubeMap>
+	{
+		CubeMapLibrary()
+		{
+
+		}
+
+		virtual ~CubeMapLibrary()
+		{
+
+		}
+
+		SharedPtr<CubeMap> LoadCubeMap(const std::string& friendlyName, const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& front, const std::string& back);
 	};
 
 	class AudioLibrary : public ResourceLibrary<AudioClip>

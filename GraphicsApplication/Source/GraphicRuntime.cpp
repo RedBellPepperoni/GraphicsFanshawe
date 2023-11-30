@@ -85,8 +85,9 @@ class GraphicProject : public Application
 
 
 
-        //AddDirLight(Vector3(0.0f,0.0f,0.0f), Vector3(-30.0f,10.0f,0.0f), Vector3(1.0f,1.0f,0.0f), 0.4f);
-        AddPointLight(Vector3(0.8f, 1.0f, 1.2f), Vector3(1.0f, 0.0f, 0.0f), 1.7f, 2.0f);
+        AddDirLight(Vector3(0.0f,0.0f,0.0f), Vector3(-30.0f,10.0f,0.0f), Vector3(1.0f,1.0f,0.0f), 0.2f);
+        AddPointLight(Vector3(0.8f, 2.0f, 1.4f), Vector3(1.0f, 0.0f, 0.0f), 2.2f, 5.0f);
+        AddPointLight(Vector3(3.0f, 2.0f, 0.3f), Vector3(0.0f, 1.0f, 0.0f), 2.2f, 5.0f);
 
     }
 
@@ -145,20 +146,22 @@ class GraphicProject : public Application
 
         Light& light = dirLight.AddComponent<Light>();
         light.type = LightType::DirectionLight;
-        light.intensity = intensity < 0.0f ? 0.0f : intensity;
+        light.color = color;
+        light.intensity = intensity <= 0.0f ? 0.0f : intensity;
 
     }
 
     void AddPointLight(const Vector3& position,const Vector3& color, const float intensity, const float radius)
     {
-        Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
+        Entity pointLight = m_currentScene->CreateEntity("PointlLight");
 
-        Transform& transform = dirLight.AddComponent<Transform>();
+        Transform& transform = pointLight.AddComponent<Transform>();
         transform.SetPosition(position);
         transform.SetRotation(Vector3(0.0f));
 
-        Light& light = dirLight.AddComponent<Light>();
+        Light& light = pointLight.AddComponent<Light>();
         light.type = LightType::PointLight;
+        light.color = color;
         light.intensity = intensity <= 0.0f ? 0.0f : intensity;
 
         light.radius = radius <= 0.0f ? 0.0f : radius;

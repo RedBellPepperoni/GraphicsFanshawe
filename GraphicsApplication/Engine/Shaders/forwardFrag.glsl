@@ -159,8 +159,10 @@ vec3 CalculateLighting(Material material)
         light.type = uboLights.lights[index].type;
         light.innerAngle = uboLights.lights[index].innerAngle;
         light.outerAngle = uboLights.lights[index].outerAngle;
+        light.radius = uboLights.lights[index].radius;
 
-        vec3 normal = texture(mapNormal, VertexOutput.TexCoord).rgb;
+        //vec3 normal = texture(mapNormal, VertexOutput.TexCoord).rgb;
+        vec3 normal = VertexOutput.Normal.xyz;
 
         // Directional Light
         if(light.type == 0)
@@ -175,9 +177,9 @@ vec3 CalculateLighting(Material material)
                 float spec = pow(max(dot(material.View, reflectDir), 0.0), 32);
 
                 // combine results
-                vec3 ambient  = light.intensity  * material.Albedo.rgb;
-                vec3 diffuse  = light.color  * diff * material.Albedo.rgb;
-                //vec3 specular = spec * vec3(0.01f);
+                //vec3 ambient  = light.intensity  * material.Albedo.rgb;
+                vec3 diffuse  = light.color  * diff * material.Albedo.rgb * light.intensity;
+               
                 //vec3 lightContrib = (ambient + diffuse + specular * 0.01);
                 vec3 lightContrib = (diffuse);
 
@@ -197,20 +199,16 @@ vec3 CalculateLighting(Material material)
             float spec = pow(max(dot(material.View, reflectDir), 0.0), 32);
             // attenuation
             float distance    = length(light.position - VertexOutput.Position.xyz);
-            float attenuation = light.radius / (pow(distance, 2.0) + 1.0);
-            float finalAttenuation = clamp(1.0 - ((distance * distance)/(light.radius *light.radius)),0.0,1.0);    
+           // float finalAttenuation = 1.0 / (1.0 + ((2.0/light.radius) * distance) + ((1.0/(light.radius*light.radius)) * (distance * distance)));    
+            float finalAttenuation = clamp(1.0 - ((distance * distance)/(light.radius * light.radius)),0.0,1.0);    
             // combine results
-            vec3 ambient  = light.intensity  *  material.Albedo.rgb;
-            vec3 diffuse  = light.color  * diff * material.Albedo.rgb * light.intensity;
-            
 
-            ambient  *= finalAttenuation;
-            diffuse  *= finalAttenuation;
-            //specular *= finalAttenuation;
+            vec3 diffuse  = light.color  * diff * material.Albedo.rgb *  light.intensity;
+            vec3 specular = vec3(light.color) * spec * 0.01;
 
 
 	    //vec3 result = (ambient + diffuse + specular);
-            vec3 lightContrib = (diffuse);
+            vec3 lightContrib = (diffuse + specular) * finalAttenuation * finalAttenuation;
 
             result += lightContrib;
 
@@ -218,7 +216,7 @@ vec3 CalculateLighting(Material material)
         
     }
 
-    return vec3(0.0);
+    
     return result;
     
 

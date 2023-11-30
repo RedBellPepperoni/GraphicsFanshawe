@@ -37,15 +37,18 @@ void main()
 
 
 
-	vec4 tempNorm = normalMat * vec4( vNormal.xyz, 1.0f);
-	VertexOutput.Normal = normalize(tempNorm.xyz);
+	vec3 tempNorm = normalize(mat3(normalMat) * vNormal);
+	vec3 tempTangent = normalize(mat3(normalMat) * vTangent);
+	vec3 tempBiTangent = normalize(mat3(normalMat) * vBitangent);
 
+
+	VertexOutput.Normal = tempNorm;
 	VertexOutput.Position = model * vec4(vPosition, 1.0f);
-
 	VertexOutput.Color = vColor;
-
 	VertexOutput.TexCoord = aTexCoord;
-	VertexOutput.WorldNormal = mat3(normalMat) * mat3(vec3(vTangent), vec3(vBitangent), vec3(vNormal));
+
+	// The TBN matrix
+	VertexOutput.WorldNormal = transpose(mat3(tempTangent, tempBiTangent, tempNorm));
 	
 }
 
