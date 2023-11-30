@@ -138,10 +138,23 @@ namespace FanshaweGameEngine
 
 		void RenderManager::RenderFrame()
 		{
-			
+
+			int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
+
+			if (cameraIndex < 0)
+			{
+				LOG_WARN("No Rendering Cameras");
+				return;
+			}
 	
-			// Draw the OpaqueEleemnts
-			m_renderer->RenderElements(m_ShaderLibrary->GetResource("StandardShader"), MaterialType::Opaque);
+			// Store the data for the current rendering camera
+			const CameraElement& cameraElement = m_renderer->GetPipeLine().cameraList[cameraIndex];
+	
+			// ===== Forward Pass for Opaque Elements ================ 
+			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
+
+			// ===== Post Render Skybox Pass =================
+			m_renderer->SkyBoxPass(cameraElement);
 
 		}
 

@@ -15,6 +15,7 @@
 #include "Engine/Core/Rendering/Shader/Shader.h"
 
 #include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
 
 
 namespace FanshaweGameEngine
@@ -39,6 +40,17 @@ namespace FanshaweGameEngine
         {
             // Creating a new Vertex Array Object foe the Pipeline
             m_pipeline.VAO = Factory<VertexArray>::Create();    
+
+            // Hard coding for now
+            // Realistically this should be set up for each shader when the shader gets compiled , probably?
+            m_pipeline.vertexLayout =
+            {
+                VertexAttribute::Attribute<Vector3>(), // position
+                VertexAttribute::Attribute<Vector2>(), // texture uv
+                VertexAttribute::Attribute<Vector3>(), // normal
+                VertexAttribute::Attribute<Vector3>(), // tangent
+                VertexAttribute::Attribute<Vector3>(), // bitangent
+            };
 
 
            // SharedPtr<TextureLibrary> lib = Application::GetCurrent().GetTextureLibrary();
@@ -137,6 +149,11 @@ namespace FanshaweGameEngine
 
         }
 
+        void Renderer::SkyBoxPass(const CameraElement& camera)
+        {
+            //SharedPtr<>
+        }
+
       
 
         void Renderer::ClearRenderCache()
@@ -147,7 +164,6 @@ namespace FanshaweGameEngine
             m_pipeline.opaqueElementList.clear();
             m_pipeline.renderElementList.clear();
             m_pipeline.lightElementList.clear();
-            m_pipeline.VAO = nullptr;
             m_pipeline.textureBindIndex = 0;
 
         }
@@ -157,40 +173,21 @@ namespace FanshaweGameEngine
 
        
 
-        void Renderer::RenderElements(SharedPtr<Shader> shader, const MaterialType type)
+        void Renderer::ForwardPass(SharedPtr<Shader> shader,const CameraElement& camera , const MaterialType type)
         {
-            // Binding the VAO for the Particular Shader
-           /* m_pipeline.VAO->Bind();*/
+          
 
-
-            m_pipeline.lightElementList;
-
-
-            int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
-
-            if (cameraIndex < 0)
-            {
-                LOG_WARN("No Rendering Cameras");
-                return;
-            }
 
            
+            // ============Set Shader Unifroms here ==================
             shader->Bind();
 
-            // Getting the Selected camera's Index from the CameraList
-            CameraElement camera = m_pipeline.cameraList[cameraIndex];
-
-           
-           
-
-            // ============Set Shader Unifroms here ==================
-
+   
             // Setting teh View Projection Matrix from the camera
             shader->SetUniform("viewProj", camera.viewProjMatrix);
             
       
             SetLightUniform(shader);
-
 
 
             std::vector<size_t> elementList;
@@ -220,7 +217,7 @@ namespace FanshaweGameEngine
                 DrawElement(camera, shader, elementToDraw);
             }
 
-           
+            
            
         }
 
@@ -264,9 +261,13 @@ namespace FanshaweGameEngine
             //Always Bind the Buffer Array before adding Attributes 
             mesh->GetVBO()->Bind();
 
-            // Set the Shader Attributes
-            m_pipeline.VAO->AddVertexAttributelayout(shaderId);
+            m_pipeline.VAO->Bind();
 
+            // Set the Shader Attributes
+            m_pipeline.VAO->AddVertexAttribLayout(m_pipeline.vertexLayout);
+            //m_pipeline.VAO->AddVertexAttributelayout(shaderId);
+
+            //m_pipeline.VAO->AddVertexAttribLayout();
  
             // Bind the Index Buffer
             mesh->GetIBO()->Bind();
@@ -472,9 +473,8 @@ namespace FanshaweGameEngine
         }
 
 
-        const PipeLine Renderer::GetPipeLine() const
+        const PipeLine& Renderer::GetPipeLine() const
         {
-
             return m_pipeline;
         }
 

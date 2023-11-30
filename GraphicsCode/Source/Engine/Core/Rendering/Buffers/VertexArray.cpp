@@ -9,7 +9,10 @@ namespace FanshaweGameEngine
 	{
 		VertexArray::VertexArray()
 		{
+			
 			GLDEBUG(glGenVertexArrays(1, &bufferId));
+
+			
 
 		}
 		VertexArray::~VertexArray()
@@ -45,24 +48,77 @@ namespace FanshaweGameEngine
 
 			// Should Make this Dynamic later on, actually store the atrribs in the shader itslef and pull data accordingly
 
-			GLint position = GLDEBUG(glGetAttribLocation(shaderId, "vPosition"));	// program
-			GLint color = GLDEBUG(glGetAttribLocation(shaderId, "vColor"));
-			GLint normal = GLDEBUG(glGetAttribLocation(shaderId, "vNormal"));
-			GLint textureCoord = GLDEBUG(glGetAttribLocation(shaderId, "aTexCoord"));
+		    GLsizei stride = (GLsizei)(Vertex::Size * sizeof(float));
 
-			GLDEBUG(glEnableVertexAttribArray(position));
-			GLDEBUG(glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, position)));
+			GLDEBUG(glEnableVertexAttribArray(0));
+			GLDEBUG(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(Vertex, position)));
 
+			GLDEBUG(glEnableVertexAttribArray(1));
+			GLDEBUG(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(Vertex, texCoord)));
 
 			/*GLDEBUG(glEnableVertexAttribArray(color));
 			GLDEBUG(glVertexAttribPointer(color, 4, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, color)));*/
 
-			GLDEBUG(glEnableVertexAttribArray(normal));
-			GLDEBUG(glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, normal)));
+			GLDEBUG(glEnableVertexAttribArray(2));
+			GLDEBUG(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(Vertex, normal)));
 
-			GLDEBUG(glEnableVertexAttribArray(textureCoord));
-			GLDEBUG(glVertexAttribPointer(textureCoord, 3, GL_FLOAT, GL_FALSE, Vertex::Stride, (void*)offsetof(Vertex, texCoord)));
+			
 
 		}
+
+		void VertexArray::AddVertexAttribLayout(std::vector<VertexAttribute>& layout)
+		{
+			
+
+			size_t offset = 0;
+			size_t stride = 0;
+			
+			uint32_t count = 0;
+
+			for (const VertexAttribute& elemnent : layout)
+			{
+				stride += elemnent.byteSize;
+			}
+
+			for (const VertexAttribute& element : layout)
+			{
+				for (size_t index = 0; index < element.entries; index++)
+				{
+				
+
+					GLDEBUG(glEnableVertexAttribArray(count));
+					GLDEBUG(glVertexAttribPointer(count, element.components, (GLenum)element.type, GL_FALSE, (GLsizei)stride, (void*)offset));
+
+					offset += element.byteSize / element.entries;
+					count++;
+				}
+			}
+
+			
+
+		}
+
+		//void VertexArray::RemoveVertexAttribLayout(std::vector<VertexAttribute>& layout)
+		//{
+		//	if (attributeIndex < layout.size())
+		//	{
+		//		//Log some error here
+		//		return;
+		//	}
+
+		//	Bind();
+
+		//	for (const VertexAttribute& element : layout)
+		//	{
+		//		for (size_t index = 0; index < element.entries; index++)
+		//		{
+		//			attributeIndex--;
+		//			GLDEBUG(glDisableVertexAttribArray(attributeIndex));
+		//		}
+		//	}
+
+		//	UnBind();
+
+		//}
 	}
 }

@@ -6,6 +6,7 @@
 //#include "Engine/Core/Assets/Camera.h"
 #include <string>
 #include <vector>
+#include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
 
 namespace FanshaweGameEngine
 {
@@ -87,6 +88,8 @@ namespace FanshaweGameEngine
 			// The Verte array for the current Pipeline
 			SharedPtr<VertexArray> VAO;
 
+			std::vector<VertexAttribute> vertexLayout;
+
 			// All the Render Elements that need to be drawn
 			std::vector<RenderElement> renderElementList;
 
@@ -123,8 +126,6 @@ namespace FanshaweGameEngine
 		private:
 			
 
-			
-			
 			PipeLine m_pipeline;
 
 			void DrawVertices(uint32_t vertexCount, size_t vertexOffset);	
@@ -141,10 +142,13 @@ namespace FanshaweGameEngine
 
 			void Init();
 
-			const PipeLine GetPipeLine() const;
+			const PipeLine& GetPipeLine() const;
+
 
 			// Draws the provided Elements with the provided shader
-			void RenderElements( SharedPtr<Shader> shader, const MaterialType type);
+			void ForwardPass(SharedPtr<Shader> shader,  const CameraElement& camera , const MaterialType type);
+			void SkyBoxPass(const CameraElement& camera);
+
 
 			void SetUpCameraElement(Camera& cameraRef, Transform& transform);
 

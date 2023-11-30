@@ -2,7 +2,6 @@
 
 struct VertexData
 {
-	vec4 Color;
 	vec4 Position;
 	vec3 Normal;
 	vec2 TexCoord;

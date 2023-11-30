@@ -60,23 +60,14 @@ namespace FanshaweGameEngine
 		}
 
 		struct Vertex
-		{
-			Vertex() : position(Math::Vector3(0.0f))
-				, color(Math::Vector4(0.0f))
-				, normal(Math::Vector3(0.0f))
-			{
+		{	
+			Vector3 position{0.0f};
+			Vector2 texCoord{0.0f};
+			Vector3 normal{0.0f};
+			Vector3 tangent{0.0f};
+			Vector3 bitangent{0.0f};
 
-			}
-
-			Vector3 position;
-			Vector4 color;
-			Vector3 normal;
-			Vector2 texCoord;
-			Vector3 tangent;
-			Vector3 bitangent;
-
-
-			static const size_t Stride = sizeof(Vector3) + sizeof(Vector4) + sizeof(Vector3) + sizeof(Vector2) + sizeof(Vector3) + sizeof(Vector3);
+			static const size_t Size = 3 + 2 + 3 + 3 + 3; 
 		};
 
 		struct Triangle

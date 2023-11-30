@@ -1,5 +1,7 @@
 #pragma once
 #include <stdint.h>
+#include "VertexAttribute.h"
+#include <vector>
 
 namespace FanshaweGameEngine
 {
@@ -14,6 +16,8 @@ namespace FanshaweGameEngine
 			// Handle Id for the buffer
 			uint32_t bufferId = 0;
 
+			
+
 		public:
 
 			VertexArray();
@@ -26,9 +30,8 @@ namespace FanshaweGameEngine
 			void FreeArray();
 
 			void AddVertexAttributelayout(/*VertexBuffer& buffer,*/ uint32_t shaderId);
-
-
-
+			void AddVertexAttribLayout(std::vector<VertexAttribute>& layout);
+			//void RemoveVertexAttribLayout(std::vector<VertexAttribute>& layout); 
 
 		};
 	}

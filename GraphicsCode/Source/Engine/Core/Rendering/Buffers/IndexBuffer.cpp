@@ -6,7 +6,7 @@ namespace FanshaweGameEngine
 
 	namespace Rendering
 	{
-		IndexBuffer::IndexBuffer(size_t count, uint32_t* data, UsageType usage) : indiciesCount(count)
+		IndexBuffer::IndexBuffer(size_t count,const uint32_t* data, UsageType usage) : indiciesCount(count)
 			, bufferUsage(usage)
 		{
 			// Put GL Error checking here

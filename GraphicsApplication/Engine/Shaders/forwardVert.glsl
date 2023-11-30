@@ -4,7 +4,6 @@
 
 struct VertexData
 {
-	vec4 Color;
 	vec4 Position;
 	vec3 Normal;
 	vec2 TexCoord;
@@ -12,11 +11,11 @@ struct VertexData
 };
 
 layout (location = 0) in vec3 vPosition;
-layout (location = 1) in vec4 vColor;
+layout (location = 1) in vec2 aTexCoord;
 layout (location = 2) in vec3 vNormal;
 layout (location = 3) in vec3 vTangent;
 layout (location = 4) in vec3 vBitangent;
-layout (location = 5) in vec2 aTexCoord;
+
 
 
 
@@ -44,7 +43,6 @@ void main()
 
 	VertexOutput.Normal = tempNorm;
 	VertexOutput.Position = model * vec4(vPosition, 1.0f);
-	VertexOutput.Color = vColor;
 	VertexOutput.TexCoord = aTexCoord;
 
 	// The TBN matrix

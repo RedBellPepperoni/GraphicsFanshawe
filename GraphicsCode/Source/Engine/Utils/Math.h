@@ -193,6 +193,11 @@ namespace FanshaweGameEngine
             return glm::quatLookAt(direction, up);
         }
 
+        inline Matrix3 MakeRotationMatrix(const Vector3& angles)
+        {
+            return glm::yawPitchRoll(angles.y, angles.x, angles.z);
+        }
+
 
         // Matrix Processing functions // Just simplified wrappers
 

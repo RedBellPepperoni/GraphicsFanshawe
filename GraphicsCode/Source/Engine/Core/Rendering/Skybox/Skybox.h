@@ -36,6 +36,7 @@ namespace FanshaweGameEngine
 			void RotateX(float angle);
 			void RotateY(float angle);
 			void RotateZ(float angle);
+			void Rotate(const Vector3& angles);
 
 			const Vector3& GetRotation() const;
 
