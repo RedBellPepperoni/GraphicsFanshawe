@@ -18,6 +18,7 @@ namespace FanshaweGameEngine
 
 	class ModelLibrary;
 	class TextureLibrary;
+	class CubeMapLibrary;
 	class AudioLibrary;
 	class GameObjectRegistry;
 	class Scene;
@@ -79,7 +80,11 @@ using Physics::PhysicsEngine;
 		// The container for all teh loaded texures
 		SharedPtr<TextureLibrary> m_textureLibrary;
 
+		SharedPtr<CubeMapLibrary> m_cubeMapLibrary;
+
 		SharedPtr<AudioLibrary> m_audioLibrary;
+
+
 
 		// Pointer to the currently loaded scene
 		SharedPtr<Scene> m_currentScene;
@@ -150,6 +155,8 @@ using Physics::PhysicsEngine;
 
 		// Reference getter to the Textue Library
 		SharedPtr<TextureLibrary>& GetTextureLibrary();
+
+		SharedPtr<CubeMapLibrary>& GetCubeMapLibrary();
 
 		SharedPtr<AudioLibrary>& GetAudioLibrary();
 		

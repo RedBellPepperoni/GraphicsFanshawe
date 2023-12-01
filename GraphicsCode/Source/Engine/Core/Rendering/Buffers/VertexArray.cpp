@@ -20,12 +20,12 @@ namespace FanshaweGameEngine
 			FreeArray();
 		}
 
-		void VertexArray::Bind()
+		void VertexArray::Bind() const
 		{
 			GLDEBUG(glBindVertexArray(bufferId));
 
 		}
-		void VertexArray::UnBind()
+		void VertexArray::UnBind() const 
 		{
 			GLDEBUG(glBindVertexArray(0));
 

@@ -80,15 +80,15 @@ namespace FanshaweGameEngine
 
 		void CubeMap::Load(const FilePath& right, const FilePath& left, const FilePath& top, const FilePath& bottom, const FilePath& front, const FilePath& back)
 		{
-			bool flipImage = true;
+			bool flipImage = false;
 			std::array<Image, 6> images =
 			{
 				ImageLoader::LoadImageFromFile(right, flipImage),
 				ImageLoader::LoadImageFromFile(left, flipImage),
 				ImageLoader::LoadImageFromFile(top, flipImage),
 				ImageLoader::LoadImageFromFile(bottom, flipImage),
-				ImageLoader::LoadImageFromFile(front, flipImage),
 				ImageLoader::LoadImageFromFile(back, flipImage),
+				ImageLoader::LoadImageFromFile(front, flipImage),
 			};
 
 			Load(images);

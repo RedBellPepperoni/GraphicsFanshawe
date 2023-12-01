@@ -40,10 +40,23 @@ namespace FanshaweGameEngine
 
         IBO = MakeShared<IndexBuffer>(indices.size(), indices.data(), UsageType::STATIC_DRAW);
 
-        //std::vector<VertexAttribute> vertexLayout =
-        //{
-        //    //Vertex
-        //};
+        std::vector<VertexAttribute> vertexLayout =
+        {
+            VertexAttribute::Attribute<Vector3>()
+        };
+
+        VAO = MakeShared<VertexArray>();
+
+        VAO->Bind();
+
+        VBO->Bind();
+
+        VAO->AddVertexAttribLayout(vertexLayout);
+
+        IBO->Bind();
+
+        VAO->UnBind();
+      
 
 	}
 

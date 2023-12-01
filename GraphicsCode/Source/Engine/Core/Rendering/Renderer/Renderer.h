@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
+#include "Engine/Core/Rendering/Skybox/SkyboxObject.h"
+#include "Engine/Core/Rendering/Skybox/Skybox.h"
 
 namespace FanshaweGameEngine
 {
@@ -76,6 +78,8 @@ namespace FanshaweGameEngine
 			//Matrix4 viewMatrix;
 			Vector3 viewPosition;
 
+			Matrix4 staticViewProjectMatrix;
+
 			float aspectRatio;
 			bool isOrtho;
 		};
@@ -102,6 +106,7 @@ namespace FanshaweGameEngine
 			std::vector<SharedPtr<Mesh>> MeshList;
 
 
+
 			// The indices of all the Opaque Shader Elements
 			std::vector<size_t> opaqueElementList;
 
@@ -112,6 +117,9 @@ namespace FanshaweGameEngine
 			int textureBindIndex = 0;
 
 			SharedPtr<Texture> defaultTextureMap;
+
+			SkyboxObject SkyboxCubeObject;
+			Skybox skybox;
 			
 		};
 
@@ -142,12 +150,14 @@ namespace FanshaweGameEngine
 
 			void Init();
 
+			void SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap);
+
 			const PipeLine& GetPipeLine() const;
 
 
 			// Draws the provided Elements with the provided shader
 			void ForwardPass(SharedPtr<Shader> shader,  const CameraElement& camera , const MaterialType type);
-			void SkyBoxPass(const CameraElement& camera);
+			void SkyBoxPass(SharedPtr<Shader> shader,const CameraElement& camera);
 
 
 			void SetUpCameraElement(Camera& cameraRef, Transform& transform);

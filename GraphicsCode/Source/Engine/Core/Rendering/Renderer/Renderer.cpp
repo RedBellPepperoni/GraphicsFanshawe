@@ -16,6 +16,7 @@
 
 #include "Engine/Core/Rendering/Lights/Light.h"
 #include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
+#include "Engine/Core/Rendering/Essentials/Cubemap.h"
 
 
 namespace FanshaweGameEngine
@@ -55,9 +56,21 @@ namespace FanshaweGameEngine
 
            // SharedPtr<TextureLibrary> lib = Application::GetCurrent().GetTextureLibrary();
 
-           m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->LoadTexture("DefaultTexture", "Engine\\Textures\\DefaultTexture.png", TextureFormat::RGB);
+           // ============== LOADING TEXTURES =======================
+           // Loading default Albedo texture
+           Application::GetCurrent().GetTextureLibrary()->LoadTexture("DefaultAlbedoTexture", "Engine\\Textures\\DefaultTexture.png", TextureFormat::RGB);
+           Application::GetCurrent().GetCubeMapLibrary()->LoadCubeMap("FieldSkybox", "Engine\\Textures\\fieldRight.png", "Engine\\Textures\\fieldLeft.png", "Engine\\Textures\\fieldTop.png", "Engine\\Textures\\fieldBottom.png", "Engine\\Textures\\fieldFront.png", "Engine\\Textures\\fieldBack.png");
+
+
+           m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
             
-             
+           m_pipeline.SkyboxCubeObject.Init();
+
+
+
+
+           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("FieldSkybox");
+           m_pipeline.skybox.SetIntensity(1.20f);
 
         }
 
@@ -68,13 +81,22 @@ namespace FanshaweGameEngine
         {
             // Increase Drawcalls here
            
-            
-
+    
             // Drawing the Indices
             GLDEBUG(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr));
 
         }
 
+
+        void Renderer::SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap)
+        {
+            if (cubemap == nullptr)
+            {
+                return;
+            }
+
+            m_pipeline.skybox.cubeMap = cubemap;
+        }
 
         void Renderer::ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material,Transform& transform)
         {
@@ -149,10 +171,7 @@ namespace FanshaweGameEngine
 
         }
 
-        void Renderer::SkyBoxPass(const CameraElement& camera)
-        {
-            //SharedPtr<>
-        }
+      
 
       
 
@@ -176,7 +195,10 @@ namespace FanshaweGameEngine
         void Renderer::ForwardPass(SharedPtr<Shader> shader,const CameraElement& camera , const MaterialType type)
         {
           
-
+            if (shader == nullptr)
+            {
+                LOG_CRITICAL("FORWARD PASS : Material type :[{0}] : Shader not loaded", (int)type );
+            }
 
            
             // ============Set Shader Unifroms here ==================
@@ -221,6 +243,55 @@ namespace FanshaweGameEngine
            
         }
 
+        void Renderer::SkyBoxPass(SharedPtr<Shader> shader, const CameraElement& camera)
+        {
+
+            if (shader == nullptr)
+            {
+                LOG_CRITICAL("SKYBOX PASS : Shader not loaded");
+                return;
+            }
+
+            //Setting depth test to false (so that the skybox object will always be rendered last)
+            GLDEBUG(glDepthMask(GL_FALSE));
+
+            SkyboxObject& SkyObject = m_pipeline.SkyboxCubeObject;
+
+            Vector3 radianRotaion = m_pipeline.skybox.GetRotation();
+            radianRotaion.x = Radians(radianRotaion.x);
+            radianRotaion.y = Radians(radianRotaion.y);
+            radianRotaion.z = Radians(radianRotaion.z);
+
+            Matrix3 inverseRotation = Transpose(MakeRotationMatrix(radianRotaion));
+
+            // get the intensity from the pipeline
+            float skyluminance = m_pipeline.skybox.GetIntensity();
+
+            skyluminance = skyluminance < 0.0f ? Skybox::Defaultintensity : skyluminance;
+
+            // Bind and set Shader Unifroms
+            shader->Bind();
+            shader->SetUniform("StaticViewProjection", camera.staticViewProjectMatrix);
+            shader->SetUniform("Rotation", Matrix3(1.0f));
+            shader->SetUniform("gamma", 2.2f);
+            shader->SetUniform("luminance", skyluminance);
+
+            // Bind the skybox texture
+            m_pipeline.skybox.cubeMap->Bind();
+
+            // Bind the Skybox Object VAO
+            SkyObject.GetVAO().Bind();
+
+            // Finally draw the Object
+            DrawIndices(SkyObject.IndexCount,0);
+
+
+            //Setting depth test to back to true
+            GLDEBUG(glDepthMask(GL_TRUE));
+
+
+
+        }
      
 
         
@@ -340,96 +411,7 @@ namespace FanshaweGameEngine
             
         }
 
-        //void Renderer::SetUpDirLightUniform(SharedPtr<Shader>& shader)
-        //{
-        //    // Hardcoding for now
-        //    shader->SetUniform("dirLight.direction", Vector3(60.0f, 40.0f, -40.0f));
-
-        //    shader->SetUniform("dirLight.color", Vector3(0.0f, 0.6f, 1.0f));
-
-        //    shader->SetUniform("dirLight.intensity", Vector3(0.5f));
-
-        //    shader->SetUniform("dirLight.specular", Vector3(0.8f));
-
-        //    //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
-
-
-        //}
-
-        //void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
-        //{
-        //    Vector3 intensity = Vector3(0.4f);
-
-
-        //    std::string uniformName = "pointLightList[0]";
-
-        //    shader->SetUniform(uniformName + ".position", Vector3(0.8f, 1.0f, 1.2f));
-        //    shader->SetUniform(uniformName + ".color", Vector3(20.0f,1.0f,0.0f));
-        //    shader->SetUniform(uniformName + ".intensity", intensity);
-        //    shader->SetUniform(uniformName + ".constant", 1.0f);
-        //    shader->SetUniform(uniformName + ".linear", 0.2f);
-        //    shader->SetUniform(uniformName + ".quadratic", 0.27f);
-
-        //  /*  uniformName = "pointLightList[1]";
-
-        //    shader->SetUniform(uniformName + ".position", Vector3(20.0f, 8.0f, 8.0f));
-        //    shader->SetUniform(uniformName + ".color", Vector3(0.0f, 1.0f, 0.0f));
-        //    shader->SetUniform(uniformName + ".intensity", intensity);
-        //    shader->SetUniform(uniformName + ".constant", 1.0f);
-        //    shader->SetUniform(uniformName + ".linear", 0.003f);
-        //    shader->SetUniform(uniformName + ".quadratic", 0.009f);*/
-
-        //}
-
-
-        //// Hardest of hard coding here :(
-        //void Renderer::SetUpSpotLights(SharedPtr<Shader>& shader)
-        //{
-        //    Vector3 SpotLightPos_01 = Vector3(0.4f, 0.95f,-0.4f);
-        //    Vector3 SpotLightColor_01 = Vector3(1.0f, 1.0f,0.0f);
-
-        //    Vector3 SpotLightPos_02 = Vector3(0.4f, 0.95f, -1.6f);
-
-     
-        //   
-        //  
-
-        //    Vector3 intensity = Vector3(0.6f);
-
-
-        //    std::string uniformName = "spotLightList[0]";
-        //    shader->SetUniform(uniformName + ".position", SpotLightPos_01);
-        //    shader->SetUniform(uniformName + ".color", SpotLightColor_01);
-        //    shader->SetUniform(uniformName + ".intensity", intensity);
-        //    shader->SetUniform(uniformName + ".direction", Vector3(1.0f,-0.4f,0.1f));
-        //    shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(30.5f)));
-        //    shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.5f)));
-        //    shader->SetUniform(uniformName + ".constant", 1.0f);
-        //    shader->SetUniform(uniformName + ".linear", 0.09f);
-        //    shader->SetUniform(uniformName + ".quadratic", 0.022f);
-
-
-        //    // Hard Penumbra
-
-        //     uniformName = "spotLightList[1]";
-        //    shader->SetUniform(uniformName + ".position", SpotLightPos_02);
-        //    shader->SetUniform(uniformName + ".color", SpotLightColor_01);
-        //    shader->SetUniform(uniformName + ".intensity", intensity);
-        //    shader->SetUniform(uniformName + ".direction", Vector3(1.0f, -0.4f, 0.1f));
-        //    shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(20.5f)));
-        //    shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.0f)));
-        // 
-        //    shader->SetUniform(uniformName + ".constant", 1.0f);
-        //    shader->SetUniform(uniformName + ".linear", 0.09f);
-        //    shader->SetUniform(uniformName + ".quadratic", 0.022f);
-
-
-        //    
-        //    
-
-        //}
-
-       
+      
       
         
 
@@ -447,24 +429,32 @@ namespace FanshaweGameEngine
 
             camera.viewPosition = transform.GetPosition();
 
-          
-
 //          Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
 
             // For now , since the camera is not parented to anything. Later multiply the parent's transform to it
             //Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
 
-            
-            Matrix4 view = Math::Inverse(transform.GetLocalMatrix());
 
+            Matrix4 transformMatrix = transform.GetLocalMatrix();
+            
+           // get the inverse of the Camera trasfrom
+            Matrix4 view = Math::Inverse(transformMatrix);
+
+            // get the inverse of the Camera transform without any position data (only Rotation0
+            Matrix4 staticView = Math::Inverse(Matrix4(Matrix3(transformMatrix)));
+
+            // the Projection of the camera
             Matrix4 proj = (cameraRef.GetProjectionMatrix());
 
-
+             // calculate the vie projection matrix
             Matrix4 projView = proj * (view);
 
-            // Set the View Projection matrix
-            camera.viewProjMatrix = projView;
+            //calculate the view projection of the static view (no positional data)
+            Matrix4 staticProjView = proj * (staticView);
 
+            // Store the values
+            camera.viewProjMatrix = projView;
+            camera.staticViewProjectMatrix = staticProjView;
 
             m_pipeline.cameraList.push_back(camera);
 
@@ -477,6 +467,8 @@ namespace FanshaweGameEngine
         {
             return m_pipeline;
         }
+
+
 
 
         void Renderer::ProcessLightElement(Light& light, Transform& transform)

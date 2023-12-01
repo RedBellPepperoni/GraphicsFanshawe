@@ -18,7 +18,7 @@
 
 #include "Engine/Core/Rendering/Essentials/Material.h"
 #include "Engine/Core/Rendering/Lights/Light.h"
-
+#include "Engine/Core/Rendering/Essentials/Cubemap.h"
 
 
 namespace FanshaweGameEngine
@@ -35,6 +35,10 @@ namespace FanshaweGameEngine
 			// Add other Defaultr Shaders below <----
 
 			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "forwardFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("SkyboxShader", File::GetShaderDir().string() + "skyboxVert.glsl", File::GetShaderDir().string() + "skyboxFrag.glsl"));
+			
+			
+			
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vert.glsl", File::GetShaderDir().string() + "frag.glsl"));
 
@@ -130,6 +134,8 @@ namespace FanshaweGameEngine
 			m_renderer = MakeUnique<Renderer>();
 
 			m_renderer->Init();
+
+			//m_renderer->SetSkyboxCubeMap(m_Texture->GetResource("DefaultSkyBox");
 		
 			
 
@@ -154,7 +160,7 @@ namespace FanshaweGameEngine
 			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
 
 			// ===== Post Render Skybox Pass =================
-			m_renderer->SkyBoxPass(cameraElement);
+			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
 
 		}
 

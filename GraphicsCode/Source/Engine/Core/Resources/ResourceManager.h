@@ -207,6 +207,7 @@ namespace FanshaweGameEngine
 
 	class CubeMapLibrary : public ResourceLibrary<CubeMap>
 	{
+	public:
 		CubeMapLibrary()
 		{
 
