@@ -254,28 +254,28 @@ namespace FanshaweGameEngine
 	}
 
 
-	void DebugRenderer::DebugDraw(Light* light, const Quaternion& rotation, const Vector4& color)
+	void DebugRenderer::DebugDraw(const Light& light, const Quaternion& rotation, const Vector4& color)
 	{
-		switch (light->type)
+		switch (light.type)
 		{
 		case FanshaweGameEngine::LightType::DirectionLight:
 
 			Vector3 offset(0.0f, 0.1f, 0.0f);
-			DrawLine(Vector3(light->position) + offset, Vector3(light->position + (light->direction) * 2.0f) + offset, color);
-			DrawLine(Vector3(light->position) - offset, Vector3(light->position + (light->direction) * 2.0f) - offset, color);
+			DrawLine(Vector3(light.position) + offset, Vector3(light.position + (light.direction) * 2.0f) + offset, color);
+			DrawLine(Vector3(light.position) - offset, Vector3(light.position + (light.direction) * 2.0f) - offset, color);
 
-			DrawLine(Vector3(light->position), Vector3(light->position + (light->direction) * 2.0f), color);
-			DebugDrawCone(20, 4, 30.0f, 1.5f, (light->position - (light->direction) * 1.5f), rotation, color);
+			DrawLine(Vector3(light.position), Vector3(light.position + (light.direction) * 2.0f), color);
+			DebugDrawCone(20, 4, 30.0f, 1.5f, (light.position - (light.direction) * 1.5f), rotation, color);
 
 			break;
 		case FanshaweGameEngine::LightType::SpotLight:
 
-			DebugDrawCone(20, 4, Degrees(light->innerAngle), light->intensity, light->position, rotation, color);
+			DebugDrawCone(20, 4, Degrees(light.innerAngle), light.intensity, light.position, rotation, color);
 
 			break;
 		case FanshaweGameEngine::LightType::PointLight:
 
-			DebugDrawSphere(light->radius, light->position, color);
+			DebugDrawSphere(light.radius, light.position, color);
 
 			break;
 		default:
@@ -386,6 +386,38 @@ namespace FanshaweGameEngine
 		}
 
 	}
+
+	const std::vector<DebugTriangleData>& DebugRenderer::GetTriangles(bool depthtested) const
+	{
+		return depthtested ? m_drawList.debugTriangles : m_drawListAlwaysFront.debugTriangles;
+	}
+
+	const std::vector<DebugLineData>& DebugRenderer::GetLines(bool depthtested) const
+	{
+		return depthtested ? m_drawList.debugLines : m_drawListAlwaysFront.debugLines;
+	}
+
+	const std::vector<DebugPointData>& DebugRenderer::GetPoints(bool depthtested) const
+	{
+		return depthtested ? m_drawList.debugPoints : m_drawListAlwaysFront.debugPoints;
+	}
+
+	const std::vector<DebugText>& DebugRenderer::GetDebugText() const
+	{
+		return m_TextList;
+	}
+
+	const std::vector<DebugText>& DebugRenderer::GetDebugTextAlwaysFront() const
+	{
+		return m_TextListAlwaysFront;
+	}
+
+	const std::vector<DebugText>& DebugRenderer::GetDebugTextCameraSpace() const
+	{
+		return m_TextListCameraSpace;
+	}
+
+
 
 
 	// ================ Drawing Functions ====================

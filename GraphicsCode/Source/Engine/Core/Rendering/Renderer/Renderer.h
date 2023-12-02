@@ -10,8 +10,11 @@
 #include "Engine/Core/Rendering/Skybox/SkyboxObject.h"
 #include "Engine/Core/Rendering/Skybox/Skybox.h"
 
+
 namespace FanshaweGameEngine
 {
+	
+
 	namespace Components
 	{
 		// Forward Decalrartions for better compile times
@@ -37,6 +40,10 @@ namespace FanshaweGameEngine
 		
 
 		enum class MaterialType;
+
+
+		enum class DrawType;
+		
 
 
 		// Data Structure to define Renderable Object properties
@@ -84,12 +91,64 @@ namespace FanshaweGameEngine
 			bool isOrtho;
 		};
 
+		// ================ DEBUG RENDERING ELEMENTS
+
+		struct LineVertexElement
+		{
+			Vector3 vertex;
+			Vector4 color;
+
+			LineVertexElement(const Vector3& inVertex, const Vector4& inColor)
+				: vertex(inVertex)
+				,color (inColor)
+			{
+			}
+
+			bool operator==(const LineVertexElement& other) const
+			{
+				return vertex == other.vertex && color == other.color;
+			}
+		};
+
+		struct PointVertexElement
+		{
+			Vector3 vertex;
+			Vector4 color;
+			Vector2 uv;
+
+			bool operator==(const PointVertexElement& other) const
+			{
+				return vertex == other.vertex && color == other.color && uv == other.uv;
+			}
+
+		};
+
+
+		struct DebugDrawData
+		{
+			// the Data buffer storing the Line Vertex data
+			std::vector<LineVertexElement> lineDataBuffer;
+
+			// the Data buffer storing the Point Vertex data
+			std::vector<PointVertexElement> pointDataBuffer;
+
+			std::vector<VertexAttribute> vertexLayout;
+
+			uint32_t lineIndexCount = 0;
+			uint32_t pointIndexCount = 0;
+
+			SharedPtr<VertexBuffer> VBO;
+			SharedPtr<VertexArray> VAO;
+
+		};
+
 
 		struct PipeLine
 		{
 			
 
-			// The Verte array for the current Pipeline
+			// The Vertex array for the current Pipeline
+
 			SharedPtr<VertexArray> VAO;
 
 			std::vector<VertexAttribute> vertexLayout;
@@ -136,9 +195,23 @@ namespace FanshaweGameEngine
 
 			PipeLine m_pipeline;
 
-			void DrawVertices(uint32_t vertexCount, size_t vertexOffset);	
+			DebugDrawData m_debugDrawData;
 
-			void DrawIndices(uint32_t indexCount, uint32_t indexOffset = 0);
+
+			SharedPtr<Shader> m_lineShader = nullptr;
+			SharedPtr<Shader> m_pointShader = nullptr;
+
+			std::vector<LineVertexElement*> m_LineBufferBase;
+			std::vector<PointVertexElement*> m_PointBufferBase;
+
+
+
+			void DebugPassInternal(const CameraElement& camera, bool depthtest);
+
+
+			void DrawVertices(const  DrawType drawType, const uint32_t vertexCount,const size_t vertexOffset);
+
+			void DrawIndices(const DrawType drawType , const uint32_t indexCount,const uint32_t indexOffset = 0);
 			
 			void DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader, const RenderElement& element);
 
@@ -150,6 +223,8 @@ namespace FanshaweGameEngine
 
 			void Init();
 
+			void SetupDebugShaders(SharedPtr<Shader>& line, SharedPtr<Shader>& point);
+
 			void SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap);
 
 			const PipeLine& GetPipeLine() const;
@@ -158,14 +233,14 @@ namespace FanshaweGameEngine
 			// Draws the provided Elements with the provided shader
 			void ForwardPass(SharedPtr<Shader> shader,  const CameraElement& camera , const MaterialType type);
 			void SkyBoxPass(SharedPtr<Shader> shader,const CameraElement& camera);
-
+			void DebugPass(const CameraElement& camera);
 
 			void SetUpCameraElement(Camera& cameraRef, Transform& transform);
 
 			// Adds a Render Element to the Queue
 			void ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material, Transform& transform);
 			void ProcessLightElement(Light& light, Transform& transform);
-
+			
 			
 			void ClearRenderCache();
 			

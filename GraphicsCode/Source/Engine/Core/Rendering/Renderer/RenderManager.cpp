@@ -36,6 +36,8 @@ namespace FanshaweGameEngine
 
 			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "forwardFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("SkyboxShader", File::GetShaderDir().string() + "skyboxVert.glsl", File::GetShaderDir().string() + "skyboxFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("DebugLineShader", File::GetShaderDir().string() + "DebugLineVert.glsl", File::GetShaderDir().string() + "DebugLineFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("DebugPointShader", File::GetShaderDir().string() + "DebugPointVert.glsl", File::GetShaderDir().string() + "DebugPointFrag.glsl"));
 			
 			
 			
@@ -135,6 +137,11 @@ namespace FanshaweGameEngine
 
 			m_renderer->Init();
 
+			SharedPtr<Shader> lineShader = m_ShaderLibrary->GetResource("DebugLineShader");
+			SharedPtr<Shader> pointShader = m_ShaderLibrary->GetResource("DebugPointShader");
+
+			m_renderer->SetupDebugShaders(lineShader, pointShader);
+
 			//m_renderer->SetSkyboxCubeMap(m_Texture->GetResource("DefaultSkyBox");
 		
 			
@@ -159,8 +166,13 @@ namespace FanshaweGameEngine
 			// ===== Forward Pass for Opaque Elements ================ 
 			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
 
+
+			m_renderer->DebugPass(cameraElement);
+
 			// ===== Post Render Skybox Pass =================
 			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
+
+			
 
 		}
 

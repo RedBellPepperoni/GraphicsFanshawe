@@ -104,7 +104,7 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Skybox\Skybox.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\CubeMap.cpp" />
-    <ClCompile Include="DebugRenderer.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Renderer\DebugRenderer.cpp" />
     <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Skybox\Skybox.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\CubeMap.h" />
-    <ClInclude Include="DebugRenderer.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Renderer\DebugRenderer.h" />
     <ClInclude Include="Source\Editor\GUI\AudioEditor.h" />
     <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />

@@ -146,7 +146,7 @@ namespace FanshaweGameEngine
 
         static void DebugDraw(const BoundingSphere& sphere, const Vector4& color);
 
-        static void DebugDraw(Light* light, const Quaternion& rotation, const Vector4& color);
+        static void DebugDraw(const Light& light, const Quaternion& rotation, const Vector4& color);
 
         //static void DebugDraw()
 
@@ -156,6 +156,15 @@ namespace FanshaweGameEngine
         static void DebugDrawCone(int numCircleVertices, int numCircleLines, float angle, float length, const Vector3& position, const Quaternion& rotation, const Vector4& color);
         static void DebugDrawCapsule(const Vector3& position, const Quaternion& rotation, float height, float radius, const Vector4& color);
 	
+
+        const std::vector<DebugTriangleData>& GetTriangles(bool depthtested = false) const;
+        const std::vector<DebugLineData>& GetLines(bool depthtested = false) const;
+        const std::vector<DebugPointData>& GetPoints(bool depthtested = false) const;
+
+        const std::vector<DebugText>& GetDebugText() const;
+        const std::vector<DebugText>& GetDebugTextAlwaysFront() const;
+        const std::vector<DebugText>& GetDebugTextCameraSpace() const;
+
     
         static DebugRenderer* Get()
         {

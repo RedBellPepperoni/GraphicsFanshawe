@@ -19,8 +19,6 @@ namespace FanshaweGameEngine
 
 		std::string path = File::GetCurrentPath().string();
 
-		LOG_WARN("DEafultPath : {0}",path);
-
 
 		// Making a new Shader pointer ref
 		SharedPtr<Shader> newShader = Factory<Shader>::Create();

@@ -25,6 +25,8 @@ namespace FanshaweGameEngine
 			};
 
 
+			void DebugDraw();
+
 		public:
 
 			RuntimeEditor();
@@ -33,6 +35,8 @@ namespace FanshaweGameEngine
 
 			void Toggle(bool isVisible);
 			void OnUpdate();
+
+			
 		};
 	}
 }

@@ -18,20 +18,59 @@
 #include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
 #include "Engine/Core/Rendering/Essentials/Cubemap.h"
 
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
+#include "Engine/Core/Rendering/Definitions.h"
+
+
 
 namespace FanshaweGameEngine
 {
 
+
+
+
+
     namespace Rendering
     {
 
+        static const uint32_t MaxPoints = 10000;
+        static const uint32_t MaxPointVertices = MaxPoints * 4;
+        static const uint32_t MaxPointIndices = MaxPoints * 6;
+        static const uint32_t MAX_BATCH_DRAW_CALLS = 100;
+        static const uint32_t RENDERER_POINT_SIZE = sizeof(PointVertexElement) * 4;
+        static const uint32_t RENDERER_POINT_BUFFER_SIZE = RENDERER_POINT_SIZE * MaxPointVertices;
 
-        void Renderer::DrawVertices(uint32_t vertexOffset, size_t vertexCount)
+        static const uint32_t MaxLines = 10000;
+        static const uint32_t MaxLineVertices = MaxLines * 2;
+        static const uint32_t MaxLineIndices = MaxLines * 6;
+        static const uint32_t MAX_LINE_BATCH_DRAW_CALLS = 100;
+        static const uint32_t RENDERER_LINE_SIZE = sizeof(LineVertexElement) * 4;
+        static const uint32_t RENDERER_LINE_BUFFER_SIZE = RENDERER_LINE_SIZE * MaxLineVertices;
+
+        static const uint32_t MAX_QUADS = 10000;
+
+        enum class DrawType
+        {
+            POINTS = GL_POINTS,
+            LINES = GL_LINES,
+            TRIANGLES = GL_TRIANGLES
+        };
+      
+
+        void Renderer::DrawVertices(const DrawType drawType, const uint32_t vertexOffset,const size_t vertexCount)
         {
             // Drawing all the vertices in tthe Vertex buffer
             // Hacky way to convert long long int to GLsizei which is somw how a vanilla int
-            GLDEBUG(glDrawArrays(GL_TRIANGLES, (GLint)vertexOffset, (GLsizei)vertexCount));
+            GLDEBUG(glDrawArrays((GLenum)drawType, (GLint)vertexOffset, (GLsizei)vertexCount));
             //glDrawArrays(GL_TRIANGLES, (GLint)vertexOffset, (GLsizei)vertexCount);
+
+        }
+
+        void Renderer::DrawIndices(const DrawType drawType, const uint32_t indexCount, const uint32_t indexOffset)
+        {
+            // Increase Drawcalls here
+            // Drawing the Indices
+            GLDEBUG(glDrawElements((GLenum)drawType, indexCount, GL_UNSIGNED_INT, nullptr));
 
         }
 
@@ -39,8 +78,17 @@ namespace FanshaweGameEngine
        
         void Renderer::Init()
         {
+            // Initialize the Debug Renderer
+            DebugRenderer::Init();
+
             // Creating a new Vertex Array Object foe the Pipeline
             m_pipeline.VAO = Factory<VertexArray>::Create();    
+            m_debugDrawData.VAO = Factory<VertexArray>::Create();
+
+            m_debugDrawData.VBO = Factory<VertexBuffer>::Create(UsageType::DYNAMIC_DRAW);
+
+          
+            
 
             // Hard coding for now
             // Realistically this should be set up for each shader when the shader gets compiled , probably?
@@ -54,6 +102,19 @@ namespace FanshaweGameEngine
             };
 
 
+            m_debugDrawData.vertexLayout =
+            {
+                VertexAttribute::Attribute<Vector3>(), // Position
+                VertexAttribute::Attribute<Vector4>(), // Color
+            };
+
+
+            m_debugDrawData.VBO->Bind();
+            m_debugDrawData.VAO->Bind();
+            m_debugDrawData.VAO->AddVertexAttribLayout(m_debugDrawData.vertexLayout);
+           
+
+
            // SharedPtr<TextureLibrary> lib = Application::GetCurrent().GetTextureLibrary();
 
            // ============== LOADING TEXTURES =======================
@@ -65,8 +126,7 @@ namespace FanshaweGameEngine
            m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
             
            m_pipeline.SkyboxCubeObject.Init();
-
-
+   
 
 
            m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("FieldSkybox");
@@ -74,18 +134,21 @@ namespace FanshaweGameEngine
 
         }
 
+
+       
+
+        void Renderer::SetupDebugShaders(SharedPtr<Shader>& line, SharedPtr<Shader>& point)
+        {
+            m_lineShader = line;
+            m_pointShader = point;
+        }
+
+        
        
 
 
-        void Renderer::DrawIndices(uint32_t indexCount, uint32_t indexOffset)
-        {
-            // Increase Drawcalls here
-           
-    
-            // Drawing the Indices
-            GLDEBUG(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr));
 
-        }
+      
 
 
         void Renderer::SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap)
@@ -187,8 +250,7 @@ namespace FanshaweGameEngine
 
         }
 
-
-      
+       
 
        
 
@@ -283,7 +345,7 @@ namespace FanshaweGameEngine
             SkyObject.GetVAO().Bind();
 
             // Finally draw the Object
-            DrawIndices(SkyObject.IndexCount,0);
+            DrawIndices(DrawType::TRIANGLES,SkyObject.IndexCount,0);
 
 
             //Setting depth test to back to true
@@ -292,7 +354,69 @@ namespace FanshaweGameEngine
 
 
         }
+
+        void Renderer::DebugPassInternal(const CameraElement& camera, bool depthtest)
+        {
+            const std::vector<DebugLineData>& lines = DebugRenderer::Get()->GetLines(depthtest);
+            const std::vector<DebugPointData>& points = DebugRenderer::Get()->GetPoints(depthtest);
+        
+            // Skipping triangles for now
+
+            Matrix4 projView = camera.viewProjMatrix;
+
+            // ====== DEBUG LINE DRAW CALL ============
+            if (!lines.empty())
+            {
+                m_lineShader->Bind();
+                m_lineShader->SetUniform("projectionView", projView);
+
+
+                for (const DebugLineData& line : lines)
+                {
+                    if(m_debugDrawData.lineIndexCount >= MAX_QUADS)
+                    {
+                        break;
+                    }
+
+
+                    m_debugDrawData.lineDataBuffer.emplace_back(line.posOne, line.color);
+                    m_debugDrawData.lineDataBuffer.emplace_back(line.posTwo, line.color);
+
+                    m_debugDrawData.lineIndexCount +=2;
+                }
+
+                
+
+                uint32_t dataSize = (uint32_t) sizeof(LineVertexElement) * m_debugDrawData.lineIndexCount;
+
+                m_debugDrawData.VBO->SetData(dataSize, m_debugDrawData.lineDataBuffer.data());
+                m_debugDrawData.VAO->Bind();
+
+                DrawVertices(DrawType::LINES,0, m_debugDrawData.lineIndexCount);
+
+                m_debugDrawData.VBO->UnBind();
+
+                
+                
+            }
+
+
+        }
      
+        void Renderer::DebugPass(const CameraElement& camera)
+        {
+            if (m_lineShader == nullptr || m_pointShader == nullptr)
+            {
+                return;
+            }
+
+            // Two Passes one for no depth and other for Depthtested
+            DebugPassInternal(camera, true);
+            //DebugPassInternal(camera, true);
+
+            DebugRenderer::Reset();
+ 
+        }
 
         
 
@@ -344,7 +468,7 @@ namespace FanshaweGameEngine
             mesh->GetIBO()->Bind();
 
 
-            DrawIndices(mesh->GetIndexCount(), 0);
+            DrawIndices(DrawType::TRIANGLES,mesh->GetIndexCount(), 0);
 
 
 
