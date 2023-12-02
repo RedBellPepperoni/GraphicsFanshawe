@@ -3,29 +3,33 @@
 
 namespace FanshaweGameEngine
 {
+	class Scene;
+	
+	
+
+
 	namespace EditorGUI
 	{
+
+		
+
 		class RuntimeEditor
 		{
+
+
 
 		private:
 
 			bool m_shouldRender = false;
-
-			enum EditorDebugFlags : uint32_t 
-			{
-				Grid = 1,
-				Gizmo = 2,
-				ViewSelected = 4,
-				CameraFrustum = 8,
-				MeshBoundingBoxes = 16,
-				SpriteBoxes = 32,
-				EntityNames = 64,
-
-			};
+			
+			Vector2 m_cachedViewportSize{ 0.0f };
+			Vector2 m_cachedViewportPOsition{ 0.0f };
 
 
+
+		private:
 			void DebugDraw();
+			void InitDockingSpace();
 
 		public:
 
@@ -36,6 +40,8 @@ namespace FanshaweGameEngine
 			void Toggle(bool isVisible);
 			void OnUpdate();
 
+			//void SelectEntity(Entity entity);
+			//void UnSelectEntity(Entity entity);
 			
 		};
 	}
