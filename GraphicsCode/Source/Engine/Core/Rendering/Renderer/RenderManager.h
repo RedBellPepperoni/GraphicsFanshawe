@@ -33,7 +33,7 @@ namespace FanshaweGameEngine
 
 		private:
 
-			void LoadEngineShaders();
+			 void LoadEngineShaders();
 
 			
 

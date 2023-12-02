@@ -17,7 +17,8 @@
 #include "Engine/Core/ECS/Components/MeshRenderer.h"
 
 #include "Engine/Core/Rendering/Essentials/Material.h"
-
+#include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Core/Rendering/Essentials/Cubemap.h"
 
 
 namespace FanshaweGameEngine
@@ -33,7 +34,14 @@ namespace FanshaweGameEngine
 			// Loading the Default Shader 
 			// Add other Defaultr Shaders below <----
 
-			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "forwardFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("SkyboxShader", File::GetShaderDir().string() + "skyboxVert.glsl", File::GetShaderDir().string() + "skyboxFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("DebugLineShader", File::GetShaderDir().string() + "DebugLineVert.glsl", File::GetShaderDir().string() + "DebugLineFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("DebugPointShader", File::GetShaderDir().string() + "DebugPointVert.glsl", File::GetShaderDir().string() + "DebugPointFrag.glsl"));
+			
+			
+			
+			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "textureVert.glsl", File::GetShaderDir().string() + "textureFrag.glsl"));
 			//CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "vert.glsl", File::GetShaderDir().string() + "frag.glsl"));
 
 		}
@@ -69,7 +77,6 @@ namespace FanshaweGameEngine
 			ComponentView meshView = scene->GetEntityManager()->GetComponentsOfType<MeshComponent>();
 			
 			// Looping through all the entities that have a mesh component
-
 			for (Entity meshObject : meshView)
 			{
 
@@ -89,6 +96,15 @@ namespace FanshaweGameEngine
 				// Sending the mesh data for processing
 				m_renderer->ProcessRenderElement(meshComp.GetMesh(), materialComp.GetMaterial(), transform);
 
+			}
+
+			ComponentView lightView = scene->GetEntityManager()->GetComponentsOfType<Light>();
+
+			for (Entity lightObject : lightView)
+			{
+				Light& lightComponent = lightObject.GetComponent<Light>();
+				Transform& transform = lightObject.GetComponent<Transform>();
+				m_renderer->ProcessLightElement(lightComponent, transform);
 			}
 
 					
@@ -120,6 +136,13 @@ namespace FanshaweGameEngine
 			m_renderer = MakeUnique<Renderer>();
 
 			m_renderer->Init();
+
+			SharedPtr<Shader> lineShader = m_ShaderLibrary->GetResource("DebugLineShader");
+			SharedPtr<Shader> pointShader = m_ShaderLibrary->GetResource("DebugPointShader");
+
+			m_renderer->SetupDebugShaders(lineShader, pointShader);
+
+			//m_renderer->SetSkyboxCubeMap(m_Texture->GetResource("DefaultSkyBox");
 		
 			
 
@@ -128,10 +151,28 @@ namespace FanshaweGameEngine
 
 		void RenderManager::RenderFrame()
 		{
-			
+
+			int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
+
+			if (cameraIndex < 0)
+			{
+				LOG_WARN("No Rendering Cameras");
+				return;
+			}
 	
-			// Draw the OpaqueEleemnts
-			m_renderer->RenderElements(m_ShaderLibrary->GetResource("StandardShader"), MaterialType::Opaque);
+			// Store the data for the current rendering camera
+			const CameraElement& cameraElement = m_renderer->GetPipeLine().cameraList[cameraIndex];
+	
+			// ===== Forward Pass for Opaque Elements ================ 
+			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
+
+
+			m_renderer->DebugPass(cameraElement);
+
+			// ===== Post Render Skybox Pass =================
+			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
+
+			
 
 		}
 

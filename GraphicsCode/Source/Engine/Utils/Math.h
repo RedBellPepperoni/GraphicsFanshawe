@@ -16,6 +16,14 @@ namespace FanshaweGameEngine
     {
         // Randon Stuff
 
+        static const float PI = glm::pi<float>();
+        static const float HALFPI = glm::half_pi<float>();
+
+        static const float EPSILON = glm::epsilon<float>();
+        static const float DEGtoRAD = PI / 180.0f;
+        static const float DEGtoRAD_2 = PI / 360.0f;
+        static const float RADtoDEG = 1.0f / DEGtoRAD;
+
 
 
 
@@ -185,6 +193,11 @@ namespace FanshaweGameEngine
             return glm::quatLookAt(direction, up);
         }
 
+        inline Matrix3 MakeRotationMatrix(const Vector3& angles)
+        {
+            return glm::yawPitchRoll(angles.y, angles.x, angles.z);
+        }
+
 
         // Matrix Processing functions // Just simplified wrappers
 
@@ -327,7 +340,60 @@ namespace FanshaweGameEngine
         }
 
         
+        //Return sine of an angle in degrees.
+        template <class T>
+        inline T Sin(T angle)
+        {
+            return sin(angle * DEGtoRAD);
+        }
+
+        // Return cosine of an angle in degrees.
+        template <class T>
+        inline T Cos(T angle)
+        {
+            return cos(angle * DEGtoRAD);
+        }
+
+        // Return tangent of an angle in degrees.
+        template <class T>
+        inline T Tan(T angle)
+        {
+            return tan(angle * DEGtoRAD);
+        }
+
+        // Return arc sine in degrees.
+        template <class T>
+        inline T Asin(T x)
+        {
+            return RADtoDEG * asin(Clamp(x, T(-1.0), T(1.0)));
+        }
+
+        // Return arc cosine in degrees.
+        template <class T>
+        inline T Acos(T x)
+        {
+            return RADtoDEG * acos(Clamp(x, T(-1.0), T(1.0)));
+        }
+
+        // Return arc tangent in degrees.
+        template <class T>
+        inline T Atan(T x)
+        {
+            return RADtoDEG * atan(x);
+        }
+
+        // Return arc tangent of y/x in degrees.
+        template <class T>
+        inline T Atan2(T y, T x)
+        {
+            return RADtoDEG * atan2(y, x);
+
+        }
     }
+
+
+
+
 
     // Easily Accessible namespace to whichever class includes this .h file
     using namespace Math;

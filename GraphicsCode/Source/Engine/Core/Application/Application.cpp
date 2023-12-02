@@ -42,9 +42,8 @@ namespace FanshaweGameEngine
 
 		// Setting up teh Model and Object Library
 		m_modelLibrary = MakeShared<ModelLibrary>();
-
 		m_textureLibrary = MakeShared<TextureLibrary>();
-
+		m_cubeMapLibrary = MakeShared<CubeMapLibrary>();
 		m_audioLibrary = MakeShared<AudioLibrary>();
 		
 
@@ -283,6 +282,11 @@ namespace FanshaweGameEngine
 	SharedPtr<TextureLibrary>& Application::GetTextureLibrary()
 	{
 		return m_textureLibrary;
+	}
+
+	SharedPtr<CubeMapLibrary>& Application::GetCubeMapLibrary()
+	{
+		return m_cubeMapLibrary;
 	}
 
 	SharedPtr<AudioLibrary>& Application::GetAudioLibrary()

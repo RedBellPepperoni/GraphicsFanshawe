@@ -101,6 +101,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Skybox\Skybox.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Essentials\CubeMap.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Renderer\DebugRenderer.cpp" />
     <ClCompile Include="Source\Editor\GUI\AudioEditor.cpp" />
     <ClCompile Include="Source\Engine\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Editor\GUI\ApplicationEditor.cpp" />
@@ -160,7 +164,6 @@
     <ClCompile Include="Source\Engine\Utils\Loading\ModelLoader.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Engine\Core\Application\Application.cpp" />
-    <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Window\Window.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexArray.cpp" />
@@ -168,8 +171,13 @@
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\SphereCollider.cpp" />
     <ClCompile Include="Source\Engine\Utils\Time\Time.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\Texture.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Skybox\Skybox.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Essentials\CubeMap.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Renderer\DebugRenderer.h" />
     <ClInclude Include="Source\Editor\GUI\AudioEditor.h" />
     <ClInclude Include="Source\Editor\Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Source\Engine\Core\Audio\AudioListener.h" />
@@ -537,6 +545,7 @@
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\SphereCollider.h" />
     <ClInclude Include="Source\Engine\Utils\Time\Time.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\Texture.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

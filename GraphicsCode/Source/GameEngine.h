@@ -10,6 +10,7 @@
 #include "Engine/Core/Rendering/Renderer/Renderer.h"
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Resources/ResourceManager.h"
+#include "Engine/Core/Rendering/Lights/Light.h"
 
 
 #include "Engine/Core/Rendering/Essentials/Mesh.h"

@@ -3,6 +3,7 @@
 #include "Engine/Utils/Loading/Model.h"
 #include "Engine/Core/Rendering/Essentials/Material.h"
 #include "Engine/Core/Rendering/Essentials/Texture.h"
+#include "Engine/Core/Rendering/Essentials/CubeMap.h"
 #include "Engine/Core/Audio/AudioManager.h"
 #include "Engine/Utils/Logging/Log.h"
 
@@ -17,8 +18,6 @@ namespace FanshaweGameEngine
 	{
 
 		std::string path = File::GetCurrentPath().string();
-
-		LOG_WARN("DEafultPath : {0}",path);
 
 
 		// Making a new Shader pointer ref
@@ -97,6 +96,20 @@ namespace FanshaweGameEngine
 		}
 
 		return newAudio;
+	}
+
+	SharedPtr<CubeMap> CubeMapLibrary::LoadCubeMap(const std::string& friendlyName, const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& front, const std::string& back)
+	{
+		SharedPtr<CubeMap> newCubeMap = Factory<CubeMap>::Create();
+
+		if (newCubeMap != nullptr)
+		{
+			newCubeMap->Load(right, left, top, bottom, front, back);
+
+			CubeMapLibrary::CreateResource(friendlyName, newCubeMap);
+		}
+
+		return newCubeMap;
 	}
 
 }

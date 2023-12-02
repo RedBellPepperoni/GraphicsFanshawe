@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 
 		public:
 
-			IndexBuffer(size_t count, uint32_t* data, UsageType usage);
+			IndexBuffer(size_t count,const uint32_t* data, UsageType usage);
 			~IndexBuffer();
 
 			void Bind();

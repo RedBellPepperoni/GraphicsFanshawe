@@ -243,16 +243,18 @@ namespace FanshaweGameEngine
                     vertices[index].bitangent = Cross(vertices[index].normal, vertices[index].tangent);
                 }
 
+
+                // No color sicne textures are implemented?
                 if (meshDetails.useColor)
                 {
-                    vertices[index].color.r = mesh->mColors[0][index].r;
+                   /* vertices[index].color.r = mesh->mColors[0][index].r;
                     vertices[index].color.g = mesh->mColors[0][index].g;
                     vertices[index].color.b = mesh->mColors[0][index].b;
-                    vertices[index].color.a = mesh->mColors[0][index].a;
+                    vertices[index].color.a = mesh->mColors[0][index].a;*/
                 }
                 else
                 {
-                    vertices[index].color = Vector4(1.0f);
+                   /* vertices[index].color = Vector4(1.0f);*/
                 }
             }
 
@@ -412,11 +414,11 @@ namespace FanshaweGameEngine
 
             if (additionalVertexData & ModelDetailMode::color)
             {
-                // If color data is detected, we add that to our structure
-                stringStream >> tempVert.color.r;   tempVert.color.r /= 255.0f;
-                stringStream >> tempVert.color.g;   tempVert.color.g /= 255.0f;
-                stringStream >> tempVert.color.b;   tempVert.color.b /= 255.0f; 
-                stringStream >> tempVert.color.a;   tempVert.color.a /= 255.0f;
+                //// If color data is detected, we add that to our structure
+                //stringStream >> tempVert.color.r;   tempVert.color.r /= 255.0f;
+                //stringStream >> tempVert.color.g;   tempVert.color.g /= 255.0f;
+                //stringStream >> tempVert.color.b;   tempVert.color.b /= 255.0f; 
+                //stringStream >> tempVert.color.a;   tempVert.color.a /= 255.0f;
 
                 // PrintData += " " + std::to_string(tempVert.color.r) + " " + std::to_string(tempVert.color.g) + " " + std::to_string(tempVert.color.b);
             }

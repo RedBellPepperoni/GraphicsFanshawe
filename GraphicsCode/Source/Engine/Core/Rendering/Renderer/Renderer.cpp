@@ -14,20 +14,63 @@
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 #include "Engine/Core/Rendering/Shader/Shader.h"
 
+#include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Core/Rendering/Buffers/VertexAttribute.h"
+#include "Engine/Core/Rendering/Essentials/Cubemap.h"
+
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
+#include "Engine/Core/Rendering/Definitions.h"
+
+
 
 namespace FanshaweGameEngine
 {
 
+
+
+
+
     namespace Rendering
     {
 
+        static const uint32_t MaxPoints = 10000;
+        static const uint32_t MaxPointVertices = MaxPoints * 4;
+        static const uint32_t MaxPointIndices = MaxPoints * 6;
+        static const uint32_t MAX_BATCH_DRAW_CALLS = 100;
+        static const uint32_t RENDERER_POINT_SIZE = sizeof(PointVertexElement) * 4;
+        static const uint32_t RENDERER_POINT_BUFFER_SIZE = RENDERER_POINT_SIZE * MaxPointVertices;
 
-        void Renderer::DrawVertices(uint32_t vertexOffset, size_t vertexCount)
+        static const uint32_t MaxLines = 10000;
+        static const uint32_t MaxLineVertices = MaxLines * 2;
+        static const uint32_t MaxLineIndices = MaxLines * 6;
+        static const uint32_t MAX_LINE_BATCH_DRAW_CALLS = 100;
+        static const uint32_t RENDERER_LINE_SIZE = sizeof(LineVertexElement) * 4;
+        static const uint32_t RENDERER_LINE_BUFFER_SIZE = RENDERER_LINE_SIZE * MaxLineVertices;
+
+        static const uint32_t MAX_QUADS = 10000;
+
+        enum class DrawType
+        {
+            POINTS = GL_POINTS,
+            LINES = GL_LINES,
+            TRIANGLES = GL_TRIANGLES
+        };
+      
+
+        void Renderer::DrawVertices(const DrawType drawType, const uint32_t vertexOffset,const size_t vertexCount)
         {
             // Drawing all the vertices in tthe Vertex buffer
             // Hacky way to convert long long int to GLsizei which is somw how a vanilla int
-            GLDEBUG(glDrawArrays(GL_TRIANGLES, (GLint)vertexOffset, (GLsizei)vertexCount));
+            GLDEBUG(glDrawArrays((GLenum)drawType, (GLint)vertexOffset, (GLsizei)vertexCount));
             //glDrawArrays(GL_TRIANGLES, (GLint)vertexOffset, (GLsizei)vertexCount);
+
+        }
+
+        void Renderer::DrawIndices(const DrawType drawType, const uint32_t indexCount, const uint32_t indexOffset)
+        {
+            // Increase Drawcalls here
+            // Drawing the Indices
+            GLDEBUG(glDrawElements((GLenum)drawType, indexCount, GL_UNSIGNED_INT, nullptr));
 
         }
 
@@ -35,32 +78,88 @@ namespace FanshaweGameEngine
        
         void Renderer::Init()
         {
+            // Initialize the Debug Renderer
+            DebugRenderer::Init();
+
             // Creating a new Vertex Array Object foe the Pipeline
             m_pipeline.VAO = Factory<VertexArray>::Create();    
+            m_debugDrawData.VAO = Factory<VertexArray>::Create();
+
+            m_debugDrawData.VBO = Factory<VertexBuffer>::Create(UsageType::DYNAMIC_DRAW);
+
+          
+            
+
+            // Hard coding for now
+            // Realistically this should be set up for each shader when the shader gets compiled , probably?
+            m_pipeline.vertexLayout =
+            {
+                VertexAttribute::Attribute<Vector3>(), // position
+                VertexAttribute::Attribute<Vector2>(), // texture uv
+                VertexAttribute::Attribute<Vector3>(), // normal
+                VertexAttribute::Attribute<Vector3>(), // tangent
+                VertexAttribute::Attribute<Vector3>(), // bitangent
+            };
+
+
+            m_debugDrawData.vertexLayout =
+            {
+                VertexAttribute::Attribute<Vector3>(), // Position
+                VertexAttribute::Attribute<Vector4>(), // Color
+            };
+
+
+            m_debugDrawData.VBO->Bind();
+            m_debugDrawData.VAO->Bind();
+            m_debugDrawData.VAO->AddVertexAttribLayout(m_debugDrawData.vertexLayout);
+           
 
 
            // SharedPtr<TextureLibrary> lib = Application::GetCurrent().GetTextureLibrary();
 
-           m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->LoadTexture("DefaultTexture", "Engine\\Textures\\DefaultTexture.png", TextureFormat::RGB);
+           // ============== LOADING TEXTURES =======================
+           // Loading default Albedo texture
+           Application::GetCurrent().GetTextureLibrary()->LoadTexture("DefaultAlbedoTexture", "Engine\\Textures\\DefaultTexture.png", TextureFormat::RGB);
+           Application::GetCurrent().GetCubeMapLibrary()->LoadCubeMap("FieldSkybox", "Engine\\Textures\\fieldRight.png", "Engine\\Textures\\fieldLeft.png", "Engine\\Textures\\fieldTop.png", "Engine\\Textures\\fieldBottom.png", "Engine\\Textures\\fieldFront.png", "Engine\\Textures\\fieldBack.png");
+
+
+           m_pipeline.defaultTextureMap = Application::GetCurrent().GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
             
-             
+           m_pipeline.SkyboxCubeObject.Init();
+   
+
+
+           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("FieldSkybox");
+           m_pipeline.skybox.SetIntensity(1.20f);
 
         }
+
 
        
 
-
-        void Renderer::DrawIndices(uint32_t indexCount, uint32_t indexOffset)
+        void Renderer::SetupDebugShaders(SharedPtr<Shader>& line, SharedPtr<Shader>& point)
         {
-            // Increase Drawcalls here
-           
-            
-
-            // Drawing the Indices
-            GLDEBUG(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr));
-
+            m_lineShader = line;
+            m_pointShader = point;
         }
 
+        
+       
+
+
+
+      
+
+
+        void Renderer::SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap)
+        {
+            if (cubemap == nullptr)
+            {
+                return;
+            }
+
+            m_pipeline.skybox.cubeMap = cubemap;
+        }
 
         void Renderer::ProcessRenderElement(const SharedPtr<Mesh>& mesh, const SharedPtr<Material>& material,Transform& transform)
         {
@@ -74,7 +173,7 @@ namespace FanshaweGameEngine
             size_t elementIndex = m_pipeline.renderElementList.size();
 
             // Creatig a temporarty Element
-            RenderElement newElement = RenderElement();
+            RenderElement newElement;
 
             if (mesh != nullptr)
             {
@@ -135,6 +234,10 @@ namespace FanshaweGameEngine
 
         }
 
+      
+
+      
+
         void Renderer::ClearRenderCache()
         {
             m_pipeline.cameraList.clear();
@@ -142,68 +245,33 @@ namespace FanshaweGameEngine
             m_pipeline.MeshList.clear();
             m_pipeline.opaqueElementList.clear();
             m_pipeline.renderElementList.clear();
-            m_pipeline.VAO = nullptr;
+            m_pipeline.lightElementList.clear();
             m_pipeline.textureBindIndex = 0;
 
         }
 
-
-      
+       
 
        
 
-        void Renderer::RenderElements(SharedPtr<Shader> shader, const MaterialType type)
+        void Renderer::ForwardPass(SharedPtr<Shader> shader,const CameraElement& camera , const MaterialType type)
         {
-            // Binding the VAO for the Particular Shader
-           /* m_pipeline.VAO->Bind();*/
-
-
-            m_pipeline.MaterialList;
-
-
-            int cameraIndex = Application::GetCurrent().GetMainCameraIndex();
-
-            if (cameraIndex < 0)
+          
+            if (shader == nullptr)
             {
-                LOG_WARN("No Rendering Cameras");
-                return;
+                LOG_CRITICAL("FORWARD PASS : Material type :[{0}] : Shader not loaded", (int)type );
             }
 
            
+            // ============Set Shader Unifroms here ==================
             shader->Bind();
 
-            // Getting the Selected camera's Index from the CameraList
-            CameraElement camera = m_pipeline.cameraList[cameraIndex];
-
-           
-           
-
-            // ============Set Shader Unifroms here ==================
-
+   
             // Setting teh View Projection Matrix from the camera
             shader->SetUniform("viewProj", camera.viewProjMatrix);
             
       
-            SetUpDirLightUniform(shader);
-            SetUpSpotLights(shader);
-            SetUpPointLightUniform(shader);
-
-           //entt::registry& registry =  Application::GetCurrent().GetCurrentScene()->GetRegistry();
-
-           //auto pointlightview = registry.view<PointLight>();
-           //auto transformview = registry.view<Transform>();
-
-           //int index = 0;
-
-           //for (entt::entity Light: pointlightview)
-           //{
-           //    PointLight* light = &pointlightview.get<PointLight>(Light);
-           //    Transform* transform = &transformview.get<Transform>(Light);
-
-           //    SetUpPointLightUniform(shader, index, light, transform);
-           //    index++;
-           //}
-
+            SetLightUniform(shader);
 
 
             std::vector<size_t> elementList;
@@ -233,11 +301,122 @@ namespace FanshaweGameEngine
                 DrawElement(camera, shader, elementToDraw);
             }
 
-           
+            
            
         }
 
+        void Renderer::SkyBoxPass(SharedPtr<Shader> shader, const CameraElement& camera)
+        {
+
+            if (shader == nullptr)
+            {
+                LOG_CRITICAL("SKYBOX PASS : Shader not loaded");
+                return;
+            }
+
+            //Setting depth test to false (so that the skybox object will always be rendered last)
+            GLDEBUG(glDepthMask(GL_FALSE));
+
+            SkyboxObject& SkyObject = m_pipeline.SkyboxCubeObject;
+
+            Vector3 radianRotaion = m_pipeline.skybox.GetRotation();
+            radianRotaion.x = Radians(radianRotaion.x);
+            radianRotaion.y = Radians(radianRotaion.y);
+            radianRotaion.z = Radians(radianRotaion.z);
+
+            Matrix3 inverseRotation = Transpose(MakeRotationMatrix(radianRotaion));
+
+            // get the intensity from the pipeline
+            float skyluminance = m_pipeline.skybox.GetIntensity();
+
+            skyluminance = skyluminance < 0.0f ? Skybox::Defaultintensity : skyluminance;
+
+            // Bind and set Shader Unifroms
+            shader->Bind();
+            shader->SetUniform("StaticViewProjection", camera.staticViewProjectMatrix);
+            shader->SetUniform("Rotation", Matrix3(1.0f));
+            shader->SetUniform("gamma", 2.2f);
+            shader->SetUniform("luminance", skyluminance);
+
+            // Bind the skybox texture
+            m_pipeline.skybox.cubeMap->Bind();
+
+            // Bind the Skybox Object VAO
+            SkyObject.GetVAO().Bind();
+
+            // Finally draw the Object
+            DrawIndices(DrawType::TRIANGLES,SkyObject.IndexCount,0);
+
+
+            //Setting depth test to back to true
+            GLDEBUG(glDepthMask(GL_TRUE));
+
+
+
+        }
+
+        void Renderer::DebugPassInternal(const CameraElement& camera, bool depthtest)
+        {
+            const std::vector<DebugLineData>& lines = DebugRenderer::Get()->GetLines(depthtest);
+            const std::vector<DebugPointData>& points = DebugRenderer::Get()->GetPoints(depthtest);
+        
+            // Skipping triangles for now
+
+            Matrix4 projView = camera.viewProjMatrix;
+
+            // ====== DEBUG LINE DRAW CALL ============
+            if (!lines.empty())
+            {
+                m_lineShader->Bind();
+                m_lineShader->SetUniform("projectionView", projView);
+
+
+                for (const DebugLineData& line : lines)
+                {
+                    if(m_debugDrawData.lineIndexCount >= MAX_QUADS)
+                    {
+                        break;
+                    }
+
+
+                    m_debugDrawData.lineDataBuffer.emplace_back(line.posOne, line.color);
+                    m_debugDrawData.lineDataBuffer.emplace_back(line.posTwo, line.color);
+
+                    m_debugDrawData.lineIndexCount +=2;
+                }
+
+                
+
+                uint32_t dataSize = (uint32_t) sizeof(LineVertexElement) * m_debugDrawData.lineIndexCount;
+
+                m_debugDrawData.VBO->SetData(dataSize, m_debugDrawData.lineDataBuffer.data());
+                m_debugDrawData.VAO->Bind();
+
+                DrawVertices(DrawType::LINES,0, m_debugDrawData.lineIndexCount);
+
+                m_debugDrawData.VBO->UnBind();
+
+                
+                
+            }
+
+
+        }
      
+        void Renderer::DebugPass(const CameraElement& camera)
+        {
+            if (m_lineShader == nullptr || m_pointShader == nullptr)
+            {
+                return;
+            }
+
+            // Two Passes one for no depth and other for Depthtested
+            DebugPassInternal(camera, true);
+            //DebugPassInternal(camera, true);
+
+            DebugRenderer::Reset();
+ 
+        }
 
         
 
@@ -254,13 +433,12 @@ namespace FanshaweGameEngine
             if (mat != nullptr)
             {
                 mat->textureMaps.albedoMap->Bind(m_pipeline.textureBindIndex++);
-                shader->SetUniform("matColor", mat->albedoColour);
                 shader->SetUniform("mapAlbedo", mat->textureMaps.albedoMap->GetBoundId());
+                shader->SetUniform("materialProperties.AlbedoMapFactor", mat->albedomapFactor);
+                shader->SetUniform("materialProperties.AlbedoColor", mat->albedoColour);
+
             }
-            else
-            {
-                shader->SetUniform("matColor",Vector4(1.0f));
-            }
+           
           
            // mat->textureMaps.albedoMap->UnBind();
         
@@ -278,15 +456,19 @@ namespace FanshaweGameEngine
             //Always Bind the Buffer Array before adding Attributes 
             mesh->GetVBO()->Bind();
 
-            // Set the Shader Attributes
-            m_pipeline.VAO->AddVertexAttributelayout(shaderId);
+            m_pipeline.VAO->Bind();
 
+            // Set the Shader Attributes
+            m_pipeline.VAO->AddVertexAttribLayout(m_pipeline.vertexLayout);
+            //m_pipeline.VAO->AddVertexAttributelayout(shaderId);
+
+            //m_pipeline.VAO->AddVertexAttribLayout();
  
             // Bind the Index Buffer
             mesh->GetIBO()->Bind();
 
 
-            DrawIndices(mesh->GetIndexCount(), 0);
+            DrawIndices(DrawType::TRIANGLES,mesh->GetIndexCount(), 0);
 
 
 
@@ -298,95 +480,62 @@ namespace FanshaweGameEngine
 
         }
 
-        void Renderer::SetUpDirLightUniform(SharedPtr<Shader>& shader)
+        void Renderer::SetLightUniform(SharedPtr<Shader>& shader)
         {
-            // Hardcoding for now
-            shader->SetUniform("dirLight.direction", Vector3(60.0f, 40.0f, -40.0f));
-
-            shader->SetUniform("dirLight.color", Vector3(0.0f, 0.6f, 1.0f));
-
-            shader->SetUniform("dirLight.intensity", Vector3(0.5f));
-
-            shader->SetUniform("dirLight.specular", Vector3(0.8f));
-
-            //shader->SetUniform("lightList[0].properties", Vector4(2.0f, 0.0f, 0.0f, 0.0f));
-
-
-        }
-
-        void Renderer::SetUpPointLightUniform(SharedPtr<Shader>& shader)
-        {
-            Vector3 intensity = Vector3(0.4f);
-
-
-            std::string uniformName = "pointLightList[0]";
-
-            shader->SetUniform(uniformName + ".position", Vector3(0.8f, 1.0f, 1.2f));
-            shader->SetUniform(uniformName + ".color", Vector3(20.0f,1.0f,0.0f));
-            shader->SetUniform(uniformName + ".intensity", intensity);
-            shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.2f);
-            shader->SetUniform(uniformName + ".quadratic", 0.27f);
-
-          /*  uniformName = "pointLightList[1]";
-
-            shader->SetUniform(uniformName + ".position", Vector3(20.0f, 8.0f, 8.0f));
-            shader->SetUniform(uniformName + ".color", Vector3(0.0f, 1.0f, 0.0f));
-            shader->SetUniform(uniformName + ".intensity", intensity);
-            shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.003f);
-            shader->SetUniform(uniformName + ".quadratic", 0.009f);*/
-
-        }
-
-
-        // Hardest of hard coding here :(
-        void Renderer::SetUpSpotLights(SharedPtr<Shader>& shader)
-        {
-            Vector3 SpotLightPos_01 = Vector3(0.4f, 0.95f,-0.4f);
-            Vector3 SpotLightColor_01 = Vector3(1.0f, 1.0f,0.0f);
-
-            Vector3 SpotLightPos_02 = Vector3(0.4f, 0.95f, -1.6f);
-
-     
            
-          
+            shader->SetUniform("uboLights.lightCount", (int)m_pipeline.lightElementList.size());
+            
 
-            Vector3 intensity = Vector3(0.6f);
+            for (LightElement element : m_pipeline.lightElementList)
+            {
+
+                const std::string colorUniform = element.uniformName + ".color";
+                const std::string positionUniform = element.uniformName + ".position";
+                const std::string directionUniform = element.uniformName + ".direction";
+                const std::string intensityUniform = element.uniformName + ".intensity";
+                const std::string radiusUniform = element.uniformName + ".radius";
+                const std::string typeUniform = element.uniformName + ".type";
+
+                
+                const std::string innerAngleUniform = element.uniformName + ".innerAngle";
+                const std::string outerAngleUniform = element.uniformName + ".outerAngle";
 
 
-            std::string uniformName = "spotLightList[0]";
-            shader->SetUniform(uniformName + ".position", SpotLightPos_01);
-            shader->SetUniform(uniformName + ".color", SpotLightColor_01);
-            shader->SetUniform(uniformName + ".intensity", intensity);
-            shader->SetUniform(uniformName + ".direction", Vector3(1.0f,-0.4f,0.1f));
-            shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(30.5f)));
-            shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.5f)));
-            shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.09f);
-            shader->SetUniform(uniformName + ".quadratic", 0.022f);
+                shader->SetUniform(colorUniform, element.color);
+               
+               
+                shader->SetUniform(intensityUniform, element.intensity);
+                shader->SetUniform(typeUniform, (int)element.type);
 
+                switch (element.type)
+                {
+                case FanshaweGameEngine::LightType::DirectionLight :
+                    shader->SetUniform(directionUniform, element.direction);
 
-            // Hard Penumbra
+                        break;
+              
+                case FanshaweGameEngine::LightType::SpotLight:
+                    shader->SetUniform(innerAngleUniform, element.innerAngle);
+                    shader->SetUniform(outerAngleUniform, element.outerAngle);
+                    shader->SetUniform(positionUniform, element.position);
+                    shader->SetUniform(directionUniform, element.direction);
 
-             uniformName = "spotLightList[1]";
-            shader->SetUniform(uniformName + ".position", SpotLightPos_02);
-            shader->SetUniform(uniformName + ".color", SpotLightColor_01);
-            shader->SetUniform(uniformName + ".intensity", intensity);
-            shader->SetUniform(uniformName + ".direction", Vector3(1.0f, -0.4f, 0.1f));
-            shader->SetUniform(uniformName + ".cutOff", glm::cos(glm::radians(20.5f)));
-            shader->SetUniform(uniformName + ".outerCutOff", glm::cos(glm::radians(35.0f)));
-            shader->SetUniform(uniformName + ".constant", 1.0f);
-            shader->SetUniform(uniformName + ".linear", 0.09f);
-            shader->SetUniform(uniformName + ".quadratic", 0.022f);
+                    break;
+                case FanshaweGameEngine::LightType::PointLight:
+                    shader->SetUniform(radiusUniform, element.radius);
+                    shader->SetUniform(positionUniform, element.position);
 
+                    break;
+                default:
+                    break;
+                }
+            }
 
             
             
-
         }
 
-       
+      
       
         
 
@@ -404,24 +553,32 @@ namespace FanshaweGameEngine
 
             camera.viewPosition = transform.GetPosition();
 
-          
-
 //          Vector3 dir = camera.viewPosition + cameraRef->GetDirection();
 
             // For now , since the camera is not parented to anything. Later multiply the parent's transform to it
             //Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
 
-            
-            Matrix4 view = Math::Inverse(transform.GetLocalMatrix());
 
+            Matrix4 transformMatrix = transform.GetLocalMatrix();
+            
+           // get the inverse of the Camera trasfrom
+            Matrix4 view = Math::Inverse(transformMatrix);
+
+            // get the inverse of the Camera transform without any position data (only Rotation0
+            Matrix4 staticView = Math::Inverse(Matrix4(Matrix3(transformMatrix)));
+
+            // the Projection of the camera
             Matrix4 proj = (cameraRef.GetProjectionMatrix());
 
-
+             // calculate the vie projection matrix
             Matrix4 projView = proj * (view);
 
-            // Set the View Projection matrix
-            camera.viewProjMatrix = projView;
+            //calculate the view projection of the static view (no positional data)
+            Matrix4 staticProjView = proj * (staticView);
 
+            // Store the values
+            camera.viewProjMatrix = projView;
+            camera.staticViewProjectMatrix = staticProjView;
 
             m_pipeline.cameraList.push_back(camera);
 
@@ -430,10 +587,34 @@ namespace FanshaweGameEngine
         }
 
 
-        const PipeLine Renderer::GetPipeLine() const
+        const PipeLine& Renderer::GetPipeLine() const
         {
-
             return m_pipeline;
+        }
+
+
+
+
+        void Renderer::ProcessLightElement(Light& light, Transform& transform)
+        {
+            size_t currentIndex = m_pipeline.lightElementList.size();
+
+            // Create anew Light Element;
+            LightElement& lightElement = m_pipeline.lightElementList.emplace_back();
+
+            lightElement.color = light.color;
+            lightElement.direction = light.direction = transform.GetForwardVector();
+            lightElement.innerAngle = light.innerAngle;
+            lightElement.outerAngle = light.outerAngle;
+            lightElement.intensity = light.intensity;
+            lightElement.position = light.position = transform.GetPosition();
+            lightElement.radius = light.radius;
+            lightElement.type = light.type;
+
+            lightElement.uniformName = "uboLights.lights[" + std::to_string(currentIndex) + "]";
+
+
+
         }
        
       
