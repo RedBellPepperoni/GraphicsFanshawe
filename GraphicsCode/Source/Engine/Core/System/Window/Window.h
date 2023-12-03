@@ -73,6 +73,9 @@ namespace FanshaweGameEngine
 			void UpdateViewPort();
 
 
+
+
+
 			void PollEvents();
 
 			void SetEventCallback(const EventCallBackFn& callback);
@@ -103,6 +106,10 @@ namespace FanshaweGameEngine
 
 			void ToggleWireframe();
 			 
+
+
+			const Vector2Int GetSize() const;
+			
 
 		};
 	}

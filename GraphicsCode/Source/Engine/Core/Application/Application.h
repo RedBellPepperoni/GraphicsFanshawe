@@ -130,7 +130,7 @@ using Physics::PhysicsEngine;
 		static Application& GetCurrent();
 
 		// Referene getter for the current window
-		Window* GetAppWindow();
+		Window& GetAppWindow();
 
 		// Reference Getter for teh current scene
 		Scene* GetCurrentScene() const;
@@ -179,7 +179,7 @@ using Physics::PhysicsEngine;
 		void SetWindowTitle(const std::string& newTitle);
 
 		void StartPhysics(bool shouldstart);
-
+		const Vector2Int GetWindowSize();
 
 	};
 }

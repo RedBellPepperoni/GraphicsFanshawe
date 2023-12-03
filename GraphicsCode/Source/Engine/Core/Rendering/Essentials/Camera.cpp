@@ -1,4 +1,8 @@
 #include "Camera.h"
+#include "Engine/Core/Rendering/Essentials/Texture.h"
+#include "Engine/Core/Application/Application.h"
+#include "Engine/Core/Resources/ResourceManager.h"
+
 
 namespace FanshaweGameEngine
 {
@@ -11,6 +15,8 @@ namespace FanshaweGameEngine
             , m_fov(60.0f)
             , m_orthographic(false)
         {
+            InitializeRenderTexture();
+
         }
         Camera::Camera(float FOV, float Near, float Far, float Aspect)
             : m_aspectRatio(Aspect)
@@ -19,6 +25,7 @@ namespace FanshaweGameEngine
             , m_far(Far)
             , m_orthographic(false)
         {
+            InitializeRenderTexture();
         }
         
         Camera::Camera(float Aspect, float Near, float Far)
@@ -28,6 +35,7 @@ namespace FanshaweGameEngine
             , m_far(Far)
             , m_orthographic(false)
         {
+            InitializeRenderTexture();
         }
 
        
@@ -109,9 +117,10 @@ namespace FanshaweGameEngine
             m_direction = Math::Normalize(vector);
         }
 
-        const Vector3& Camera::GetDirection() const
+        const Vector3& Camera::GetDirection() 
         {
-            return Math::Normalize(m_direction);
+            m_direction = Math::Normalize(m_direction);
+            return m_direction;
         }
 
         const Vector3& Camera::GetUpVector() const
@@ -129,6 +138,8 @@ namespace FanshaweGameEngine
             return m_forwardVector;
         }
 
+      
+
         void Camera::UpdateProjectionMatrix()
         {
             if (m_orthographic)
@@ -143,6 +154,22 @@ namespace FanshaweGameEngine
 
                 //m_projection = Math::CalculateReversePerspective(m_fov, m_aspectRatio, m_near, m_far);
             }
+        }
+
+
+        SharedPtr<Texture>& Camera::GetRenderTexture()
+        {
+            return m_renderTexture;
+        }
+
+        void Camera::InitializeRenderTexture()
+        {
+            Vector2Int viewport = Application::GetCurrent().GetWindowSize();
+
+            m_renderTexture = Factory<Texture>::Create();
+            m_renderTexture->Load(nullptr, viewport.x, viewport.y, 3, false, TextureFormat::RGB);
+            m_renderTexture->SetWarping(TextureWraping::CLAMP_TO_EDGE);
+            
         }
     }
 }

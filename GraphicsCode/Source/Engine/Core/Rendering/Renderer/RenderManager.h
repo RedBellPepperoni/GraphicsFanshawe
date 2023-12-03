@@ -28,6 +28,8 @@ namespace FanshaweGameEngine
 
 			SharedPtr<MaterialLibrary> m_MaterialLibrary;
 
+
+
 			Scene* m_currentScene;
 
 

@@ -139,9 +139,9 @@ namespace FanshaweGameEngine
 		return *m_currentApplication;
 	}
 
-	Window* Application::GetAppWindow()
+	Window& Application::GetAppWindow()
 	{
-		return m_window.get();
+		return *m_window.get();
 	}
 
 	Scene* Application::GetCurrentScene() const
@@ -360,7 +360,7 @@ namespace FanshaweGameEngine
 	{
 		
 
-		GetAppWindow()->SetWindowTitle(newTitle);
+		GetAppWindow().SetWindowTitle(newTitle);
 	}
 
 	void Application::StartPhysics(bool shouldstart)
@@ -368,6 +368,11 @@ namespace FanshaweGameEngine
 		m_physicsSystem->SetPaused(shouldstart);
 
 		
+	}
+
+	const Vector2Int Application::GetWindowSize()
+	{
+		return GetAppWindow().GetSize();
 	}
 
 	

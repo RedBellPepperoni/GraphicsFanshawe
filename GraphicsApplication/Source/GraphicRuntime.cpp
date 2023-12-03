@@ -174,7 +174,7 @@ class GraphicProject : public Application
         // Input map for switching between the Wireframe and normal displays
         if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
         {
-            GetCurrent().GetAppWindow()->ToggleWireframe();
+            GetCurrent().GetAppWindow().ToggleWireframe();
         }
 
 

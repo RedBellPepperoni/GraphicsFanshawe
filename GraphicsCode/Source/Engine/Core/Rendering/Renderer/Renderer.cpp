@@ -579,6 +579,8 @@ namespace FanshaweGameEngine
             // Store the values
             camera.viewProjMatrix = projView;
             camera.staticViewProjectMatrix = staticProjView;
+            camera.outputTexture = cameraRef.GetRenderTexture();
+
 
             m_pipeline.cameraList.push_back(camera);
 

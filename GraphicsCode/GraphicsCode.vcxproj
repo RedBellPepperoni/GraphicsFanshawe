@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Editor\GUI\EditorViewport.cpp" />
+    <ClCompile Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Skybox\Skybox.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Essentials\CubeMap.cpp" />
@@ -174,6 +176,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Editor\GUI\EditorViewport.h" />
+    <ClInclude Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Skybox\Skybox.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Essentials\CubeMap.h" />

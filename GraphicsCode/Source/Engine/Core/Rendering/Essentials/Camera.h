@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Utils/Math.h"
-
+#include "Engine/Core/Memory/Memory.h"
 #include <string>
 
 
@@ -9,6 +9,9 @@ namespace FanshaweGameEngine
     
 	namespace Rendering
 	{
+
+        class Texture;
+
 
 		class Camera 
 		{
@@ -50,12 +53,14 @@ namespace FanshaweGameEngine
             const bool IsOrthographic() const;
 
             void SetDirection(const Vector3 vector);
-            const Vector3& GetDirection() const;
+            const Vector3& GetDirection();
 
 
             const Vector3& GetUpVector() const;
             const Vector3& GetRightVector() const;
             const Vector3& GetForwardVector() const;
+
+            SharedPtr<Texture>& GetRenderTexture();
 
 
         private:
@@ -66,8 +71,12 @@ namespace FanshaweGameEngine
             Vector3 m_direction = Vector3(0.0f, 0.0f, 1.0f);
 
 
+            SharedPtr<Texture> m_renderTexture;
+
             void UpdateProjectionMatrix();
-    
+            void InitializeRenderTexture();
+
+
             bool m_shouldUpdateProjection = false;
 
 

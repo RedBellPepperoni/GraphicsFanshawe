@@ -82,11 +82,13 @@ namespace FanshaweGameEngine
 		{
 		
 			Matrix4 viewProjMatrix;
-			//Matrix4 viewMatrix;
-			Vector3 viewPosition;
-
 			Matrix4 staticViewProjectMatrix;
 
+			Vector3 viewPosition;
+			SharedPtr<Texture> outputTexture;
+
+			
+			bool shouldRenderToTexture;
 			float aspectRatio;
 			bool isOrtho;
 		};

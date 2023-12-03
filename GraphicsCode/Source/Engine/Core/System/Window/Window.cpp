@@ -395,6 +395,21 @@ namespace FanshaweGameEngine
             }
 
         }
+
+
+        const Vector2Int Window::GetSize() const
+        {
+            if (windowHandle == nullptr)
+            {
+                return Vector2Int(m_properties.width, m_properties.height);
+            }
+
+            int width, height;
+            glfwGetWindowSize(windowHandle, &width, &height);
+
+            return Vector2Int(width, height);
+        }
+       
     }
 
     

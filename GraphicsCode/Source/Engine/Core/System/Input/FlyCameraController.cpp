@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 		if (Input::InputSystem::GetInstance().GetMouseBtnClicked(Input::MouseButton::Right))
 		{
 			mouseHeld = true;
-			Application::GetCurrent().GetAppWindow()->SetMouseHidden(true);
+			Application::GetCurrent().GetAppWindow().SetMouseHidden(true);
 			
 			m_storedCursorPosition = mousePosition;
 			m_previousCurserPos = m_storedCursorPosition;
@@ -45,8 +45,8 @@ namespace FanshaweGameEngine
 			{
 				mouseHeld = false;
 				// INFINITIE MOUse on x and Y no edge stopping
-				Application::GetCurrent().GetAppWindow()->SetMouseHidden(false);
-				Application::GetCurrent().GetAppWindow()->SetMousePosition(m_storedCursorPosition);
+				Application::GetCurrent().GetAppWindow().SetMouseHidden(false);
+				Application::GetCurrent().GetAppWindow().SetMousePosition(m_storedCursorPosition);
 			}
 
 		}
