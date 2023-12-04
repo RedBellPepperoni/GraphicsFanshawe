@@ -1,5 +1,8 @@
 #include "SphereCollider.h"
 #include "Engine/Core/Physics/PhysicsEngine/Rigidbody3D.h"
+#include "Engine/Core/Physics/Collision/BoundingStuff/BoundingSphere.h"
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
+#include "Engine/Utils/Logging/Log.h"
 
 namespace FanshaweGameEngine
 {
@@ -17,6 +20,8 @@ namespace FanshaweGameEngine
 			m_type = ColliderType::SPHERE;
 			SetRadius(radius);
 			m_transform = Math::Scale(Matrix4(1.0f), Vector3(m_radius * 2.0f));
+
+			
 		}
 		SphereCollider::~SphereCollider()
 		{
@@ -77,6 +82,28 @@ namespace FanshaweGameEngine
 			inertia[2][2] = i;
 
 			return inertia;
+		}
+
+		void SphereCollider::DebugDraw(const RigidBody3D* currentBody) const
+		{
+			Matrix4 transform = currentBody->GetTransform() * m_transform;
+
+
+
+
+			Vector4 position = transform[3];
+			
+
+			BoundingSphere sphere = BoundingSphere(position, m_radius);
+
+			Vector3 pos = sphere.GetCenter();
+
+
+			
+
+			DebugRenderer::DebugDraw(sphere, Vector4(1.0f,1.0f,1.0f, 0.2f));
+			DebugRenderer::DebugDrawSphere(m_radius, position, Vector4(1.0f,0.3f,1.0f,1.0f));
+
 		}
 
 		void SphereCollider::SetRadius(const float radius)

@@ -59,6 +59,8 @@ namespace FanshaweGameEngine
 
 			RigidBody3D* CreateRigidBody(Entity& entity, PhysicsProperties properties);
 
+			void DebugDraw();
+
 
 		protected:
 			

@@ -24,6 +24,7 @@ namespace FanshaweGameEngine
 		BoundingBox();
 		BoundingBox(const Vector3& min, const Vector3& max);
 		BoundingBox(const BoundingBox& otherBox);
+		BoundingBox(BoundingBox&& otherBox);
 
 		~BoundingBox();
 
@@ -51,7 +52,7 @@ namespace FanshaweGameEngine
 		IntersectionResult CheckInterscetion(const BoundingSphere& otherSphere) const;
 		 
 		void Merge(const Vector3& point);
-		
+		void Merge(const BoundingBox& other);
 
 
 		Vector3 Size() const;
@@ -60,10 +61,6 @@ namespace FanshaweGameEngine
 		Vector3 Max() const;
 		Vector3 GetExtents() const;
 
-
-
-
-	private:
 
 		Vector3 m_min;
 		Vector3 m_max;

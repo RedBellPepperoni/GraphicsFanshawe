@@ -19,6 +19,12 @@ namespace FanshaweGameEngine
 		m_max = otherBox.m_max;
 	}
 
+	BoundingBox::BoundingBox(BoundingBox&& otherBox)
+	{
+		m_min = otherBox.m_min;
+		m_max = otherBox.m_max;
+	}
+
 	BoundingBox::~BoundingBox()
 	{
 
@@ -146,9 +152,42 @@ namespace FanshaweGameEngine
 		{
 			m_max.z = point.z;
 		}
+				
 		
-			
-		
+	}
+
+	void BoundingBox::Merge(const BoundingBox& other)
+	{
+		if (other.m_min.x < m_min.x)
+		{
+			m_min.x = other.m_min.x;
+		}
+               
+		if (other.m_min.y < m_min.y)
+		{
+			m_min.y = other.m_min.y;
+		}
+               
+		if (other.m_min.z < m_min.z)
+		{
+			m_min.z = other.m_min.z;
+		}
+               
+		if (other.m_max.x > m_max.x)
+		{
+			m_max.x = other.m_max.x;
+		}
+                
+		if (other.m_max.y > m_max.y)
+		{
+			m_max.y = other.m_max.y;
+		}
+                
+		if (other.m_max.z > m_max.z)
+		{
+			m_max.z = other.m_max.z;
+		}
+               
 	}
 
 	Vector3 BoundingBox::Size() const

@@ -394,10 +394,10 @@ namespace FanshaweGameEngine
 
                 DrawVertices(DrawType::LINES,0, m_debugDrawData.lineIndexCount);
 
-                m_debugDrawData.VBO->UnBind();
+                m_debugDrawData.VBO->UnBind();        
+                
+              
 
-                
-                
             }
 
 
@@ -405,17 +405,24 @@ namespace FanshaweGameEngine
      
         void Renderer::DebugPass(const CameraElement& camera)
         {
+           
+
             if (m_lineShader == nullptr || m_pointShader == nullptr)
             {
                 return;
             }
 
-            // Two Passes one for no depth and other for Depthtested
-            DebugPassInternal(camera, true);
-            //DebugPassInternal(camera, true);
+            
 
+            // Two Passes one for no depth and other for Depthtested
+            DebugPassInternal(camera, false);
+            DebugPassInternal(camera, true);
+            
+
+            m_debugDrawData.lineIndexCount = 0;
+            m_debugDrawData.lineDataBuffer.clear();
+           
             DebugRenderer::Reset();
- 
         }
 
         

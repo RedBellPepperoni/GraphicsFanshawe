@@ -1,4 +1,5 @@
 #include "ConvexHull.h"
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
 
 namespace FanshaweGameEngine
 {
@@ -121,6 +122,31 @@ namespace FanshaweGameEngine
 				*out_min_vert = minVertex;
 			if (out_max_vert)
 				*out_max_vert = maxVertex;
+		}
+
+		void ConvexHull::DebugDraw(const Matrix4& transform)
+		{
+			/*for (HullFace& face : m_Faces)
+			{
+				if (face.vert_ids.size() > 2)
+				{
+					Vector3 polyginStart = transform * Vector4(m_Vertices[face.vert_ids[0]].pos, 1.0f);
+					Vector3 polyginEnd = transform * Vector4(m_Vertices[face.vert_ids[1]].pos, 1.0f);
+				
+					for (size_t index = 2; index < face.vert_ids.size(); ++index)
+					{
+						Vector3 nextPolygon = transform * Vector4(m_Vertices[face.vert_ids[index]].pos, 1.0f);
+					}
+				
+				
+				
+				}
+			}*/
+
+			for (HullEdge& edge : m_Edges)
+			{
+				DebugRenderer::DrawLine(transform * Vector4(m_Vertices[edge.vStart].pos, 1.0f), transform * Vector4(m_Vertices[edge.vEnd].pos, 1.0f),  Vector4(0.7f, 0.2f, 0.7f, 1.0f) , 0.02f);
+			}
 		}
 
 		

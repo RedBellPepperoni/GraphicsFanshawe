@@ -86,7 +86,7 @@ namespace FanshaweGameEngine
 
 			const Matrix4& GetTransform() const;
 
-			const BoundingBox& GetAABB();
+			const BoundingBox GetAABB();
 
 
 			BoundingBox GetBoundingBox() const;
@@ -112,6 +112,8 @@ namespace FanshaweGameEngine
 
 			uint64_t GetUniqueId() const;
 
+			void ColliderUpdated();
+
 			const Matrix3 GetInverseinertia() const;
 
 			bool GetIsStatic() const;
@@ -133,6 +135,9 @@ namespace FanshaweGameEngine
 
 			void SetStationaryThreshold(float value);
 			const float GetStaionaryThresholdSquared() const;
+
+
+			void DebugDraw(uint64_t flags);
 
 		protected:
 
@@ -204,7 +209,7 @@ namespace FanshaweGameEngine
 			mutable bool m_transformDirty = false;
 
 			// Determines if the AABB needs to be updated
-			bool m_AABBDirty = false;
+			bool m_AABBDirty = true;
 
 			CollisionTag m_tag;
 

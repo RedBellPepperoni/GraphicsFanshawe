@@ -1,5 +1,4 @@
 #include "DefaultBroadPhase.h"
-#include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
 
 namespace FanshaweGameEngine
 {
@@ -15,16 +14,17 @@ namespace FanshaweGameEngine
 		{
 		}
 
-        std::vector<CollisionPair> DefaultBroadPhase::FindCollisionPairs( std::vector<RigidBody3D*> bodies)
-        {
-            std::vector<CollisionPair> pairs;
+      
 
-            size_t count = bodies.size();
+
+		void DefaultBroadPhase::FindCollisionPairs(RigidBody3D** bodies, uint32_t count, std::vector<CollisionPair>& collisionPairs)
+		{
+
 
             if (count <= 0)
             {
                 // no pairs found
-                return pairs;
+                return;
             }
 
             for (size_t i = 0; i < count - 1; ++i)
@@ -68,9 +68,9 @@ namespace FanshaweGameEngine
                     bool duplicate = false;
 
                     // Loop through all the current objects 
-                    for (int index = 0; index < pairs.size(); index++)
+                    for (int index = 0; index < collisionPairs.size(); index++)
                     {
-                        CollisionPair& TempPair = pairs[index];
+                        CollisionPair& TempPair = collisionPairs[index];
 
                         if (pair.firstBody == TempPair.firstBody && pair.secondBody == TempPair.secondBody)
                         {
@@ -82,15 +82,16 @@ namespace FanshaweGameEngine
 
                     if (!duplicate)
                     { // No duplicate found
-                        pairs.push_back(pair);
+                        collisionPairs.push_back(pair);
                     }
                 }
 
 
             }
+		}
 
-
-            return pairs;
+		void DefaultBroadPhase::DebugDraw()
+        {
         }
 	}
 }

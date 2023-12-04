@@ -2,6 +2,7 @@
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingBox.h"
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingSphere.h"
 #include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Utils/Logging/Log.h"
 #include <cstdarg>
 
 namespace FanshaweGameEngine
@@ -287,6 +288,7 @@ namespace FanshaweGameEngine
 
 	void DebugRenderer::DebugDrawSphere(float radius, const Vector3& position, const Vector4& color)
 	{
+
 		DebugDrawCircle(20, radius, position, Quaternion(Vector3(0.0f, 0.0f, 0.0f)), color);
 		DebugDrawCircle(20, radius, position, Quaternion(Vector3(90.0f, 0.0f, 0.0f)), color);
 		DebugDrawCircle(20, radius, position, Quaternion(Vector3(0.0f, 90.0f, 90.0f)), color);
@@ -306,6 +308,8 @@ namespace FanshaweGameEngine
 			float nx = Cos(step * (i + 1)) * radius;
 			float ny = Sin(step * (i + 1)) * radius;
 			Vector3 next = Vector3(nx, ny, 0.0f);
+
+			
 
 			DrawLine(position + (rotation * current), position + (rotation * next), color);
 		}
@@ -438,9 +442,14 @@ namespace FanshaweGameEngine
 
 	void DebugRenderer::GenDrawLine(bool ignoreDepthtest, const Vector3& startPos, const Vector3& endPos, float width, const Vector4& color)
 	{
+
+		
+
 		if (ignoreDepthtest)
-		{
-			m_debugInstance->m_drawListAlwaysFront.debugLines.emplace_back(startPos, endPos, color, width);
+		{ 
+			DebugLineData data = m_debugInstance->m_drawListAlwaysFront.debugLines.emplace_back(startPos, endPos, color, width);
+
+			
 		}
 		else
 		{

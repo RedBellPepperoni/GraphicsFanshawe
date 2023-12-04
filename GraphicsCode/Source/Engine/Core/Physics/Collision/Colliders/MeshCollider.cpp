@@ -195,6 +195,10 @@ namespace FanshaweGameEngine
 			return inertia;
 		}
 
+		void MeshCollider::DebugDraw(const RigidBody3D* currentBody) const
+		{
+		}
+
 	}
 
 }

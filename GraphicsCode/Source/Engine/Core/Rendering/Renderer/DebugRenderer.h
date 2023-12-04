@@ -27,6 +27,8 @@ namespace FanshaweGameEngine
         Vector4 color;
         float thickness;
 
+        DebugLineData() = default;
+
         DebugLineData(const Vector3& inPosOne, const Vector3& inPosTwo, const Vector4& inColor, const float inthickness)
         {
             posOne = inPosOne;

@@ -1,6 +1,8 @@
 #pragma once
 #include "BroadPhase.h"
 #include "Engine/Utils/Math.h"
+#include <vector>
+
 
 namespace FanshaweGameEngine
 {
@@ -19,7 +21,9 @@ namespace FanshaweGameEngine
 			virtual ~DefaultBroadPhase();
 
 
-			std::vector<CollisionPair> FindCollisionPairs( std::vector<RigidBody3D*> bodies) override;
+			void FindCollisionPairs(RigidBody3D** bodies, uint32_t count, std::vector<CollisionPair>& collisionPairs) override;
+
+			void DebugDraw() override;
 
 		protected:
 

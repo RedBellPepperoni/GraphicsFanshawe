@@ -23,6 +23,7 @@ namespace FanshaweGameEngine
 			m_normallist.resize(3);
 			m_edgelist.resize(m_CubeHull->GetNumEdges());
 		}
+
 		BoxCollider::BoxCollider(const Vector3& halfDims)
 		{
 			m_CuboidHalfDimensions = halfDims;
@@ -36,6 +37,7 @@ namespace FanshaweGameEngine
 
 			m_normallist.resize(3);
 			m_edgelist.resize(m_CubeHull->GetNumEdges());
+			
 		}
 		BoxCollider::~BoxCollider()
 		{
@@ -175,6 +177,19 @@ namespace FanshaweGameEngine
 			inertia[2][2] = 12.f * invMass * 1.f / (dimsSq.x + dimsSq.y);
 
 			return inertia;
+		}
+
+		void BoxCollider::DebugDraw(const RigidBody3D* currentBody) const
+		{
+			Matrix4 transform = currentBody->GetTransform() * m_transform;
+
+
+			if (m_CubeHull->GetNumVertices() == 0)
+			{
+				ConstructCubeHull();
+			}
+
+			m_CubeHull->DebugDraw(transform);
 		}
 
 		void BoxCollider::ConstructCubeHull()

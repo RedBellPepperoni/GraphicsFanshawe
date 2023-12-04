@@ -28,7 +28,8 @@ namespace FanshaweGameEngine
             virtual void GetManifoldPolygon(const RigidBody3D* currentObject, const Vector3& axis, ManifoldPolygon& manifoldPolygon) const override;
 
             virtual Matrix3 BuildInverseInertia(float invMass) const override;
-
+            
+            virtual void DebugDraw(const RigidBody3D* currentBody) const override;
 
             void SetHalfWidth(float half_width)
             {

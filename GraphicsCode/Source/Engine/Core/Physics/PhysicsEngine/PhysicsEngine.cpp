@@ -3,7 +3,7 @@
 #include "Engine/Core/ECS/Components/RigidBodyComponent.h"
 #include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
 #include "Engine/Core/ECS/Components/Transform.h"
-#include "Engine/Core/Physics/Collision/Broadphase/SortnSweepBroadPhase.h"
+#include "Engine/Core/Physics/Collision/Broadphase/OctreeBroadPhase.h"
 #include "Engine/Core/Physics/Collision/Broadphase/DefaultBroadPhase.h"
 #include "Engine/Core/Physics/Collision/NarrowPhase/NarrowPhase.h"
 #include "Engine/Utils/Logging/Log.h"
@@ -49,9 +49,9 @@ namespace FanshaweGameEngine
 			m_paused = true;
 			m_dampingFactor = 0.98f;
 			m_physicsTimeStep = 1.0f / 50.0f;
-
-			m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
-			//m_broadPhaseDetection = MakeShared<SortnSweepBroadPhase>();
+			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
+			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(3,3,MakeShared<DefaultBroadPhase>());
+			
 		}
 
 		void PhysicsEngine::Update(const float deltatime)
@@ -212,6 +212,33 @@ namespace FanshaweGameEngine
 			return body;
 		}
 
+
+		void PhysicsEngine::DebugDraw()
+		{
+			if (m_paused)
+			{
+				return;
+			}
+
+			m_broadPhaseDetection->DebugDraw();
+			
+
+			for (RigidBody3D* body : m_rigidBodies)
+			{
+				body->DebugDraw(0);
+
+				SharedPtr<Collider> collider = body->GetCollider();
+
+				if (collider)
+				{
+					collider->DebugDraw(body);
+				}
+			}
+
+		}
+
+		
+
 	
 
 		// Initial Check to get pairs of potential collision using AABBs
@@ -228,6 +255,9 @@ namespace FanshaweGameEngine
 			SolveManifolds();
 
 			UpdateAllBodies();
+
+
+			
 
 
 
@@ -249,7 +279,7 @@ namespace FanshaweGameEngine
 			m_rigidBodies;
 
 			// get the potential Collison pairs
-			m_broadPhasePairs = m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies);
+			m_broadPhaseDetection->FindCollisionPairs(m_rigidBodies.data(), (uint32_t)m_rigidBodies.size(), m_broadPhasePairs);
 
 		
 
@@ -263,6 +293,8 @@ namespace FanshaweGameEngine
 				return;
 			}
 
+
+			LOG_CRITICAL("NarrowPhasePairs : {0}", m_broadPhasePairs.size());
 
 			for (CollisionPair& pair : m_broadPhasePairs)
 			{
@@ -321,6 +353,8 @@ namespace FanshaweGameEngine
 			
 
 		}
+
+
 		void PhysicsEngine::UpdateAllBodies()
 		{
 

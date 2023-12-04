@@ -83,6 +83,8 @@ namespace FanshaweGameEngine
 
 			virtual Matrix3 BuildInverseInertia(float invMass) const override;
 
+			virtual void DebugDraw(const RigidBody3D* currentBody) const override;
+
 			// Set Cuboid Dimensions
 			void SetHalfWidth(float half_width)
 			{

@@ -31,6 +31,8 @@ namespace FanshaweGameEngine
 
 			virtual Matrix3 BuildInverseInertia(float invMass) const override;
 
+			virtual void DebugDraw(const RigidBody3D* currentBody) const override;
+
 
 			void SetRadius(const float radius);
 

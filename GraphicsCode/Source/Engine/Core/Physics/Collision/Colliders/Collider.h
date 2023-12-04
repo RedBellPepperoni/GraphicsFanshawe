@@ -77,6 +77,8 @@ namespace FanshaweGameEngine
 
 			ColliderType GetType() const;
 
+			virtual void DebugDraw(const RigidBody3D* currentBody) const = 0;
+
 		protected:
 
 			// type of collider

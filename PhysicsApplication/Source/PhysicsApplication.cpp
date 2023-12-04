@@ -1,0 +1,135 @@
+
+#pragma once
+#include "GameEngine.h"
+
+using namespace FanshaweGameEngine::Physics;
+
+class PhysicsProject : public Application
+{
+   
+
+    void OnInit()
+    {
+        GetModelLibrary()->LoadModel("PhysicsBase","Assets\\Models\\PhysicsBase.fbx");
+        GetModelLibrary()->LoadModel("Sphere","Assets\\Models\\Sphere.fbx");
+
+        CreateBase();
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
+
+        for (int i = -50; i < 50; i+=10)
+        {
+            for (int j = -50; j < 50; j+=10)
+            {
+                CreateSphere(Vector3(i, (i+j)/2 + 60.0f, j), 1.0f);
+            }
+        }
+        
+
+        GetPhysicsEngine()->SetGravity(Vector3(0.0f, - 9.81f, 0.0f));
+        GetPhysicsEngine()->SetPaused(true);
+       
+
+
+    }
+
+    void OnUpdate(float deltaTime)
+    {
+        if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+        {
+            GetPhysicsEngine()->SetPaused(!GetPhysicsEngine()->GetIsPaused());
+
+            //GetCurrent().
+        }
+        
+    }
+
+    void CreateBase()
+    {
+        Entity physicBase = GetCurrentScene()->CreateEntity("PhysicsBase");
+
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("PhysicsBase")->GetMeshes()[0];
+
+        //physicBase.AddComponent<MeshComponent>(mesh);
+        //physicBase.AddComponent<MeshRenderer>();
+
+
+        //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
+       // collider->BuildFromMesh(mesh.get());
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(50.0f, 1.0f, 50.0f));
+       
+        PhysicsProperties properties;
+
+        properties.collider = collider;
+        properties.isStatic = true;
+        properties.stationary = true;
+        properties.position = Vector3(0.0f);
+
+        Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(physicBase,properties);
+        
+      
+
+        
+    }
+
+    void CreateSphere(const Vector3& position, const float radius)
+    {
+        Entity ballObject = GetCurrentScene()->CreateEntity("PhysicsBase");
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+
+        ballObject.AddComponent<MeshComponent>(mesh);
+        ballObject.AddComponent<MeshRenderer>();
+
+
+        SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
+        collider->SetRadius(radius);
+    
+        PhysicsProperties properties;
+
+        properties.collider = collider;
+        properties.isStatic = false;
+        properties.stationary = false;
+        properties.mass = 10.0f;
+        properties.position = position;
+
+        Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(ballObject, properties);
+
+
+
+
+    }
+
+    void AddDirLight(const Vector3& position, const Vector3& rotation, const Vector3& color, const float intensity)
+    {
+        Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
+
+        Transform& transform = dirLight.AddComponent<Transform>();
+        transform.SetPosition(position);
+        transform.SetRotation(rotation);
+
+        Light& light = dirLight.AddComponent<Light>();
+        light.type = LightType::DirectionLight;
+        light.color = color;
+        light.intensity = intensity <= 0.0f ? 0.0f : intensity;
+
+    }
+
+};
+
+
+
+int main(int argc, char* argv)
+{
+    // Creating a new Appinstance
+    PhysicsProject* app = new PhysicsProject();
+
+    //FilePath path = File::GetCurrentPath();
+
+    // Always Initialize the App
+    app->Initialize();
+    // Running the Application
+    app->Run();
+
+
+    delete app;
+}

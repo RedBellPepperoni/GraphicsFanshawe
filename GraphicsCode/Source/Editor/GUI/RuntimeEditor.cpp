@@ -7,11 +7,19 @@
 #include "Engine/Core/Application/Application.h"
 #include "Engine/Core/ECS/EntityManager.h"
 #include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Core/Physics/PhysicsEngine/RigidBody3D.h"
+#include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
+#include "Engine/Core/Physics/Collision/Colliders/Collider.h"
+
 #include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
+
+
 
 
 namespace FanshaweGameEngine
 {
+	using namespace Physics;
+
 	namespace EditorGUI
 	{
 		
@@ -67,6 +75,8 @@ namespace FanshaweGameEngine
 
 		void RuntimeEditor::OnUpdate()
 		{
+			
+
 			if(!m_shouldRender)
 			{
 				return;
@@ -75,6 +85,8 @@ namespace FanshaweGameEngine
 			//NO Docking Yet still need to figure out the ViewportTexture stuff
 
 			//InitDockingSpace();
+
+			
 
 			DebugDraw();
 
@@ -90,7 +102,9 @@ namespace FanshaweGameEngine
 
 		void RuntimeEditor::DebugDraw()
 		{
-			ComponentView lightView = Application::GetCurrent().GetCurrentScene()->GetEntityManager()->GetComponentsOfType<Light>();
+			//EntityManager* manager = Application::GetCurrent().GetCurrentScene()->GetEntityManager();
+
+			/*ComponentView lightView = Application::GetCurrent().GetCurrentScene()->GetEntityManager()->GetComponentsOfType<Light>();
 
 			int count = 0;
 
@@ -102,11 +116,10 @@ namespace FanshaweGameEngine
 
 				DebugRenderer::DebugDraw(lightComp,transform.GetRotation(),Vector4(1.0f));
 				
-			}
+			}*/
 
 
-			std::vector<DebugLineData> lines = DebugRenderer::Get()->GetLines(true);
-
+			//Application::GetCurrent().GetPhysicsEngine()->DebugDraw();
 			
 
 			

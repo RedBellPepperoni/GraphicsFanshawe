@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.cpp" />
     <ClCompile Include="Source\Editor\GUI\EditorViewport.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.cpp" />
@@ -135,7 +136,6 @@
     <ClCompile Include="Source\Engine\Core\System\Input\FlyCameraController.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.cpp" />
-    <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\MeshCollider.cpp" />
@@ -176,6 +176,7 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.h" />
     <ClInclude Include="Source\Editor\GUI\EditorViewport.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Skybox\SkyboxObject.h" />
@@ -213,7 +214,6 @@
     <ClInclude Include="Source\Engine\Core\System\Input\CameraController.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\RigidBodyComponent.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\DefaultBroadPhase.h" />
-    <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\SortnSweepBroadPhase.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\BroadPhase.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingBox.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BoundingStuff\BoundingSphere.h" />

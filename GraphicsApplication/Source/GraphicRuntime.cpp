@@ -42,44 +42,44 @@ class GraphicProject : public Application
         }
 
 
-        //Trees
-        AddOccluder(Vector3(3.9f, 3.0f, -2.0f),Vector3(0.0f, 70.0f,0.0f), Vector2(1.6,6));
-        AddOccluder(Vector3(-2.5f, 3.0f, -3.6f), Vector3(0.0f, -30.0f, 0.0f), Vector2(1.6, 6));
-        AddOccluder(Vector3(-0.9f, 3.0f, 2.3f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
-        AddOccluder(Vector3(-2.9f, 3.0f, 3.9f), Vector3(0.0f, -30.0f, 0.0f), Vector2(2, 6));
-        AddOccluder(Vector3(0.4f, 3.0f, 5.0f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
+        ////Trees
+        //AddOccluder(Vector3(3.9f, 3.0f, -2.0f),Vector3(0.0f, 70.0f,0.0f), Vector2(1.6,6));
+        //AddOccluder(Vector3(-2.5f, 3.0f, -3.6f), Vector3(0.0f, -30.0f, 0.0f), Vector2(1.6, 6));
+        //AddOccluder(Vector3(-0.9f, 3.0f, 2.3f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
+        //AddOccluder(Vector3(-2.9f, 3.0f, 3.9f), Vector3(0.0f, -30.0f, 0.0f), Vector2(2, 6));
+        //AddOccluder(Vector3(0.4f, 3.0f, 5.0f), Vector3(0.0f, 0.0f, 0.0f), Vector2(2, 6));
 
 
-        // Rock Big
-        AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f, 70.0f,0.0f), Vector2(3,1));
-        
-        //AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f), Vector2(3,1));
+        //// Rock Big
+        //AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f, 70.0f,0.0f), Vector2(3,1));
+        //
+        ////AddOccluder(Vector3(4.4f, 0.5f, -1.2f),Vector3(0.0f), Vector2(3,1));
 
 
 
-        AudioSource* source =  AddAudio("RadioMusic","Assets\\Audio\\EnchantedFestival.mp3", Vector3(-0.04f,1.53f,-0.4f));
+        //AudioSource* source =  AddAudio("RadioMusic","Assets\\Audio\\EnchantedFestival.mp3", Vector3(-0.04f,1.53f,-0.4f));
 
 
-        source->PlayClip();
-        source->Set3DMinDist(1.0f);
-        source->Set3DMaxDist(10.0f);
+        //source->PlayClip();
+        //source->Set3DMinDist(1.0f);
+        //source->Set3DMaxDist(10.0f);
 
-        source->AddDSPEffect(Audio::DSPEffects::REVERB);
-        source->AddDSPEffect(Audio::DSPEffects::DISTORTION);
-        source->AddDSPEffect(Audio::DSPEffects::LOWPASS);
-        source->AddDSPEffect(Audio::DSPEffects::HIGHPASS);
-        source->AddDSPEffect(Audio::DSPEffects::ECHO);
+        //source->AddDSPEffect(Audio::DSPEffects::REVERB);
+        //source->AddDSPEffect(Audio::DSPEffects::DISTORTION);
+        //source->AddDSPEffect(Audio::DSPEffects::LOWPASS);
+        //source->AddDSPEffect(Audio::DSPEffects::HIGHPASS);
+        //source->AddDSPEffect(Audio::DSPEffects::ECHO);
 
 
-        int index= source->GetChannelIndex();
+        //int index= source->GetChannelIndex();
 
-        source = AddAudio("Fire", "Assets\\Audio\\Fire.mp3", Vector3(0.8f, 1.0f, 1.2f));
+        //source = AddAudio("Fire", "Assets\\Audio\\Fire.mp3", Vector3(0.8f, 1.0f, 1.2f));
 
-        source->PlayClip();
-        source->Set3DMinDist(1.0f);
-        source->Set3DMaxDist(5.0f);
+        //source->PlayClip();
+        //source->Set3DMinDist(1.0f);
+        //source->Set3DMaxDist(5.0f);
 
-        
+        //
 
         playerTransform = GetCurrent().GetCurrentScene()->GetMainCameraTransform();
 
@@ -88,6 +88,12 @@ class GraphicProject : public Application
         AddDirLight(Vector3(0.0f,0.0f,0.0f), Vector3(-30.0f,10.0f,0.0f), Vector3(1.0f,1.0f,0.0f), 0.2f);
         AddPointLight(Vector3(0.8f, 2.0f, 1.4f), Vector3(1.0f, 0.0f, 0.0f), 2.2f, 5.0f);
         AddPointLight(Vector3(3.0f, 2.0f, 0.3f), Vector3(0.0f, 1.0f, 0.0f), 2.2f, 5.0f);
+
+
+
+
+
+
 
     }
 
@@ -165,6 +171,12 @@ class GraphicProject : public Application
         light.intensity = intensity <= 0.0f ? 0.0f : intensity;
 
         light.radius = radius <= 0.0f ? 0.0f : radius;
+
+    }
+
+
+    void AddBaseCollider()
+    {
 
     }
 

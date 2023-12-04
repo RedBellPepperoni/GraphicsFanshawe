@@ -1,6 +1,7 @@
 #include "RigidBody3D.h"
 #include "Engine/Core/Physics/Collision/Colliders/Collider.h"
 #include "Engine/Utils/Logging/Log.h"
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
 
 namespace FanshaweGameEngine
 {
@@ -76,7 +77,7 @@ namespace FanshaweGameEngine
 
 		}
 
-		const BoundingBox& RigidBody3D::GetAABB() 
+		const BoundingBox RigidBody3D::GetAABB() 
 		{
 			if (m_AABBDirty)
 			{
@@ -111,7 +112,7 @@ namespace FanshaweGameEngine
 			Vector3 lower;
 			Vector3 upper;
 
-			m_AABBDirty = true;
+			
 
 			if (!m_collider)
 			{
@@ -129,6 +130,8 @@ namespace FanshaweGameEngine
 			m_collider->GetMinMaxFromAxis(nullptr, z, &lower, &upper);
 			m_modelboundingBox.Merge(lower);
 			m_modelboundingBox.Merge(upper);
+
+			m_AABBDirty = true;
 		}
 
 		void RigidBody3D::SetPosition(const Vector3& newPosition)
@@ -201,8 +204,11 @@ namespace FanshaweGameEngine
 		void RigidBody3D::SetCollider(const SharedPtr<Collider>& collider)
 		{
 			m_collider = collider;
+			ColliderUpdated();
 
 		}
+		
+		
 		void RigidBody3D::SetCollider(ColliderType type)
 		{
 		}
@@ -215,6 +221,17 @@ namespace FanshaweGameEngine
 		uint64_t RigidBody3D::GetUniqueId() const
 		{
 			return m_Id.GetId();
+		}
+
+		void RigidBody3D::ColliderUpdated()
+		{
+			if (m_collider)
+			{
+				m_inverseInertia = m_collider->BuildInverseInertia(m_invMass);
+
+			}
+
+			UpdateModelBoundingBox();
 		}
 		const Matrix3 RigidBody3D::GetInverseinertia() const
 		{
@@ -299,6 +316,28 @@ namespace FanshaweGameEngine
 		const float RigidBody3D::GetStaionaryThresholdSquared() const
 		{
 			return m_StationaryVelocityThresholdSquared;
+		}
+
+		void RigidBody3D::DebugDraw(uint64_t flags)
+		{
+			
+			Vector4 color(1.0f,0.3f,0.7f,1.0f);
+
+			
+			if (!GetIsStationary())
+			{
+				// Make it green to show it is doing physics
+				color = Vector4(0.0f,1.0f,0.0f,1.0f);
+			}
+
+			
+
+			BoundingBox box = m_aabb;
+
+			// For now just Draw AABBS
+	
+			DebugRenderer::DebugDraw(box, color, true);
+
 		}
 		
 	}
