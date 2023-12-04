@@ -67,7 +67,7 @@ namespace FanshaweGameEngine
 		{
 
 			if (!outManifold)
-			{
+			{			
 				return false;
 			}
 

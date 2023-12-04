@@ -50,7 +50,7 @@ namespace FanshaweGameEngine
 			m_dampingFactor = 0.98f;
 			m_physicsTimeStep = 1.0f / 50.0f;
 			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
-			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(3,3,MakeShared<DefaultBroadPhase>());
+			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(5,5,MakeShared<DefaultBroadPhase>());
 			
 		}
 
@@ -220,7 +220,7 @@ namespace FanshaweGameEngine
 				return;
 			}
 
-			m_broadPhaseDetection->DebugDraw();
+			//m_broadPhaseDetection->DebugDraw();
 			
 
 			for (RigidBody3D* body : m_rigidBodies)
@@ -257,9 +257,6 @@ namespace FanshaweGameEngine
 			UpdateAllBodies();
 
 
-			
-
-
 
 		}
 
@@ -294,7 +291,7 @@ namespace FanshaweGameEngine
 			}
 
 
-			LOG_CRITICAL("NarrowPhasePairs : {0}", m_broadPhasePairs.size());
+			//LOG_CRITICAL("NarrowPhasePairs : {0}", m_broadPhasePairs.size());
 
 			for (CollisionPair& pair : m_broadPhasePairs)
 			{
@@ -313,6 +310,8 @@ namespace FanshaweGameEngine
 						//const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
 
 
+						
+
 						//if (callfirst && callSecond)
 						if (true)
 						{
@@ -327,6 +326,8 @@ namespace FanshaweGameEngine
 								pair.secondBody->OnCollisionManifoldCallback(pair.firstBody, pair.secondBody, &manifold);
 
 								m_debugStats.collisionCount++;
+
+								
 							}
 
 							else

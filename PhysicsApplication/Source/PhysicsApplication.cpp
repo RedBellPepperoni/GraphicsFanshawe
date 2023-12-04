@@ -13,21 +13,23 @@ class PhysicsProject : public Application
         GetModelLibrary()->LoadModel("PhysicsBase","Assets\\Models\\PhysicsBase.fbx");
         GetModelLibrary()->LoadModel("Sphere","Assets\\Models\\Sphere.fbx");
 
-        CreateBase();
-        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
-
-        for (int i = -50; i < 50; i+=10)
-        {
-            for (int j = -50; j < 50; j+=10)
-            {
-                CreateSphere(Vector3(i, (i+j)/2 + 60.0f, j), 1.0f);
-            }
-        }
-        
+       
 
         GetPhysicsEngine()->SetGravity(Vector3(0.0f, - 9.81f, 0.0f));
         GetPhysicsEngine()->SetPaused(true);
        
+        CreateBase();
+
+
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
+
+        for (int i = -50; i < 50; i += 10)
+        {
+            for (int j = -50; j < 50; j += 10)
+            {
+                CreateSphere(Vector3(i, (i + j) / 2 + 60.0f, j), 1.0f);
+            }
+        }
 
 
     }
@@ -56,16 +58,17 @@ class PhysicsProject : public Application
 
         //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
        // collider->BuildFromMesh(mesh.get());
-        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(50.0f, 1.0f, 50.0f));
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(50.0f, 3.0f, 50.0f));
        
         PhysicsProperties properties;
 
         properties.collider = collider;
         properties.isStatic = true;
         properties.stationary = true;
-        properties.position = Vector3(0.0f);
+        properties.position = Vector3(0.0f, -13.0f,0.0f);
+        properties.mass = 1000.0f;
 
-        Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(physicBase,properties);
+        GetPhysicsEngine()->CreateRigidBody(physicBase,properties);
         
       
 

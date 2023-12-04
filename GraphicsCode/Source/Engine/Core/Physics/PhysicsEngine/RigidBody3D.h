@@ -40,7 +40,7 @@ namespace FanshaweGameEngine
 			
 			Quaternion rotation = Quaternion();
 
-			float mass;
+			float mass = 10.0f;
 
 			bool stationary = false;
 

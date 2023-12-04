@@ -81,6 +81,7 @@ namespace FanshaweGameEngine
 
 		void Manifold::ApplyImpulse()
 		{
+
 			for (uint32_t index = 0; index < m_contactCount; index++)
 			{
 				SolveContactPoint(m_contactPoints[index]);
@@ -119,11 +120,12 @@ namespace FanshaweGameEngine
 			Vector3& relativeTwo = point.relativePosTwo;
 
 
-			Vector3 velocityOne = m_bodyOne->GetVelocity();// Add angular studff here later if possible
-			Vector3 velocityTwo = m_bodyTwo->GetVelocity();
+			Vector3 velocityOne = m_bodyOne->m_velocity;// Add angular studff here later if possible
+			Vector3 velocityTwo = m_bodyTwo->m_velocity;
 
 			Vector3& normal = point.collisionNormal;
 			Vector3 velocityDirection = velocityOne - velocityTwo;
+
 
 
 			// Contact Collision Check 
@@ -152,6 +154,7 @@ namespace FanshaweGameEngine
 
 			m_bodyOne->SetVelocity((velocityOne + normal * (jn *m_bodyOne->m_invMass)) );
 			m_bodyTwo->SetVelocity((velocityTwo - normal * (jn * m_bodyTwo->m_invMass)));
+
 
 
 			// Friction

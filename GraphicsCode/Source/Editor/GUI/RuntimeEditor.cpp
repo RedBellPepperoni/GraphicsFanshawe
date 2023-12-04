@@ -119,7 +119,7 @@ namespace FanshaweGameEngine
 			}*/
 
 
-			//Application::GetCurrent().GetPhysicsEngine()->DebugDraw();
+			Application::GetCurrent().GetPhysicsEngine()->DebugDraw();
 			
 
 			
