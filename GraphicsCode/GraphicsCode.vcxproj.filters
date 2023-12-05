@@ -77,6 +77,7 @@
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.cpp" />
+    <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaMaths.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -455,6 +456,7 @@
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.h" />
+    <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaMaths.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

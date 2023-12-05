@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
 			Vector3 m_scale;
 
 			// The local Matric for the Transform
-			mutable Matrix4 m_localMatrix = Matrix4(1.0f);
+			mutable Matrix4 m_worldMatrix = Matrix4(1.0f);
 
 			mutable Matrix4 m_normalMatrix = Matrix4(1.0f);
 
@@ -51,10 +51,12 @@ namespace FanshaweGameEngine
 			const Vector3 GetEulerRotation() const;
 
 
-
-			Matrix4& GetLocalMatrix();
+			Matrix4 GetLocalMatrix();
 
 			Matrix4& GetNormalMatrix();
+
+
+
 
 			const Vector3 GetScale() const;
 
@@ -74,6 +76,8 @@ namespace FanshaweGameEngine
 			Vector3 GetRightVector();
 
 			Vector3 GetForwardVector();
+
+
 
 		};
 	}

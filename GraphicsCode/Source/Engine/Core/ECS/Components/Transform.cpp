@@ -10,9 +10,9 @@ namespace FanshaweGameEngine
 			: m_position(Vector3(0.0f))
 			, m_rotation(Quaternion())
 			, m_scale(Vector3(1.0f))
-			, m_localMatrix(Matrix4(1.0f))
+			, m_worldMatrix(Matrix4(1.0f))
 		{
-			UpdateMatrix(m_localMatrix);
+			UpdateMatrix(m_worldMatrix);
 		}
 		Transform::~Transform()
 		{
@@ -42,18 +42,19 @@ namespace FanshaweGameEngine
 
 		}
 
-	    Matrix4& Transform::GetLocalMatrix()
+	    Matrix4 Transform::GetLocalMatrix()
 		{
-			UpdateMatrix(m_localMatrix);
-			return m_localMatrix;
+			Matrix4 mat;
+			UpdateMatrix(mat);
+			return mat;
 		}
 
 		Matrix4& Transform::GetNormalMatrix()
 		{
 			// Just incase
-			UpdateMatrix(m_localMatrix);
+			UpdateMatrix(m_worldMatrix);
 				
-			m_normalMatrix =  Transpose(Inverse(m_localMatrix));
+			m_normalMatrix =  Transpose(Inverse(m_worldMatrix));
 
 			return m_normalMatrix;
 

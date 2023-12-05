@@ -46,12 +46,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)Externals\Lua\src\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)Externals\Lua\src\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaMaths.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaMaths.h" />
     <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.h" />

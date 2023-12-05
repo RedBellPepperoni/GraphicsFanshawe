@@ -23,12 +23,13 @@ class PhysicsProject : public Application
 
         AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
 
+        //CreateSphere(Vector3(0.0f,20.0f, 0.0f), 1.0f);
+        CreateCapsule(Vector3(0.0f, 5.0f, 0.0f), 2.0f, 4.0f);
+        CreateCapsule(Vector3(0.0f, 20.0f, 0.0f), 2.0f, 4.0f);
 
-        CreateCapsule(Vector3(0.0f, 10.0f, 0.0f), 4.0f, 5.0f);
-
-        CreateSphere(Vector3(0.5f,  30.0f, 0.5f), 1.0f);
-        CreateSphere(Vector3(0.3f,  35.0f, 0.3f), 1.0f);
-        CreateSphere(Vector3(-0.5f,  40.0f, -0.3f), 1.0f);
+       
+        CreateSphere(Vector3(5.0f,  35.0f, 1.0f), 1.0f);
+        CreateSphere(Vector3(-5.0f,  40.0f, -5.0f), 1.0f);
 
         //for (int i = -50; i < 50; i += 10)
         //{
@@ -74,7 +75,7 @@ class PhysicsProject : public Application
 
         //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
        // collider->BuildFromMesh(mesh.get());
-        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(50.0f, 3.0f, 50.0f));
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(2.0f, 1.0f, 2.0f));
        
         PhysicsProperties properties;
 
@@ -84,7 +85,7 @@ class PhysicsProject : public Application
         properties.position = Vector3(0.0f, -13.0f,0.0f);
         properties.mass = 1000.0f;
         properties.elasticity = 0.6f;
-        properties.friction = 3.0f;
+        properties.friction = 0.8f;
         //properties.rotation = Quaternion(Radians(Vector3(30.0f,0.0f,0.0f)));
 
         GetPhysicsEngine()->CreateRigidBody(physicBase,properties);
@@ -113,10 +114,10 @@ class PhysicsProject : public Application
         properties.collider = collider;
         properties.isStatic = false;
         properties.stationary = false;
-        properties.mass = 50.0f;
+        properties.mass = 5.0f;
         properties.position = position;
         properties.elasticity = 0.6f;
-        properties.friction = 2.0f;
+        properties.friction = 0.5f;
 
         Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(ballObject, properties);
 
@@ -146,7 +147,7 @@ class PhysicsProject : public Application
         properties.mass = 10.0f;
         properties.position = position;
         properties.elasticity = 0.6f;
-        properties.friction = 3.0f;
+        properties.friction = 0.5f;
 
         Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(ballObject, properties);
 

@@ -42,32 +42,32 @@ namespace FanshaweGameEngine
 
 			// Check Sphere Sphere First
 			
-			if ((typeOne & ColliderType::SPHERE) && (typeTwo & ColliderType::SPHERE))
+			if ((typeOne == ColliderType::SPHERE) && (typeTwo == ColliderType::SPHERE))
 			{
 				// Reverse casting cuz its fun :(
 				// This will Break a lot of stuff if teh casts are wrong
 				return DetectSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne & ColliderType::CAPSULE) && (typeTwo & ColliderType::CAPSULE))
+			if ((typeOne == ColliderType::CAPSULE) && (typeTwo == ColliderType::CAPSULE))
 			{
 				return DetectCapsuleCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
 			// If one of the object is a sphere and the other is either a box or mesh collider
 			//else if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
-			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
+			if ((typeOne == ColliderType::SPHERE && (typeTwo == ColliderType::MESH || typeTwo == ColliderType::BOX)))
 			{
 	
 				return DetectSpherePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne & ColliderType::CAPSULE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
+			if ((typeOne == ColliderType::CAPSULE && (typeTwo == ColliderType::BOX)))
 			{
 				return DetectCapsulePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne & ColliderType::SPHERE )&& (typeTwo & ColliderType::CAPSULE))
+			if ((typeOne == ColliderType::SPHERE )&& (typeTwo == ColliderType::CAPSULE))
 			{
 				return DetectCapsuleSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
@@ -482,7 +482,7 @@ namespace FanshaweGameEngine
 			RigidBody3D* complexObj;
 			RigidBody3D* sphereObj;
 
-			if (bodyOne->GetCollider()->GetType() & ColliderType::SPHERE)
+			if (bodyOne->GetCollider()->GetType() == ColliderType::SPHERE)
 			{
 				sphereObj = bodyOne;
 				complexShape = colliderTwo;
@@ -546,7 +546,7 @@ namespace FanshaweGameEngine
 			RigidBody3D* complexObj;
 			RigidBody3D* capsuleObj;
 
-			if (bodyOne->GetCollider()->GetType() | ColliderType::CAPSULE)
+			if (bodyOne->GetCollider()->GetType() == ColliderType::CAPSULE)
 			{
 				capsuleObj = bodyOne;
 				complexCollider = colliderTwo;
@@ -590,8 +590,8 @@ namespace FanshaweGameEngine
 			float capsuleRadius = capsuleCollider->GetRadius();
 			float capsuleHeight = capsuleCollider->GetHeight();
 
-			float capsuleTop = capsulePos.y + capsuleHeight * 0.5f;
-			float capsuleBottom = capsulePos.y - capsuleHeight * 0.5f;
+			float capsuleTop = capsulePos.y + (capsuleHeight * 0.5f);
+			float capsuleBottom = capsulePos.y - (capsuleHeight * 0.5f);
 
 			for (int i = 0; i < shapeCollisionAxes.size(); i++)
 			{
