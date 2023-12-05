@@ -1,7 +1,9 @@
 #pragma once
+
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.inl>
 #include <glm/gtx/euler_angles.hpp>
 #include <cmath>
 #include <array>
@@ -248,6 +250,11 @@ namespace FanshaweGameEngine
             return glm::toMat4(quat);
         }
 
+
+        inline bool Decompose(const Matrix4& modelMat, Vector3& scale, Quaternion& orientation, Vector3& translation, Vector3& skew, Vector4& perspective)
+        {
+            return glm::decompose(modelMat, scale, orientation, translation, skew, perspective);
+        }
 
         // Quaternion Stuff
         // Calculates and returns a rotation vaule from a 4X4 matrix

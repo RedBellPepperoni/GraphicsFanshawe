@@ -38,6 +38,7 @@
 #include "Engine/Core/Physics/Collision/BroadPhase/BroadPhase.h"
 #include "Engine/Core/Physics/Collision/Colliders/SphereCollider.h"
 #include "Engine/Core/Physics/Collision/Colliders/MeshCollider.h"
+#include "Engine/Core/Physics/Collision/Colliders/CapsuleCollider.h"
 #include "Engine/Core/Physics/Collision/Colliders/BoxCollider.h"
 
 

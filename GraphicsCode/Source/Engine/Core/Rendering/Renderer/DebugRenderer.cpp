@@ -362,13 +362,13 @@ namespace FanshaweGameEngine
 		Vector3 topSphereCentre = position + up * (height * 0.5f);
 		Vector3 bottomSphereCentre = position - up * (height * 0.5f);
 
-		DebugDrawCircle(20, radius, topSphereCentre, rotation * Quaternion(Vector3(Radians(90.0f), 0.0f, 0.0f)), color);
-		DebugDrawCircle(20, radius, bottomSphereCentre, rotation * Quaternion(Vector3(Radians(90.0f), 0.0f, 0.0f)), color);
+		DebugDrawCircle(8, radius, topSphereCentre, rotation * Quaternion(Vector3(Radians(90.0f), 0.0f, 0.0f)), color);
+		DebugDrawCircle(8, radius, bottomSphereCentre, rotation * Quaternion(Vector3(Radians(90.0f), 0.0f, 0.0f)), color);
 
 		// Draw 10 arcs
 		// Sides
-		float step = 360.0f / float(20);
-		for (int i = 0; i < 20; i++)
+		float step = 360.0f / float(8);
+		for (int i = 0; i < 8; i++)
 		{
 			float z = Cos(step * i) * radius;
 			float x = Sin(step * i) * radius;
@@ -376,16 +376,16 @@ namespace FanshaweGameEngine
 			Vector3 offset = rotation * glm::vec4(x, 0.0f, z, 0.0f);
 			DrawLine(bottomSphereCentre + offset, topSphereCentre + offset, color);
 
-			if (i < 10)
+			if (i < 4)
 			{
-				float z2 = Cos(step * (i + 10)) * radius;
-				float x2 = Sin(step * (i + 10)) * radius;
+				float z2 = Cos(step * (i + 4)) * radius;
+				float x2 = Sin(step * (i + 4)) * radius;
 
 				Vector3 offset2 = rotation * glm::vec4(x2, 0.0f, z2, 0.0f);
 				// Top Hemishpere
-				DebugDrawArc(20, radius, topSphereCentre + offset, topSphereCentre + offset2, rotation, color);
+				DebugDrawArc(8, radius, topSphereCentre + offset, topSphereCentre + offset2, rotation, color);
 				// Bottom Hemisphere
-				DebugDrawArc(20, radius, bottomSphereCentre + offset, bottomSphereCentre + offset2, rotation * Quaternion(Vector3(Radians(180.0f), 0.0f, 0.0f)), color);
+				DebugDrawArc(8, radius, bottomSphereCentre + offset, bottomSphereCentre + offset2, rotation * Quaternion(Vector3(Radians(180.0f), 0.0f, 0.0f)), color);
 			}
 		}
 

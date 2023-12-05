@@ -56,6 +56,8 @@ namespace FanshaweGameEngine
 			// teh actual Collider Type
 			SharedPtr<Collider> collider = nullptr;
 
+			float elasticity = 0.5f;
+
 			CollisionTag tag;
 
 

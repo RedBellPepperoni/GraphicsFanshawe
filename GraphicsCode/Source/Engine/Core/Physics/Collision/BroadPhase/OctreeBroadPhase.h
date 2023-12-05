@@ -4,7 +4,7 @@
 #include "Engine/Core/Physics/Collision/BoundingStuff/BoundingBox.h"
 
 
-#define MAX_OBJECTS_PER_NODE 128
+#define MAX_OBJECTS_PER_NODE 1024
 #define MAX_PARTITION_DEPTH 16
 
 namespace FanshaweGameEngine

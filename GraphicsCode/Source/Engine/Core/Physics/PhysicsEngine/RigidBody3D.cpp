@@ -19,6 +19,7 @@ namespace FanshaweGameEngine
 			, m_isStatic(properties.isStatic)
 			, m_friction(properties.friction)
 			, m_tag(properties.tag)
+			,m_elasticity(properties.elasticity)
 		{
 			m_modelboundingBox.Set(Vector3(-0.5f), Vector3(0.5f));
 

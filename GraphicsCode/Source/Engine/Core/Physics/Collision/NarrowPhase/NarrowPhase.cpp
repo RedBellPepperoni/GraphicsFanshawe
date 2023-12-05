@@ -4,6 +4,7 @@
 
 #include "Engine/Core/Physics/Collision/Colliders/SphereCollider.h"
 #include "Engine/Core/Physics/Collision/Colliders/MeshCollider.h"
+#include "Engine/Core/Physics/Collision/Colliders/CapsuleCollider.h"
 #include "Engine/Utils/Logging/Log.h"
 
 
@@ -48,16 +49,23 @@ namespace FanshaweGameEngine
 				return DetectSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
+			if ((typeOne & ColliderType::CAPSULE) && (typeTwo & ColliderType::CAPSULE))
+			{
+				return DetectCapsuleCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
+			}
 
 			// If one of the object is a sphere and the other is either a box or mesh collider
-			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
+			//else if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
+			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
 			{
-				
-
+	
 				return DetectSpherePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
-			
-			
+
+			if ((typeOne & ColliderType::CAPSULE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
+			{
+				return DetectCapsulePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
+			}
 
 
 			return false;
@@ -219,6 +227,244 @@ namespace FanshaweGameEngine
 			return true;
 		}
 
+		bool NarrowPhase::DetectCapsuleCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
+		{
+			CapsuleCollider* capsulecolliderOne = static_cast<CapsuleCollider*>(colliderOne);
+			CapsuleCollider* capsulecolliderTwo = static_cast<CapsuleCollider*>(colliderTwo);
+
+			CollisionData collisionData;
+			collisionData.penetration = -FLT_MAX;
+
+			float capsule1Radius = capsulecolliderOne->GetRadius();
+			float capsule2Radius = capsulecolliderTwo->GetRadius();
+
+			Vector3 positionOne = bodyOne->GetPosition();
+			Vector3 positionTwo = bodyTwo->GetPosition();
+
+			Vector3 direction = positionTwo - positionOne;
+			float dist = Length(direction);
+
+			float height1 = capsulecolliderOne->GetHeight();
+			float height2 = capsulecolliderTwo->GetHeight();
+
+			float capsule1HalfHeight = height1 * 0.5f;
+			float capsule2HalfHeight = height2 * 0.5f;
+
+			float radiusSum = capsule1Radius + capsule2Radius;
+
+			Matrix4 capsule1ToCapsule2SpaceTransform = Inverse(bodyTwo->GetTransform()) * bodyOne->GetTransform();
+
+			Vector3 capsule1SegA(0, -capsule1HalfHeight, 0);
+			Vector3 capsule1SegB(0, capsule1HalfHeight, 0);
+			capsule1SegA = Vector3(capsule1ToCapsule2SpaceTransform * Vector4(capsule1SegA,1.0f));
+			capsule1SegB = Vector3(capsule1ToCapsule2SpaceTransform * Vector4(capsule1SegB,1.0f));
+
+			Vector3 capsule2SegA(0, -capsule2HalfHeight, 0);
+			Vector3 capsule2SegB(0, capsule2HalfHeight, 0);
+
+			// The two inner capsule segments
+			const Vector3 seg1 = capsule1SegB - capsule1SegA;
+			const Vector3 seg2 = capsule2SegB - capsule2SegA;
+			bool areParallel = (LengthSquared(glm::cross(seg1,seg2)) < EPSILON);
+
+			if (areParallel)
+			{
+				float segmentsPerpendicularDistance = PointToLineDistance(capsule1SegA, capsule1SegB, capsule2SegA);
+				if (segmentsPerpendicularDistance > radiusSum)
+					return false;
+
+				float d1 = Dot(seg1, Vector3(capsule1SegA));
+				float d2 = -Dot(seg1, Vector3(capsule1SegB));
+
+				float t1 = PlaneSegmentIntersection(capsule2SegB, capsule2SegA, d1, seg1);
+				float t2 = PlaneSegmentIntersection(capsule2SegA, capsule2SegB, d2, -seg1);
+
+				if (t1 > 0.0f && t2 > 0.0f)
+				{
+					// Clip the inner segment of capsule 2
+					if (t1 > 1.0f)
+						t1 = 1.0f;
+					const Vector3 clipPointA = capsule2SegB - t1 * seg2;
+					if (t2 > 1.0f)
+						t2 = 1.0f;
+					const Vector3 clipPointB = capsule2SegA + t2 * seg2;
+
+					// Project point capsule2SegA onto line of inner segment of capsule 1
+					const Vector3 seg1Normalized = Normalize(seg1);
+					Vector3 pointOnInnerSegCapsule1 = Vector3(capsule1SegA) + Dot(seg1Normalized, Vector3(capsule2SegA - capsule1SegA)) * seg1Normalized;
+
+					Vector3 normalCapsule2SpaceNormalized;
+					Vector3 segment1ToSegment2;
+
+					// If the inner capsule segments perpendicular distance is not zero (the inner segments are not overlapping)
+					if (segmentsPerpendicularDistance > EPSILON)
+					{
+						// Compute a perpendicular vector from segment 1 to segment 2
+						segment1ToSegment2 = (capsule2SegA - pointOnInnerSegCapsule1);
+						normalCapsule2SpaceNormalized = Normalize(segment1ToSegment2);
+					}
+					else
+					{
+						Vector3 vec1(1, 0, 0);
+						Vector3 vec2(0, 1, 0);
+
+						Vector3 seg2Normalized = Normalize(seg2);
+
+						float cosA1 = std::abs(seg2Normalized.x);
+						float cosA2 = std::abs(seg2Normalized.y);
+						segment1ToSegment2 = Vector3(0.0f, 0.0f, 0.0f);
+
+						normalCapsule2SpaceNormalized = cosA1 < cosA2 ? glm::cross(seg2Normalized, vec1) : glm::cross(seg2Normalized, vec2);
+					}
+
+					Matrix4 capsule2ToCapsule1SpaceTransform = Inverse(capsule1ToCapsule2SpaceTransform);
+					const Vector3 contactPointACapsule1Local = capsule2ToCapsule1SpaceTransform * Vector4(clipPointA - segment1ToSegment2 + normalCapsule2SpaceNormalized * capsule1Radius, 1.0f);
+					const Vector3 contactPointBCapsule1Local = capsule2ToCapsule1SpaceTransform * Vector4(clipPointB - segment1ToSegment2 + normalCapsule2SpaceNormalized * capsule1Radius, 1.0f);
+					const Vector3 contactPointACapsule2Local = clipPointA - normalCapsule2SpaceNormalized * capsule2Radius;
+					const Vector3 contactPointBCapsule2Local = clipPointB - normalCapsule2SpaceNormalized * capsule2Radius;
+
+					float penetrationDepth = radiusSum - segmentsPerpendicularDistance;
+
+					Vector3 normalWorld = Matrix4(bodyTwo->GetRotation()) * Vector4(normalCapsule2SpaceNormalized, 1.0f);
+					
+
+					float correlation1 = Dot(normalWorld, Vector3(contactPointACapsule1Local));
+					float correlation2 = Dot(normalWorld, Vector3(contactPointBCapsule1Local));
+
+					static bool flipNormal = false;
+				
+					// Flip Normal if needed
+					if (Dot(normalWorld, positionTwo - positionOne) < 0.0f)
+						
+					{
+						normalWorld = -normalWorld;
+					}
+
+					collisionData.collisionNormal = Normalize(normalWorld);
+					collisionData.penetration = penetrationDepth;
+					collisionData.pointOnPlane = bodyOne->GetTransform() * Vector4(contactPointACapsule1Local, 1.0f);
+
+					if (outData)
+						*outData = collisionData;
+
+					return true;
+				}
+			}
+
+			Vector3 closestPointCapsule1Seg;
+			Vector3 closestPointCapsule2Seg;
+			ClosestPointBetweenTwoSegments(capsule1SegA, capsule1SegB, capsule2SegA, capsule2SegB,
+				closestPointCapsule1Seg, closestPointCapsule2Seg);
+
+			Vector3 closestPointsSeg1ToSeg2 = (closestPointCapsule2Seg - closestPointCapsule1Seg);
+			const float closestPointsDistanceSquare = LengthSquared(closestPointsSeg1ToSeg2);
+
+			if (closestPointsDistanceSquare < radiusSum * radiusSum)
+			{
+				if (closestPointsDistanceSquare > EPSILON)
+				{
+					float closestPointsDistance = std::sqrt(closestPointsDistanceSquare);
+					closestPointsSeg1ToSeg2 /= closestPointsDistance;
+
+					const Vector3 contactPointCapsule1Local = Vector3(Inverse(capsule1ToCapsule2SpaceTransform) * Vector4((closestPointCapsule1Seg + closestPointsSeg1ToSeg2 * capsule1Radius),1.0f));
+					const Vector3 contactPointCapsule2Local = closestPointCapsule2Seg - closestPointsSeg1ToSeg2 * capsule2Radius;
+
+					// const Vector3 normalWorld = bodyTwo->GetRotation() * closestPointsSeg1ToSeg2;
+					Vector3 normalWorld = Matrix4(bodyTwo->GetRotation()) * Vector4(closestPointsSeg1ToSeg2, 1.0f);
+
+					float penetrationDepth = radiusSum - closestPointsDistance;
+
+					// Create the contact info object
+
+					float correlation1 = Dot(normalWorld, Vector3(contactPointCapsule1Local));
+					float correlation2 = Dot(normalWorld, Vector3(contactPointCapsule2Local));
+
+					// if(correlation1 <= correlation2)
+					if (Dot(normalWorld, positionTwo - positionOne) < 0.0f)
+					{
+						normalWorld = -normalWorld;
+					}
+
+					collisionData.collisionNormal = Normalize(normalWorld);
+					collisionData.penetration = penetrationDepth;
+					collisionData.pointOnPlane = bodyOne->GetTransform() * Vector4(contactPointCapsule1Local, 1.0f);
+
+					if (outData)
+						*outData = collisionData;
+
+					return true;
+				}
+				else
+				{
+					if (areParallel)
+					{
+						float squareDistCapsule2PointToCapsuleSegA = LengthSquared((capsule1SegA - closestPointCapsule2Seg));
+
+						Vector3 capsule1SegmentMostExtremePoint = squareDistCapsule2PointToCapsuleSegA > EPSILON ? capsule1SegA : capsule1SegB;
+						Vector3 normalCapsuleSpace2 = (closestPointCapsule2Seg - capsule1SegmentMostExtremePoint);
+						normalCapsuleSpace2 = Normalize(normalCapsuleSpace2);
+
+						const Vector3 contactPointCapsule1Local = Vector3(Inverse(capsule1ToCapsule2SpaceTransform) * Vector4((closestPointCapsule1Seg + normalCapsuleSpace2 * capsule1Radius),1.0f));
+						const Vector3 contactPointCapsule2Local = closestPointCapsule2Seg - normalCapsuleSpace2 * capsule2Radius;
+
+						// const Vector3 normalWorld = bodyTwo->GetRotation() * Vector4(normalCapsuleSpace2, 1.0f);
+						Vector3 normalWorld = Matrix4(bodyTwo->GetRotation()) * Vector4(normalCapsuleSpace2, 1.0f);
+
+						float correlation1 = Dot(normalWorld, Vector3(contactPointCapsule1Local));
+						float correlation2 = Dot(normalWorld, Vector3(contactPointCapsule2Local));
+
+						// if(correlation1 <= correlation2)
+						if (Dot(normalWorld, positionTwo - positionOne) < 0.0f)
+						{
+							normalWorld = -normalWorld;
+						}
+						// Create the contact info object
+						collisionData.collisionNormal = Normalize(normalWorld);
+						collisionData.penetration = radiusSum;
+						collisionData.pointOnPlane = bodyOne->GetTransform() * Vector4(contactPointCapsule1Local, 1.0f);
+
+						if (outData)
+							*outData = collisionData;
+
+						return true;
+					}
+					else
+					{
+						Vector3 normalCapsuleSpace2 = glm::cross(seg1, seg2);
+						Normalize(normalCapsuleSpace2);
+
+						const Vector3 contactPointCapsule1Local = Vector3(Inverse(capsule1ToCapsule2SpaceTransform) * Vector4((closestPointCapsule1Seg + normalCapsuleSpace2 * capsule1Radius),1.0f));
+						const Vector3 contactPointCapsule2Local = closestPointCapsule2Seg - normalCapsuleSpace2 * capsule2Radius;
+
+						// const Vector3 normalWorld = bodyTwo->GetRotation() * Vector4(normalCapsuleSpace2, 1.0f);
+						Vector3 normalWorld = Matrix4(bodyTwo->GetRotation()) * Vector4(normalCapsuleSpace2, 1.0f);
+
+						float correlation1 = Dot(normalWorld, Vector3(contactPointCapsule1Local));
+						float correlation2 = Dot(normalWorld, Vector3(contactPointCapsule2Local));
+
+						// if(correlation1 <= correlation2)
+						if (Dot(normalWorld, positionTwo - positionOne) < 0.0f)
+						{
+							normalWorld = -normalWorld;
+						}
+
+						collisionData.collisionNormal = Normalize(normalWorld);
+						collisionData.penetration = radiusSum;
+						collisionData.pointOnPlane = bodyOne->GetTransform() * Vector4(contactPointCapsule1Local, 1.0f);
+
+						if (outData)
+							*outData = collisionData;
+
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		
+
 		bool NarrowPhase::DetectSpherePolygonCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
 		{
 			if (!(colliderOne->GetType() & ColliderType::SPHERE || colliderTwo->GetType() & ColliderType::SPHERE))
@@ -246,8 +492,8 @@ namespace FanshaweGameEngine
 			}
 
 			CollisionData cur_colData;
-			CollisionData best_colData;
-			best_colData.penetration = -FLT_MAX;
+			CollisionData colData;
+			colData.penetration = -FLT_MAX;
 
 			
 			std::vector<Vector3>& shapeCollisionAxes = complexShape->GetCollisionNormals(complexObj);
@@ -276,15 +522,88 @@ namespace FanshaweGameEngine
 				if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &cur_colData))
 					return false;
 
-				if (cur_colData.penetration > best_colData.penetration)
-					best_colData = cur_colData;
+				if (cur_colData.penetration > colData.penetration)
+					colData = cur_colData;
 			}
 
 			if (outData)
-				*outData = best_colData;
+				*outData = colData;
 
 
 			
+
+			return true;
+		}
+
+		bool NarrowPhase::DetectCapsulePolygonCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
+		{
+			Collider* complexCollider;
+			CapsuleCollider* capsuleCollider;
+			RigidBody3D* complexObj;
+			RigidBody3D* capsuleObj;
+
+			if (bodyOne->GetCollider()->GetType() | ColliderType::CAPSULE)
+			{
+				capsuleObj = bodyOne;
+				complexCollider = colliderTwo;
+				complexObj = bodyTwo;
+				capsuleCollider = (CapsuleCollider*)colliderOne;
+			}
+			else
+			{
+				capsuleObj = bodyTwo;
+				complexCollider = colliderOne;
+				complexObj = bodyOne;
+				capsuleCollider = (CapsuleCollider*)colliderTwo;
+			}
+
+			CollisionData cur_colData;
+			CollisionData colData;
+			colData.penetration = -FLT_MAX;
+
+			std::vector<Vector3>& shapeCollisionAxes = complexCollider->GetCollisionNormals(complexObj);
+			std::vector<ColliderEdge>& complex_shape_edges = complexCollider->GetEdgeList(complexObj);
+
+			Vector3 p = GetClosestPointOnEdges(capsuleObj->GetPosition(), complex_shape_edges);
+			Vector3 p_t = capsuleObj->GetPosition() - p;
+			p_t = Normalize(p_t);
+
+			static const int MAX_COLLISION_AXES = 100;
+			static Vector3 possibleCollisionAxes[MAX_COLLISION_AXES];
+
+			uint32_t possibleCollisionAxesCount = 0;
+			for (const Vector3& axis : shapeCollisionAxes)
+			{
+				possibleCollisionAxes[possibleCollisionAxesCount++] = axis;
+			}
+
+			AddPossibleCollisionAxis(p_t, possibleCollisionAxes, possibleCollisionAxesCount);
+
+			Vector3 capsulePos = capsuleObj->GetPosition();
+			Vector4 forward = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+			Vector3 capsuleDir = capsuleObj->GetTransform() * forward;
+
+			float capsuleRadius = capsuleCollider->GetRadius();
+			float capsuleHeight = capsuleCollider->GetHeight();
+
+			float capsuleTop = capsulePos.y + capsuleHeight * 0.5f;
+			float capsuleBottom = capsulePos.y - capsuleHeight * 0.5f;
+
+			for (int i = 0; i < shapeCollisionAxes.size(); i++)
+			{
+				const Vector3& axis = shapeCollisionAxes[i];
+				if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &cur_colData))
+					return false;
+
+				if (cur_colData.penetration >= colData.penetration)
+					colData = cur_colData;
+			}
+
+			if (Dot(colData.collisionNormal, capsuleDir) < 0.0f)
+				colData.collisionNormal = -colData.collisionNormal;
+
+			if (outData)
+				*outData = colData;
 
 			return true;
 		}
@@ -294,8 +613,11 @@ namespace FanshaweGameEngine
 		Vector3 NarrowPhase::GetClosestPointOnEdges(const Vector3& target, const std::vector<ColliderEdge>& edges)
 		{
 			
-			Vector3 closest_point, temp_closest_point;
+			Vector3 closest_point = Vector3(0.0f);
+			Vector3 temp_closest_point{0.0f};
+
 			float closest_distsq = FLT_MAX;
+
 
 			for (const ColliderEdge& edge : edges)
 			{
@@ -355,6 +677,33 @@ namespace FanshaweGameEngine
 			possibleCollisionAxes[possibleCollisionAxesCount++] = axis;
 		}
 
+		float NarrowPhase::PointToLineDistance(const Vector3& linePointOne, const Vector3& linePointTwo, const Vector3& point)
+		{
+			float distanceLine = Length(linePointTwo - linePointOne);
+
+			if (distanceLine < EPSILON)
+			{
+				return Length(point - linePointOne);
+			}
+
+			return (Length(Cross((point - linePointOne), (point- linePointTwo)))) / distanceLine;
+		}
+
+		float NarrowPhase::PlaneSegmentIntersection(const Vector3& segmentOne, const Vector3& segmentTwo, const float PlaneDist, const Vector3& planeNormal)
+		{
+			float t = -1.0f;
+
+			const float nDotAB = Dot(planeNormal, segmentTwo - segmentOne);
+
+			// If the segment is not parallel to the plane
+			if (std::abs(nDotAB) > EPSILON)
+			{
+				t = (PlaneDist - Dot(planeNormal, segmentOne)) / nDotAB;
+			}
+
+			return t;
+		}
+
 		Vector3 NarrowPhase::PlaneEdgeIntersection(const Plane& plane, const Vector3& start, const Vector3& end) const
 		{
 
@@ -374,6 +723,88 @@ namespace FanshaweGameEngine
 			}
 
 			return start;
+		}
+
+		void NarrowPhase::ClosestPointBetweenTwoSegments(const Vector3& segmentOnePointOne, const Vector3& segmentTwoPointTwo, const Vector3& segTwoPointOne, const Vector3& segTwoPointTwo, Vector3& closestPointSegOne, Vector3& closestPointSegTwo)
+		{
+			const Vector3 d1 = segmentTwoPointTwo - segmentOnePointOne;
+			const Vector3 d2 = segTwoPointTwo - segTwoPointOne;
+			const Vector3 r = segmentOnePointOne - segTwoPointOne;
+			float a = LengthSquared(d1);
+			float e = LengthSquared(d2);
+			float f = Dot(d2, r);
+			float s, t;
+
+			// If both segments degenerate into points
+			if (a <= EPSILON && e <= EPSILON)
+			{
+				closestPointSegOne = segmentOnePointOne;
+				closestPointSegTwo = segTwoPointOne;
+				return;
+			}
+			if (a <= EPSILON)
+			{ // If first segment degenerates into a point
+
+				s = 0.0f;
+
+				// Compute the closest point on second segment
+				t = Clamp(f / e, 0.0f, 1.0f);
+			}
+			else
+			{
+
+				float c = Dot(d1, r);
+
+				// If the second segment degenerates into a point
+				if (e <= EPSILON)
+				{
+
+					t = 0.0f;
+					s = Clamp(-c / a, 0.0f, 1.0f);
+				}
+				else
+				{
+					float b = Dot(d1, d2);
+					float denom = a * e - b * b;
+
+					// If the segments are not parallel
+					if (denom != 0.0f)
+					{
+
+						// Compute the closest point on line 1 to line 2 and
+						// clamp to first segment.
+						s = Clamp((b * f - c * e) / denom, 0.0f, 1.0f);
+					}
+					else
+					{
+
+						// Pick an arbitrary point on first segment
+						s = 0.0f;
+					}
+
+					// Compute the point on line 2 closest to the closest point
+					// we have just found
+					t = (b * s + f) / e;
+
+					// If this closest point is inside second segment (t in [0, 1]), we are done.
+					// Otherwise, we clamp the point to the second segment and compute again the
+					// closest point on segment 1
+					if (t < 0.0f)
+					{
+						t = 0.0f;
+						s = Clamp(-c / a, 0.0f, 1.0f);
+					}
+					else if (t > 1.0f)
+					{
+						t = 1.0f;
+						s = Clamp((b - c) / a, 0.0f, 1.0f);
+					}
+				}
+			}
+
+			// Compute the closest points on both segments
+			closestPointSegOne = segmentOnePointOne + d1 * s;
+			closestPointSegTwo = segTwoPointOne + d2 * t;
 		}
 
 

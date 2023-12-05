@@ -7,6 +7,7 @@
 #include "Engine/Core/Physics/Collision/Broadphase/DefaultBroadPhase.h"
 #include "Engine/Core/Physics/Collision/NarrowPhase/NarrowPhase.h"
 #include "Engine/Utils/Logging/Log.h"
+#include "RungeKuttaIntegration.h"
 
 
 namespace FanshaweGameEngine
@@ -18,7 +19,7 @@ namespace FanshaweGameEngine
 	{
 
 
-		float PhysicsEngine::m_physicsTimeStep = 1.0f / 50.0f;
+		float PhysicsEngine::m_physicsTimeStep = 1.0f / 60.0f;
 
 
 
@@ -27,6 +28,7 @@ namespace FanshaweGameEngine
 			, m_paused(true)
 			, m_dampingFactor(0.999f)
 			, m_broadPhaseDetection(nullptr)
+			, m_velocityIntegrationType(VelocityIntegrationType::RUNGE_KUTTA_4)
 			
 		{
 			m_timeStepCounter = 0.0f;
@@ -47,8 +49,8 @@ namespace FanshaweGameEngine
 			m_gravity = Vector3(0.0f, -9.81f, 0.0f);
 			//m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
-			m_dampingFactor = 0.98f;
-			m_physicsTimeStep = 1.0f / 50.0f;
+			m_dampingFactor = 0.999f;
+
 			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(5,5,MakeShared<DefaultBroadPhase>());
 			
@@ -225,7 +227,7 @@ namespace FanshaweGameEngine
 
 			for (RigidBody3D* body : m_rigidBodies)
 			{
-				body->DebugDraw(0);
+				//body->DebugDraw(0);
 
 				SharedPtr<Collider> collider = body->GetCollider();
 
@@ -397,8 +399,10 @@ namespace FanshaweGameEngine
 					body->m_velocity += m_gravity * m_physicsTimeStep;
 				}
 
-				//LOG_WARN("Body Velo  {0} {1} {2}", body->m_velocity.x, body->m_velocity.y, body->m_velocity.z);
-				
+				switch (m_velocityIntegrationType)
+				{
+				case VelocityIntegrationType::LINEAR_EULAR:
+				{
 					// Update position
 					body->m_position += body->m_velocity * m_physicsTimeStep;
 
@@ -408,7 +412,55 @@ namespace FanshaweGameEngine
 					// Linear velocity damping
 					body->m_velocity = body->m_velocity * damping;
 
+
+					break;
+				}
+
+				case VelocityIntegrationType::RUNGE_KUTTA_2:
+				{
+					RungeKuttaIntegration::State state = { body->m_position, body->m_velocity, body->m_force * body->m_invMass };
+
+					RungeKuttaIntegration::RungeKutta2(state, 0.0f, m_physicsTimeStep);
+
+					// Update position
+					body->m_position = state.position;
+
+					// Update linear velocity (v = u + at)
+					body->m_velocity = state.velocity;
+
+					// Linear velocity damping
+					body->m_velocity = body->m_velocity * damping;
+
+
+					break;
+				}
+
+				case VelocityIntegrationType::RUNGE_KUTTA_4:
+				{
+					RungeKuttaIntegration::State state = { body->m_position, body->m_velocity, body->m_force * body->m_invMass };
+
+
+					RungeKuttaIntegration::RungeKutta4(state, 0.0f, m_physicsTimeStep);
+
+					// Update position
+					body->m_position = state.position;
+
+					// Update linear velocity (v = u + at)
+					body->m_velocity = state.velocity;
+
 					
+
+					// Linear velocity damping
+					body->m_velocity = body->m_velocity * damping;
+
+					break;
+				}
+				default:
+					break;
+				}
+				
+		
+				
 					// No rotation for now
 				
 				

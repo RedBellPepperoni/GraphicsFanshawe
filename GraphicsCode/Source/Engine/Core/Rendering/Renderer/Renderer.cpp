@@ -47,7 +47,7 @@ namespace FanshaweGameEngine
         static const uint32_t RENDERER_LINE_SIZE = sizeof(LineVertexElement) * 4;
         static const uint32_t RENDERER_LINE_BUFFER_SIZE = RENDERER_LINE_SIZE * MaxLineVertices;
 
-        static const uint32_t MAX_QUADS = 10000;
+        static const uint32_t MAX_QUADS = 50000;
 
         enum class DrawType
         {

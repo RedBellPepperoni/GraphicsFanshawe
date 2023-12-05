@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.cpp" />
+    <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.cpp" />
     <ClCompile Include="Source\Editor\GUI\EditorViewport.cpp" />
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.cpp" />
@@ -176,6 +178,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.h" />
+    <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\BroadPhase\OctreeBroadPhase.h" />
     <ClInclude Include="Source\Editor\GUI\EditorViewport.h" />
     <ClInclude Include="Source\Engine\Core\Rendering\Buffers\FrameBuffer.h" />

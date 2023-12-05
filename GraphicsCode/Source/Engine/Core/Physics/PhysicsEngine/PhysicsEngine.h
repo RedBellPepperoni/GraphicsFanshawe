@@ -12,6 +12,12 @@ namespace FanshaweGameEngine
 
 	class Scene;
 
+	enum class VelocityIntegrationType
+	{
+		LINEAR_EULAR = 0,
+		RUNGE_KUTTA_2 = 1,
+		RUNGE_KUTTA_4 = 2
+	};
 
 	namespace Physics
 	{
@@ -107,6 +113,8 @@ namespace FanshaweGameEngine
 
 			uint8_t m_maxSubstepsPerUpdate = 5;
 
+
+			VelocityIntegrationType m_velocityIntegrationType;
 
 
 			Scene* m_scene = nullptr;

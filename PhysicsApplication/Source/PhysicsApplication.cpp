@@ -23,11 +23,21 @@ class PhysicsProject : public Application
 
         AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
 
+
+        
+
         for (int i = -50; i < 50; i += 10)
         {
             for (int j = -50; j < 50; j += 10)
             {
-                CreateSphere(Vector3(i, (i + j) / 2 + 60.0f, j), 1.0f);
+                CreateSphere(Vector3(i,  60.0f, j), 2.0f);
+
+                CreateSphere(Vector3(i,  90.0f, j), 3.0f);
+               /* CreateSphere(Vector3(i, (i + j) / 2 + 150.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 180.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 210.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 240.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 270.0f, j), 1.0f);*/
             }
         }
 
@@ -42,6 +52,8 @@ class PhysicsProject : public Application
 
             //GetCurrent().
         }
+
+       
         
     }
 
@@ -67,6 +79,8 @@ class PhysicsProject : public Application
         properties.stationary = true;
         properties.position = Vector3(0.0f, -13.0f,0.0f);
         properties.mass = 1000.0f;
+        properties.elasticity = 0.6f;
+        //properties.rotation = Quaternion(Radians(Vector3(30.0f,0.0f,0.0f)));
 
         GetPhysicsEngine()->CreateRigidBody(physicBase,properties);
         
@@ -84,8 +98,10 @@ class PhysicsProject : public Application
         ballObject.AddComponent<MeshRenderer>();
 
 
-        SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
+       // SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
+        SharedPtr<CapsuleCollider> collider = Factory<CapsuleCollider>::Create();
         collider->SetRadius(radius);
+        collider->SetHeight(4.0f);
     
         PhysicsProperties properties;
 
@@ -94,6 +110,7 @@ class PhysicsProject : public Application
         properties.stationary = false;
         properties.mass = 10.0f;
         properties.position = position;
+        properties.elasticity = 0.6f;
 
         Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(ballObject, properties);
 
