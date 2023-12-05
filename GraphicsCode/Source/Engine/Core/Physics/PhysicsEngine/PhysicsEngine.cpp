@@ -26,7 +26,7 @@ namespace FanshaweGameEngine
 		PhysicsEngine::PhysicsEngine()
 			: m_gravity(Vector3(0.0f, -9.81f,0.0f))
 			, m_paused(true)
-			, m_dampingFactor(0.999f)
+			, m_dampingFactor(0.99f)
 			, m_broadPhaseDetection(nullptr)
 			, m_velocityIntegrationType(VelocityIntegrationType::RUNGE_KUTTA_4)
 			
@@ -49,7 +49,6 @@ namespace FanshaweGameEngine
 			m_gravity = Vector3(0.0f, -9.81f, 0.0f);
 			//m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
-			m_dampingFactor = 0.999f;
 
 			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(5,5,MakeShared<DefaultBroadPhase>());

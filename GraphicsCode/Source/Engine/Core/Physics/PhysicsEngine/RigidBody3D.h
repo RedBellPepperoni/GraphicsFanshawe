@@ -48,7 +48,7 @@ namespace FanshaweGameEngine
 			bool isStatic = false;
 
 			// The friection coeff
-			float friction = 1.0f;
+			float friction = 0.9f;
 
 			// Triggers just intersect instead of Colliding
 			bool isTrigger = false;
@@ -185,7 +185,7 @@ namespace FanshaweGameEngine
 			bool m_isStatic = false;
 
 			// The friection coeff
-			float m_friction = 1.0f;
+			float m_friction = 0.5f;
 
 			// Triggers just intersect instead of Colliding
 			bool isTrigger = false;

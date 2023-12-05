@@ -130,13 +130,13 @@ namespace FanshaweGameEngine
 
 			// Contact Collision Check 
 
-			const float Mass = (m_bodyOne->m_invMass + m_bodyTwo->m_invMass);
+			const float Mass = (m_bodyOne->m_invMass + m_bodyTwo->m_invMass) + Dot(normal,Cross(m_bodyOne->m_inverseInertia* Cross(relativeOne, normal),relativeOne)+ Cross(m_bodyTwo->m_inverseInertia * Cross(relativeTwo,normal),relativeTwo));
 			
 
 			//  "Baumgarte Stabilization"
 
 			 // Amount of force to add to the System to solve error
-			const float baumgarteScalar = 0.35f;  
+			const float baumgarteScalar = 0.3f;  
 
 			// Amount of allowed penetration, ensures a complete manifold each frame
 			const float baumgarteSlop = 0.001f; 
@@ -157,23 +157,44 @@ namespace FanshaweGameEngine
 
 
 
-			// Friction
-
-			/*Vector3 tangent = velocityDirection - normal * Dot(velocityDirection, normal);
-			float lengthTangent = Length(tangent);
-
-			if (lengthTangent > 0.0001f)
+			 //Friction
 			{
-				tangent = tangent * (1.0f / lengthTangent);
+				Vector3 tangent = velocityDirection - normal * Dot(velocityDirection, normal);
+				float lengthTangent = Length(tangent);
 
-				float frictionalMass = (m_bodyOne->m_invMass + m_bodyTwo->m_invMass);
+				if (lengthTangent > 0.0001f)
+				{
+					tangent = tangent * (1.0f / lengthTangent);
 
-				float fricOne = m_bodyOne->GetFriction() > 0.1f ? m_bodyOne->GetFriction() : 0.1f;
-				float fricTwo = m_bodyTwo->GetFriction() > 0.1f ? m_bodyTwo->GetFriction() : 0.1f;
+					float frictionalMass = (m_bodyOne->m_invMass + m_bodyTwo->m_invMass)
+						+ Dot(tangent, Cross(m_bodyOne->m_inverseInertia * Cross(relativeOne, tangent), relativeOne) + Cross(m_bodyTwo->m_inverseInertia * Cross(relativeTwo, tangent), relativeTwo));
 
-				float frictionCoeff = sqrtf(fricOne * fricTwo);
+					float fricOne = fmax(m_bodyOne->GetFriction(), 0.1f);
+					float fricTwo = fmax(m_bodyTwo->GetFriction(), 0.1f);
 
-			}*/
+					float frictionCoeff = sqrtf(fricOne * fricTwo);
+					float jt = -1.0f * frictionCoeff * Dot(velocityDirection, tangent) / frictionalMass;
+
+					// Clamp so that the frictioan never applies more force than the collision
+
+					float oldImpulseTangent = point.totalImpulsefromFriction;
+					float maxJt = frictionCoeff * point.totalImpulsefromContact;
+					point.totalImpulsefromFriction = fmin(fmax(oldImpulseTangent + jt, maxJt), -maxJt);
+
+
+
+
+					jt = point.totalImpulsefromFriction - oldImpulseTangent;
+
+					
+
+					m_bodyOne->SetVelocity(m_bodyOne->GetVelocity() + tangent * (jt * m_bodyOne->m_invMass));
+					m_bodyTwo->SetVelocity(m_bodyTwo->GetVelocity() - tangent * (jt * m_bodyTwo->m_invMass));
+
+
+
+				}
+			}
 
 
 		}

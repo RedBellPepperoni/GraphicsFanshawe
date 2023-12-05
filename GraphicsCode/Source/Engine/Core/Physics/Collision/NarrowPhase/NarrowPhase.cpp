@@ -67,6 +67,10 @@ namespace FanshaweGameEngine
 				return DetectCapsulePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
+			if ((typeOne & ColliderType::SPHERE )&& (typeTwo & ColliderType::CAPSULE))
+			{
+				return DetectCapsuleSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
+			}
 
 			return false;
 		}
@@ -265,7 +269,7 @@ namespace FanshaweGameEngine
 			// The two inner capsule segments
 			const Vector3 seg1 = capsule1SegB - capsule1SegA;
 			const Vector3 seg2 = capsule2SegB - capsule2SegA;
-			bool areParallel = (LengthSquared(glm::cross(seg1,seg2)) < EPSILON);
+			bool areParallel = (LengthSquared(Cross(seg1,seg2)) < EPSILON);
 
 			if (areParallel)
 			{
@@ -314,7 +318,7 @@ namespace FanshaweGameEngine
 						float cosA2 = std::abs(seg2Normalized.y);
 						segment1ToSegment2 = Vector3(0.0f, 0.0f, 0.0f);
 
-						normalCapsule2SpaceNormalized = cosA1 < cosA2 ? glm::cross(seg2Normalized, vec1) : glm::cross(seg2Normalized, vec2);
+						normalCapsule2SpaceNormalized = cosA1 < cosA2 ? Cross(seg2Normalized, vec1) : Cross(seg2Normalized, vec2);
 					}
 
 					Matrix4 capsule2ToCapsule1SpaceTransform = Inverse(capsule1ToCapsule2SpaceTransform);
@@ -430,7 +434,7 @@ namespace FanshaweGameEngine
 					}
 					else
 					{
-						Vector3 normalCapsuleSpace2 = glm::cross(seg1, seg2);
+						Vector3 normalCapsuleSpace2 = Cross(seg1, seg2);
 						Normalize(normalCapsuleSpace2);
 
 						const Vector3 contactPointCapsule1Local = Vector3(Inverse(capsule1ToCapsule2SpaceTransform) * Vector4((closestPointCapsule1Seg + normalCapsuleSpace2 * capsule1Radius),1.0f));
@@ -606,6 +610,136 @@ namespace FanshaweGameEngine
 				*outData = colData;
 
 			return true;
+		}
+
+		bool NarrowPhase::DetectCapsuleSphereCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
+		{
+			if (!((colliderOne->GetType() | ColliderType::SPHERE) || (colliderTwo->GetType() | ColliderType::SPHERE)))
+			{
+				LOG_ERROR("CapsuleSphereCollison : no spheres detected");
+			}
+
+			CollisionData colData;
+
+			CapsuleCollider* capsuleShape;
+			SphereCollider* sphereShape;
+			RigidBody3D* capsuleObj;
+			RigidBody3D* sphereObj;
+
+			if (bodyOne->GetCollider()->GetType() | ColliderType::SPHERE)
+			{
+				sphereObj = bodyOne;
+				sphereShape = (SphereCollider*)colliderOne;
+				capsuleShape = (CapsuleCollider*)colliderTwo;
+				capsuleObj = bodyTwo;
+			}
+			else
+			{
+				capsuleObj = bodyOne;
+				sphereObj = bodyTwo;
+				sphereShape = (SphereCollider*)colliderTwo;
+				capsuleShape = (CapsuleCollider*)colliderOne;
+			}
+
+			float sphereRadius = sphereShape->GetRadius();
+			float capsuleHeight = capsuleShape->GetHeight();
+			float capsuleRadius = capsuleShape->GetRadius();
+			float capsuleHalfHeight = capsuleHeight * 0.5f;
+
+			Vector3 capsulePos = capsuleObj->GetPosition();
+			Vector3 spherePos = sphereObj->GetPosition();
+
+			const Matrix4& sphereTransform = sphereObj->GetTransform();
+			const Matrix4& capsuleTransform = capsuleObj->GetTransform();
+			Matrix4 worldToCapsuleTransform = Inverse(capsuleTransform);
+
+			// Transform sphere into capsule space
+			Matrix4 sphereToCapsuleSpaceTransform = worldToCapsuleTransform * sphereTransform;
+			Vector3 sphereToCapsuleSpacePos = Vector3(sphereToCapsuleSpaceTransform[3]);
+
+			const Vector3 capsuleBottom(0, -capsuleHalfHeight, 0);
+			const Vector3 capsuleTop(0, capsuleHalfHeight, 0);
+
+			// Compute the point on the inner capsule segment that is the closes to centre of sphere
+			const Vector3 closestPointOnSegment = ComputeClosestPointOnSegment(capsuleBottom, capsuleTop, sphereToCapsuleSpacePos);
+
+			// Compute the distance between the sphere center and the closest point on the segment
+			Vector3 sphereCenterToSegment = (closestPointOnSegment - sphereToCapsuleSpacePos);
+			const float sphereSegmentDistanceSquare = LengthSquared(sphereCenterToSegment);
+
+			// Compute the sum of the radius of the sphere and the capsule (virtual sphere)
+			float sumRadius = sphereRadius + capsuleRadius;
+
+			// If the distance between the sphere center and the closest point on the segment is less than the sum of the radius of the sphere and the capsule,
+			// then there is a collision
+			if (sphereSegmentDistanceSquare < sumRadius * sumRadius)
+			{
+				float penetrationDepth;
+				Vector3 normalWorld;
+				Vector3 contactPointSphereLocal;
+				Vector3 contactPointCapsuleLocal;
+
+				// If the sphere center is not on the capsule inner segment
+				if (sphereSegmentDistanceSquare > EPSILON)
+				{
+					float sphereSegmentDistance = std::sqrt(sphereSegmentDistanceSquare);
+					sphereCenterToSegment /= sphereSegmentDistance;
+
+					contactPointSphereLocal = Inverse(sphereToCapsuleSpaceTransform) * Vector4(sphereToCapsuleSpacePos + sphereCenterToSegment * sphereRadius, 1.0f);
+					contactPointCapsuleLocal = closestPointOnSegment - sphereCenterToSegment * capsuleRadius;
+
+					normalWorld = Matrix4(capsuleObj->GetRotation()) * Vector4(sphereCenterToSegment, 1.0f);
+
+					penetrationDepth = sumRadius - sphereSegmentDistance;
+
+					if (bodyOne != sphereObj)
+					{
+						normalWorld = -normalWorld;
+					}
+				}
+				else
+				{
+					// If the sphere center is on the capsule inner segment
+					// We take any direction that is orthogonal to the inner capsule segment as a contact normal
+					// Capsule inner segment
+					Vector3 capsuleSegment = Normalize(capsuleTop - capsuleBottom);
+
+					Vector3 vec1(1, 0, 0);
+					Vector3 vec2(0, 1, 0);
+
+					// Get the vectors (among vec1 and vec2) that is the most orthogonal to the capsule inner segment (smallest absolute dot product)
+					float cosA1 = std::abs(capsuleSegment.x);
+					float cosA2 = std::abs(capsuleSegment.y);
+
+					penetrationDepth = sumRadius;
+
+					// We choose as a contact normal, any direction that is perpendicular to the inner capsule segment
+					Vector3 normalCapsuleSpace = cosA1 < cosA2 ? Cross(capsuleSegment, vec1) : Cross(capsuleSegment, vec2);
+					normalWorld = Matrix4(capsuleObj->GetRotation()) * Vector4(normalCapsuleSpace, 1.0f);
+
+					// Compute the two local contact points
+					contactPointSphereLocal = Inverse(sphereToCapsuleSpaceTransform) * Vector4(sphereToCapsuleSpacePos + normalCapsuleSpace * sphereRadius, 1.0f);
+					contactPointCapsuleLocal = sphereToCapsuleSpacePos - normalCapsuleSpace * capsuleRadius;
+				}
+
+				if (penetrationDepth <= 0.0f)
+				{
+					return false;
+				}
+
+				colData.collisionNormal = Normalize(normalWorld);
+				colData.penetration = penetrationDepth;
+				colData.pointOnPlane = contactPointSphereLocal;
+
+				if (outData)
+				{
+					*outData = colData;
+				}
+
+				return true;
+			}
+
+			return false;
 		}
 
 
@@ -805,6 +939,31 @@ namespace FanshaweGameEngine
 			// Compute the closest points on both segments
 			closestPointSegOne = segmentOnePointOne + d1 * s;
 			closestPointSegTwo = segTwoPointOne + d2 * t;
+		}
+
+		Vector3 NarrowPhase::ComputeClosestPointOnSegment(const Vector3& segPointA, const Vector3& segPointB, const Vector3& pointC)
+		{
+			const Vector3 ab = segPointB - segPointA;
+
+			float abLengthSquare = LengthSquared(ab);
+
+			// If the segment has almost zero length
+			if (abLengthSquare < EPSILON)
+			{
+				// Return one end-point of the segment as the closest point
+				return segPointA;
+			}
+
+			// Project point C onto "AB" line
+			float t = Dot((pointC - segPointA), ab) / abLengthSquare;
+
+			// If projected point onto the line is outside the segment, clamp it to the segment
+			t = Clamp(t, 0.0f, 1.0f);
+
+			// Return the closest point on the segment
+			return segPointA + t * ab;
+		
+			
 		}
 
 
