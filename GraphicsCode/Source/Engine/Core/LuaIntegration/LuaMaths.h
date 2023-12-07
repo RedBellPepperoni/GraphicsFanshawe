@@ -8,12 +8,10 @@ namespace sol
 
 namespace FanshaweGameEngine
 {
-	namespace Lua
-	{
+	
 
-
-		void BindLuaMaths(sol::state& state);
+	void BindLuaMaths(sol::state& state);
 		
-	}
+	
 }
 

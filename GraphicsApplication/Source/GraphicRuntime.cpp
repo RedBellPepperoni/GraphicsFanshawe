@@ -132,7 +132,7 @@ class GraphicProject : public Application
         Transform* transform = &audioOccluder.AddComponent<Transform>();
 
         transform->SetPosition(position);
-        transform->SetRotation(rotation);
+        transform->SetEularRotation(rotation);
 
 
         Audio::AudioGeometry* geo = AudioManager::GetInstance().CreateGeometry(audioOccluder);
@@ -148,7 +148,7 @@ class GraphicProject : public Application
 
         Transform& transform = dirLight.AddComponent<Transform>();
         transform.SetPosition(position);
-        transform.SetRotation(rotation);
+        transform.SetEularRotation(rotation);
 
         Light& light = dirLight.AddComponent<Light>();
         light.type = LightType::DirectionLight;
@@ -163,7 +163,7 @@ class GraphicProject : public Application
 
         Transform& transform = pointLight.AddComponent<Transform>();
         transform.SetPosition(position);
-        transform.SetRotation(Vector3(0.0f));
+        transform.SetEularRotation(Vector3(0.0f));
 
         Light& light = pointLight.AddComponent<Light>();
         light.type = LightType::PointLight;

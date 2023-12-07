@@ -44,14 +44,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(SolutionDir)Externals\Lua\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)Externals\Lua\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Source\;$(SolutionDir)Externals\stb\include\;$(ProjectDir)Source\Editor\Imgui\;$(SolutionDir)Externals\Lua\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\assimp\lib\;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)Externals\Lua\src\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\glad\src\;$(SolutionDir)Externals\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -93,14 +93,16 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;fmod_vc.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\glfw\lib\;$(SolutionDir)Externals\spdlog\lib\;$(SolutionDir)External\assimp\lib\;$(SolutionDir)Externals\fmod\core\lib\;$(SolutionDir)Externals\lua\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.cpp" />
+    <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaManager.cpp" />
     <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaMaths.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.cpp" />
     <ClCompile Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.cpp" />
@@ -179,6 +181,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.h" />
+    <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaManager.h" />
     <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaMaths.h" />
     <ClInclude Include="Source\Engine\Core\Physics\PhysicsEngine\RungeKuttaIntegration.h" />
     <ClInclude Include="Source\Engine\Core\Physics\Collision\Colliders\CapsuleCollider.h" />
@@ -694,6 +698,12 @@
     <None Include="Externals\glm\gtx\vector_angle.inl" />
     <None Include="Externals\glm\gtx\vector_query.inl" />
     <None Include="Externals\glm\gtx\wrap.inl" />
+    <None Include="luaSource\doc\contents.html" />
+    <None Include="luaSource\doc\manual.html" />
+    <None Include="luaSource\doc\readme.html" />
+    <None Include="lua\doc\contents.html" />
+    <None Include="lua\doc\manual.html" />
+    <None Include="lua\doc\readme.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -162,7 +162,7 @@ class PhysicsProject : public Application
 
         Transform& transform = dirLight.AddComponent<Transform>();
         transform.SetPosition(position);
-        transform.SetRotation(rotation);
+        transform.SetEularRotation(rotation);
 
         Light& light = dirLight.AddComponent<Light>();
         light.type = LightType::DirectionLight;

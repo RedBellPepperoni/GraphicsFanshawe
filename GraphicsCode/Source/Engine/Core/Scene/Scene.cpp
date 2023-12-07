@@ -9,10 +9,11 @@
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 #include "Engine/Core/Application/Application.h"
 #include "DefaultCameraController.h"
-
-
-
+#include "Engine/Core/LuaIntegration/LuaManager.h"
+#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 #include "Engine/Core/Audio/AudioListener.h"
+
+#include <sol/sol.hpp>
 
 
 namespace FanshaweGameEngine
@@ -48,20 +49,24 @@ namespace FanshaweGameEngine
 
 
 		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
-		transform->SetRotation(Vector3(-15.0f, 57.0f, 0.0f));
+		transform->SetEularRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
 		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		
 
-
+		LuaManager::GetInstance().OnInit(this);
 		
 
 		// Setup systems here
 	}
 	void Scene::CleanUp()
 	{
+
+
 		// Destroy all teh gameobjects in teh registry
 		DestroyAllGameObjects();
+
+		LuaManager::GetInstance().GetState().collect_garbage();
 
 		// Clear other managers if needed
 

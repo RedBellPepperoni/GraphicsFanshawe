@@ -45,7 +45,7 @@ void SceneLoader::SpawnObject(const ObjectData& data)
 	Transform* transform = &entity.AddComponent<Transform>();
 
 	transform->SetPosition(data.position);
-	transform->SetRotation(data.rotation);
+	transform->SetEularRotation(data.rotation);
 	transform->SetScale(data.scale);
 
 	

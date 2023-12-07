@@ -195,7 +195,7 @@ namespace FanshaweGameEngine
             }
 
 
-            newElement.ModelMatrix = transform.GetLocalMatrix();
+            newElement.ModelMatrix = transform.GetMatrix();
 
             // New!! - For lighting
             newElement.NormalMatrix = transform.GetNormalMatrix();
@@ -566,7 +566,7 @@ namespace FanshaweGameEngine
             //Matrix4 view = Math::GetLookAt(camera.viewPosition, camera.viewPosition + cameraRef.GetDirection(), cameraRef.GetUpVector());
 
 
-            Matrix4 transformMatrix = transform.GetLocalMatrix();
+            Matrix4 transformMatrix = transform.GetMatrix();
             
            // get the inverse of the Camera trasfrom
             Matrix4 view = Math::Inverse(transformMatrix);

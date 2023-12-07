@@ -42,11 +42,10 @@ namespace FanshaweGameEngine
 
 		}
 
-	    Matrix4 Transform::GetLocalMatrix()
+	    Matrix4& Transform::GetMatrix()
 		{
-			Matrix4 mat;
-			UpdateMatrix(mat);
-			return mat;
+			UpdateMatrix(m_worldMatrix);
+			return m_worldMatrix;
 		}
 
 		Matrix4& Transform::GetNormalMatrix()
@@ -78,7 +77,7 @@ namespace FanshaweGameEngine
 			
 		}
 
-		void Transform::SetRotation(const Vector3& eularRot)
+		void Transform::SetEularRotation(const Vector3& eularRot)
 		{
 
 			m_rotation = Quaternion(Vector3(Radians(eularRot.x), Radians(eularRot.y), Radians(eularRot.z)));

@@ -33,6 +33,29 @@ namespace FanshaweGameEngine
 		}
 
 
+		inline float operator()(float min, float max)
+		{
+			++m_count;
+			std::uniform_real_distribution<float> realDist(min, max);
+			return realDist(m_randomGenerator);
+		}
+
+		inline int32_t operator()(int32_t min, int32_t max)
+		{
+			++m_count;
+			std::uniform_int_distribution<int32_t> intDist(min, max);
+			return intDist(m_randomGenerator);
+		}
+
+		inline uint32_t operator()(uint32_t min, uint32_t max)
+		{
+			++m_count;
+			std::uniform_int_distribution<uint32_t> uintDist(min, max);
+			return uintDist(m_randomGenerator);
+		}
+
+
+
 		inline uint64_t GetCount() const
 		{
 			return m_count;

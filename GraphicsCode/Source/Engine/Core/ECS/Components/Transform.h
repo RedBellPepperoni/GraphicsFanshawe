@@ -51,7 +51,7 @@ namespace FanshaweGameEngine
 			const Vector3 GetEulerRotation() const;
 
 
-			Matrix4 GetLocalMatrix();
+			Matrix4& GetMatrix();
 
 			Matrix4& GetNormalMatrix();
 
@@ -67,7 +67,7 @@ namespace FanshaweGameEngine
 
 			void SetRotation(const Quaternion& newRot);
 
-			void SetRotation(const Vector3& eularRot);
+			void SetEularRotation(const Vector3& eularRot);
 
 			void SetScale(const Vector3& newScale);
 

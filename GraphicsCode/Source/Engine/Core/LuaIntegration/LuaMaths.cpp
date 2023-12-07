@@ -5,9 +5,9 @@
 
 namespace FanshaweGameEngine
 {
-	namespace Lua
-	{
+    using namespace Components;
 
+	
 		void BindLuaMaths(sol::state& state)
 		{
 
@@ -171,26 +171,30 @@ namespace FanshaweGameEngine
                 sol::meta_function::subtraction, [](const Matrix4& a, const Matrix4& b) { return a - b; }
             );
 
-            //state.new_usertype<Components::Transform>
-            //    (
-            //        "Transform",
-            //        sol::constructors<Components::Transform(Matrix4), Components::Transform(), Components::Transform(Vector3)>(),
 
-            //        /* "LocalScale", & Components::Transform::GetLocalScale,
-            //          "LocalOrientation", & Components::Transform::GetLocalOrientation,
-            //          "LocalPosition", & Components::Transform::GetLocalPosition,
-            //          "ApplyTransform", & Components::Transform::ApplyTransform,
-            //          "UpdateMatrices", & Components::Transform::UpdateMatrices,
-            //          "SetLocalTransform", & Components::Transform::SetLocalTransform,
-            //          "SetLocalPosition", & Components::Transform::SetLocalPosition,
-            //          "SetLocalScale", & Components::Transform::SetLocalScale,
-            //          "SetLocalOrientation", & Components::Transform::SetLocalOrientation,
-            //          "GetWorldPosition", & Components::Transform::GetWorldPosition,
-            //          "GetWorldOrientation", & Components::Transform::GetWorldOrientation,
-            //          "GetForwardDirection", & Components::Transform::GetForwardDirection,
-            //          "GetRightDirection", & Components::Transform::GetRightDirection);*/
-            //        
+            state.new_usertype<Transform>
+            (
+                 "Transform",
+                 sol::constructors<Transform()>(),
+
+                "Scale", & Transform::GetScale,
+                "Rotation", & Transform::GetRotation,
+                "EularRotation", & Components::Transform::GetEulerRotation,
+                "Position", & Components::Transform::GetPosition,
+                "SetPosition", & Components::Transform::SetPosition,
+                "SetScale", & Components::Transform::SetScale,
+                "SetRotation", & Components::Transform::SetRotation,
+                "SetEularRotation", & Components::Transform::SetEularRotation,
+                "GetForwardDirection", & Components::Transform::GetForwardVector,
+                "GetRightDirection", & Components::Transform::GetRightVector
+
+
+            );
+
+
+
+           
 		}
 
-	}
+	
 }
