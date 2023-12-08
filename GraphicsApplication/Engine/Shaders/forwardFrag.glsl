@@ -99,6 +99,7 @@ vec4 GetAlbedo()
     {
         return materialProperties.AlbedoColor;
     }
+
     vec4 param = texture(mapAlbedo, VertexOutput.TexCoord);
    // return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (DeGamma(param) * materialProperties.AlbedoMapFactor));
     return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (param * materialProperties.AlbedoMapFactor));
@@ -176,11 +177,11 @@ vec3 CalculateLighting(Material material)
                 float spec = pow(max(dot(material.View, reflectDir), 0.0), 32);
 
                 // combine results
-                //vec3 ambient  = light.intensity  * material.Albedo.rgb;
+                vec3 ambient  = light.intensity  * material.Albedo.rgb * 0.18;
                 vec3 diffuse  = light.color  * diff * material.Albedo.rgb * light.intensity;
-               
+                vec3 specular = vec3(spec)* material.Albedo.rgb * material.Metallic * 2.0;
                 //vec3 lightContrib = (ambient + diffuse + specular * 0.01);
-                vec3 lightContrib = (diffuse);
+                vec3 lightContrib = (diffuse) + (ambient) + (specular);
 
 
                 result += lightContrib;
@@ -188,7 +189,7 @@ vec3 CalculateLighting(Material material)
         }
 
         // PointLight
-        if(light.type == 2)
+        else if(light.type == 2)
         {
             vec3 lightDir = normalize(light.position - VertexOutput.Position.xyz);
              // diffuse shading
@@ -212,6 +213,41 @@ vec3 CalculateLighting(Material material)
             result += lightContrib;
 
         }
+        // spotlight
+       else if(light.type == 1)
+        {
+            vec3 lightDir = normalize(light.position - VertexOutput.Position.xyz);
+            float distance    = length(light.position - VertexOutput.Position.xyz);
+             // diffuse shading
+            float diff = max(dot(normal, lightDir), 0.0);
+            // specular shading
+            vec3 reflectDir = reflect(-lightDir, normal);
+            float spec = pow(max(dot(material.View, reflectDir), 0.0), 32);
+            // attenuation
+           
+            //float finalAttenuation = 1.0 / (1.0 + ((3.0/light.intensity) * distance) + ((1.0/(light.intensity*light.intensity)) * (distance * distance)));    
+           float finalAttenuation = 1.0 / (1.0 + ((1.0/light.intensity) * distance) + ((1.0/(light.intensity*light.intensity)) * (distance * distance)));    
+           // float finalAttenuation = clamp(1.0 - ((distance * distance)/(light.intensity * light.intensity * 2.0)),0.0,1.0);    
+            // combine results
+
+
+            float theta = dot(lightDir, normalize(-light.direction)); 
+
+            float epsilon = light.innerAngle - light.outerAngle;
+            float finalIntensity = clamp((theta - light.outerAngle)/ epsilon, 0.0,1.0);
+
+            vec3 ambient = light.intensity * material.Albedo.rgb * 0.6;
+            vec3 diffuse  = light.color  * diff * material.Albedo.rgb * light.intensity;
+            vec3 specular = vec3(light.color) * spec * 0.01 ;
+            
+          //  ambient *= finalAttenuation * finalIntensity;
+           // diffuse *= finalAttenuation * finalIntensity;
+            //specular *= finalAttenuation * finalIntensity;
+	    //vec3 result = (ambient + diffuse + specular);
+            vec3 lightContrib = (diffuse + specular + ambient) * finalIntensity * finalAttenuation;
+
+            result += lightContrib;
+        }
         
     }
 
@@ -226,7 +262,7 @@ void main()
     // gather the calculated Albedo color
     vec4 texColor = GetAlbedo();
 
-    if(texColor.w < materialProperties.AlphaCutOff)
+    if(texColor.w < 0.2)
     {
         discard;
     }

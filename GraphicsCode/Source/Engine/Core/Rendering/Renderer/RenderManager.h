@@ -49,6 +49,8 @@ namespace FanshaweGameEngine
 			void ProcessScene(Scene* scene);
 			void RenderFrame();
 
+			UniquePtr<Renderer>& GetRenderer();
+
 
 			SharedPtr<ShaderLibrary>& GetShaderLibrary();
 

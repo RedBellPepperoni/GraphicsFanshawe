@@ -22,7 +22,7 @@ namespace FanshaweGameEngine
 
 	namespace EditorGUI
 	{
-		
+		float RuntimeEditor::LightLerp = 1.0f;
 
 		RuntimeEditor::RuntimeEditor()
 		{

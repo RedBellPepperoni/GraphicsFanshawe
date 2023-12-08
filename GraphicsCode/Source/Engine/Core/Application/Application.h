@@ -178,6 +178,9 @@ using Physics::PhysicsEngine;
 
 		void SetWindowTitle(const std::string& newTitle);
 
+		void SetSkyIntensity(float newIntensity);
+		const float GetSkyIntensity();
+
 		void StartPhysics(bool shouldstart);
 		const Vector2Int GetWindowSize();
 

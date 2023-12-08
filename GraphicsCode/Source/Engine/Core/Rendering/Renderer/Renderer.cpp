@@ -143,6 +143,16 @@ namespace FanshaweGameEngine
             m_pointShader = point;
         }
 
+        void Renderer::SetSkyboxIntensity(float intensity)
+        {
+            m_pipeline.skybox.SetIntensity(intensity);
+        }
+
+        const float Renderer::GetSkyboxIntensity() const
+        {
+            return m_pipeline.skybox.GetIntensity();
+        }
+
         
        
 
@@ -443,6 +453,7 @@ namespace FanshaweGameEngine
                 shader->SetUniform("mapAlbedo", mat->textureMaps.albedoMap->GetBoundId());
                 shader->SetUniform("materialProperties.AlbedoMapFactor", mat->albedomapFactor);
                 shader->SetUniform("materialProperties.AlbedoColor", mat->albedoColour);
+                shader->SetUniform("materialProperties.Metallic", mat->metallic);
 
             }
            
@@ -612,11 +623,11 @@ namespace FanshaweGameEngine
             LightElement& lightElement = m_pipeline.lightElementList.emplace_back();
 
             lightElement.color = light.color;
-            lightElement.direction = light.direction = transform.GetForwardVector();
+            lightElement.direction = light.direction;
             lightElement.innerAngle = light.innerAngle;
             lightElement.outerAngle = light.outerAngle;
             lightElement.intensity = light.intensity;
-            lightElement.position = light.position = transform.GetPosition();
+            lightElement.position  = light.position = transform.GetPosition();
             lightElement.radius = light.radius;
             lightElement.type = light.type;
 

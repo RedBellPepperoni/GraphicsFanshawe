@@ -19,7 +19,7 @@ void SceneLoader::LoadModel(const std::string& name, const std::string& modelpat
 
 void SceneLoader::LoadTexture(const std::string& name, const std::string& path)
 {
-	textureLibrary->LoadTexture(name, path, TextureFormat::RGB);
+	textureLibrary->LoadTexture(name, path, TextureFormat::RGBA);
 }
 
 
@@ -57,7 +57,7 @@ void SceneLoader::SpawnObject(const ObjectData& data)
 	SharedPtr<Material> material = entity.AddComponent<MeshRenderer>().GetMaterial();
 
 	material->textureMaps.albedoMap = textureLibrary->GetResource(data.albedoTexture);
-
+	material->metallic = data.metallic;
 
 
 	

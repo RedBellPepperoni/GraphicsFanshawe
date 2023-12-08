@@ -228,6 +228,8 @@ namespace FanshaweGameEngine
 			void SetupDebugShaders(SharedPtr<Shader>& line, SharedPtr<Shader>& point);
 
 			void SetSkyboxCubeMap(SharedPtr<CubeMap> cubemap);
+			void SetSkyboxIntensity(float intensity);
+			const float GetSkyboxIntensity() const;
 
 			const PipeLine& GetPipeLine() const;
 

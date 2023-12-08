@@ -111,10 +111,17 @@ namespace FanshaweGameEngine
             return glm::abs(value);
         }
 
-        inline Quaternion Lerp(const Quaternion& q1, const Quaternion& q2, float a)
+
+        template<typename T>
+        inline T Lerp(const T& q1, const T& q2, float a)
         {
             return glm::lerp(q1, q2, a);
         }
+
+       /* inline Quaternion Lerp(const Quaternion& q1, const Quaternion& q2, float a)
+        {
+            return glm::lerp(q1, q2, a);
+        }*/
 
         inline Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float a)
         {

@@ -42,6 +42,8 @@ namespace FanshaweGameEngine
 
 			//void SelectEntity(Entity entity);
 			//void UnSelectEntity(Entity entity);
+
+			static float LightLerp;
 			
 		};
 	}

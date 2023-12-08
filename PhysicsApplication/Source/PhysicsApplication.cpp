@@ -23,28 +23,28 @@ class PhysicsProject : public Application
 
         AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
 
-        //CreateSphere(Vector3(0.0f,20.0f, 0.0f), 1.0f);
+     /*   CreateSphere(Vector3(0.0f,20.0f, 0.0f), 1.0f);
         CreateCapsule(Vector3(0.0f, 5.0f, 0.0f), 2.0f, 4.0f);
-        CreateCapsule(Vector3(0.0f, 20.0f, 0.0f), 2.0f, 4.0f);
+        CreateCapsule(Vector3(0.0f, 20.0f, 0.0f), 2.0f, 4.0f);*/
 
        
-        CreateSphere(Vector3(5.0f,  35.0f, 1.0f), 1.0f);
-        CreateSphere(Vector3(-5.0f,  40.0f, -5.0f), 1.0f);
+      /*  CreateSphere(Vector3(5.0f,  35.0f, 1.0f), 1.0f);
+        CreateSphere(Vector3(-5.0f,  40.0f, -5.0f), 1.0f);*/
 
-        //for (int i = -50; i < 50; i += 10)
-        //{
-        //    for (int j = -50; j < 50; j += 10)
-        //    {
-        //        CreateCapsule(Vector3(i,  10.0f, j), 4.0f,5.0f);
+        for (int i = -50; i < 50; i += 10)
+        {
+            for (int j = -50; j < 50; j += 10)
+            {
+                //(Vector3(i,  10.0f, j), 4.0f,5.0f);
 
-        //        CreateSphere(Vector3(i,  30.0f, j), 3.0f);
-        //       /* CreateSphere(Vector3(i, (i + j) / 2 + 150.0f, j), 1.0f);
-        //        CreateSphere(Vector3(i, (i + j) / 2 + 180.0f, j), 1.0f);
-        //        CreateSphere(Vector3(i, (i + j) / 2 + 210.0f, j), 1.0f);
-        //        CreateSphere(Vector3(i, (i + j) / 2 + 240.0f, j), 1.0f);
-        //        CreateSphere(Vector3(i, (i + j) / 2 + 270.0f, j), 1.0f);*/
-        //    }
-        //}
+                CreateSphere(Vector3(i, (i + j) / 2 + 120.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 150.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 180.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 210.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 240.0f, j), 1.0f);
+                CreateSphere(Vector3(i, (i + j) / 2 + 270.0f, j), 1.0f);
+            }
+        }
 
 
     }
@@ -55,6 +55,7 @@ class PhysicsProject : public Application
         {
             GetPhysicsEngine()->SetPaused(!GetPhysicsEngine()->GetIsPaused());
 
+            //GetCurrent().GetAppWindow().ToggleWireframe();
             //GetCurrent().
         }
 
@@ -75,7 +76,7 @@ class PhysicsProject : public Application
 
         //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
        // collider->BuildFromMesh(mesh.get());
-        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(2.0f, 1.0f, 2.0f));
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(70.0f, 1.0f, 70.0f));
        
         PhysicsProperties properties;
 

@@ -16,6 +16,7 @@ struct ObjectData
 	Vector3 rotation;
 	Vector3 scale;
 	std::string albedoTexture;
+	float metallic;
 
 };
 

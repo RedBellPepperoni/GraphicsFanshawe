@@ -8,17 +8,15 @@
 #include "Engine/Core/Scene/Scene.h"
 #include "Engine/Core/Resources/ResourceManager.h"
 #include "Engine/Core/Macros/Macro.h"
-//#include "Engine/Core/ECS/Object/GameObject.h"
 #include "Engine/Core/Rendering/Renderer/RenderManager.h"
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 
 #include "Engine/Core/Audio/AudioManager.h"
 
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
-#include "Engine/Core/LuaIntegration/LuaManager.h"
-#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 
 #include "Editor/GUI/RuntimeEditor.h"
+#include "Editor/GUI/AudioEditor.h"
 
 
 namespace FanshaweGameEngine
@@ -178,7 +176,7 @@ namespace FanshaweGameEngine
 
 		m_editor->Toggle(true);
 
-		LuaManager::GetInstance().OnInit();
+		//LuaManager::GetInstance().OnInit();
 
 		// Calling Init on the child applications
 		OnInit();
@@ -364,6 +362,16 @@ namespace FanshaweGameEngine
 		
 
 		GetAppWindow().SetWindowTitle(newTitle);
+	}
+
+	void Application::SetSkyIntensity(float newIntensity)
+	{
+		GetRenderManager()->GetRenderer()->SetSkyboxIntensity(newIntensity);
+	}
+
+	const float Application::GetSkyIntensity()
+	{
+		return GetRenderManager()->GetRenderer()->GetSkyboxIntensity();
 	}
 
 	void Application::StartPhysics(bool shouldstart)

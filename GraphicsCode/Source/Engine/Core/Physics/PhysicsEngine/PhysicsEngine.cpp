@@ -226,7 +226,7 @@ namespace FanshaweGameEngine
 
 			for (RigidBody3D* body : m_rigidBodies)
 			{
-				//body->DebugDraw(0);
+				body->DebugDraw(0);
 
 				SharedPtr<Collider> collider = body->GetCollider();
 
