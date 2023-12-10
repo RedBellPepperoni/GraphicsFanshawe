@@ -151,7 +151,7 @@ namespace FanshaweGameEngine
 
         if (m_velocity.length() > 0.00001f)
         {
-            glm::vec3 position = transform.GetPosition();
+            Vector3 position = transform.GetPosition();
             position += m_velocity * deltaTime;
             transform.SetPosition(position);
             m_velocity = m_velocity * pow(m_dampeningFactor, deltaTime);

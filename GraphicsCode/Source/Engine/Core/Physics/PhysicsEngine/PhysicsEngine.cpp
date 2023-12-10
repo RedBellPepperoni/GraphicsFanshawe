@@ -49,7 +49,7 @@ namespace FanshaweGameEngine
 			//m_gravity = Vector3(0.0f, -9.81f, 0.0f);
 			m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
-
+			m_dampingFactor = 0.978f;
 			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
 			m_broadPhaseDetection = MakeShared<OctreeBroadPhase>(5,5,MakeShared<DefaultBroadPhase>());
 			
@@ -223,19 +223,19 @@ namespace FanshaweGameEngine
 			}
 
 			//m_broadPhaseDetection->DebugDraw();
-			
+			//
 
-			for (RigidBody3D* body : m_rigidBodies)
-			{
-				//body->DebugDraw(0);
+			//for (RigidBody3D* body : m_rigidBodies)
+			//{
+			//	//body->DebugDraw(0);
 
-				SharedPtr<Collider> collider = body->GetCollider();
+			//	SharedPtr<Collider> collider = body->GetCollider();
 
-				if (collider)
-				{
-					collider->DebugDraw(body);
-				}
-			}
+			//	if (collider)
+			//	{
+			//		collider->DebugDraw(body);
+			//	}
+			//}
 
 		}
 

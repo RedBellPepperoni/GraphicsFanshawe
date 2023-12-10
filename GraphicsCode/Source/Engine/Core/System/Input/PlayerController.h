@@ -35,6 +35,10 @@ namespace FanshaweGameEngine
 
 		bool OnHit(RigidBody3D*body, Vector3 contactpoint);
 
+		void SetCrackReference(Transform* transform);
+
+		void Reset();
+
 	private:
 
 		Vector2 m_storedCursorPosition{0.0f};
@@ -42,7 +46,7 @@ namespace FanshaweGameEngine
 		Vector2 m_rotationvelocity{ 0.0f };
 		float m_mouseSensitivity = 0.001f;
 
-		float m_ObjectSpeed = 75.0f;
+		float m_ObjectSpeed = 150.0f;
 
 		Vector3 m_positionDelta{};
 
@@ -51,9 +55,9 @@ namespace FanshaweGameEngine
 
 		Vector3 m_cameraOffset{0.0f};
 
-		
+		bool playerDead;
 
-
+		Transform* crackTransform = nullptr;
 	};
 
 

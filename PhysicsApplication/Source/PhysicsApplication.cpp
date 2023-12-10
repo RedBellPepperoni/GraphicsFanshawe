@@ -60,13 +60,13 @@ class PhysicsProject : public Application
         CreateBase();
         //CreateTree(Vector3(10.0f, 0.0f, 0.0f));
 
-        for (int i = -100; i < 100; i+=20)
-        {
-            for (int j = -100; j < 100; j+=20)
-            {
-                CreateTree(Vector3((float)i, 0.0f, (float)j), Vector3(Random32::Range(-30,30),0.0f,Random32::Range(-20,20)));
-            }
-        }
+        //for (int i = -100; i < 100; i+=20)
+        //{
+        //    for (int j = -100; j < 100; j+=20)
+        //    {
+        //        CreateTree(Vector3((float)i, 0.0f, (float)j), Vector3(Random32::Range(-30,30),0.0f,Random32::Range(-20,20)));
+        //    }
+        //}
 
 
         CreatePlayer(Vector3(0.0f,50.0f,0.0f));
@@ -76,7 +76,7 @@ class PhysicsProject : public Application
    
 
 
-
+        RestartGame();
 
 
 
@@ -119,7 +119,10 @@ class PhysicsProject : public Application
         }
 
 
-       
+        if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::G))
+        {
+            RestartGame();
+        }
         
     }
 
@@ -238,10 +241,10 @@ class PhysicsProject : public Application
         Entity playerEntity = m_currentScene->CreateEntity("Player");
         
         PlayerController& controller = playerEntity.AddComponent<PlayerController>();
-        controller.SetOffset(Vector3(0.0f,1.0f,-8.0f));
+        controller.SetOffset(Vector3(0.0f,0.3f,-2.3f));
 
         SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
-        collider->SetHalfDimensions(Vector3(2.0f,0.6f,2.0f));
+        collider->SetHalfDimensions(Vector3(0.57f,0.2f,0.57f));
 
         SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Drone")->GetMeshes()[0];
         playerEntity.AddComponent<MeshComponent>(mesh);
@@ -264,6 +267,25 @@ class PhysicsProject : public Application
         playerBody = GetPhysicsEngine()->CreateRigidBody(playerEntity, properties);
 
         controller.SetOnHit(playerBody);
+
+
+        Entity Crack = m_currentScene->CreateEntity("CrackScreen");
+        Transform* trans = &Crack.AddComponent<Transform>();
+
+        SharedPtr<Mesh> crackmesh = GetModelLibrary()->GetResource("Crack")->GetMeshes()[0];
+        Crack.AddComponent<MeshComponent>(crackmesh);
+
+        SharedPtr<Material> crackmat = Crack.AddComponent<MeshRenderer>().GetMaterial();
+
+        crackmat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("CrackAlbedo");
+
+
+        trans->SetPosition(Vector3(10000.0f));
+        trans->SetRotation(Vector3(0.0f));
+        trans->SetScale(Vector3(1.0f));
+
+        controller.SetCrackReference(trans);
+
     }
 
     void CreateFollowCamera(const Vector3& position)
@@ -276,6 +298,26 @@ class PhysicsProject : public Application
 
     }
 
+    void RestartGame()
+    {
+        Vector3 startPosition = Vector3(-51.36, 5.0f, 15.00);
+        //Vector3 startRotation = Vector3(0.0, 60.0f, 0.00);
+
+        ComponentView playerControllerView = GetCurrentScene()->GetEntityManager()->GetComponentsOfType<PlayerController>();
+
+        RigidBody3D& body = playerControllerView[0].GetComponent<RigidBody3D>();
+        PlayerController& controller = playerControllerView[0].GetComponent<PlayerController>();
+
+
+
+        body.SetPosition(startPosition);
+        body.SetRotation(LookAtRotation(Normalize(Vector3(0.0f) - startPosition), Vector3(0.0f, 1.0f, 0.0f)));
+
+
+        controller.Reset();
+
+    }
+
     private:
 
         SharedPtr<SceneParser> parser = nullptr;
@@ -283,7 +325,7 @@ class PhysicsProject : public Application
 
         RigidBody3D* playerBody = nullptr;
 
-
+        
 };
 
 

@@ -9,8 +9,16 @@
 
 namespace FanshaweGameEngine
 {
+	
+
+
 	void PlayerController::MouseInput(RigidBody3D& body, Transform& transform, Vector2 mousePosition, float deltaTime)
 	{
+
+		if(playerDead)
+		{
+			return;
+		}
 
 		static bool mouseHeld = false;
 
@@ -21,6 +29,7 @@ namespace FanshaweGameEngine
 
 			m_storedCursorPosition = mousePosition;
 			m_previousCurserPos = m_storedCursorPosition;
+
 
 
 		}
@@ -43,6 +52,7 @@ namespace FanshaweGameEngine
 
 		}
 
+	  
 		if (Length(m_rotationvelocity) > 0.0001f || m_PitchDelta > 0.0001f || m_YawDelta > 0.0001f)
 		{
 
@@ -96,6 +106,24 @@ namespace FanshaweGameEngine
 
 	void PlayerController::KeyboardInput(RigidBody3D& body, Transform& transform, float deltaTime)
 	{
+		if (playerDead)
+		{
+			body.SetVelocity(Vector3(0.0f));
+
+			if (crackTransform)
+			{
+
+				Vector3 forward = Normalize(transform.GetForwardVector());
+
+				crackTransform->SetPosition(transform.GetPosition() + forward * 1.3f);
+
+				Quaternion rotation = LookAtRotation(forward, Vector3(0.0f, 1.0f, 0.0f));
+
+				crackTransform->SetRotation(rotation);
+			}
+
+			return;
+		}
 
 		body.SetForce(Vector3(0.0f));
 
@@ -199,8 +227,27 @@ namespace FanshaweGameEngine
 
 	bool PlayerController::OnHit(RigidBody3D* body,Vector3 contactpoint)
 	{
-		LOG_CRITICAL("HIT at {0} : {1} : {2}",contactpoint.x,contactpoint.y,contactpoint.z);
+		if (playerDead)
+		{
+			return false;
+		}
 
-		return true
+		LOG_CRITICAL("HIT at {0} : {1} : {2}",contactpoint.x,contactpoint.y,contactpoint.z);
+		
+
+
+		playerDead = true;
+
+		return true;
+	}
+
+	void PlayerController::SetCrackReference(Transform* transform)
+	{
+		crackTransform = transform;
+	}
+	void PlayerController::Reset()
+	{
+		playerDead = false;
+		crackTransform->SetPosition(Vector3(10000.0f));
 	}
 }

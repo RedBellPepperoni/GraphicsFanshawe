@@ -9,8 +9,8 @@ namespace FanshaweGameEngine
 			const Derivative a = Calculate(state, t, 0.0f, Derivative());
 			const Derivative b = Calculate(state, t, dt * 0.5f, a);
 
-			const glm::vec3 dxdt = (a.velocity + b.velocity) * 0.5f;
-			const glm::vec3 dvdt = (a.acceleration + b.acceleration) * 0.5f;
+			const Vector3 dxdt = (a.velocity + b.velocity) * 0.5f;
+			const Vector3 dvdt = (a.acceleration + b.acceleration) * 0.5f;
 
 			state.position += dxdt * dt;
 			state.velocity += dvdt * dt;
@@ -23,8 +23,8 @@ namespace FanshaweGameEngine
 			const Derivative c = Calculate(state, t, dt * 0.5f, b);
 			const Derivative d = Calculate(state, t, dt, c);
 
-			const glm::vec3 dxdt = (a.velocity + (b.velocity + c.velocity) * 2.0f + d.velocity) * 1.0f / 6.0f;
-			const glm::vec3 dvdt = (a.acceleration + (b.acceleration + c.acceleration) * 2.0f + d.acceleration) * 1.0f / 6.0f;
+			const Vector3 dxdt = (a.velocity + (b.velocity + c.velocity) * 2.0f + d.velocity) * 1.0f / 6.0f;
+			const Vector3 dvdt = (a.acceleration + (b.acceleration + c.acceleration) * 2.0f + d.acceleration) * 1.0f / 6.0f;
 
 			state.position += dxdt * dt;
 			state.velocity += dvdt * dt;

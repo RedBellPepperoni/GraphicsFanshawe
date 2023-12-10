@@ -17,6 +17,8 @@ struct ObjectData
 	Vector3 scale;
 	std::string albedoTexture;
 	float metallic;
+	bool meshCollider;
+	bool leaves;
 
 };
 

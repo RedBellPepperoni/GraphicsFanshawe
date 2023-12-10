@@ -94,7 +94,7 @@ namespace FanshaweGameEngine
 
 			
 			DrawApplicationEditor("Applicaion Editor", &isAppEditorOpen);
-			DrawEffectEditor("Audio Editor", &isAppEditorOpen);
+			//DrawEffectEditor("Audio Editor", &isAppEditorOpen);
 
 			//ImGui::End();
 		}

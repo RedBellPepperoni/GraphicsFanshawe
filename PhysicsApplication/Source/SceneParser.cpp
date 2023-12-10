@@ -148,6 +148,8 @@ void SceneParser::ParseObjectData()
 		Vector3 scale = Vector3(1.0f);
 		std::string albedoTexture = "";
 		float metallic = 0.0f;
+		bool meshcollider = false;
+		bool leaves = false;
 
 		assert(attribute.IsObject()); // each attribute is an object
 		for (rapidjson::Value::ConstMemberIterator itr2 = attribute.MemberBegin(); itr2 != attribute.MemberEnd(); ++itr2)
@@ -196,6 +198,16 @@ void SceneParser::ParseObjectData()
 				metallic = itr2->value.GetFloat();
 			}
 
+			else if (identifier == "MeshCollider")
+			{
+				meshcollider = itr2->value.GetBool();
+			}
+			else if (identifier == "Leaves")
+			{
+				leaves = itr2->value.GetBool();
+			}
+
+
 		}
 
 
@@ -209,7 +221,8 @@ void SceneParser::ParseObjectData()
 		data.scale = scale;
 		data.albedoTexture = albedoTexture;
 		data.metallic = metallic;
-
+		data.meshCollider = meshcollider;
+		data.leaves = leaves;
 	}
 
 
