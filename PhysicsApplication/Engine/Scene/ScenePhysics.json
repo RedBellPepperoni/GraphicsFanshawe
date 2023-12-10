@@ -39,6 +39,11 @@
     {
       "Name": "Sphere",
       "Path": "Assets\\Models\\Sphere.fbx"
+    },
+
+    {
+      "Name": "Ground",
+      "Path": "Assets\\Models\\Ground.fbx"
     }
 
 
@@ -67,6 +72,11 @@
     {
       "Name": "CrackAlbedo",
       "Path": "Assets\\Textures\\crack.tga"
+    },
+
+    {
+      "Name": "GroundAlbedo",
+      "Path": "Assets\\Textures\\ground.png"
     }
 
 
@@ -297,7 +307,7 @@
     },
     {  
       "Mesh": "TreeDry",
-      "Position": [ -28.00, 0.0, 13348 ],
+      "Position": [ -28.00, 0.0, 13.43 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 1.0, 1.0, 1.0 ],
       "Albedo": "TreeDryAlbedo",
@@ -397,7 +407,7 @@
     },
     {  
       "Mesh": "Tree",
-      "Position": [ -15.305, 0.0, -23.11 ],
+      "Position": [ -15.30, 0.0, -23.11 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 1.0, 1.0, 1.0 ],
       "Albedo": "TreeDryAlbedo",

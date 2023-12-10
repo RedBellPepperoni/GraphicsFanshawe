@@ -131,22 +131,21 @@ class PhysicsProject : public Application
         Entity physicBase = GetCurrentScene()->CreateEntity("PhysicsBase");
 
 
-       // SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("PhysicsBase")->GetMeshes()[0];
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Ground")->GetMeshes()[0];
 
-        //physicBase.AddComponent<MeshComponent>(mesh);
-        //physicBase.AddComponent<MeshRenderer>();
+        physicBase.AddComponent<MeshComponent>(mesh);
+        SharedPtr<Material> mat = physicBase.AddComponent<MeshRenderer>().GetMaterial();
+        mat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("GroundAlbedo");
 
-
-        //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
-       // collider->BuildFromMesh(mesh.get());
-        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(80.0f, 2.0f, 80.0f));
+       
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(80.0f, 0.2f, 80.0f));
        
         PhysicsProperties properties;
 
         properties.collider = collider;
         properties.isStatic = true;
         properties.stationary = true;
-        properties.position = Vector3(0.0f, -2.0f,0.0f);
+        properties.position = Vector3(-9.83f, 0.0f,0.0f);
         properties.mass = 1000.0f;
         properties.elasticity = 0.6f;
         properties.friction = 0.8f;
@@ -280,7 +279,7 @@ class PhysicsProject : public Application
         crackmat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("CrackAlbedo");
 
 
-        trans->SetPosition(Vector3(10000.0f));
+        trans->SetPosition(Vector3(-10.0f));
         trans->SetRotation(Vector3(0.0f));
         trans->SetScale(Vector3(1.0f));
 

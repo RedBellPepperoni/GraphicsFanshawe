@@ -80,6 +80,7 @@ void SceneLoader::SpawnObject(const ObjectData& data)
 	Vector3 forward = Normalize(properties.rotation * Vector3(0.0f, 1.0f, 0.0f));
 
 	properties.position = data.position + forward * 20.0f;
+	//properties.position = data.position;
 	properties.elasticity = 0.1f;
 	properties.friction = 5.5f;
 

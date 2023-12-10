@@ -222,8 +222,8 @@ namespace FanshaweGameEngine
 				return;
 			}
 
-			//m_broadPhaseDetection->DebugDraw();
-			//
+			m_broadPhaseDetection->DebugDraw();
+			
 
 			//for (RigidBody3D* body : m_rigidBodies)
 			//{
