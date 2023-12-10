@@ -1,9 +1,27 @@
 #include "GameEngine.h"
 
+using namespace FanshaweGameEngine;
+
 class FrameworkProject : public Application
 {
     void OnInit()
     {
+        GetModelLibrary()->LoadModel("Drone", "Assets\\Models\\Drone.fbx");
+
+        Entity entity = GetCurrentScene()->CreateEntity("Drone");
+
+        Transform& transform = entity.AddComponent<Transform>();
+        transform.SetScale(Vector3(5.0f));
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Drone")->GetMeshes()[0];
+
+        entity.AddComponent<MeshComponent>(mesh);
+        entity.AddComponent<MeshRenderer>();
+
+        LuaScriptComponent& luaComp =  entity.AddComponent<LuaScriptComponent>();
+
+        luaComp.LoadScript("Assets\\Scripts\\Test.lua");
+
 
     }
 

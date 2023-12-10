@@ -42,6 +42,9 @@
 #include "Engine/Core/Physics/Collision/Colliders/BoxCollider.h"
 
 
+#include "Engine/Core/LuaIntegration/LuaManager.h"
+#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
+
 
 #include "Engine/Core/Audio/AudioManager.h"
 #include "Engine/Core/Audio/AudioSource.h"

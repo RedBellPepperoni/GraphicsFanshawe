@@ -9,8 +9,8 @@
 #include "Engine/Core/Rendering/Essentials/Camera.h"
 #include "Engine/Core/Application/Application.h"
 #include "DefaultCameraController.h"
-//#include "Engine/Core/LuaIntegration/LuaManager.h"
-//#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
+#include "Engine/Core/LuaIntegration/LuaManager.h"
+#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 #include "Engine/Core/Audio/AudioListener.h"
 
 #include <sol/sol.hpp>
@@ -19,13 +19,6 @@
 namespace FanshaweGameEngine
 {
 
-	enum MyEnum
-	{
-		TWO,
-		Forty,
-		Six
-
-	};
 
 	Scene::Scene(const std::string& name)
 	{
@@ -54,7 +47,7 @@ namespace FanshaweGameEngine
 		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		
 
-		//LuaManager::GetInstance().OnInit(this);
+		LuaManager::GetInstance().OnInit(this);
 		
 
 		// Setup systems here
@@ -71,9 +64,11 @@ namespace FanshaweGameEngine
 		// Clear other managers if needed
 
 	}
+
+
 	void Scene::Update(float deltaTime)
 	{
-		/*
+		
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
 		
@@ -121,7 +116,7 @@ namespace FanshaweGameEngine
 		}
 		
 
-		if (!audioListenerView.IsEmpty())
+		/*if (!audioListenerView.IsEmpty())
 		{
 			if (audioListenerView.Size() > 1)
 			{
@@ -131,12 +126,15 @@ namespace FanshaweGameEngine
 			AudioListener* listener = &audioListenerView[0].GetComponent<AudioListener>();
 
 			listener->Update(deltaTime);
-		}
-		*/
+		}*/
+		
 
 		
 		
 	}
+
+
+
 	const std::string& Scene::GetName() const
 	{
 		return m_name;

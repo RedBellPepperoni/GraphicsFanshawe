@@ -14,6 +14,8 @@
 #include "Engine/Core/Audio/AudioManager.h"
 
 #include "Engine/Core/Physics/PhysicsEngine/PhysicsEngine.h"
+#include "Engine/Core/LuaIntegration/LuaManager.h"
+#include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 
 #include "Editor/GUI/RuntimeEditor.h"
 #include "Editor/GUI/AudioEditor.h"
@@ -176,7 +178,7 @@ namespace FanshaweGameEngine
 
 		m_editor->Toggle(true);
 
-		//LuaManager::GetInstance().OnInit();
+		LuaManager::GetInstance().OnInit();
 
 		// Calling Init on the child applications
 		OnInit();
@@ -209,6 +211,7 @@ namespace FanshaweGameEngine
 
 			UpdateDeltaTime(frameEnd, secondEnd, frames);
 
+			LuaManager::GetInstance().OnUpdate(GetCurrentScene());
 			m_currentScene->Update(m_deltaTime);
 
 
