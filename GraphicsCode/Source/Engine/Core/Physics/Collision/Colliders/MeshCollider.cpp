@@ -71,8 +71,8 @@ namespace FanshaweGameEngine
 
 		std::vector<ColliderEdge>& MeshCollider::GetEdgeList(const RigidBody3D* body)
 		{
-			// TODO: insert return statement here
 			Matrix4 transform = body->GetTransform() * m_transform;
+
 			for (unsigned int i = 0; i < m_Hull->GetNumEdges(); ++i)
 			{
 				const HullEdge& edge = m_Hull->GetEdge(i);
@@ -197,6 +197,8 @@ namespace FanshaweGameEngine
 
 		void MeshCollider::DebugDraw(const RigidBody3D* currentBody) const
 		{
+			Matrix4 transform = currentBody->GetTransform() * m_transform;
+			m_Hull->DebugDraw(transform);
 		}
 
 	}

@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\System\Input\PlayerController.cpp" />
+    <ClCompile Include="PyramidCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.cpp" />
     <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaManager.cpp" />
     <ClCompile Include="Source\Engine\Core\LuaIntegration\LuaMaths.cpp" />
@@ -181,6 +183,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\System\Input\PlayerController.h" />
+    <ClInclude Include="PyramidCollider.h" />
     <ClInclude Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.h" />
     <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaManager.h" />
     <ClInclude Include="Source\Engine\Core\LuaIntegration\LuaMaths.h" />

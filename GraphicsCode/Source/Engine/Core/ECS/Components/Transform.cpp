@@ -42,6 +42,8 @@ namespace FanshaweGameEngine
 
 		}
 
+
+
 	    Matrix4& Transform::GetMatrix()
 		{
 			UpdateMatrix(m_worldMatrix);
@@ -57,6 +59,11 @@ namespace FanshaweGameEngine
 
 			return m_normalMatrix;
 
+		}
+
+		void Transform::SetMatrix(const Matrix4& mat)
+		{
+			m_worldMatrix = mat;
 		}
 
 		const Vector3 Transform::GetScale() const

@@ -42,32 +42,37 @@ namespace FanshaweGameEngine
 
 			// Check Sphere Sphere First
 			
-			if ((typeOne == ColliderType::SPHERE) && (typeTwo == ColliderType::SPHERE))
+			if ((typeOne & ColliderType::SPHERE) && (typeTwo & ColliderType::SPHERE))
 			{
 				// Reverse casting cuz its fun :(
 				// This will Break a lot of stuff if teh casts are wrong
 				return DetectSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne == ColliderType::CAPSULE) && (typeTwo == ColliderType::CAPSULE))
+			if ((typeOne & ColliderType::CAPSULE) && (typeTwo & ColliderType::CAPSULE))
 			{
 				return DetectCapsuleCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
+			if ((typeOne & ColliderType::BOX) && (typeTwo & ColliderType::BOX))
+			{
+				return DetectPolygonPolygon(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
+			}
+
 			// If one of the object is a sphere and the other is either a box or mesh collider
 			//else if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
-			if ((typeOne == ColliderType::SPHERE && (typeTwo == ColliderType::MESH || typeTwo == ColliderType::BOX)))
+			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
 			{
 	
 				return DetectSpherePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne == ColliderType::CAPSULE && (typeTwo == ColliderType::BOX)))
+			if ((typeOne & ColliderType::CAPSULE && (typeTwo & ColliderType::BOX)))
 			{
 				return DetectCapsulePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
 
-			if ((typeOne == ColliderType::SPHERE )&& (typeTwo == ColliderType::CAPSULE))
+			if ((typeOne & ColliderType::SPHERE )&& (typeTwo & ColliderType::CAPSULE))
 			{
 				return DetectCapsuleSphereCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);
 			}
@@ -467,6 +472,62 @@ namespace FanshaweGameEngine
 			return false;
 		}
 
+		bool NarrowPhase::DetectPolygonPolygon(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
+		{
+			CollisionData cur_colData;
+			CollisionData best_colData;
+			best_colData.penetration = -FLT_MAX;
+
+			std::vector<glm::vec3>& shape1CollisionAxes = colliderOne->GetCollisionNormals(bodyOne);
+			std::vector<glm::vec3>& shape2PossibleCollisionAxes = colliderTwo->GetCollisionNormals(bodyTwo);
+	
+			static const int MAX_COLLISION_AXES = 100;
+			static glm::vec3 possibleCollisionAxes[MAX_COLLISION_AXES];
+
+			uint32_t possibleCollisionAxesCount = 0;
+			for (const glm::vec3& axis : shape1CollisionAxes)
+			{
+				possibleCollisionAxes[possibleCollisionAxesCount++] = axis;
+			}
+
+			for (const glm::vec3& axis : shape2PossibleCollisionAxes)
+			{
+				possibleCollisionAxes[possibleCollisionAxesCount++] = axis;
+			}
+
+			std::vector<ColliderEdge>& shape1_edges = colliderOne->GetEdgeList(bodyOne);
+			std::vector<ColliderEdge>& shape2_edges = colliderTwo->GetEdgeList(bodyTwo);
+
+			for (const ColliderEdge& edge1 : shape1_edges)
+			{
+				for (const ColliderEdge& edge2 : shape2_edges)
+				{
+					glm::vec3 e1 = edge1.secondPosition - edge1.firstPosition;
+					glm::vec3 e2 = edge2.secondPosition - edge2.firstPosition;
+					e1 = glm::normalize(e1);
+					e2 = glm::normalize(e2);
+
+					glm::vec3 temp = glm::cross(e1, e2);
+					AddPossibleCollisionAxis(temp, possibleCollisionAxes, possibleCollisionAxesCount);
+				}
+			}
+
+			for (uint32_t i = 0; i < possibleCollisionAxesCount; i++)
+			{
+				const glm::vec3& axis = possibleCollisionAxes[i];
+				if (!CheckCollisionbySAT(axis, bodyOne, bodyTwo, colliderOne, colliderTwo, &cur_colData))
+					return false;
+
+				if (cur_colData.penetration >= best_colData.penetration)
+					best_colData = cur_colData;
+			}
+
+			if (outData)
+				*outData = best_colData;
+
+			return true;
+		}
+
 		
 
 		bool NarrowPhase::DetectSpherePolygonCollision(RigidBody3D* bodyOne, RigidBody3D* bodyTwo, Collider* colliderOne, Collider* colliderTwo, CollisionData* outData)
@@ -546,7 +607,7 @@ namespace FanshaweGameEngine
 			RigidBody3D* complexObj;
 			RigidBody3D* capsuleObj;
 
-			if (bodyOne->GetCollider()->GetType() == ColliderType::CAPSULE)
+			if (bodyOne->GetCollider()->GetType() & ColliderType::CAPSULE)
 			{
 				capsuleObj = bodyOne;
 				complexCollider = colliderTwo;

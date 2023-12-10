@@ -30,6 +30,7 @@ namespace FanshaweGameEngine
 			m_storedCursorPosition = mousePosition;
 			m_previousCurserPos = m_storedCursorPosition;
 
+
 			
 		}
 

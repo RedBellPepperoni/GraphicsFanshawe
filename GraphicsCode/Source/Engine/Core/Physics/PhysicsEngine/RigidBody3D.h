@@ -38,7 +38,7 @@ namespace FanshaweGameEngine
 			Vector3 velocity = Vector3(0.0f);
 			Vector3 force = Vector3(0.0f);
 			
-			Quaternion rotation = Quaternion();
+			Quaternion rotation = Quaternion(0.0f,0.0,0.0f,1.0f);
 
 			float mass = 10.0f;
 
@@ -65,7 +65,7 @@ namespace FanshaweGameEngine
 
 		
 		// Callback for Trigger Checks
-		typedef std::function<bool(RigidBody3D* , RigidBody3D*)> PhysicsCollisionCallback;
+		typedef std::function<bool(RigidBody3D* ,Vector3)> PhysicsCollisionCallback;
 
 		// Callback for Colision response check
 		typedef std::function<void(RigidBody3D*, RigidBody3D*, Manifold*)> ManifoldCollisionCallback;
@@ -103,7 +103,7 @@ namespace FanshaweGameEngine
 			void SetRotation(const Quaternion& newRot);
 			
 			//void SetOnCollisionCallback(PhysicsCollisionCallback& callback) { m_OnCollisionCallback = callback; }
-			bool OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond);
+			bool OnCollisionEvent(RigidBody3D* bodyFirst, const Vector3& contactPoint);
 
 			void OnCollisionManifoldCallback(RigidBody3D* bodyFirst, RigidBody3D* bodySecond, Manifold* manifold);
 

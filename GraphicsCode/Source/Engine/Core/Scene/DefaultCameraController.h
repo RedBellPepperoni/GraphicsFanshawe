@@ -33,14 +33,14 @@ namespace FanshaweGameEngine
 
 			switch (m_type)
 			{
-			case FanshaweGameEngine::DefaultCameraController::CameraType::FirstPerson:
+			case CameraType::FirstPerson:
 
 				//m_cameraController = MakeShared<>
 
 				break;
-			case FanshaweGameEngine::DefaultCameraController::CameraType::ThirdPerson:
+			case CameraType::ThirdPerson:
 				break;
-			case FanshaweGameEngine::DefaultCameraController::CameraType::FlyCam:
+			case CameraType::FlyCam:
 
 				m_cameraController = MakeShared<FlyCameraController>();
 				break;

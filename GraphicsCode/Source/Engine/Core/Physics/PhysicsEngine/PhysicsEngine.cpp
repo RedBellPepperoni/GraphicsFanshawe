@@ -46,8 +46,8 @@ namespace FanshaweGameEngine
 		void PhysicsEngine::Init()
 		{
 			m_timeStepCounter = 0.0f;
-			m_gravity = Vector3(0.0f, -9.81f, 0.0f);
-			//m_gravity = Vector3(0.0f, 0.0f, 0.0f);
+			//m_gravity = Vector3(0.0f, -9.81f, 0.0f);
+			m_gravity = Vector3(0.0f, 0.0f, 0.0f);
 			m_paused = true;
 
 			//m_broadPhaseDetection = MakeShared<DefaultBroadPhase>();
@@ -126,7 +126,7 @@ namespace FanshaweGameEngine
 				{
 					m_transforms[index]->SetPosition(body->GetPosition());
 
-					
+					m_transforms[index]->SetRotation(body->GetRotation());
 
 				}
 
@@ -153,6 +153,7 @@ namespace FanshaweGameEngine
 
 		void PhysicsEngine::SetGravity(const Vector3& gravity)
 		{
+			m_gravity = gravity;
 		}
 
 		float PhysicsEngine::GetDeltaTime()
@@ -226,7 +227,7 @@ namespace FanshaweGameEngine
 
 			for (RigidBody3D* body : m_rigidBodies)
 			{
-				body->DebugDraw(0);
+				//body->DebugDraw(0);
 
 				SharedPtr<Collider> collider = body->GetCollider();
 
@@ -307,14 +308,14 @@ namespace FanshaweGameEngine
 
 					if (NarrowPhase::GetInstance().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
 					{
-						//const bool callfirst = pair.firstBody->OnCollisionEvent(pair.firstBody, pair.secondBody);
-						//const bool callSecond = pair.secondBody->OnCollisionEvent(pair.secondBody, pair.firstBody);
-
+						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.secondBody, coldata.pointOnPlane);
+						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.firstBody, coldata.pointOnPlane);
 
 						
+						
 
-						//if (callfirst && callSecond)
-						if (true)
+						// Only Have collision Responce if none of the bodys have a response event
+						/*if (callfirst && callSecond)
 						{
 
 							m_manifoldLock.lock();
@@ -339,7 +340,7 @@ namespace FanshaweGameEngine
 
 							m_manifoldLock.unlock();
 
-						}
+						}*/
 
 
 						
@@ -393,7 +394,7 @@ namespace FanshaweGameEngine
 				const float damping = m_dampingFactor;
 
 				// Apply gravity
-				if (body->m_invMass > 0.0f)
+				if (body->m_invMass > 0.0f && Length(m_gravity) > 0.2f)
 				{
 					body->m_velocity += m_gravity * m_physicsTimeStep;
 				}

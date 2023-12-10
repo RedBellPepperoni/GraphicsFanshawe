@@ -1,8 +1,15 @@
 
 #pragma once
+#include "SceneParser.h"
+#include "SceneLoader.h"
 #include "GameEngine.h"
+#include "Engine/Utils/Math/Random.h"
+#include "Engine/Core/System/Input/PlayerController.h"
+#include "Engine/Core/Rendering/Essentials/Camera.h"
 
 using namespace FanshaweGameEngine::Physics;
+
+
 
 class PhysicsProject : public Application
 {
@@ -10,54 +17,107 @@ class PhysicsProject : public Application
 
     void OnInit()
     {
-        GetModelLibrary()->LoadModel("PhysicsBase","Assets\\Models\\PhysicsBase.fbx");
-        GetModelLibrary()->LoadModel("Sphere","Assets\\Models\\Sphere.fbx");
+        parser = Factory<SceneParser>::Create();
+        loader = Factory<SceneLoader>::Create();
 
-       
+        // parse the scene with the name
+        parser->ParseScene("Engine\\Scene\\ScenePhysics.json");
 
-        GetPhysicsEngine()->SetGravity(Vector3(0.0f, - 9.81f, 0.0f));
-        GetPhysicsEngine()->SetPaused(true);
+        // Retrives the parsed models
+        std::map<std::string, std::string> modelmap = parser->GetModelList();
+
+        std::map<std::string, std::string> texturMap = parser->GetTextureList();
+
+        // Retrives the parsed object data
+        std::vector<ObjectData> objectmap = parser->GetObjectList();
+
+
+        // Load all the models from the model data list
+        for (auto const& data : modelmap)
+        {
+            loader->LoadModel(data.first, data.second);
+        }
+
+        for (auto const& texture : texturMap)
+        {
+            loader->LoadTexture(texture.first, texture.second);
+        }
+
+        // Create objects according to the scene data
+        for (ObjectData object : objectmap)
+        {
+            loader->SpawnObject(object);
+        }
+
+
+
+
+
+
+        GetPhysicsEngine()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
+;
        
         CreateBase();
+        //CreateTree(Vector3(10.0f, 0.0f, 0.0f));
 
-
-        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-60.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 0.8f);
-
-     /*   CreateSphere(Vector3(0.0f,20.0f, 0.0f), 1.0f);
-        CreateCapsule(Vector3(0.0f, 5.0f, 0.0f), 2.0f, 4.0f);
-        CreateCapsule(Vector3(0.0f, 20.0f, 0.0f), 2.0f, 4.0f);*/
-
-       
-      /*  CreateSphere(Vector3(5.0f,  35.0f, 1.0f), 1.0f);
-        CreateSphere(Vector3(-5.0f,  40.0f, -5.0f), 1.0f);*/
-
-        for (int i = -50; i < 50; i += 10)
+        for (int i = -100; i < 100; i+=20)
         {
-            for (int j = -50; j < 50; j += 10)
+            for (int j = -100; j < 100; j+=20)
             {
-                //(Vector3(i,  10.0f, j), 4.0f,5.0f);
-
-                CreateSphere(Vector3(i, (i + j) / 2 + 120.0f, j), 1.0f);
-                CreateSphere(Vector3(i, (i + j) / 2 + 150.0f, j), 1.0f);
-                CreateSphere(Vector3(i, (i + j) / 2 + 180.0f, j), 1.0f);
-                CreateSphere(Vector3(i, (i + j) / 2 + 210.0f, j), 1.0f);
-                CreateSphere(Vector3(i, (i + j) / 2 + 240.0f, j), 1.0f);
-                CreateSphere(Vector3(i, (i + j) / 2 + 270.0f, j), 1.0f);
+                CreateTree(Vector3((float)i, 0.0f, (float)j), Vector3(Random32::Range(-30,30),0.0f,Random32::Range(-20,20)));
             }
         }
+
+
+        CreatePlayer(Vector3(0.0f,50.0f,0.0f));
+        CreateFollowCamera(Vector3(0.0f, 10.0f, 0.0f));
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-45.0f, -43.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), 3.0f);
+
+   
+
+
+
+
 
 
     }
 
     void OnUpdate(float deltaTime)
     {
-        if (Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
-        {
-            GetPhysicsEngine()->SetPaused(!GetPhysicsEngine()->GetIsPaused());
+       
+        Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
+        ComponentView cameraView = GetCurrentScene()->GetEntityManager()->GetComponentsOfType<Camera>();
+        ComponentView playerControllerView = GetCurrentScene()->GetEntityManager()->GetComponentsOfType<PlayerController>();
 
-            //GetCurrent().GetAppWindow().ToggleWireframe();
-            //GetCurrent().
+
+
+
+        if (!playerControllerView.IsEmpty() && !cameraView.IsEmpty())
+        {
+          
+
+            PlayerController& controller = playerControllerView[0].GetComponent<PlayerController>();
+            RigidBody3D& body = playerControllerView[0].GetComponent<RigidBody3D>();
+            
+            Camera& camera = cameraView[0].GetComponent<Camera>();
+            Transform* transform = cameraView[0].TryGetComponent<Transform>();
+
+            if (transform)
+            {
+
+                
+                controller.KeyboardInput(body,*transform, deltaTime);
+                controller.MouseInput(body,*transform, mousePosition, deltaTime);
+                controller.UpdateOffsetTransform(body, *transform);
+
+               
+            
+            }
+
+
+
         }
+
 
        
         
@@ -68,7 +128,7 @@ class PhysicsProject : public Application
         Entity physicBase = GetCurrentScene()->CreateEntity("PhysicsBase");
 
 
-        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("PhysicsBase")->GetMeshes()[0];
+       // SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("PhysicsBase")->GetMeshes()[0];
 
         //physicBase.AddComponent<MeshComponent>(mesh);
         //physicBase.AddComponent<MeshRenderer>();
@@ -76,14 +136,14 @@ class PhysicsProject : public Application
 
         //SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
        // collider->BuildFromMesh(mesh.get());
-        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(70.0f, 1.0f, 70.0f));
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create(Vector3(80.0f, 2.0f, 80.0f));
        
         PhysicsProperties properties;
 
         properties.collider = collider;
         properties.isStatic = true;
         properties.stationary = true;
-        properties.position = Vector3(0.0f, -13.0f,0.0f);
+        properties.position = Vector3(0.0f, -2.0f,0.0f);
         properties.mass = 1000.0f;
         properties.elasticity = 0.6f;
         properties.friction = 0.8f;
@@ -96,29 +156,30 @@ class PhysicsProject : public Application
         
     }
 
-    void CreateCapsule(const Vector3& position, const float radius,const float height)
+    void CreateTree(const Vector3& position,const Vector3& rotation)
     {
         Entity ballObject = GetCurrentScene()->CreateEntity("PhysicsBase");
-        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("ColliderTreeLeaves")->GetMeshes()[0];
 
         ballObject.AddComponent<MeshComponent>(mesh);
         ballObject.AddComponent<MeshRenderer>();
 
-
-       // SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
-        SharedPtr<CapsuleCollider> collider = Factory<CapsuleCollider>::Create();
-        collider->SetRadius(radius);
-        collider->SetHeight(height);
-    
+       /* SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
+        collider->BuildFromMesh(mesh.get(), position);
+       */
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
+        collider->SetHalfDimensions(Vector3(1.0f, 7.0f, 1.0f));
         PhysicsProperties properties;
 
         properties.collider = collider;
-        properties.isStatic = false;
-        properties.stationary = false;
-        properties.mass = 5.0f;
-        properties.position = position;
-        properties.elasticity = 0.6f;
-        properties.friction = 0.5f;
+        properties.isStatic = true;
+        properties.stationary = true;
+        properties.mass = 50.0f;
+       // properties.position = position;
+        properties.rotation = Quaternion(Radians(rotation));
+        properties.position = position + Vector3(0.0f,7.0f,0.0f);
+        properties.elasticity = 0.1f;
+        properties.friction = 5.5f;
 
         Physics::RigidBody3D* rigidBody = GetPhysicsEngine()->CreateRigidBody(ballObject, properties);
 
@@ -171,6 +232,57 @@ class PhysicsProject : public Application
         light.intensity = intensity <= 0.0f ? 0.0f : intensity;
 
     }
+
+    void CreatePlayer(const Vector3& position)
+    {
+        Entity playerEntity = m_currentScene->CreateEntity("Player");
+        
+        PlayerController& controller = playerEntity.AddComponent<PlayerController>();
+        controller.SetOffset(Vector3(0.0f,1.0f,-8.0f));
+
+        SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
+        collider->SetHalfDimensions(Vector3(2.0f,0.6f,2.0f));
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Drone")->GetMeshes()[0];
+        playerEntity.AddComponent<MeshComponent>(mesh);
+        SharedPtr<Material> mat = playerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        mat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DroneAlbedo");
+        mat->metallic = 5.0f;
+
+        PhysicsProperties properties;
+
+        properties.collider = collider;
+        properties.isStatic = false;
+        properties.stationary = false;
+        properties.mass = 10.0f;
+        properties.position = position;
+        properties.rotation = Quaternion(Radians(Vector3(0.0f, 0.0f, 0.0f)));
+        properties.elasticity = 0.6f;
+        properties.friction = 0.5f;
+        properties.velocity = Vector3(0.0f);
+
+        playerBody = GetPhysicsEngine()->CreateRigidBody(playerEntity, properties);
+
+        controller.SetOnHit(playerBody);
+    }
+
+    void CreateFollowCamera(const Vector3& position)
+    {
+        Entity cameraEntity = m_currentScene->CreateEntity("FollowCamera");
+        Transform& transform = cameraEntity.AddComponent<Transform>();
+        cameraEntity.AddComponent<Camera>();
+        transform.SetPosition(position);
+
+
+    }
+
+    private:
+
+        SharedPtr<SceneParser> parser = nullptr;
+        SharedPtr<SceneLoader> loader = nullptr;
+
+        RigidBody3D* playerBody = nullptr;
+
 
 };
 

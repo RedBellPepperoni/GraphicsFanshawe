@@ -1,0 +1,67 @@
+{
+  "Scene":  "SceneOne",
+  "Models": [
+
+
+    {
+      "Name": "ColliderTree",
+      "Path": "Assets\\Models\\ColliderTree.fbx"
+    },
+
+    {
+      "Name": "ColliderTreeLeaves",
+      "Path": "Assets\\Models\\ColliderTreeLeaves.fbx"
+    },
+
+    {
+      "Name": "Drone",
+      "Path": "Assets\\Models\\Drone.fbx"
+    },
+    {
+      "Name": "TreeDry",
+      "Path": "Assets\\Models\\TreeDry.fbx"
+    },
+
+    {
+      "Name": "Tree",
+      "Path": "Assets\\Models\\Tree.fbx"
+    },
+    {
+      "Name": "Leaves",
+      "Path": "Assets\\Models\\leaves.fbx"
+    }
+
+
+
+  ],
+  
+  "Textures": [
+
+    {
+      "Name": "DroneAlbedo",
+      "Path": "Assets\\Textures\\drone.png"
+    },
+
+    {
+      "Name": "TreeDryAlbedo",
+      "Path": "Assets\\Textures\\tree.png"
+    },
+
+    {
+      "Name": "LeavesAlbedo",
+      "Path": "Assets\\Textures\\leaves.png"
+    }
+
+
+  ],
+
+  "Objects" :[
+
+   
+  ]
+
+
+
+
+
+}

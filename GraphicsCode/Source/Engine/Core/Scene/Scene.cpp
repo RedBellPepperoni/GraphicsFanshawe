@@ -45,7 +45,7 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
-		AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
+		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
 
 
 		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
@@ -73,11 +73,12 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Update(float deltaTime)
 	{
-		
+		/*
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
 		
 		ComponentView cameraControllerView = m_EntityManager->GetComponentsOfType<DefaultCameraController>();
+
 		ComponentView cameraview = m_EntityManager->GetComponentsOfType<Camera>();
 		ComponentView audioListenerView = m_EntityManager->GetComponentsOfType<AudioListener>();
 
@@ -131,7 +132,7 @@ namespace FanshaweGameEngine
 
 			listener->Update(deltaTime);
 		}
-		
+		*/
 
 		
 		

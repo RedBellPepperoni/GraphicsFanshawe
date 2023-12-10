@@ -177,11 +177,11 @@ namespace FanshaweGameEngine
 			m_transformDirty = true;
 			m_isStationary = false;
 		}
-		bool RigidBody3D::OnCollisionEvent(RigidBody3D* bodyFirst, RigidBody3D* bodySecond)
+		bool RigidBody3D::OnCollisionEvent(RigidBody3D* bodyFirst, const Vector3& contactPoint)
 		{
 			// Work on this
 
-			const bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(bodyFirst, bodySecond) : true;
+			const bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(bodyFirst, contactPoint) : true;
 
 			if (handleCollision)
 			{

@@ -55,7 +55,7 @@ namespace FanshaweGameEngine
 
 			Matrix4& GetNormalMatrix();
 
-
+			void SetMatrix(const Matrix4& mat);
 
 
 			const Vector3 GetScale() const;

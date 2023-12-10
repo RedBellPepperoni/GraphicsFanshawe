@@ -142,11 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\PhysicsApplication.cpp" />
+    <ClCompile Include="Source\SceneLoader.cpp" />
+    <ClCompile Include="Source\SceneParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphicsCode\GraphicsCode.vcxproj">
       <Project>{2975c24d-ccb2-433f-a91f-5e0c082b113d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\SceneLoader.h" />
+    <ClInclude Include="Source\SceneParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

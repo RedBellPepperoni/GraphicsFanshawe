@@ -26,7 +26,6 @@ namespace FanshaweGameEngine
 		Vector2 m_storedCursorPosition;
 		float m_cameraSpeed;
 
-		Vector3 m_positionDelta{};
 
 		float m_PitchDelta = 0.0f;
 		float m_YawDelta = 0.0f;
