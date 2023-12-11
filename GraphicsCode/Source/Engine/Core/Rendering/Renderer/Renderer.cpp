@@ -298,7 +298,7 @@ namespace FanshaweGameEngine
 
             if(elementList.empty())
             {
-                LOG_ERROR("No Eleemnts to Draw");
+                //LOG_ERROR("No Eleemnts to Draw");
                 return;
             }
 

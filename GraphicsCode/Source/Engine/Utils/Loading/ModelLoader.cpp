@@ -77,7 +77,7 @@ namespace FanshaweGameEngine
         }
 
 
-        LOG_TRACE("Assimp : Loading model from file: [{0}]", filePath.string());
+       // LOG_TRACE("Assimp : Loading model from file: [{0}]", filePath.string());
 
         static Assimp::Importer importer;
 

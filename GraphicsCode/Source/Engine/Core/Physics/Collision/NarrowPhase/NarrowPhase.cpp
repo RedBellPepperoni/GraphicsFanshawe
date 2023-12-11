@@ -61,7 +61,7 @@ namespace FanshaweGameEngine
 
 			// If one of the object is a sphere and the other is either a box or mesh collider
 			//else if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)) || (typeTwo & ColliderType::SPHERE && (typeOne & ColliderType::MESH || typeOne & ColliderType::BOX)))
-			if ((typeOne & ColliderType::SPHERE && (typeTwo & ColliderType::MESH || typeTwo & ColliderType::BOX)))
+			if ((typeOne == ColliderType::SPHERE && (typeTwo == ColliderType::MESH || typeTwo == ColliderType::BOX)))
 			{
 	
 				return DetectSpherePolygonCollision(bodyOne, bodyTwo, colliderOne, colliderTwo, outData);

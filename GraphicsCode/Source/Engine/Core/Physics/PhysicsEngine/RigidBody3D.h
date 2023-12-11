@@ -21,13 +21,10 @@ namespace FanshaweGameEngine
 		//Hardcoding for now
 		enum CollisionTag
 		{	
-			None,
-			Player,
-			Enemy,
-			Playerbullet,
-			Enemybullet,
-			Human
-
+			StarDestroyer	 = 0,
+			Xwing			 = 1,
+			Missile			 = 2,
+			TestSphere		 = 3
 		};
 
 
@@ -215,6 +212,8 @@ namespace FanshaweGameEngine
 
 			CollisionTag m_tag;
 
+
+			bool isColliding = false;
 		};
 
 	}

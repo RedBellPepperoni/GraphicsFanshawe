@@ -45,6 +45,8 @@ namespace FanshaweGameEngine
 		Camera* camera = &cameraEntity.AddComponent<Camera>();
 		Transform* transform = &cameraEntity.AddComponent<Transform>();
 
+		
+
 		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
 
 

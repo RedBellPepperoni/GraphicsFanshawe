@@ -28,7 +28,7 @@ namespace FanshaweGameEngine
 			, m_paused(true)
 			, m_dampingFactor(0.99f)
 			, m_broadPhaseDetection(nullptr)
-			, m_velocityIntegrationType(VelocityIntegrationType::RUNGE_KUTTA_4)
+			, m_velocityIntegrationType(VelocityIntegrationType::LINEAR_EULAR)
 			
 		{
 			m_timeStepCounter = 0.0f;
@@ -122,7 +122,7 @@ namespace FanshaweGameEngine
 			{
 				RigidBody3D* body = m_rigidBodies[index];
 
-				if (!body->GetIsStatic() && !body->GetIsStationary())
+				if (!body->GetIsStatic())
 				{
 					m_transforms[index]->SetPosition(body->GetPosition());
 
@@ -222,20 +222,20 @@ namespace FanshaweGameEngine
 				return;
 			}
 
-			m_broadPhaseDetection->DebugDraw();
+			//m_broadPhaseDetection->DebugDraw();
 			
 
-			//for (RigidBody3D* body : m_rigidBodies)
-			//{
-			//	//body->DebugDraw(0);
+			for (RigidBody3D* body : m_rigidBodies)
+			{
+				//body->DebugDraw(0);
 
-			//	SharedPtr<Collider> collider = body->GetCollider();
+				SharedPtr<Collider> collider = body->GetCollider();
 
-			//	if (collider)
-			//	{
-			//		collider->DebugDraw(body);
-			//	}
-			//}
+				if (collider)
+				{
+					collider->DebugDraw(body);
+				}
+			}
 
 		}
 
@@ -306,13 +306,19 @@ namespace FanshaweGameEngine
 					CollisionData coldata;
 
 
+					pair.firstBody->isColliding = false;
+					pair.secondBody->isColliding = false;
+
+
 					if (NarrowPhase::GetInstance().DetectCollision(pair.firstBody, pair.secondBody, colliderOne, colliderTwo, &coldata))
 					{
 						const bool callfirst = pair.firstBody->OnCollisionEvent(pair.secondBody, coldata.pointOnPlane);
 						const bool callSecond = pair.secondBody->OnCollisionEvent(pair.firstBody, coldata.pointOnPlane);
 
-						
-						
+						pair.firstBody->isColliding = true;
+						pair.secondBody->isColliding = true;
+
+
 
 						// Only Have collision Responce if none of the bodys have a response event
 						/*if (callfirst && callSecond)

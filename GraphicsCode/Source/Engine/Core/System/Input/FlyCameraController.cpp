@@ -93,7 +93,7 @@ namespace FanshaweGameEngine
 		// Way more if needed
 		if (Input::InputSystem::GetInstance().GetKeyHeld(Input::Key::LeftShift))
 		{
-			m_cameraSpeed = 400.0f * deltaTime;
+			m_cameraSpeed = 1600.0f * deltaTime;
 		}
 
        
