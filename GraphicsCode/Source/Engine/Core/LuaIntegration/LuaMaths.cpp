@@ -172,24 +172,24 @@ namespace FanshaweGameEngine
             );
 
 
-            //state.new_usertype<Transform>
-            //(
-            //     "Transform",
-            //     sol::constructors<Transform()>(),
+            state.new_usertype<Transform>
+            (
+                 "Transform",
+                 sol::constructors<Transform()>(),
 
-            //    "Scale", & Components::Transform::GetScale,
-            //    "Rotation", & Components::Transform::GetRotation,
-            //    "EularRotation", & Components::Transform::GetEulerRotation,
-            //    "Position", & Components::Transform::GetPosition,
-            //    "SetPosition", & Components::Transform::SetPosition,
-            //    "SetScale", & Components::Transform::SetScale,
-            //    "SetRotation", & Components::Transform::SetRotation,
-            //    "SetEularRotation", & Components::Transform::SetEularRotation,
-            //    "GetForwardDirection", & Components::Transform::GetForwardVector,
-            //    "GetRightDirection", & Components::Transform::GetRightVector
+                "Scale", & Components::Transform::GetScale,
+                "Rotation", & Components::Transform::GetRotation,
+                "EularRotation", & Components::Transform::GetEulerRotation,
+                "Position", & Components::Transform::GetPosition,
+                "SetPosition", & Components::Transform::SetPosition,
+                "SetScale", & Components::Transform::SetScale,
+                "SetRotation", & Components::Transform::SetRotation,
+                "SetEularRotation", & Components::Transform::SetEularRotation,
+                "GetForwardDirection", & Components::Transform::GetForwardVector,
+                "GetRightDirection", & Components::Transform::GetRightVector
 
 
-            //);
+            );
 
 
 

@@ -1,19 +1,19 @@
+#pragma once
 #include "LuaManager.h"
 #include "Engine/Utils/Math.h"
 #include "Engine/Core/Memory/Memory.h"
-#include "Engine/Core/Scene/Scene.h"
-#include "Engine/Core/ECS/EntityManager.h"
+
 #include "Engine/Core/ECS/Entity.h"
+#include "Engine/Core/ECS/EntityManager.h"
+#include "Engine/Core/Scene/Scene.h"
 #include "Engine/Core/System/Input/InputSystem.h"
 #include "LuaMaths.h"
 #include "Engine/Core/Application/Application.h"
 #include "Engine/Utils/Logging/Log.h"
 #include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 #include "Engine/Utils/Math/Random.h"
-
+#include "Engine/Core/Rendering/Lights/Light.h"
 #include <sol/sol.hpp>
-
-
 
 
 
@@ -31,7 +31,29 @@ namespace FanshaweGameEngine
         }
     };
 
+    using namespace entt;
 
+#define REGISTER_COMPONENT_WITH_ECS(curLuaState, Comp, assignPtr)                                              \
+    {                                                                                                          \
+                                                                                        \
+        auto entity_type = curLuaState["Entity"].get_or_create<sol::usertype<registry>>();                     \
+        entity_type.set_function("Add" #Comp, assignPtr);                                                      \
+        entity_type.set_function("Remove" #Comp, &Entity::RemoveComponent<Comp>);                              \
+        entity_type.set_function("Get" #Comp, &Entity::GetComponent<Comp>);                                    \
+        entity_type.set_function("TryGet" #Comp, &Entity::TryGetComponent<Comp>);                              \
+        entity_type.set_function("Has" #Comp, &Entity::HasComponent<Comp>);                                    \
+        auto entityManager_type = curLuaState["enttRegistry"].get_or_create<sol::usertype<registry>>();        \
+        entityManager_type.set_function("view_" #Comp, &_ECS_export_view<type_list<Comp>, type_list<>>::view); \
+        auto V = curLuaState.new_usertype<view<entt::get_t<Comp>>>(#Comp "_view");                             \
+        V.set_function("each", &view<get_t<Comp>>::each<std::function<void(Comp&)>>);                    \
+        V.set_function("front", &view<get_t<Comp>>::front);                                              \
+        m_identifiers.push_back(#Comp);                                                                        \
+        m_identifiers.push_back("Add" #Comp);                                                                  \
+        m_identifiers.push_back("Remove" #Comp);                                                               \
+        m_identifiers.push_back("Get" #Comp);                                                                  \
+        m_identifiers.push_back("TryGet" #Comp);                                                               \
+        m_identifiers.push_back("Has" #Comp);                                                                  \
+    }
 
 
     std::vector<std::string> LuaManager::m_identifiers = {
@@ -150,33 +172,50 @@ namespace FanshaweGameEngine
 
     void LuaManager::BindCommands(sol::state& state)
     {
-       // sol::usertype<entt::registry> enttRegistry = state.new_usertype<entt::registry>("enttRegistry");
+
 
         sol::usertype<Entity> entityType = state.new_usertype<Entity>("Entity", sol::constructors<sol::types<entt::entity, Scene*>>());
         sol::usertype<EntityManager> entityManagerType = state.new_usertype<EntityManager>("EntityManager");
 
         entityType.set_function("Valid", &Entity::IsValid);
-        
         entityType.set_function("SetActive", &Entity::SetActive);
         entityType.set_function("Active", &Entity::IsActive);
         state.set_function("GetEntityByName", &GetEntityByName);
 
-
-        
+        sol::usertype<NameComponent> nameComponent_type = state.new_usertype<NameComponent>("NameComponent");
+        nameComponent_type["name"] = &NameComponent::name;
+        REGISTER_COMPONENT_WITH_ECS(state, NameComponent, static_cast<NameComponent& (Entity::*)()>(&Entity::AddComponent<NameComponent>));
+      
         sol::usertype<LuaScriptComponent> script_type = state.new_usertype<LuaScriptComponent>("LuaScriptComponent", sol::constructors<sol::types<std::string, Scene*>>());
+        REGISTER_COMPONENT_WITH_ECS(state, LuaScriptComponent, static_cast<LuaScriptComponent& (Entity::*)(std::string&&, Scene*&&)>(&Entity::AddComponent<LuaScriptComponent, std::string, Scene*>));
         script_type.set_function("GetCurrentEntity", &LuaScriptComponent::GetCurrentEntity);
         script_type.set_function("SetThisComponent", &LuaScriptComponent::SetThisComponent);
-        script_type.set_function("GetTransform", &LuaScriptComponent::GetTransform);
+        
+        using namespace Components;
+        REGISTER_COMPONENT_WITH_ECS(state, Transform, static_cast<Transform & (Entity::*)()>(&Entity::AddComponent<Transform>));
 
-
-       
-       
+       /* script_type.set_function("GetTransform", &LuaScriptComponent::GetTransform);
         script_type.set_function("Position", &LuaScriptComponent::GetPosition);
-        script_type.set_function("SetPosition", &LuaScriptComponent::SetPosition);
+        script_type.set_function("SetPosition", &LuaScriptComponent::SetPosition);*/
+
+        state.new_usertype<Light>(
+            "Light",
+            "Intensity", &Light::intensity,
+            "Radius", &Light::radius,
+            "Color", &Light::color,
+            "Direction", &Light::direction,
+            "Position", &Light::position,
+            "Type", &Light::type,
+            "InnerAngle", &Light::innerAngle,
+            "OuterAngle", &Light::outerAngle); 
+
+        REGISTER_COMPONENT_WITH_ECS(state, Light, static_cast<Light & (Entity::*)()>(&Entity::AddComponent<Light>));
 
         
-        
+       /* sol::usertype<RigidBody3D> RigidBody3DComponent_type = state.new_usertype<RigidBody3D>("RigidBody3DComponent", sol::constructors<sol::types<RigidBody3D*>>());
+        RigidBody3DComponent_type.set_function("GetRigidBody", &RigidBody3D::GetRigidBody);
 
+        REGISTER_COMPONENT_WITH_ECS(state, RigidBody3DComponent, static_cast<RigidBody3DComponent & (Entity::*)(const RigidBody3DProperties&)>(&Entity::AddComponent<RigidBody3D, const RigidBody3DProperties&>));*/
 
         //sol::usertype<Transform> transform = state.new_usertype<Transform>("Transform");
         //transform.set_function("GetPosition", &Transform::GetPosition);

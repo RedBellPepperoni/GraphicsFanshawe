@@ -194,13 +194,13 @@ namespace FanshaweGameEngine
 
 			if (!m_OnInitFunc->valid())
 			{
-				m_OnInitFunc->reset();
+				delete m_OnInitFunc;
 			}
 
 			m_UpdateFunc = new sol::protected_function((*m_env)["OnUpdate"]);
 			if (!m_UpdateFunc->valid())
 			{
-				m_UpdateFunc->reset();
+				delete m_UpdateFunc;
 			}
 
 

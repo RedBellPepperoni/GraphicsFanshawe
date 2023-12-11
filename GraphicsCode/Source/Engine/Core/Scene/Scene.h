@@ -5,7 +5,7 @@
 
 // The Entt Library header
 #include <entt/entity/registry.hpp>
-
+#include <sol/forward.hpp>
 
 
 

@@ -211,9 +211,7 @@ public:
     basic_snapshot_loader(registry_type &source) noexcept
         : reg{&source} {
         // restoring a snapshot as a whole requires a clean registry
-        for([[maybe_unused]] auto elem: source.storage()) {
-            ENTT_ASSERT(elem.second.empty(), "Registry must be empty");
-        }
+        ENTT_ASSERT(reg->empty(), "Registry must be empty");
     }
 
     /*! @brief Default move constructor. */
@@ -261,9 +259,7 @@ public:
                     if constexpr(Registry::template storage_for_type<Type>::traits_type::page_size == 0u) {
                         storage.emplace(entity);
                     } else {
-                        Type elem{};
-                        archive(elem);
-                        storage.emplace(entity, std::move(elem));
+                        archive(storage.emplace(entity));
                     }
                 }
             }
@@ -470,9 +466,7 @@ public:
                     if constexpr(Registry::template storage_for_type<Type>::traits_type::page_size == 0u) {
                         storage.emplace(map(entt));
                     } else {
-                        Type elem{};
-                        archive(elem);
-                        storage.emplace(map(entt), std::move(elem));
+                        archive(storage.emplace(map(entt)));
                     }
                 }
             }
@@ -529,10 +523,9 @@ public:
                     if constexpr(std::remove_reference_t<decltype(storage)>::traits_type::page_size == 0u) {
                         storage.emplace(map(entt));
                     } else {
-                        typename std::remove_reference_t<decltype(storage)>::value_type elem{};
+                        auto &elem = storage.emplace(map(entt));
                         archive(elem);
                         (update(elem, member), ...);
-                        storage.emplace(map(entt), std::move(elem));
                     }
                 }
             }
