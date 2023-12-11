@@ -162,6 +162,9 @@ namespace FanshaweGameEngine
 	
 			// Store the data for the current rendering camera
 			const CameraElement& cameraElement = m_renderer->GetPipeLine().cameraList[cameraIndex];
+
+			// ===== Post Render Skybox Pass =================
+			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
 	
 			// ===== Forward Pass for Opaque Elements ================ 
 			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
@@ -169,8 +172,7 @@ namespace FanshaweGameEngine
 
 			m_renderer->DebugPass(cameraElement);
 
-			// ===== Post Render Skybox Pass =================
-			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
+			
 
 			
 

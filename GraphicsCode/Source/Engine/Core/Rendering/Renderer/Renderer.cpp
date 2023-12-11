@@ -325,8 +325,8 @@ namespace FanshaweGameEngine
             }
 
             //Setting depth test to false (so that the skybox object will always be rendered last)
-            GLDEBUG(glDepthMask(GL_FALSE));
-
+            //GLDEBUG(glDepthMask(GL_FALSE));
+            GLDEBUG(glDisable(GL_DEPTH_TEST));
             SkyboxObject& SkyObject = m_pipeline.SkyboxCubeObject;
 
             Vector3 radianRotaion = m_pipeline.skybox.GetRotation();
@@ -359,7 +359,8 @@ namespace FanshaweGameEngine
 
 
             //Setting depth test to back to true
-            GLDEBUG(glDepthMask(GL_TRUE));
+           // GLDEBUG(glDepthMask(GL_TRUE));
+            GLDEBUG(glEnable(GL_DEPTH_TEST));
 
 
 

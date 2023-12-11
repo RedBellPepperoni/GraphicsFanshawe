@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
             , m_fov(60.0f)
             , m_orthographic(false)
         {
-            InitializeRenderTexture();
+           // InitializeRenderTexture();
 
         }
         Camera::Camera(float FOV, float Near, float Far, float Aspect)
@@ -25,7 +25,7 @@ namespace FanshaweGameEngine
             , m_far(Far)
             , m_orthographic(false)
         {
-            InitializeRenderTexture();
+           // InitializeRenderTexture();
         }
         
         Camera::Camera(float Aspect, float Near, float Far)
@@ -35,7 +35,7 @@ namespace FanshaweGameEngine
             , m_far(Far)
             , m_orthographic(false)
         {
-            InitializeRenderTexture();
+           // InitializeRenderTexture();
         }
 
        

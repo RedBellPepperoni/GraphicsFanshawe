@@ -73,7 +73,7 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Update(float deltaTime)
 	{
-		/*
+		
 		Vector2 mousePosition = Input::InputSystem::GetInstance().GetMousePosition();
 
 		
@@ -121,7 +121,7 @@ namespace FanshaweGameEngine
 		}
 		
 
-		if (!audioListenerView.IsEmpty())
+		/*if (!audioListenerView.IsEmpty())
 		{
 			if (audioListenerView.Size() > 1)
 			{
@@ -131,8 +131,8 @@ namespace FanshaweGameEngine
 			AudioListener* listener = &audioListenerView[0].GetComponent<AudioListener>();
 
 			listener->Update(deltaTime);
-		}
-		*/
+		}*/
+		
 
 		
 		
