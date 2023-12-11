@@ -23,6 +23,8 @@ namespace FanshaweGameEngine
 		void SpawnTestSpherePair();
 
 		void TempStartAll();
+
+		void Update(float deltaTime);
 		
 	private:
 		

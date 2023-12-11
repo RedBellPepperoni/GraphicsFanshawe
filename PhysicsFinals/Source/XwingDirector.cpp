@@ -27,12 +27,13 @@ namespace FanshaweGameEngine
 		int yDir = Random32::Range(-10, 10);
 		int zDir = Random32::Range(-10, 10);
 
+		// Pushes the point in the direction if it is inside the sphere
 		Vector3 point = Normalize(Vector3(xDir, yDir, zDir)) * (float)Random32::Range(minLength, maxLength);
 
 		Vector3 Dir = Normalize(point - origin);
 
 
-		point = Dir * 500.0f;
+		point = point + (Dir * 1000.0f);
 		
 		return point;
 	}
@@ -57,13 +58,22 @@ namespace FanshaweGameEngine
 		material->metallic = 0.8f;
 
 
-		SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
+		/*SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
 		collider->SetHalfDimensions(Vector3(3.6f, 1.0f, 40.0f));
 
 		Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -36.0f)) * Scale(Matrix4(1.0), collider->GetHalfDimensions());
 			
 
+		collider->SetTransform(colliderTransform);*/
+
+		SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
+		collider->SetRadius(3.6f);
+
+		Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -40.0f)) * Scale(Matrix4(1.0), Vector3(3.6f));
+
+
 		collider->SetTransform(colliderTransform);
+
 
 		PhysicsProperties properties;
 
@@ -71,7 +81,7 @@ namespace FanshaweGameEngine
 		properties.isStatic = false;
 		properties.stationary = false;
 		properties.mass = 5.0f;
-		properties.position = Vector3(0.0);
+		properties.position = Vector3(1000.0);
 		properties.rotation = Quaternion(Radians(Vector3(0.0f, 0.0f, 0.0f)));
 		properties.elasticity = 0.6f;
 		properties.friction = 0.5f;
@@ -80,8 +90,12 @@ namespace FanshaweGameEngine
 
 		RigidBody3D* body = application.GetPhysicsEngine()->CreateRigidBody(xwingEntity, properties);
 
+		
+
 		XWing* xwingPtr =  &xwingEntity.AddComponent<XWing>();
 		xwingPtr->SetRigidBody(body);
+		xwingPtr->SetOnCollisionCallback(body);
+
 
 		GetInstance().m_XwingList.push_back(xwingPtr);
 
@@ -152,6 +166,17 @@ namespace FanshaweGameEngine
 		
 	}
 
+	void XwingDirector::Update(float deltaTime)
+	{
+
+		for (XWing* xwing : m_XwingList)
+		{
+			xwing->Update(deltaTime);
+		}
+
+
+	}
+
 	void XwingDirector::CalculateXWingPath( XWing* xwing)
 	{
 		// Calculate teh Startign pos
@@ -172,6 +197,9 @@ namespace FanshaweGameEngine
 		xwing->GetRigidBody().SetRotation(rot);
 		
 
+		xwing->SetOriginAndTatget(startPos,targetPos);
+		xwing->FlyMission();
+
 	}
 
 	 void XwingDirector::CalculateOriginPoint()
@@ -190,7 +218,11 @@ namespace FanshaweGameEngine
 
 	void XwingDirector::CalculateTargetPoint(bool directedtowardsShieldGenerators)
 	{
-		Vector3 point = GetSmartDirectionalVector(10,80, SphereTestOne->GetRigidBody().GetPosition());
+		Vector3 point = GetRandomVector(40, 300);
+
+		SphereTestTwo->GetRigidBody().SetPosition(point);
+
+		 point = GetSmartDirectionalVector(30,120, SphereTestOne->GetRigidBody().GetPosition());
 
 		if (directedtowardsShieldGenerators)
 		{ // Do stuff here
@@ -220,8 +252,6 @@ namespace FanshaweGameEngine
 	bool XwingDirector::OnSphereOneCollision(RigidBody3D* body, Vector3 contactpoint)
 	{
 		LOG_WARN("SphereOne :  spawned INSIDE the destroyer.......Recalculating");
-
-		//CalculateOriginPoint();
 
 		return true;
 	}

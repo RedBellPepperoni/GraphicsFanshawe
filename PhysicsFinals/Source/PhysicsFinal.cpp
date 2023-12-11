@@ -51,6 +51,9 @@ class PhysicsFinals : public Application
         {
             XwingDirector::GetInstance().TempStartAll();
         }
+
+
+        XwingDirector::GetInstance().Update(deltaTime);
     }
 
 
@@ -89,6 +92,7 @@ class PhysicsFinals : public Application
         properties.elasticity = 0.6f;
         properties.friction = 0.5f;
         properties.velocity = Vector3(0.0f);
+        properties.tag = CollisionTag::StarDestroyer;
 
         RigidBody3D* body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
