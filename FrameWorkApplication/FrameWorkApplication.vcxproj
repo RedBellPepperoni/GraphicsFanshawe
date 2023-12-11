@@ -72,11 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(SolutionDir)Externals\Lua\src\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)GraphicsCode\Source\;$(ProjectDir)Source\;$(ProjectDir)rapidjson\;$(SolutionDir)Externals\stb\include\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\;$(SolutionDir)Externals\Lua\src\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)Externals\glfw\include\;$(SolutionDir)Externals\glad\include\;$(SolutionDir)Externals\assimp\include\;$(SolutionDir)Externals\;$(SolutionDir)Externals\spdlog\include\;$(SolutionDir)Externals\entt\src\;$(SolutionDir)Externals\fmod\core\inc\;$(SolutionDir)GraphicsCode\Source\Editor\Imgui\</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

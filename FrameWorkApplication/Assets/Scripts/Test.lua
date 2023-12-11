@@ -1,9 +1,6 @@
 --Default Lua Script
 
 
-targetMoveToposition = {}
-movetime = 0.0
-
 function OnInit()
 
 
@@ -11,20 +8,12 @@ end
 
 
 
-function MoveTo(position, time)
-
-    targetMoveToposition = position
-    movetime = time
-
-end
-
-
 
 function OnUpdate(dt)
 
    
 
-    local position = LuaComponent:GetPosition()
+    local position = LuaComponent:Position()
 
     position.x = position.x + 10*dt 
 
