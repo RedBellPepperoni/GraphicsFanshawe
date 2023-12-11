@@ -82,6 +82,7 @@
     <ClCompile Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.cpp" />
     <ClCompile Include="PyramidCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\PlayerController.cpp" />
+    <ClCompile Include="Source\Engine\Core\System\Input\OrbitalCameraController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -465,6 +466,7 @@
     <ClInclude Include="Source\Engine\Core\ECS\Components\LuaScriptComponent.h" />
     <ClInclude Include="PyramidCollider.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\PlayerController.h" />
+    <ClInclude Include="Source\Engine\Core\System\Input\OrbitalCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />

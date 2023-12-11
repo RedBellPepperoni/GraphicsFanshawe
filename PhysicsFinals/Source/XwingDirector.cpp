@@ -174,6 +174,10 @@ namespace FanshaweGameEngine
 			xwing->Update(deltaTime);
 		}
 
+		Vector3 Position = m_XwingList[0]->GetRigidBody().GetPosition();
+		//LOG_CRITICAL("{0},{1},{2}", Position.x, Position.y, Position.z);
+		controller->SetFocalPoint(Position);
+
 
 	}
 
@@ -261,6 +265,16 @@ namespace FanshaweGameEngine
 		LOG_WARN("SphereTwo :  spawned INSIDE the destroyer.......Recalculating");
 
 		return true;
+	}
+
+	void XwingDirector::SetCameraController()
+	{
+		ComponentView cameraControllerView = Application::GetCurrent().GetCurrentScene()->GetEntityManager()->GetComponentsOfType<DefaultCameraController>();
+
+		controller = cameraControllerView[0].GetComponent<DefaultCameraController>().GetController();
+
+
+		
 	}
 
 }

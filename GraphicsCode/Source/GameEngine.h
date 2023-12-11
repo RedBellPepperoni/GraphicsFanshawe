@@ -47,7 +47,7 @@
 #include "Engine/Core/Audio/AudioSource.h"
 
 #include "Engine/Utils/Math/Random.h"
-
+#include "Engine/Core/Scene/DefaultCameraController.h"
 
 //#include "Editor/GUI/RuntimeEditor.h"
 //#include "Editor/GUI/ApplicationEditor.h"

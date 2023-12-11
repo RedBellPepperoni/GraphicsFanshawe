@@ -23,6 +23,7 @@ namespace FanshaweGameEngine
 		void SpawnTestSpherePair();
 
 		void TempStartAll();
+		void SetCameraController();
 
 		void Update(float deltaTime);
 		
@@ -45,6 +46,8 @@ namespace FanshaweGameEngine
 		bool OnSphereOneCollision(RigidBody3D* body, Vector3 contactpoint);
 		bool OnSphereTwoCollision(RigidBody3D* body, Vector3 contactpoint);
 
+		
+
 	private:
 
 
@@ -60,6 +63,9 @@ namespace FanshaweGameEngine
 
 		bool finalOriginPoint = false;
 		bool finalTargetPoint = false;
+
+
+		SharedPtr<CameraController> controller = nullptr;
 	};
 
 }

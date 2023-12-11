@@ -26,13 +26,12 @@ namespace FanshaweGameEngine
 		void SetMouseSensitivity(float newSens) { m_mouseSensitivity = newSens; }
 
 
-
-	protected:
+		virtual void SetFocalPoint(const Vector3& point) {}
 
 	protected:
 
 		
-		Vector3 m_FocalPoint;
+		Vector3 m_FocalPoint{0.0f};
 
 		Vector3 m_velocity = Vector3(0.0f);
 		Vector2 m_rotationvelocity = Vector2(0.0f);

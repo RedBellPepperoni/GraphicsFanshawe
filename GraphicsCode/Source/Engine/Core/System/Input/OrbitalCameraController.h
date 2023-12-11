@@ -14,6 +14,7 @@ namespace FanshaweGameEngine
 
 		void UpdateCameraView(Components::Transform& transform, float delta);
 
+		virtual void SetFocalPoint(const Vector3& point) override;
 
 	private:
 
@@ -31,7 +32,7 @@ namespace FanshaweGameEngine
 		Vector3 m_PositionDelta{};
 
 
-		float m_distance{0.0f};
+		float m_distance = 30.0f;
 
 
 	};

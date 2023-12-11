@@ -28,6 +28,7 @@ class PhysicsFinals : public Application
         CreateStarDestroyer();
 
         XwingDirector::GetInstance().SpawnTestSpherePair();
+        XwingDirector::GetInstance().SetCameraController();
 
         for (int i = 0; i < 1; i++)
         {

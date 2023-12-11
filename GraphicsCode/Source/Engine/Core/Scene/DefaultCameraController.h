@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/System/Input/FlyCameraController.h"
+#include "Engine/Core/System/Input/OrbitalCameraController.h"
 #include "Engine/Core/System/Input/CameraController.h"
 #include "Engine/Core/Memory/Memory.h"
 
@@ -14,7 +15,8 @@ namespace FanshaweGameEngine
 		{
 			FirstPerson = 0,
 			ThirdPerson = 1,
-			FlyCam = 2
+			FlyCam = 2,
+			Orbital = 3
 		};
 
 		DefaultCameraController()
@@ -44,6 +46,13 @@ namespace FanshaweGameEngine
 
 				m_cameraController = MakeShared<FlyCameraController>();
 				break;
+
+
+			case CameraType::Orbital:
+
+				m_cameraController = MakeShared <OrbitalCameraController>();
+				break;
+
 			default:
 				break;
 			}
@@ -54,10 +63,10 @@ namespace FanshaweGameEngine
 			return m_type;
 		}
 
-		const SharedPtr<CameraController>& GetController() const
-		{
+		 SharedPtr<CameraController> GetController() 
+		 {
 			return m_cameraController;
-		}
+		 }
 
 
 

@@ -9,8 +9,10 @@ namespace FanshaweGameEngine
 {
 	void OrbitalCameraController::MouseInput(Components::Transform& transform, Vector2 mousePosition, float deltaTime)
 	{
-		m_distance = Distance(transform.GetPosition(), m_FocalPoint);
 
+		
+
+		//m_distance = Distance(transform.GetPosition(), m_FocalPoint);
 
 		static bool mouseHeld = false;
 
@@ -46,6 +48,9 @@ namespace FanshaweGameEngine
 
 		if (Length(m_rotationvelocity) > 0.0001f || m_PitchDelta > 0.0001f || m_YawDelta > 0.0001f)
 		{
+			
+			
+
 			MouseRotate(transform, m_rotationvelocity);
 			m_previousCurserPos = mousePosition;
 
@@ -74,14 +79,17 @@ namespace FanshaweGameEngine
 
 
 		m_rotationvelocity = m_rotationvelocity * pow(m_rotateDampeningFactor, deltaTime);
-
-
-
-
 		UpdateCameraView(transform, deltaTime);
 
 
+
+		
+
+
 		transform.SetPosition(CalculatePosition(transform));
+
+		//LOG_CRITICAL("{0},{1},{2}",transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
+		//LOG_CRITICAL("{0},{1},{2}",m_FocalPoint.x, m_FocalPoint.y, m_FocalPoint.z);
 	}
 
 
@@ -105,6 +113,13 @@ namespace FanshaweGameEngine
 		m_PositionDelta *= pow(m_dampeningFactor, delta);
 	}
 
+	void OrbitalCameraController::SetFocalPoint(const Vector3& point)
+	{
+		
+		m_FocalPoint = point;
+		
+	}
+
 
 	void OrbitalCameraController::MouseRotate(Components::Transform& transform, const Vector2& delta)
 	{
@@ -112,8 +127,12 @@ namespace FanshaweGameEngine
 		m_YawDelta += yawSign * delta.x * 0.3f;
 		m_PitchDelta += delta.y * 0.3f;
 	}
+
+
 	Vector3 OrbitalCameraController::CalculatePosition(Components::Transform& transform)
 	{
-		return m_FocalPoint + transform.GetForwardVector() * m_distance + m_PositionDelta;
+		
+		//LOG_INFO("{0},{1},{2}", m_FocalPoint.x, m_FocalPoint.y, m_FocalPoint.z);
+		return m_FocalPoint - transform.GetForwardVector() * m_distance;
 	}
 }

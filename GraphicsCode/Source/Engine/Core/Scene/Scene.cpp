@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Engine/Core/ECS/Components/ComponentDefinitions.h"
 #include "Engine/Core/System/Input/FlyCameraController.h"
+#include "Engine/Core/System/Input/OrbitalCameraController.h"
 // Forward Declarations includes
 #include "Engine/Core/ECS/EntityManager.h"
 #include "Engine/Core/System/Input/inputSystem.h"
@@ -50,10 +51,10 @@ namespace FanshaweGameEngine
 		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
 
 
-		transform->SetPosition(Vector3(8.0f, 3.5f, 4.0f));
+		transform->SetPosition(Vector3(0.0f, 3.5f, 0.0f));
 		transform->SetEularRotation(Vector3(-15.0f, 57.0f, 0.0f));
 
-		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
+		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::Orbital);
 		
 
 		//LuaManager::GetInstance().OnInit(this);
@@ -104,7 +105,7 @@ namespace FanshaweGameEngine
 			{
 
 				controller.GetController()->SetCamera(camera);
-				controller.GetController()->KeyboardInput(*transform, deltaTime);
+				//controller.GetController()->KeyboardInput(*transform, deltaTime);
 				controller.GetController()->MouseInput(*transform, mousePosition, deltaTime);
 
 				Vector3 pos = transform->GetPosition();
