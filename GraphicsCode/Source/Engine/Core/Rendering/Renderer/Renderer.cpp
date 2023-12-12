@@ -519,9 +519,9 @@ namespace FanshaweGameEngine
             mesh->GetVBO()->UnBind();
 
 
-            mat->textureMaps.albedoMap->UnBind();
+           /* mat->textureMaps.albedoMap->UnBind();
 
-            m_pipeline.skybox.cubeMap->UnBind();
+            m_pipeline.skybox.cubeMap->UnBind();*/
            
 
         }
