@@ -95,14 +95,12 @@ vec4 DeGamma(vec4 color)
 
 vec4 GetAlbedo()
 {
-    if(materialProperties.AlbedoMapFactor < 0.05)
-    {
-        return materialProperties.AlbedoColor;
-    }
-
     vec4 param = texture(mapAlbedo, VertexOutput.TexCoord);
+    
+
+    vec4 finalColor = (materialProperties.AlbedoColor  + (param));
    // return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (DeGamma(param) * materialProperties.AlbedoMapFactor));
-    return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (param * materialProperties.AlbedoMapFactor));
+    return  finalColor;
 
 }
 

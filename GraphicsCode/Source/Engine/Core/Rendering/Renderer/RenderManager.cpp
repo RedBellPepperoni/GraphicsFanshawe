@@ -34,10 +34,11 @@ namespace FanshaweGameEngine
 			// Loading the Default Shader 
 			// Add other Defaultr Shaders below <----
 
-			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "spaceshipVert.glsl", File::GetShaderDir().string() + "spaceshipFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("StandardShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "forwardFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("SkyboxShader", File::GetShaderDir().string() + "skyboxVert.glsl", File::GetShaderDir().string() + "skyboxFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("DebugLineShader", File::GetShaderDir().string() + "DebugLineVert.glsl", File::GetShaderDir().string() + "DebugLineFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("DebugPointShader", File::GetShaderDir().string() + "DebugPointVert.glsl", File::GetShaderDir().string() + "DebugPointFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("TransparentShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "transparentFrag.glsl"));
 			
 			
 			
@@ -131,8 +132,14 @@ namespace FanshaweGameEngine
 			LoadEngineShaders();
 
 
-			GLDEBUG(glEnable(GL_DEPTH_TEST));
+			
 			GLDEBUG(glEnable(GL_STENCIL_TEST));
+			// While drawing a pixel, see if the pixel that's already there is closer or not?
+			GLDEBUG(glEnable(GL_DEPTH_TEST));
+
+			//Enabling Transparency
+			GLDEBUG(glEnable(GL_BLEND));
+			GLDEBUG(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 			//GLDEBUG(glEnable(GL_CULL_FACE));
 			//GLDEBUG(glCullFace(GL_BACK));
 
@@ -170,8 +177,12 @@ namespace FanshaweGameEngine
 			// ===== Post Render Skybox Pass =================
 			m_renderer->SkyBoxPass(m_ShaderLibrary->GetResource("SkyboxShader"), cameraElement);
 	
+
 			// ===== Forward Pass for Opaque Elements ================ 
-			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
+		    m_renderer->ForwardPass(m_ShaderLibrary->GetResource("StandardShader"), cameraElement , MaterialType::Opaque);
+
+
+			m_renderer->ForwardPass(m_ShaderLibrary->GetResource("TransparentShader"), cameraElement , MaterialType::Transparent);
 
 
 			m_renderer->DebugPass(cameraElement);

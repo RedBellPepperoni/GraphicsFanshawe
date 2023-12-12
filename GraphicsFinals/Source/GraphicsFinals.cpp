@@ -14,8 +14,9 @@ class GraphicsFinals : public Application
         loader = Factory<SceneLoader>::Create();
 
         LoadSceneGeometry();
+        AddTransparentObject(Vector3(0.0f, 0.0f, 0.0f));
 
-        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 10.0f, 0.0f), Vector3(1.0f, 1.0f, 0.85f), 1.0f);
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 50.0f, 0.0f), Vector3(1.0f, 1.0f, 0.85f), 1.0f);
 
     }
 
@@ -76,6 +77,35 @@ class GraphicsFinals : public Application
         light.color = color;
         light.intensity = intensity <= 0.0f ? 0.0f : intensity;
         light.direction = Normalize(transform.GetForwardVector());
+    }
+
+    void AddTransparentObject(const Vector3 pos)
+    {
+        std::string name = "Transparent_";
+
+        Entity entity = GetCurrentScene()->CreateEntity(name);
+
+        Transform* transform = &entity.AddComponent<Transform>();
+
+        transform->SetPosition(pos);
+        transform->SetRotation(Quaternion(Radians(Vector3(0.0f))));
+        transform->SetScale(Vector3(0.02f));
+        //transform->SetScale(Vector3(1.0f,1.0f,1.0f));
+
+
+        //PhysicsProperties
+
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("CrystalClusterOne")->GetMeshes()[0];
+        //SharedPtr<Mesh> mesh = modelLibrary->GetResource("Ground")->GetMeshes()[0];
+
+        entity.AddComponent<MeshComponent>(mesh);
+        SharedPtr<Material> material = entity.AddComponent<MeshRenderer>().GetMaterial();
+
+        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedo");
+        material->albedoColour = Vector4(1.0f,1.0f,0.1f,0.5f);
+        material->metallic = 0.2;
+        material->type = MaterialType::Transparent;
     }
 
 

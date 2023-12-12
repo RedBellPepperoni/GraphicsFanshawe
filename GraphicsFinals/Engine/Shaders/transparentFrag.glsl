@@ -95,11 +95,13 @@ vec4 DeGamma(vec4 color)
 
 vec4 GetAlbedo()
 {
-   
-
     vec4 param = texture(mapAlbedo, VertexOutput.TexCoord);
-  
-    return (materialProperties.AlbedoColor  + (param ));
+    
+
+    vec4 finalColor = (materialProperties.AlbedoColor  + (param));
+    finalColor.w = materialProperties.AlbedoColor.w;
+   // return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (DeGamma(param) * materialProperties.AlbedoMapFactor));
+    return  finalColor;
 
 }
 
@@ -285,7 +287,7 @@ void main()
     //vec3 finalColor = CalculateLighting(material) + material.Emissive;
     vec3 finalColor = CalculateLighting(material);
 
-    FragColor = vec4(finalColor, 1.0);
+    FragColor = vec4(finalColor, texColor.w);
 
 }
 

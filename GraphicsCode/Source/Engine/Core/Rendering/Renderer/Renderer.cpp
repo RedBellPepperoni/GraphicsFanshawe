@@ -131,7 +131,7 @@ namespace FanshaweGameEngine
    
 
 
-           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("NightSkybox");
+           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("FieldSkybox");
            m_pipeline.skybox.SetIntensity(1.20f);
 
         }
@@ -227,10 +227,12 @@ namespace FanshaweGameEngine
                                 
                 // Storing the Render Element in the Opage container
                 m_pipeline.opaqueElementList.push_back(elementIndex);
-
                 break;
 
             case MaterialType::Transparent:
+
+                m_pipeline.transparentElementList.push_back(elementIndex);
+                
                 break;
 
             case MaterialType::Masked:
@@ -241,7 +243,7 @@ namespace FanshaweGameEngine
                 break;
             }
 
-
+            
 
 
         }
@@ -256,6 +258,7 @@ namespace FanshaweGameEngine
             m_pipeline.MaterialList.clear();
             m_pipeline.MeshList.clear();
             m_pipeline.opaqueElementList.clear();
+            m_pipeline.transparentElementList.clear();
             m_pipeline.renderElementList.clear();
             m_pipeline.lightElementList.clear();
             m_pipeline.textureBindIndex = 0;
@@ -293,10 +296,17 @@ namespace FanshaweGameEngine
             case MaterialType::Opaque: elementList = m_pipeline.opaqueElementList;
 
                 break;
+
+
+            case MaterialType::Transparent: elementList = m_pipeline.transparentElementList;
+                break;
+
             default:
                 break;
             }
 
+
+           
 
             if(elementList.empty())
             {

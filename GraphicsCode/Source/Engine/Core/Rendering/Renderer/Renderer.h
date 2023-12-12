@@ -171,6 +171,9 @@ namespace FanshaweGameEngine
 			// The indices of all the Opaque Shader Elements
 			std::vector<size_t> opaqueElementList;
 
+			// The indices of all the Opaque Shader Elements
+			std::vector<size_t>transparentElementList;
+
 			// properties of all the Cameras that are in the scene
 			std::vector<CameraElement> cameraList;
 

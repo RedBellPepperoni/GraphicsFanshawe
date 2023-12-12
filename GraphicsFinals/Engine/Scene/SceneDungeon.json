@@ -7,6 +7,12 @@
       "Path": "Assets\\Models\\Moon.ply"
     },
 
+
+    {
+      "Name": "CrystalClusterOne",
+      "Path": "Assets\\Models\\SM_Env_Crystals_Cluster_Large_02.ply"
+    },
+
     {
       "Name": "HorizontalStudWall",
       "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_01.ply"
@@ -98,6 +104,10 @@
     {
       "Name": "MoonAlbedo",
       "Path": "Assets\\Textures\\lroc_color_poles_4k.jpg"
+    },
+    {
+      "Name": "Blue",
+      "Path": "Assets\\Textures\\Blue.png"
     },
 
     {

@@ -191,11 +191,7 @@ namespace FanshaweGameEngine
             GLDEBUG(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 
-
-            // While drawing a pixel, see if the pixel that's already there is closer or not?
-            GLDEBUG(glEnable(GL_DEPTH_TEST));
-
-
+           
 
             
             
