@@ -118,13 +118,13 @@ namespace FanshaweGameEngine
 		missileEntity.AddComponent<MeshComponent>(mesh);
 		SharedPtr<Material> material = missileEntity.AddComponent<MeshRenderer>().GetMaterial();
 
-		material->textureMaps.albedoMap = application.GetTextureLibrary()->GetResource("DefaultAlbedo");
+		material->textureMaps.albedoMap = application.GetTextureLibrary()->GetResource("Blue");
 		material->metallic = 0.8f;
-		material->albedoColour = Vector4(0.0f,0.3f,1.0f,1.0f);
+		//material->albedoColour = Vector4(0.0f,0.3f,1.0f,1.0f);
 
 
 		SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
-		collider->SetRadius(1.0f);
+		collider->SetRadius(5.0f);
 
 		//Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -40.0f)) * Scale(Matrix4(1.0), Vector3(3.6f));
 
@@ -150,7 +150,7 @@ namespace FanshaweGameEngine
 		Missile* missilePtr = &missileEntity.AddComponent<Missile>();
 		missilePtr->SetRigidBodyRef(body);
 		
-
+		missilePtr->SetOnCollisionCallback(body);
 		GetInstance().m_MissileList.push_back(missilePtr);
 
 	}
@@ -232,6 +232,10 @@ namespace FanshaweGameEngine
 		//LOG_CRITICAL("{0},{1},{2}", Position.x, Position.y, Position.z);
 		controller->SetFocalPoint(Position);
 
+		for (Missile* missile : m_MissileList)
+		{
+			missile->Update(deltaTime);
+		}
 
 	}
 
@@ -334,16 +338,11 @@ namespace FanshaweGameEngine
 	void XwingDirector::ShootMissile(const Vector3& position, const Vector3& direction)
 	{
 		Missile* missileOne = m_MissileList[0];
-		Missile* missileTwo = m_MissileList[1];
+		//Missile* missileTwo = m_MissileList[1];
 
-		missileOne->SetPosition(position);
+		missileOne->GetRigidBody().SetPosition(position);
 		missileOne->FireMissile(direction);
 
-
-		if (!missileOne->GetActive())
-		{
-			
-		}
 	}
 
 }

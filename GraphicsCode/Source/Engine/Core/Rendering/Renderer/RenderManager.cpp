@@ -103,8 +103,12 @@ namespace FanshaweGameEngine
 			for (Entity lightObject : lightView)
 			{
 				Light& lightComponent = lightObject.GetComponent<Light>();
-				Transform& transform = lightObject.GetComponent<Transform>();
-				m_renderer->ProcessLightElement(lightComponent, transform);
+				Transform* transform = &lightObject.GetComponent<Transform>();
+				m_renderer->ProcessLightElement(lightComponent, *transform);
+
+
+
+				
 			}
 
 					

@@ -15,7 +15,11 @@ class PhysicsFinals : public Application
 
     void OnInit()
     {
-        GetModelLibrary()->LoadModel("StarDestroyer", "Assets\\Models\\StarDestroyer.fbx");
+        //GetModelLibrary()->LoadModel("StarDestroyer", "Assets\\Models\\StarDestroyer.fbx");
+        GetModelLibrary()->LoadModel("StarDestroyerFront", "Assets\\Models\\StarDestroyerFront.fbx");
+        GetModelLibrary()->LoadModel("StarDestroyerMid", "Assets\\Models\\StarDestroyerMid.fbx");
+        GetModelLibrary()->LoadModel("StarDestroyerBack", "Assets\\Models\\StarDestroyerBack.fbx");
+        GetModelLibrary()->LoadModel("StarDestroyerTop", "Assets\\Models\\StarDestroyerTop.fbx");
         //GetTextureLibrary()->LoadTexture("Grey", )
         Application::GetCurrent().GetModelLibrary()->LoadModel("Missile", "Assets\\Models\\Missile.fbx");
        // Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyerc", "Assets\\Models\\ShipGenMesh.fbx");
@@ -27,6 +31,7 @@ class PhysicsFinals : public Application
         Application::GetCurrent().GetModelLibrary()->LoadModel("XWing", "Assets\\Models\\Xwing.fbx");
         Application::GetCurrent().GetModelLibrary()->LoadModel("Sphere", "Assets\\Models\\Sphere.fbx");
         Application::GetCurrent().GetTextureLibrary()->LoadTexture("XWingAlbedo", "Assets\\Textures\\xwing.jpg", TextureFormat::RGB);
+        Application::GetCurrent().GetTextureLibrary()->LoadTexture("Blue", "Assets\\Textures\\Blue.png", TextureFormat::RGB);
 
         AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 10.0f, 0.0f), Vector3(1.0f, 1.0f, 0.85f), 1.0f);
 
@@ -40,7 +45,7 @@ class PhysicsFinals : public Application
         {
             XwingDirector::GetInstance().SpawnXWing();
             XwingDirector::GetInstance().SpawnMissile();
-            XwingDirector::GetInstance().SpawnMissile();
+           // XwingDirector::GetInstance().SpawnMissile();
 
            
         }
@@ -75,31 +80,25 @@ class PhysicsFinals : public Application
 
     void CreateStarDestroyer()
     {
-        Entity starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyer");
+        Entity starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerF");
 
+        SharedPtr<Mesh> stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyerFront")->GetMeshes()[0];
 
-        SharedPtr<Mesh> stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyer")->GetMeshes()[0];
-        
         starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
         SharedPtr<Material> material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
         material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
         material->metallic = 0.5f;
 
-        starDestroyerEntity.AddComponent<Transform>();
-
-       //
-       
-        //SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
-        ////collider->SetHalfDimensions(Vector3(300.0f, 20.0f, 500.0f)); 
-        //collider->SetHalfDimensions(Vector3(100.0f, 100.0f, 100.0f)); 
 
         SharedPtr<Mesh> scolMesh = GetModelLibrary()->GetResource("Stardestroyerf")->GetMeshes()[0];
         SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
         collider->BuildFromMesh(scolMesh.get());
 
-        PhysicsProperties properties;
 
+
+
+        PhysicsProperties properties;
         properties.collider = collider;
         properties.isStatic = false;
         properties.stationary = true;
@@ -111,14 +110,23 @@ class PhysicsFinals : public Application
         properties.velocity = Vector3(0.0f);
         properties.tag = CollisionTag::STARDESTROYER;
 
-        starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerF");
+
 
         RigidBody3D* body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
 
-        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollisionFront, this, std::placeholders::_1, std::placeholders::_2);
 
         starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerM");
+
+        stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyerMid")->GetMeshes()[0];
+
+        starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
+
+        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        material->metallic = 0.5f;
+
   
          scolMesh = GetModelLibrary()->GetResource("StarDestroyerm")->GetMeshes()[0];
          collider = Factory<MeshCollider>::Create();
@@ -128,21 +136,38 @@ class PhysicsFinals : public Application
 
         body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
-        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollisionMid, this, std::placeholders::_1, std::placeholders::_2);
 
         starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerB");
+
+        stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyerBack")->GetMeshes()[0];
+
+        starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
+
+        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        material->metallic = 0.5f;
 
          scolMesh = GetModelLibrary()->GetResource("StarDestroyerb")->GetMeshes()[0];
          collider = Factory<MeshCollider>::Create();
         collider->BuildFromMesh(scolMesh.get());
 
+
         properties.collider = collider;
 
         body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
-        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollisionBack, this, std::placeholders::_1, std::placeholders::_2);
 
         starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerT");
+
+        stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyerTop")->GetMeshes()[0];
+
+        starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
+
+        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        material->metallic = 0.5f;
 
          scolMesh = GetModelLibrary()->GetResource("StarDestroyert")->GetMeshes()[0];
         collider = Factory<MeshCollider>::Create();
@@ -152,7 +177,7 @@ class PhysicsFinals : public Application
 
         body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
-        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollisionTop, this, std::placeholders::_1, std::placeholders::_2);
 
     }
 
@@ -178,12 +203,55 @@ class PhysicsFinals : public Application
 
         if (body->m_tag == CollisionTag::MISSILE)
         {
-            LOG_ERROR("MissileHit the Ship");
+            LOG_ERROR("MissileHit the Ship'");
         }
         
         return false;
     }
 
+    bool OnCollisionFront(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_INFO("FRONT");
+        }
+
+        return false;
+    }
+
+    bool OnCollisionMid(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_ERROR("MID");
+        }
+
+        return false;
+    }
+
+    bool OnCollisionBack(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_ERROR("BACK");
+        }
+
+        return false;
+    }
+
+    bool OnCollisionTop(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_ERROR("TOP");
+        }
+
+        return false;
+    }
 
 
 

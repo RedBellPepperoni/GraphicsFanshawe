@@ -526,6 +526,9 @@ namespace FanshaweGameEngine
                
                 shader->SetUniform(intensityUniform, element.intensity);
                 shader->SetUniform(typeUniform, (int)element.type);
+                shader->SetUniform(positionUniform, element.position);
+
+                
 
                 switch (element.type)
                 {
@@ -537,13 +540,12 @@ namespace FanshaweGameEngine
                 case FanshaweGameEngine::LightType::SpotLight:
                     shader->SetUniform(innerAngleUniform, element.innerAngle);
                     shader->SetUniform(outerAngleUniform, element.outerAngle);
-                    shader->SetUniform(positionUniform, element.position);
                     shader->SetUniform(directionUniform, element.direction);
 
                     break;
                 case FanshaweGameEngine::LightType::PointLight:
                     shader->SetUniform(radiusUniform, element.radius);
-                    shader->SetUniform(positionUniform, element.position);
+                   
 
                     break;
                 default:
@@ -624,12 +626,14 @@ namespace FanshaweGameEngine
             // Create anew Light Element;
             LightElement& lightElement = m_pipeline.lightElementList.emplace_back();
 
+
             lightElement.color = light.color;
             lightElement.direction = light.direction;
             lightElement.innerAngle = light.innerAngle;
             lightElement.outerAngle = light.outerAngle;
             lightElement.intensity = light.intensity;
-            lightElement.position  = light.position = transform.GetPosition();
+            lightElement.position  = transform.GetPosition();
+            light.position = transform.GetPosition();
             lightElement.radius = light.radius;
             lightElement.type = light.type;
 

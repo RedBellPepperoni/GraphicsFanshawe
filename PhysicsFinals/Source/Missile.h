@@ -15,7 +15,7 @@ namespace FanshaweGameEngine
 		~Missile() = default;
 
 		bool GetActive() { return m_active; }
-		void SetPosition(const Vector3& position) { m_body->SetPosition(position); }
+		RigidBody3D& GetRigidBody() const { return *m_body; }
 
 		void SetOnCollisionCallback(RigidBody3D* body);
 
@@ -36,7 +36,7 @@ namespace FanshaweGameEngine
 		float currentTime = 0.0f;
 		Vector3 Direction{ 0.0f,1.0f,0.0f };
 	
-		const float timeToLive = 4.0f;
+		const float timeToLive = 10.0f;
 
 		bool m_active = false;
 
