@@ -25,6 +25,7 @@ uniform mat4 viewProj;
 uniform mat4 normalMat;
 
 
+
 layout(location = 0) out VertexData VertexOutput;
 
 
@@ -44,6 +45,7 @@ void main()
 	VertexOutput.Normal = tempNorm;
 	VertexOutput.Position = model * vec4(vPosition, 1.0f);
 	VertexOutput.TexCoord = aTexCoord;
+
 
 	// The TBN matrix
 	VertexOutput.WorldNormal = transpose(mat3(tempTangent, tempBiTangent, tempNorm));

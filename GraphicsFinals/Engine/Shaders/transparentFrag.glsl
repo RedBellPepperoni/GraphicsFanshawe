@@ -71,13 +71,15 @@ uniform sampler2D mapMetallic;
 uniform sampler2D mapEmissive;
 uniform sampler2D mapNormal;
 
+uniform samplerCube skybox;
+
 layout(location = 0) in VertexData VertexOutput;
 layout(location = 0) out vec4 FragColor;
 
-
-
-
 uniform vec3 cameraView;
+
+
+
 uniform UBOLight uboLights;
 uniform UniformMaterialData materialProperties;
 
@@ -276,7 +278,7 @@ void main()
     
     Material material;
 
-
+    material.Reflectance = materialProperties.Reflectance;
     material.Albedo = texColor;
     material.Metallic = metallic;
     material.Roughness = roughness;
@@ -284,10 +286,15 @@ void main()
     material.Normal = normalize(VertexOutput.Normal);
     material.View = normalize(cameraView - VertexOutput.Position.xyz);
 
-    //vec3 finalColor = CalculateLighting(material) + material.Emissive;
-    vec3 finalColor = CalculateLighting(material);
+    vec3 reflectedVector = reflect(-material.View,material.Normal);
 
-    FragColor = vec4(finalColor, texColor.w);
+    //vec3 finalColor = CalculateLighting(material) + material.Emissive;
+    vec4 lighting = vec4(CalculateLighting(material),1.0);
+    vec4 reflectedColor = texture(skybox, reflectedVector);
+
+    vec4 finalColor = mix(lighting,reflectedColor,material.Reflectance);
+
+    FragColor = vec4(finalColor.xyz, texColor.w);
 
 }
 

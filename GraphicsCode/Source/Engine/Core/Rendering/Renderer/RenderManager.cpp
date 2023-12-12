@@ -38,7 +38,7 @@ namespace FanshaweGameEngine
 			CHECKNULL(GetShaderLibrary()->LoadShader("SkyboxShader", File::GetShaderDir().string() + "skyboxVert.glsl", File::GetShaderDir().string() + "skyboxFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("DebugLineShader", File::GetShaderDir().string() + "DebugLineVert.glsl", File::GetShaderDir().string() + "DebugLineFrag.glsl"));
 			CHECKNULL(GetShaderLibrary()->LoadShader("DebugPointShader", File::GetShaderDir().string() + "DebugPointVert.glsl", File::GetShaderDir().string() + "DebugPointFrag.glsl"));
-			CHECKNULL(GetShaderLibrary()->LoadShader("TransparentShader", File::GetShaderDir().string() + "forwardVert.glsl", File::GetShaderDir().string() + "transparentFrag.glsl"));
+			CHECKNULL(GetShaderLibrary()->LoadShader("TransparentShader", File::GetShaderDir().string() + "transparentVert.glsl", File::GetShaderDir().string() + "transparentFrag.glsl"));
 			
 			
 			

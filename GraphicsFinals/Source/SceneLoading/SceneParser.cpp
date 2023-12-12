@@ -147,7 +147,14 @@ void SceneParser::ParseObjectData()
 		Vector3 rotation = Vector3(0.0f);
 		Vector3 scale = Vector3(1.0f);
 		std::string albedoTexture = "";
+
+		Vector3 color = Vector3(0.0f);
+		float opacity = 1.0f;
 		float metallic = 0.0f;
+		float roughness = 0.0f;
+
+
+
 
 		assert(attribute.IsObject()); // each attribute is an object
 		for (rapidjson::Value::ConstMemberIterator itr2 = attribute.MemberBegin(); itr2 != attribute.MemberEnd(); ++itr2)
@@ -196,7 +203,26 @@ void SceneParser::ParseObjectData()
 				metallic = itr2->value.GetFloat();
 			}
 
-			
+
+			else if (identifier == "Color")
+			{
+				GenericArray colorArray = itr2->value.GetArray();
+
+				color.r = colorArray[0].GetFloat();
+				color.g = colorArray[1].GetFloat();
+				color.b = colorArray[2].GetFloat();
+			}
+
+			else if (identifier == "Opacity")
+			{
+				opacity = itr2->value.GetFloat();
+			}
+
+			else if (identifier == "Roughness")
+			{
+				roughness = itr2->value.GetFloat();
+			}
+
 
 
 		}
@@ -211,7 +237,11 @@ void SceneParser::ParseObjectData()
 		data.rotation = rotation;
 		data.scale = scale;
 		data.albedoTexture = albedoTexture;
+		data.color = color;
+		data.opacity = opacity;
 		data.metallic = metallic;
+		data.roughness = roughness;
+		
 
 	}
 

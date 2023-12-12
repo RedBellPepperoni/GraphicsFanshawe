@@ -16,7 +16,10 @@ struct ObjectData
 	Vector3 rotation;
 	Vector3 scale;
 	std::string albedoTexture;
+	Vector3 color;
+	float opacity;
 	float metallic;
+	float roughness;
 
 };
 

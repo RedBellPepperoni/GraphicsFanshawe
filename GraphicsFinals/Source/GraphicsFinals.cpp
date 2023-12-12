@@ -14,9 +14,9 @@ class GraphicsFinals : public Application
         loader = Factory<SceneLoader>::Create();
 
         LoadSceneGeometry();
-        AddTransparentObject(Vector3(0.0f, 0.0f, 0.0f));
+       // AddTransparentObject(Vector3(0.0f, 0.0f, 5.0f));
 
-        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 50.0f, 0.0f), Vector3(1.0f, 1.0f, 0.85f), 1.0f);
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 50.0f, 0.0f), Vector3(1.0f, 1.0f, 1.00f), 1.0f);
 
     }
 
@@ -25,8 +25,7 @@ class GraphicsFinals : public Application
     {
 
 
-
-
+        
     }
 
 
@@ -103,10 +102,14 @@ class GraphicsFinals : public Application
         SharedPtr<Material> material = entity.AddComponent<MeshRenderer>().GetMaterial();
 
         material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedo");
-        material->albedoColour = Vector4(1.0f,1.0f,0.1f,0.5f);
-        material->metallic = 0.2;
+        material->albedoColour = Vector4(0.0f,0.2f,1.0f,0.7f);
+        material->metallic = 0.6f;
         material->type = MaterialType::Transparent;
+
+
+
     }
+
 
 
 private:

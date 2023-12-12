@@ -63,7 +63,17 @@ void SceneLoader::SpawnObject(const ObjectData& data)
 
 	material->textureMaps.albedoMap = textureLibrary->GetResource(data.albedoTexture);
 	material->metallic = data.metallic;
-	material->type = MaterialType::Opaque;
-	
+
+	if (data.opacity < 1.0f)
+	{
+		material->type = MaterialType::Transparent;
+	}
+	else
+	{
+		material->type = MaterialType::Opaque;
+	}
+
+	material->albedoColour = Vector4(data.color, data.opacity);
+	material->roughness = data.roughness;
 }
 

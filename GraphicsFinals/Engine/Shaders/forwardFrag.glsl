@@ -81,7 +81,7 @@ uniform vec3 cameraView;
 uniform UBOLight uboLights;
 uniform UniformMaterialData materialProperties;
 
-
+uniform samplerCube skybox;
 
 vec3 DeGamma(vec3 color)
 {
@@ -279,14 +279,20 @@ void main()
     material.Albedo = texColor;
     material.Metallic = metallic;
     material.Roughness = roughness;
+    material.Reflectance = materialProperties.Reflectance;
 
     material.Normal = normalize(VertexOutput.Normal);
     material.View = normalize(cameraView - VertexOutput.Position.xyz);
 
-    //vec3 finalColor = CalculateLighting(material) + material.Emissive;
-    vec3 finalColor = CalculateLighting(material);
+    vec3 reflectedVector = reflect(-material.View,material.Normal);
 
-    FragColor = vec4(finalColor, 1.0);
+
+    vec4 lighting = vec4(CalculateLighting(material),1.0);
+    vec4 reflectedColor = texture(skybox, reflectedVector);
+
+    vec4 finalColor = mix(lighting,reflectedColor,material.Reflectance);
+
+    FragColor = vec4(finalColor.xyz, 1.0);
 
 }
 

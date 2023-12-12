@@ -40,6 +40,12 @@
       "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_05.ply"
     },
 
+    
+
+    {
+      "Name": "BasicWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_06.ply"
+    },
     {
       "Name": "ArchwayWide",
       "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Archway_03.ply"
@@ -83,10 +89,16 @@
     {
       "Name": "FloorSquare",
       "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_04.ply"
+    },
+
+    {
+      "Name": "FloorCross",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_10.ply"
     }
 
 
 
+    
 
 
   
@@ -121,16 +133,789 @@
   "Objects" :[
 
     {
-      "Mesh": "HorizontalStudWall",
-      "Position": [0.2, 0.0, 0.0 ],
+      "Mesh": "CrystalClusterOne",
+      "Position": [0.0, 0.0, 0.0 ],
       "Rotation": [-3.0,88.0,-4.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "MoonAlbedo",
+      "Color": [0.0,0.4,1.0],
+      "Opacity" : 0.6,
+      "Metallic" : 0.67,
+      "Roughness": 0.67
+
+    },
+
+
+
+
+
+
+
+
+
+    {
+      "Mesh": "FloorCenter",
+      "Position": [20.0, 0.0, 30.0 ],
+      "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
       "Albedo": "DungeonAlbedo",
       "Metallic" : 0.2
+    },
+
+
+
+
+
+
+
+
+    {
+      "Mesh": "FloorSquare",
+      "Position": [0.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [10.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+ 
+    {
+      "Mesh": "FloorSquare",
+      "Position": [20.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [30.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "FloorTiled",
+      "Position": [40.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "FloorCross",
+      "Position": [0.0, 0.0, 10.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [10.0, 0.0, 10.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+ 
+    {
+      "Mesh": "FloorCross",
+      "Position": [20.0, 0.0, 10.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [30.0, 0.0, 10.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [40.0, 0.0, 10.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    
+    {
+      "Mesh": "FloorTiled",
+      "Position": [0.0, 0.0, 0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [10.0, 0.0, 0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+ 
+    {
+      "Mesh": "FloorSquare",
+      "Position": [20.0, 0.0, 0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [30.0, 0.0, 0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "FloorTiled",
+      "Position": [40.0, 0.0, 0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [-10.0, 0.0, 10.0 ],
+      "Rotation": [0.0,-90.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    
+    {
+      "Mesh": "BasicWall",
+      "Position": [-10.0, 0.0, 0.0 ],
+      "Rotation": [0.0,-90.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [-10.0, 0.0, -10.0 ],
+      "Rotation": [0.0, 180.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 0.0, -10.0 ],
+      "Rotation": [0.0, 180.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [20.0, 0.0, -10.0 ],
+      "Rotation": [0.0, 180.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [30.0, 0.0, -10.0 ],
+      "Rotation": [0.0, 180.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [40.0, 0.0, -10.0 ],
+      "Rotation": [0.0, -270.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [40.0, 0.0, 0.0 ],
+      "Rotation": [0.0, -270.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [40.0, 0.0, 10.0 ],
+      "Rotation": [0.0, -270.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    
+    {
+      "Mesh": "BasicWall",
+      "Position": [40.0, 0.0, 20.0 ],
+      "Rotation": [0.0, 0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [30.0, 0.0, 20.0 ],
+      "Rotation": [0.0, 0.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [10.0, 0.0, 20.0 ],
+      "Rotation": [0.0, 0.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 0.0, 20.0 ],
+      "Rotation": [0.0, 0.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "Mesh": "FloorCenter",
+      "Position": [20.0, 0.0, -10.0 ],
+      "Rotation": [25.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.023],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [10.0, 5.0, -20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorTiled",
+      "Position": [20.0, 5.0, -20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorTiled",
+      "Position": [30.0, 5.0, -20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    }, {
+      "Mesh": "FloorCross",
+      "Position": [10.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorTiled",
+      "Position": [20.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorTiled",
+      "Position": [30.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },{
+      "Mesh": "FloorCross",
+      "Position": [10.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorTiled",
+      "Position": [20.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorTiled",
+      "Position": [30.0, 5.0, -30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },{
+      "Mesh": "FloorTiled",
+      "Position": [10.0, 5.0, -40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorTiled",
+      "Position": [20.0, 5.0, -40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorCross",
+      "Position": [30.0, 5.0, -40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [10.0, 5.0, -50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [20.0, 5.0, -50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorTiled",
+      "Position": [30.0, 5.0, -50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 5.0, -40.0 ],
+      "Rotation": [0.0, -90.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 5.0, -50.0 ],
+      "Rotation": [0.0, -90.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 5.0, -60.0 ],
+      "Rotation": [0.0, 180.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [20.0, 5.0, -60.0 ],
+      "Rotation": [0.0, 180.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [30.0, 5.0, -60.0 ],
+      "Rotation": [0.0, -270.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [30.0, 5.0, -50.0 ],
+      "Rotation": [0.0, -270.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "BasicWall",
+      "Position": [30.0, 5.0, -30.0 ],
+      "Rotation": [0.0, -270.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+    {
+      "Mesh": "BasicWall",
+      "Position": [10.0, 5.0, -20.0 ],
+      "Rotation": [0.0, 0.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  
+    {
+      "Mesh": "BasicWall",
+      "Position": [0.0, 5.0, -20.0 ],
+      "Rotation": [0.0, -90.0 ,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+
+
+
+    {
+      "Mesh": "FloorCenter",
+      "Position": [20.0, 5.0, -60.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+
+
+
+    {
+      "Mesh": "FloorCenter",
+      "Position": [-10.0, 0.0, 20.0 ],
+      "Rotation": [0.0,0.0,-25.0],
+      "Scale": [ 0.023, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCenter",
+      "Position": [-20.0, 0.0, 30.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Metallic" : 0.2
+    },
+
+
+
+    {
+      "Mesh": "FloorCross",
+      "Position": [-30.0, 5.0, 40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [-20.0, 5.0, 40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [-10.0, 5.0, 40.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [-30.0, 5.0, 50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorCross",
+      "Position": [-20.0, 5.0, 50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorCross",
+      "Position": [-10.0, 5.0, 50.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorCross",
+      "Position": [-30.0, 5.0, 60.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorCross",
+      "Position": [-20.0, 5.0, 60.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },  {
+      "Mesh": "FloorCross",
+      "Position": [-10.0, 5.0, 60.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "Mesh": "FloorSquare",
+      "Position": [-20.0, 5.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },    {
+      "Mesh": "FloorSquare",
+      "Position": [-30.0, 5.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },    {
+      "Mesh": "FloorSquare",
+      "Position": [-40.0, 5.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    }, {
+      "Mesh": "FloorSquare",
+      "Position": [-50.0, 5.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
+    },
+    {
+      "Mesh": "FloorSquare",
+      "Position": [-60.0, 5.0, 20.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.2
     }
 
- 
-  
+
+
+
   ]
 
 

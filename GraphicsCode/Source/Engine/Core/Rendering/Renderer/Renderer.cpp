@@ -131,7 +131,7 @@ namespace FanshaweGameEngine
    
 
 
-           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("FieldSkybox");
+           m_pipeline.skybox.cubeMap = Application::GetCurrent().GetCubeMapLibrary()->GetResource("NightSkybox");
            m_pipeline.skybox.SetIntensity(1.20f);
 
         }
@@ -205,6 +205,7 @@ namespace FanshaweGameEngine
 
                 m_pipeline.MaterialList.push_back(material);
             }
+
 
 
             newElement.ModelMatrix = transform.GetMatrix();
@@ -284,9 +285,11 @@ namespace FanshaweGameEngine
    
             // Setting teh View Projection Matrix from the camera
             shader->SetUniform("viewProj", camera.viewProjMatrix);
-            
+           // 
+           
       
             SetLightUniform(shader);
+           
 
 
             std::vector<size_t> elementList;
@@ -298,7 +301,9 @@ namespace FanshaweGameEngine
                 break;
 
 
-            case MaterialType::Transparent: elementList = m_pipeline.transparentElementList;
+            case MaterialType::Transparent: elementList = m_pipeline.transparentElementList;    
+               
+
                 break;
 
             default:
@@ -323,7 +328,7 @@ namespace FanshaweGameEngine
                 DrawElement(camera, shader, elementToDraw);
             }
 
-            
+            shader->UnBind();
            
         }
 
@@ -452,7 +457,7 @@ namespace FanshaweGameEngine
 
         void Renderer::DrawElement(const CameraElement& camera, SharedPtr<Shader>& shader,const RenderElement& element)
         {
-            m_pipeline.textureBindIndex = 0;
+            m_pipeline.textureBindIndex = 1;
 
             uint32_t shaderId = shader->GetProgramId();
 
@@ -467,13 +472,21 @@ namespace FanshaweGameEngine
                 //shader->SetUniform("materialProperties.AlbedoMapFactor", mat->albedomapFactor);
                 shader->SetUniform("materialProperties.AlbedoColor", mat->albedoColour);
                 shader->SetUniform("materialProperties.Metallic", mat->metallic);
+                shader->SetUniform("materialProperties.Reflectance", mat->roughness);
 
             }
-           
+
           
-           // mat->textureMaps.albedoMap->UnBind();
-        
+            m_pipeline.skybox.cubeMap->Bind(m_pipeline.textureBindIndex++);
+          
+            int Id = m_pipeline.skybox.cubeMap->getBoundId();
+            shader->SetUniform("skybox", Id);
+          
            
+
+            //LOG_ERROR("Cubemap ID : {0}", Id);
+          
+         
             shader->SetUniform("model", element.ModelMatrix);
 
             shader->SetUniform("normalMat",element.NormalMatrix);
@@ -481,8 +494,6 @@ namespace FanshaweGameEngine
             shader->SetUniform("cameraView", camera.viewPosition);
 
             
-            
-           
 
             //Always Bind the Buffer Array before adding Attributes 
             mesh->GetVBO()->Bind();
@@ -507,6 +518,10 @@ namespace FanshaweGameEngine
             mesh->GetIBO()->UnBind();
             mesh->GetVBO()->UnBind();
 
+
+            mat->textureMaps.albedoMap->UnBind();
+
+            m_pipeline.skybox.cubeMap->UnBind();
            
 
         }
