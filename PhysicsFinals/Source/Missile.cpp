@@ -51,6 +51,9 @@ namespace FanshaweGameEngine
 
 		if (currentTime > timeToLive)
 		{
+			m_body->SetPosition(Vector3(-1000.0f));
+			m_body->SetForce(Vector3(0.0f));
+			m_body->SetVelocity(Vector3(0.0f));
 			currentTime = 0.0f;
 			m_active = false;
 		}
@@ -65,6 +68,8 @@ namespace FanshaweGameEngine
 
 	   m_body->SetPosition(Vector3(-1000.0f));
 	   currentTime = 0.0f;
+	   m_body->SetForce(Vector3(0.0f));
+	   m_body->SetVelocity(Vector3(0.0f));
 
 		return true;
 	}

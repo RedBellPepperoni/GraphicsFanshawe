@@ -65,13 +65,56 @@ class PhysicsFinals : public Application
 
     void OnUpdate(float deltaTime)
     {
-        if(Input::InputSystem::GetInstance().GetKeyDown(Input::Key::G))
+        if(Input::InputSystem::GetInstance().GetKeyDown(Input::Key::num2))
         {
             XwingDirector::GetInstance().TempStartAll();
         }
 
 
         XwingDirector::GetInstance().Update(deltaTime);
+
+
+        if (FrontMat->albedoColour.x > 0.01f)
+        {
+            FrontMat->albedoColour.x -= 0.4f* deltaTime;
+        }
+        else
+        {
+            FrontMat->albedoColour.x = 0.0f;
+        }
+
+        if (MidMat->albedoColour.x > 0.01f)
+        {
+            MidMat->albedoColour.x -= 0.4f * deltaTime;
+        }
+        else
+        {
+            MidMat->albedoColour.x = 0.0f;
+        }
+
+        if (TopMat->albedoColour.x > 0.01f)
+        {
+            TopMat->albedoColour.x -= 0.4f* deltaTime;
+        }
+        else
+        {
+            TopMat->albedoColour.x = 0.0f;
+        }
+
+
+        if (BottomMat->albedoColour.x > 0.01f)
+        {
+            BottomMat->albedoColour.x -= 0.4f * deltaTime;
+        }
+        else
+        {
+            BottomMat->albedoColour.x = 0.0f;
+        }
+
+
+        
+
+
     }
 
 
@@ -86,9 +129,9 @@ class PhysicsFinals : public Application
 
         starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
-        SharedPtr<Material> material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
-        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
-        material->metallic = 0.5f;
+        FrontMat = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        FrontMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        FrontMat->metallic = 0.5f;
 
 
         SharedPtr<Mesh> scolMesh = GetModelLibrary()->GetResource("Stardestroyerf")->GetMeshes()[0];
@@ -117,15 +160,19 @@ class PhysicsFinals : public Application
 
         body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollisionFront, this, std::placeholders::_1, std::placeholders::_2);
 
+
+
+
         starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerM");
 
         stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyerMid")->GetMeshes()[0];
 
         starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
-        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
-        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
-        material->metallic = 0.5f;
+        MidMat = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        MidMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        MidMat->metallic = 0.5f;
+        //material->albedoColour = Vector4(1.0f, 0.0f, 0.0f,1.0f);
 
   
          scolMesh = GetModelLibrary()->GetResource("StarDestroyerm")->GetMeshes()[0];
@@ -144,9 +191,10 @@ class PhysicsFinals : public Application
 
         starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
-        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
-        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
-        material->metallic = 0.5f;
+        BottomMat = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        BottomMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        BottomMat->metallic = 0.5f;
+       // material->albedoColour = Vector4(0.0f, 0.0f, 1.0f,1.0f);
 
          scolMesh = GetModelLibrary()->GetResource("StarDestroyerb")->GetMeshes()[0];
          collider = Factory<MeshCollider>::Create();
@@ -165,9 +213,9 @@ class PhysicsFinals : public Application
 
         starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
-        material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
-        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
-        material->metallic = 0.5f;
+        TopMat = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        TopMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        TopMat->metallic = 0.5f;
 
          scolMesh = GetModelLibrary()->GetResource("StarDestroyert")->GetMeshes()[0];
         collider = Factory<MeshCollider>::Create();
@@ -215,6 +263,7 @@ class PhysicsFinals : public Application
         if (body->m_tag == CollisionTag::MISSILE)
         {
             LOG_INFO("FRONT");
+            FrontMat->albedoColour = Vector4(1.0f, 0.0f, 0.0f,1.0f);
         }
 
         return false;
@@ -226,6 +275,7 @@ class PhysicsFinals : public Application
         if (body->m_tag == CollisionTag::MISSILE)
         {
             LOG_ERROR("MID");
+            MidMat->albedoColour = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
         }
 
         return false;
@@ -237,6 +287,7 @@ class PhysicsFinals : public Application
         if (body->m_tag == CollisionTag::MISSILE)
         {
             LOG_ERROR("BACK");
+            BottomMat->albedoColour = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
         }
 
         return false;
@@ -248,12 +299,19 @@ class PhysicsFinals : public Application
         if (body->m_tag == CollisionTag::MISSILE)
         {
             LOG_ERROR("TOP");
+            TopMat->albedoColour = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
         }
 
         return false;
     }
 
+    private:
 
+
+        SharedPtr<Material> FrontMat;
+        SharedPtr<Material> MidMat;
+        SharedPtr<Material> TopMat;
+        SharedPtr<Material> BottomMat;
 
 };
 

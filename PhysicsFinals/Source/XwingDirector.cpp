@@ -2,6 +2,7 @@
 #include "XWing.h"
 #include "SphereTest.h"
 #include "Missile.h"
+#include "Engine/Core/Rendering/Renderer/DebugRenderer.h"
 
 
 namespace FanshaweGameEngine
@@ -123,6 +124,13 @@ namespace FanshaweGameEngine
 		//material->albedoColour = Vector4(0.0f,0.3f,1.0f,1.0f);
 
 
+		//Light& light = missileEntity.AddComponent<Light>();
+		//light.color = Vector3(0.0f, 1.0f, 0.2f);
+		//light.intensity = 50.0f;
+		//light.radius = 30.0f;
+		//light.type = LightType::PointLight;
+
+
 		SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
 		collider->SetRadius(5.0f);
 
@@ -165,11 +173,11 @@ namespace FanshaweGameEngine
 
 		Entity sphereEntity = application.GetCurrentScene()->CreateEntity(name);
 
-		/*SharedPtr<Mesh> mesh = application.GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+		SharedPtr<Mesh> mesh = application.GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
 
 
 		sphereEntity.AddComponent<MeshComponent>(mesh);
-		SharedPtr<Material> material = sphereEntity.AddComponent<MeshRenderer>().GetMaterial();*/
+		SharedPtr<Material> material = sphereEntity.AddComponent<MeshRenderer>().GetMaterial();
 
 
 
@@ -192,16 +200,30 @@ namespace FanshaweGameEngine
 		properties.tag = CollisionTag::SPHERETEST;
 
 		RigidBody3D* body = application.GetPhysicsEngine()->CreateRigidBody(sphereEntity, properties);
+		Transform* transform = &sphereEntity.GetComponent<Transform>();
+		transform->SetScale(Vector3(10.0f));
+
 		//body->m_OnCollisionCallback = std::bind(&XwingDirector::OnSphereOneCollision, this, std::placeholders::_1, std::placeholders::_2);
 
 		SphereTestOne = &sphereEntity.AddComponent<SphereTest>();
 		SphereTestOne->SetRigidBody(body);
 		
+
 		name = "TestSphere_02";
 		sphereEntity = application.GetCurrentScene()->CreateEntity(name);
+
+		mesh = application.GetModelLibrary()->GetResource("Sphere")->GetMeshes()[0];
+
+		sphereEntity.AddComponent<MeshComponent>(mesh);
+		material = sphereEntity.AddComponent<MeshRenderer>().GetMaterial();
+
 		SharedPtr<SphereCollider>collider = Factory<SphereCollider>::Create();
 		collider->SetRadius(6.0f);
 		body = application.GetPhysicsEngine()->CreateRigidBody(sphereEntity, properties);
+
+		transform = &sphereEntity.GetComponent<Transform>();
+		transform->SetScale(Vector3(10.0f));
+
 		body->m_OnCollisionCallback = std::bind(&XwingDirector::OnSphereTwoCollision, this, std::placeholders::_1, std::placeholders::_2);
 
 		SphereTestTwo = &sphereEntity.AddComponent<SphereTest>();
@@ -226,6 +248,7 @@ namespace FanshaweGameEngine
 		for (XWing* xwing : m_XwingList)
 		{
 			xwing->Update(deltaTime);
+			DebugRenderer::Get()->DrawLine(SphereTestOne->GetRigidBody().GetPosition(), xwing->GetRigidBody().GetPosition(), Vector4(0.0f, 1.0f, 0.0f, 0.0f));
 		}
 
 		Vector3 Position = m_XwingList[0]->GetRigidBody().GetPosition();
@@ -236,6 +259,8 @@ namespace FanshaweGameEngine
 		{
 			missile->Update(deltaTime);
 		}
+
+		DebugRenderer::Get()->DrawLine(SphereTestOne->GetRigidBody().GetPosition(), SphereTestTwo->GetRigidBody().GetPosition(),Vector4(1.0f,1.0f,0.0f,0.0f));
 
 	}
 
@@ -252,6 +277,9 @@ namespace FanshaweGameEngine
 		Vector3 targetPos = SphereTestTwo->GetRigidBody().GetPosition();
 
 		Quaternion rot = LookAtRotation(Normalize(targetPos - startPos), Vector3(0.0f, 1.0f, 0.0f));
+
+		xwing->GetRigidBody().SetVelocity(Vector3(0.0f));
+		xwing->GetRigidBody().SetForce(Vector3(0.0f));
 
 
 		// Set intial poition
@@ -284,7 +312,7 @@ namespace FanshaweGameEngine
 
 		SphereTestTwo->GetRigidBody().SetPosition(point);
 
-		 point = GetSmartDirectionalVector(30,120, SphereTestOne->GetRigidBody().GetPosition());
+		point = GetSmartDirectionalVector(30,120, SphereTestOne->GetRigidBody().GetPosition());
 
 		if (directedtowardsShieldGenerators)
 		{ // Do stuff here
@@ -294,7 +322,7 @@ namespace FanshaweGameEngine
 
 		SphereTestTwo->GetRigidBody().SetPosition(point);
 
-		Quaternion rot = Quaternion();
+		Quaternion rot = Quaternion(Radians(Vector3(0.0f,0.0f,0.0f)));
 		SphereTestTwo->GetRigidBody().SetRotation(rot);
 
 

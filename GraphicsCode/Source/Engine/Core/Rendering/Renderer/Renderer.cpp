@@ -453,7 +453,7 @@ namespace FanshaweGameEngine
             {
                 mat->textureMaps.albedoMap->Bind(m_pipeline.textureBindIndex++);
                 shader->SetUniform("mapAlbedo", mat->textureMaps.albedoMap->GetBoundId());
-                shader->SetUniform("materialProperties.AlbedoMapFactor", mat->albedomapFactor);
+                //shader->SetUniform("materialProperties.AlbedoMapFactor", mat->albedomapFactor);
                 shader->SetUniform("materialProperties.AlbedoColor", mat->albedoColour);
                 shader->SetUniform("materialProperties.Metallic", mat->metallic);
 
