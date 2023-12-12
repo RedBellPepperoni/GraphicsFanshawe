@@ -1,0 +1,129 @@
+{
+  "Scene":  "SceneDungeon",
+  "Models": [
+
+    {
+      "Name": "Moon",
+      "Path": "Assets\\Models\\Moon.ply"
+    },
+
+    {
+      "Name": "HorizontalStudWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_01.ply"
+    },
+
+    {
+      "Name": "FakePillarWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_02.ply"
+    },
+
+
+
+    {
+      "Name": "ExtraStuddedWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_03.ply"
+    },
+
+    {
+      "Name": "FakeDoorWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_04.ply"
+    },
+
+    {
+      "Name": "TwinFakeDoorWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_05.ply"
+    },
+
+    {
+      "Name": "ArchwayWide",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Archway_03.ply"
+    },
+
+    {
+      "Name": "ArchwayNarrow",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Archway_04.ply"
+    },
+
+    {
+      "Name": "TunnelWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Tunnel_01.ply"
+    },
+
+    {
+      "Name": "TunnelArchway",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Tunnel_Archway_01.ply"
+    },
+
+    {
+      "Name": "SingleWindowWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Window_03.ply"
+    },
+
+    {
+      "Name": "TwinWindowWall",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_Window_04.ply"
+    },
+
+    {
+      "Name": "FloorCenter",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_01.ply"
+    },
+
+    {
+      "Name": "FloorTiled",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_02.ply"
+    },
+
+    {
+      "Name": "FloorSquare",
+      "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_04.ply"
+    }
+
+
+
+
+
+  
+   
+
+
+
+
+  ],
+
+  "Textures": [
+
+
+    
+    {
+      "Name": "MoonAlbedo",
+      "Path": "Assets\\Textures\\lroc_color_poles_4k.jpg"
+    },
+
+    {
+      "Name": "DungeonAlbedo",
+      "Path": "Assets\\Textures\\dungeontexture.png"
+    }
+
+  ],
+
+
+  "Objects" :[
+
+    {
+      "Mesh": "HorizontalStudWall",
+      "Position": [0.2, 0.0, 0.0 ],
+      "Rotation": [-3.0,88.0,-4.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DungeonAlbedo",
+      "Metallic" : 0.2
+    }
+
+ 
+  
+  ]
+
+
+
+}
+
