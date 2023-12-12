@@ -1,4 +1,5 @@
 #include "XWing.h"
+#include "XwingDirector.h"
 namespace FanshaweGameEngine
 {
 
@@ -48,7 +49,7 @@ namespace FanshaweGameEngine
 	bool XWing::OnCollision(RigidBody3D* body, Vector3 contactpoint)
 	{
 
-		if (body->m_tag == CollisionTag::StarDestroyer)
+		if (body->m_tag == CollisionTag::STARDESTROYER)
 		{
 			OnShoot();
 		}
@@ -60,6 +61,9 @@ namespace FanshaweGameEngine
 
 	void XWing::OnShoot()
 	{
+		XwingDirector::GetInstance().ShootMissile(m_body->GetPosition(), m_direction);
+
+
 		m_direction = -Normalize(m_direction);
 
 		Quaternion rot = LookAtRotation(m_direction, Vector3(0.0f, 1.0f, 0.0f));

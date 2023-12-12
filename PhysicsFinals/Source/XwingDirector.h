@@ -19,11 +19,13 @@ namespace FanshaweGameEngine
 	public:
 
 		void SpawnXWing();
-
+		void SpawnMissile();
 		void SpawnTestSpherePair();
 
 		void TempStartAll();
 		void SetCameraController();
+
+		void ShootMissile(const Vector3& position, const Vector3& direction);
 
 		void Update(float deltaTime);
 		
@@ -55,8 +57,10 @@ namespace FanshaweGameEngine
 		//std::vector<Transform*> 
 
 		static int xwingcount;
+		static int missilecount;
 
 		std::vector<XWing*> m_XwingList;
+		std::vector<Missile*> m_MissileList;
 
 		SphereTest* SphereTestOne;
 		SphereTest* SphereTestTwo;

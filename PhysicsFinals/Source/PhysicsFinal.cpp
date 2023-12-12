@@ -15,9 +15,15 @@ class PhysicsFinals : public Application
 
     void OnInit()
     {
-        //GetModelLibrary()->LoadModel("StarDestroyer", "Assets\\Models\\StarDestroyer.fbx");
+        GetModelLibrary()->LoadModel("StarDestroyer", "Assets\\Models\\StarDestroyer.fbx");
         //GetTextureLibrary()->LoadTexture("Grey", )
-        Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyerc", "Assets\\Models\\ShipGenMesh.fbx");
+        Application::GetCurrent().GetModelLibrary()->LoadModel("Missile", "Assets\\Models\\Missile.fbx");
+       // Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyerc", "Assets\\Models\\ShipGenMesh.fbx");
+        Application::GetCurrent().GetModelLibrary()->LoadModel("Stardestroyerf", "Assets\\Models\\ReferenceHullFront.fbx");
+        Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyerm", "Assets\\Models\\ReferenceHullMid.fbx");
+        Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyerb", "Assets\\Models\\ReferenceHullBack.fbx");
+        Application::GetCurrent().GetModelLibrary()->LoadModel("StarDestroyert", "Assets\\Models\\ReferenceHullTop.fbx");
+
         Application::GetCurrent().GetModelLibrary()->LoadModel("XWing", "Assets\\Models\\Xwing.fbx");
         Application::GetCurrent().GetModelLibrary()->LoadModel("Sphere", "Assets\\Models\\Sphere.fbx");
         Application::GetCurrent().GetTextureLibrary()->LoadTexture("XWingAlbedo", "Assets\\Textures\\xwing.jpg", TextureFormat::RGB);
@@ -33,7 +39,13 @@ class PhysicsFinals : public Application
         for (int i = 0; i < 1; i++)
         {
             XwingDirector::GetInstance().SpawnXWing();
+            XwingDirector::GetInstance().SpawnMissile();
+            XwingDirector::GetInstance().SpawnMissile();
+
+           
         }
+
+
        
        // XwingDirector::GetInstance().SpawnXWing();
 
@@ -66,21 +78,25 @@ class PhysicsFinals : public Application
         Entity starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyer");
 
 
-       // SharedPtr<Mesh> stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyer")->GetMeshes()[0];
-       // 
-       // starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
+        SharedPtr<Mesh> stardestoyerMesh = GetModelLibrary()->GetResource("StarDestroyer")->GetMeshes()[0];
+        
+        starDestroyerEntity.AddComponent<MeshComponent>(stardestoyerMesh);
 
-       // SharedPtr<Material> material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
-       // material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
-       // material->metallic = 0.5f;
-       ////
-        SharedPtr<Mesh> scolMesh = GetModelLibrary()->GetResource("StarDestroyerc")->GetMeshes()[0];
-        SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
-        collider->BuildFromMesh(scolMesh.get());
+        SharedPtr<Material> material = starDestroyerEntity.AddComponent<MeshRenderer>().GetMaterial();
+        material->textureMaps.albedoMap = GetTextureLibrary()->GetResource("DefaultAlbedoTexture");
+        material->metallic = 0.5f;
 
+        starDestroyerEntity.AddComponent<Transform>();
+
+       //
+       
         //SharedPtr<BoxCollider> collider = Factory<BoxCollider>::Create();
         ////collider->SetHalfDimensions(Vector3(300.0f, 20.0f, 500.0f)); 
         //collider->SetHalfDimensions(Vector3(100.0f, 100.0f, 100.0f)); 
+
+        SharedPtr<Mesh> scolMesh = GetModelLibrary()->GetResource("Stardestroyerf")->GetMeshes()[0];
+        SharedPtr<MeshCollider> collider = Factory<MeshCollider>::Create();
+        collider->BuildFromMesh(scolMesh.get());
 
         PhysicsProperties properties;
 
@@ -93,12 +109,50 @@ class PhysicsFinals : public Application
         properties.elasticity = 0.6f;
         properties.friction = 0.5f;
         properties.velocity = Vector3(0.0f);
-        properties.tag = CollisionTag::StarDestroyer;
+        properties.tag = CollisionTag::STARDESTROYER;
+
+        starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerF");
 
         RigidBody3D* body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
 
+
         body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+
+        starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerM");
   
+         scolMesh = GetModelLibrary()->GetResource("StarDestroyerm")->GetMeshes()[0];
+         collider = Factory<MeshCollider>::Create();
+        collider->BuildFromMesh(scolMesh.get());
+
+        properties.collider = collider;
+
+        body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
+
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+
+        starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerB");
+
+         scolMesh = GetModelLibrary()->GetResource("StarDestroyerb")->GetMeshes()[0];
+         collider = Factory<MeshCollider>::Create();
+        collider->BuildFromMesh(scolMesh.get());
+
+        properties.collider = collider;
+
+        body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
+
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
+
+        starDestroyerEntity = GetCurrentScene()->CreateEntity("StarDestroyerT");
+
+         scolMesh = GetModelLibrary()->GetResource("StarDestroyert")->GetMeshes()[0];
+        collider = Factory<MeshCollider>::Create();
+        collider->BuildFromMesh(scolMesh.get());
+
+        properties.collider = collider;
+
+        body = GetPhysicsEngine()->CreateRigidBody(starDestroyerEntity, properties);
+
+        body->m_OnCollisionCallback = std::bind(&PhysicsFinals::OnCollision, this, std::placeholders::_1, std::placeholders::_2);
 
     }
 
@@ -122,13 +176,9 @@ class PhysicsFinals : public Application
     bool OnCollision(RigidBody3D* body, Vector3 collisionpoint)
     {
 
-        if (body->m_tag == CollisionTag::TestSphere)
+        if (body->m_tag == CollisionTag::MISSILE)
         {
-            LOG_CRITICAL("Spherecheck Failed");
-        }
-        else if (body->m_tag == CollisionTag::Xwing)
-        {
-            LOG_CRITICAL("XWing Crashed _ This shouldnt happen");
+            LOG_ERROR("MissileHit the Ship");
         }
         
         return false;

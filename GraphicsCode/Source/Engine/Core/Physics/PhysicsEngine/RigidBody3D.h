@@ -20,11 +20,13 @@ namespace FanshaweGameEngine
 
 		//Hardcoding for now
 		enum CollisionTag
-		{	
-			StarDestroyer	 = 0,
-			Xwing			 = 1,
-			Missile			 = 2,
-			TestSphere		 = 3
+		{
+			STARDESTROYER = 0,
+			XWING = 1,
+			MISSILE = 2,
+			SPHERETEST = 3,
+			GENERATORS = 4
+
 		};
 
 

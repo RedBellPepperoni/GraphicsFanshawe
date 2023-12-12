@@ -223,19 +223,19 @@ namespace FanshaweGameEngine
 			}
 
 			//m_broadPhaseDetection->DebugDraw();
-			
+			//
 
-			for (RigidBody3D* body : m_rigidBodies)
-			{
-				//body->DebugDraw(0);
+			//for (RigidBody3D* body : m_rigidBodies)
+			//{
+			//	//body->DebugDraw(0);
 
-				SharedPtr<Collider> collider = body->GetCollider();
+			//	SharedPtr<Collider> collider = body->GetCollider();
 
-				if (collider)
-				{
-					collider->DebugDraw(body);
-				}
-			}
+			//	if (collider)
+			//	{
+			//		collider->DebugDraw(body);
+			//	}
+			//}
 
 		}
 

@@ -1,6 +1,7 @@
 #include "XwingDirector.h"
 #include "XWing.h"
 #include "SphereTest.h"
+#include "Missile.h"
 
 
 namespace FanshaweGameEngine
@@ -9,6 +10,7 @@ namespace FanshaweGameEngine
 
 
 	int XwingDirector::xwingcount = 0;
+	int XwingDirector::missilecount = 0;
 
 	static Vector3 GetRandomVector(const int minLength, const int maxLength)
 	{
@@ -67,9 +69,9 @@ namespace FanshaweGameEngine
 		collider->SetTransform(colliderTransform);*/
 
 		SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
-		collider->SetRadius(3.6f);
+		collider->SetRadius(0.4f);
 
-		Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -40.0f)) * Scale(Matrix4(1.0), Vector3(3.6f));
+		Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -50.0f)) * Scale(Matrix4(1.0), Vector3(0.4f));
 
 
 		collider->SetTransform(colliderTransform);
@@ -86,7 +88,7 @@ namespace FanshaweGameEngine
 		properties.elasticity = 0.6f;
 		properties.friction = 0.5f;
 		properties.velocity = Vector3(0.0f);
-		properties.tag = CollisionTag::Xwing;
+		properties.tag = CollisionTag::XWING;
 
 		RigidBody3D* body = application.GetPhysicsEngine()->CreateRigidBody(xwingEntity, properties);
 
@@ -98,6 +100,58 @@ namespace FanshaweGameEngine
 
 
 		GetInstance().m_XwingList.push_back(xwingPtr);
+
+	}
+
+	void XwingDirector::SpawnMissile()
+	{
+		Application& application = Application::GetCurrent();
+
+
+		std::string name = "Missile_" + std::to_string(missilecount);
+		missilecount++;
+
+		Entity missileEntity = application.GetCurrentScene()->CreateEntity(name);
+
+		SharedPtr<Mesh> mesh = application.GetModelLibrary()->GetResource("Missile")->GetMeshes()[0];
+
+		missileEntity.AddComponent<MeshComponent>(mesh);
+		SharedPtr<Material> material = missileEntity.AddComponent<MeshRenderer>().GetMaterial();
+
+		material->textureMaps.albedoMap = application.GetTextureLibrary()->GetResource("DefaultAlbedo");
+		material->metallic = 0.8f;
+		material->albedoColour = Vector4(0.0f,0.3f,1.0f,1.0f);
+
+
+		SharedPtr<SphereCollider> collider = Factory<SphereCollider>::Create();
+		collider->SetRadius(1.0f);
+
+		//Matrix4 colliderTransform = Translate(Matrix4(1.0), Vector3(0.0f, 0.0f, -40.0f)) * Scale(Matrix4(1.0), Vector3(3.6f));
+
+		//collider->SetTransform(colliderTransform);
+
+
+		PhysicsProperties properties;
+
+		properties.collider = collider;
+		properties.isStatic = false;
+		properties.stationary = false;
+		properties.mass = 5.0f;
+		properties.position = Vector3(-1000.0);
+		properties.rotation = Quaternion(Radians(Vector3(0.0f, 0.0f, 0.0f)));
+		properties.elasticity = 0.6f;
+		properties.friction = 0.5f;
+		properties.velocity = Vector3(0.0f);
+		properties.tag = CollisionTag::MISSILE;
+
+		RigidBody3D* body = application.GetPhysicsEngine()->CreateRigidBody(missileEntity, properties);
+
+
+		Missile* missilePtr = &missileEntity.AddComponent<Missile>();
+		missilePtr->SetRigidBodyRef(body);
+		
+
+		GetInstance().m_MissileList.push_back(missilePtr);
 
 	}
 
@@ -135,7 +189,7 @@ namespace FanshaweGameEngine
 		properties.elasticity = 0.6f;
 		properties.friction = 0.5f;
 		properties.velocity = Vector3(0.0f);
-		properties.tag = CollisionTag::TestSphere;
+		properties.tag = CollisionTag::SPHERETEST;
 
 		RigidBody3D* body = application.GetPhysicsEngine()->CreateRigidBody(sphereEntity, properties);
 		//body->m_OnCollisionCallback = std::bind(&XwingDirector::OnSphereOneCollision, this, std::placeholders::_1, std::placeholders::_2);
@@ -275,6 +329,21 @@ namespace FanshaweGameEngine
 
 
 		
+	}
+
+	void XwingDirector::ShootMissile(const Vector3& position, const Vector3& direction)
+	{
+		Missile* missileOne = m_MissileList[0];
+		Missile* missileTwo = m_MissileList[1];
+
+		missileOne->SetPosition(position);
+		missileOne->FireMissile(direction);
+
+
+		if (!missileOne->GetActive())
+		{
+			
+		}
 	}
 
 }

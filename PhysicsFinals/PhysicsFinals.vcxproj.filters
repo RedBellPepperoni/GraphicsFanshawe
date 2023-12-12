@@ -24,7 +24,7 @@
     <ClCompile Include="Source\XWing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Missile.cpp">
+    <ClCompile Include="Source\Missile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\SphereTest.cpp">
@@ -41,7 +41,7 @@
     <ClInclude Include="Source\XWing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Missile.h">
+    <ClInclude Include="Source\Missile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\SphereTest.h">

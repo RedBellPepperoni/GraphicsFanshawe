@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FollowCamera.cpp" />
-    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="Source\Missile.cpp" />
     <ClCompile Include="Source\PhysicsFinal.cpp" />
     <ClCompile Include="Source\XwingDirector.cpp" />
     <ClCompile Include="Source\XWing.cpp" />
@@ -155,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FollowCamera.h" />
-    <ClInclude Include="Missile.h" />
+    <ClInclude Include="Source\Missile.h" />
     <ClInclude Include="Source\XwingDirector.h" />
     <ClInclude Include="Source\XWing.h" />
     <ClInclude Include="Source\SphereTest.h" />
