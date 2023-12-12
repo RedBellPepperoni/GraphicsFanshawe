@@ -58,7 +58,9 @@ class PhysicsFinals : public Application
 
       
 
+        std::string text = "ShieldGenOne : [" + std::to_string(healthGenOne) + "] % ||||" + "  ShieldGenTwo : [" + std::to_string(healthGentwo) + "] %";
 
+        Application::GetCurrent().SetWindowTitle(text);
 
     }
 
@@ -305,6 +307,41 @@ class PhysicsFinals : public Application
         return false;
     }
 
+
+
+    bool OnCollisionSheildGeneratorOne(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_ERROR("ShieldGen ONE :  H I T");
+            healthGenOne -= 25;
+
+            std::string text = "ShieldGenOne : [" + std::to_string(healthGenOne) + "] % ||||" + "ShieldGenTwo : [" + std::to_string(healthGentwo) + "] %";
+
+            Application::GetCurrent().SetWindowTitle(text);
+        }
+
+        return false;
+    }
+
+
+    bool OnCollisionSheildGeneratorTwo(RigidBody3D* body, Vector3 collisionpoint)
+    {
+
+        if (body->m_tag == CollisionTag::MISSILE)
+        {
+            LOG_ERROR("ShieldGen TWO :  H I T");
+            healthGentwo -= 25;
+
+            std::string text = "ShieldGenOne : [" + std::to_string(healthGenOne) + "] % ||||" + "ShieldGenTwo : [" + std::to_string(healthGentwo) + "] %";
+
+            Application::GetCurrent().SetWindowTitle(text);
+        }
+
+        return false;
+    }
+
     private:
 
 
@@ -312,6 +349,11 @@ class PhysicsFinals : public Application
         SharedPtr<Material> MidMat;
         SharedPtr<Material> TopMat;
         SharedPtr<Material> BottomMat;
+
+
+        int healthGenOne = 100;
+        int healthGentwo = 100;
+
 
 };
 
