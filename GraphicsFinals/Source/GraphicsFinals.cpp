@@ -45,6 +45,12 @@ class GraphicsFinals : public Application
 
         
         SpawnBeholder(Vector3(76.0f, 14.0f, -199.0f), Vector3(0.0f, 180.0f, 0.0f), Vector3(3.0f, 3.0f, 3.0f));
+  
+        Vector3 direction = -Vector3(73.33f, 18.68f, -196.97f) + Vector3(73.39f,19.12f,-197.64);
+
+        //SpawnSpotLight(Vector3(73.33f,18.68f , -196.97f), direction, Vector3());
+    
+    
     }
 
 
@@ -259,22 +265,22 @@ class GraphicsFinals : public Application
     }
 
 
-    void SpawnSpotLight(const Vector3& position, const Vector3& rotation, const Vector3& color)
+    void SpawnSpotLight(const Vector3& position, const Vector3& direction, const Vector3& color)
     {
         Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
 
         Transform& transform = dirLight.AddComponent<Transform>();
         transform.SetPosition(position);
-        transform.SetRotation(Quaternion(Radians(rotation)));
+        //transform.SetRotation(Quaternion(Radians(rotation)));
 
         Light& light = dirLight.AddComponent<Light>();
         light.type = LightType::SpotLight;
         light.color = color;
-        light.intensity = 40.0f;
+        light.intensity = 10.0f;
         light.innerAngle = 5.0f;
         light.outerAngle = 5.5f;
 
-        light.direction = Normalize(transform.GetForwardVector());
+        light.direction = Normalize(direction);
     }
 
 

@@ -129,7 +129,14 @@
     {
       "Name": "Beholder",
       "Path": "Assets\\Models\\Beholder.ply"
+    },
+
+    {
+      "Name": "Map",
+      "Path": "Assets\\Models\\Map.fbx"
     }
+    
+    
     
     
     
@@ -193,7 +200,13 @@
     {
       "Name": "BeholderAlbedo",
       "Path": "Assets\\Textures\\beholder.png"
+    },
+
+    {
+      "Name": "MapAlbedo",
+      "Path": "Assets\\Textures\\map.png"
     }
+
 
 
       
@@ -202,6 +215,19 @@
 
 
   "Objects" :[
+
+    {
+      "Mesh": "Map",
+      "Position": [111.36, 30.0, -36.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 6.0, 6.00, 6.00 ],
+      "Albedo": "MapAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" :1.0,
+      "Metallic" : 0.0,
+      "Roughness": 0.0
+
+    }, 
 
     {
       "Mesh": "CrystalClusterOne",

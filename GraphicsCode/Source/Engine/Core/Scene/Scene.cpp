@@ -51,8 +51,8 @@ namespace FanshaweGameEngine
 		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
 
 
-		transform->SetPosition(Vector3(0.0f, 3.5f, 0.0f));
-		transform->SetEularRotation(Vector3(-15.0f, 57.0f, 0.0f));
+		transform->SetPosition(Vector3(61.34f, 191.5f, -27.0f));
+		transform->SetEularRotation(Vector3(-69.66f, 0.27f, 0.0f));
 
 		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		//cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::Orbital);
