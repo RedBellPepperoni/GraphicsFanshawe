@@ -110,7 +110,24 @@
     {
       "Name": "InfiniteTerrain",
       "Path": "Assets\\Models\\InfiniteTerrain.fbx"
+    },
+
+
+    {
+      "Name": "BigTorch",
+      "Path": "Assets\\Models\\SM_Prop_Dwarf_Torch_06.ply"
+    },
+
+    
+    {
+      "Name": "Fire",
+      "Path": "Assets\\Models\\FireImposter.fbx"
     }
+    
+    
+    
+  
+
 
 
 
@@ -154,6 +171,16 @@
     {
       "Name": "InfTerAlbedo",
       "Path": "Assets\\Textures\\terrain.png"
+    },
+
+    {
+      "Name": "WaterAlbedo",
+      "Path": "Assets\\Textures\\water.png"
+    },
+
+    {
+      "Name": "FireAlbedo",
+      "Path": "Assets\\Textures\\fire.tga"
     }
 
       
@@ -165,11 +192,61 @@
 
     {
       "Mesh": "CrystalClusterOne",
-      "Position": [0.0, 0.0, 0.0 ],
-      "Rotation": [-3.0,88.0,-4.0],
+      "Position": [19.36, 10.0, -159.0 ],
+      "Rotation": [-3.0,88.0,0.0],
+      "Scale": [ 0.05, 0.05, 0.05 ],
+      "Albedo": "DefaultAlbedo",
+      "Color": [0.0,0.1,0.2],
+      "Opacity" : 0.6,
+      "Metallic" : 0.67,
+      "Roughness": 0.67
+
+    },   
+    
+    {
+      "Mesh": "CrystalClusterOne",
+      "Position": [34.36, 10.0, -104.63 ],
+      "Rotation": [-3.0,20.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
-      "Albedo": "MoonAlbedo",
-      "Color": [0.0,0.4,1.0],
+      "Albedo": "DefaultAlbedo",
+      "Color": [1.0,0.0,0.2],
+      "Opacity" : 0.6,
+      "Metallic" : 0.67,
+      "Roughness": 0.67
+
+    },   {
+      "Mesh": "CrystalClusterOne",
+      "Position": [82.36, 10.0, -180.63 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.02, 0.02, 0.02 ],
+      "Albedo": "DefaultAlbedo",
+      "Color": [1.0,0.0,0.5],
+      "Opacity" : 0.6,
+      "Metallic" : 0.67,
+      "Roughness": 0.67
+
+    },
+
+
+    {
+      "Mesh": "CrystalClusterOne",
+      "Position": [70.36, 10.0, -178.63 ],
+      "Rotation": [0.0,60.0,0.0],
+      "Scale": [ 0.04, 0.04, 0.04 ],
+      "Albedo": "DefaultAlbedo",
+      "Color": [0.3,1.0,0.2],
+      "Opacity" : 0.6,
+      "Metallic" : 0.67,
+      "Roughness": 0.67
+
+    },
+    {
+      "Mesh": "CrystalClusterOne",
+      "Position": [82.00, 10.0, -166.00 ],
+      "Rotation": [0.0,-30.0,0.0],
+      "Scale": [ 0.03, 0.03, 0.03 ],
+      "Albedo": "DefaultAlbedo",
+      "Color": [0.1,0.0,1.0],
       "Opacity" : 0.6,
       "Metallic" : 0.67,
       "Roughness": 0.67
@@ -178,16 +255,17 @@
 
 
 
+
     {
       "Mesh": "CustomWater",
       "Position": [180.0, 5.64, -89.07 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 1.0, 1.0, 1.0 ],
-      "Albedo": "Blue",
+      "Albedo": "WaterAlbedo",
       "Color": [0.0,0.0,0.0],
       "Opacity" : 0.75,
       "Metallic" : 0.2,
-      "Roughness": 0.85
+      "Roughness": 0.5
     },
 
 
@@ -216,6 +294,119 @@
       "Metallic" : 0.1
 
     },
+
+
+
+    {
+      "Mesh": "Moon",
+      "Position": [-136.0, 210.0, -813.0 ],
+      "Rotation": [0.0,180.0,0.0],
+      "Scale": [ 40.0, 40.0, 40.0 ],
+      "Albedo": "MoonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.0,
+      "Roughness": 0.0
+
+    },
+
+
+
+    {
+      "Mesh": "BigTorch",
+      "Position": [-22.47, 10.0, -113.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+
+    {
+      "Mesh": "BigTorch",
+      "Position": [25.00, 5.0, -95.54 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+    {
+      "Mesh": "BigTorch",
+      "Position": [54.51, 5.0, -147.58 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+
+    
+    {
+      "Mesh": "BigTorch",
+      "Position": [99.55, 5.0, -199.15 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+
+
+    {
+      "Mesh": "BigTorch",
+      "Position": [99.59, 5.0, -156.81 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+
+
+
+
+    {
+      "Mesh": "BigTorch",
+      "Position": [119.74, 5.0, -86.76 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 0.072, 0.072, 0.072 ],
+      "Albedo": "DungeonAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.6,
+      "Roughness": 0.0
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -260,7 +451,7 @@
       "Opacity" : 1.0,
       "Metallic" : 0.2
     },{
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [-10.0, 0.0, -20.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -330,7 +521,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 0.0, -40.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -352,7 +543,7 @@
 
 
     {
-      "Mesh": "FloorCenter",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 0.0, -50.0 ],
       "Rotation": [25.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.023 ],
@@ -364,7 +555,7 @@
 
   
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 5.0, -60.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -396,7 +587,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [-20.0, 10.0, -90.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -450,7 +641,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 10.0, -100.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -481,7 +672,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 10.0, -110.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -492,7 +683,7 @@
     },
 
     {
-      "Mesh": "FloorCenter",
+      "Mesh": "FloorTiled",
       "Position": [10.0, 5.0, -100.0 ],
       "Rotation": [0.0,0.0,-25.0],
       "Scale": [ 0.023, 0.02, 0.02 ],
@@ -506,7 +697,7 @@
 
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [20.0, 5.0, -80.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -536,7 +727,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [20.0, 5.0, -90.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -599,7 +790,7 @@
 
     
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [0.0, 10.0, -130.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -643,7 +834,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [20.0, 10.0, -130.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -764,7 +955,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [50.0, 5.0, -140.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -774,7 +965,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [60.0, 5.0, -140.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -804,7 +995,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [90.0, 5.0, -140.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -864,7 +1055,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [80.0, 5.0, -150.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -904,7 +1095,7 @@
     },
 
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [50.0, 5.0, -160.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -975,7 +1166,7 @@
 
     
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [50.0, 5.0, -170.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -1055,7 +1246,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [60.0, 5.0, -180.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -1155,7 +1346,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [90.0, 5.0, -190.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
@@ -1245,7 +1436,7 @@
       "Metallic" : 0.2
     },
     {
-      "Mesh": "FloorSquare",
+      "Mesh": "FloorTiled",
       "Position": [110.0, 5.0, -200.0 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],

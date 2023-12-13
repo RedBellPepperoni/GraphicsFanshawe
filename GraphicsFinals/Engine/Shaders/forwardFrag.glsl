@@ -99,6 +99,7 @@ vec4 GetAlbedo()
     
 
     vec4 finalColor = (materialProperties.AlbedoColor  + (param));
+    finalColor.w = param.w;
    // return (materialProperties.AlbedoColor * (1.0- materialProperties.AlbedoMapFactor) + (DeGamma(param) * materialProperties.AlbedoMapFactor));
     return  finalColor;
 

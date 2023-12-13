@@ -50,6 +50,7 @@ void main()
 	// The TBN matrix
 	VertexOutput.WorldNormal = transpose(mat3(tempTangent, tempBiTangent, tempNorm));
 	
+	
 }
 
 

@@ -8,6 +8,13 @@
 
 class GraphicsFinals : public Application
 {
+    struct LightData
+    {
+        float radius;
+        float intensity;
+    };
+
+
     void OnInit()
     {
         parser = Factory<SceneParser>::Create();
@@ -16,15 +23,81 @@ class GraphicsFinals : public Application
         LoadSceneGeometry();
        // AddTransparentObject(Vector3(0.0f, 0.0f, 5.0f));
 
-        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 50.0f, 0.0f), Vector3(1.0f, 1.0f, 1.00f), 1.0f);
+        AddDirLight(Vector3(0.0f, 0.0f, 0.0f), Vector3(-20.0f, 20.0f, 0.0f), Vector3(1.0f, 1.0f, 1.00f), 1.0f);
+
+
+
+        Vector3 color = Vector3(1.0f, 0.6f, 0.1f);
+        float intensity = 10.0f;
+        float radius = 20.0f;
+
+       
+       
+
+       
+
+        AddTorchLight(Vector3(-22.47f, 16.0f, -113.07f), radius, color, intensity);
+        AddTorchLight(Vector3(25.00f, 11.0f, -95.54f), radius, color, intensity);
+        AddTorchLight(Vector3(99.55f, 11.0f, -199.15f), radius, color, intensity);
+        AddTorchLight(Vector3(99.59f, 11.0f, -156.81f), radius, color, intensity);
+        AddTorchLight(Vector3(119.74f, 11.0f, -86.76f), radius, color, intensity);
+        AddTorchLight(Vector3(54.51f, 11.0f, -147.58f), radius, color, intensity);
+
+        
 
     }
 
 
     void OnUpdate(float deltaTime)
     {
+        
+
+        if (Grow)
+        {
+            for (Light* light : pointlightArray)
+            {
+                light->radius += deltaTime * 20.0f;
+                light->intensity += deltaTime * 10.0f;
+            }
 
 
+            for (Transform* firetransform : fireTransforms)
+            {
+                float Yscale = firetransform->GetScale().y + deltaTime * 2.0f;
+
+                firetransform->SetScale(Vector3(2.0f, Yscale, 2.0f));
+            }
+        }
+
+        else
+        {
+            for (Light* light : pointlightArray)
+            {
+                light->radius -= deltaTime * 20.0f;
+                light->intensity -= deltaTime * 10.0f;
+            }
+
+            for (Transform* firetransform : fireTransforms)
+            {
+                float Yscale = firetransform->GetScale().y - deltaTime * 2.0f;
+
+                firetransform->SetScale(Vector3(2.0f, Yscale, 2.0f));
+            }
+
+        }
+
+
+
+        currenttime += deltaTime;
+
+
+        if (currenttime > fadeTime)
+        {
+            currenttime = 0.0f;
+
+
+            Grow = !Grow;
+        }
         
     }
 
@@ -78,6 +151,54 @@ class GraphicsFinals : public Application
         light.direction = Normalize(transform.GetForwardVector());
     }
 
+
+
+    void AddTorchLight(const Vector3& position, const float radius, const Vector3& color, const float intensity)
+    {
+
+        Entity pointLight = m_currentScene->CreateEntity("TorchLight_");
+
+        Transform& transform = pointLight.AddComponent<Transform>();
+        transform.SetPosition(position);
+        transform.SetRotation(Quaternion(Radians(Vector3(0.0f))));
+
+        Light* light = &pointLight.AddComponent<Light>();
+        light->type = LightType::PointLight;
+        light->radius = radius;
+        light->color = color;
+        light->intensity = intensity <= 0.0f ? 0.0f : intensity;
+
+
+       // light.direction = Normalize(transform.GetForwardVector());
+
+        pointlightArray.push_back(light);
+
+        Entity fireEntity = m_currentScene->CreateEntity("FireBillboard");
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Fire")->GetMeshes()[0];
+
+        fireEntity.AddComponent<MeshComponent>(mesh);
+
+        SharedPtr<Material> mat = fireEntity.AddComponent<MeshRenderer>().GetMaterial();
+
+        mat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("FireAlbedo");
+        mat->metallic = 0.0f;
+        mat->roughness = 0.0f;
+
+
+        Transform* fireTrans = &fireEntity.AddComponent<Transform>(); 
+        fireTrans->SetPosition(position - Vector3(0.0,5.0f,0.0f));
+        fireTrans->SetRotation(Quaternion(Radians(Vector3(0.0f))));
+        fireTrans->SetScale(Vector3(2.0f, 2.0f, 2.0f));
+        fireTransforms.push_back(fireTrans);
+
+
+    }
+
+
+
+
+
     void AddTransparentObject(const Vector3 pos)
     {
         std::string name = "Transparent_";
@@ -116,6 +237,21 @@ private:
 
     SharedPtr<SceneParser> parser = nullptr;
     SharedPtr<SceneLoader> loader = nullptr;
+
+
+
+    std::vector<Transform*> fireTransforms;
+    std::vector<Light*> pointlightArray;
+    LightData lightmin;
+    LightData lightmax;
+
+
+
+
+    bool Grow = false;
+    float fadeTime = 0.05f;
+    float currenttime = 0.0f;
+    float lerpfactor = 0.0f;
 
 };
 
