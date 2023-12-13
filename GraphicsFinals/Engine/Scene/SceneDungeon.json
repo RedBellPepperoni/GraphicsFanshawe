@@ -14,6 +14,11 @@
     },
 
     {
+      "Name": "CustomWater",
+      "Path": "Assets\\Models\\CustomWater.fbx"
+    },
+
+    {
       "Name": "HorizontalStudWall",
       "Path": "Assets\\Models\\SM_Env_Dwarf_Wall_01.ply"
     },
@@ -94,7 +99,19 @@
     {
       "Name": "FloorCross",
       "Path": "Assets\\Models\\SM_Env_Dwarf_Floor_10.ply"
+    },
+
+
+    {
+      "Name": "CustomTerrain",
+      "Path": "Assets\\Models\\CustomTerrain.fbx"
+    },
+
+    {
+      "Name": "InfiniteTerrain",
+      "Path": "Assets\\Models\\InfiniteTerrain.fbx"
     }
+
 
 
 
@@ -125,7 +142,21 @@
     {
       "Name": "DungeonAlbedo",
       "Path": "Assets\\Textures\\dungeontexture.png"
+    },
+
+    
+    {
+      "Name": "CusTerAlbedo",
+      "Path": "Assets\\Textures\\customterrain.png"
+    },
+
+       
+    {
+      "Name": "InfTerAlbedo",
+      "Path": "Assets\\Textures\\terrain.png"
     }
+
+      
 
   ],
 
@@ -147,9 +178,44 @@
 
 
 
+    {
+      "Mesh": "CustomWater",
+      "Position": [180.0, 5.64, -89.07 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 1.0, 1.0, 1.0 ],
+      "Albedo": "Blue",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 0.75,
+      "Metallic" : 0.2,
+      "Roughness": 0.85
+    },
 
 
 
+    {
+      "Mesh": "InfiniteTerrain",
+      "Position": [0.0, -1.0,0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 1.0, 1.0, 1.0 ],
+      "Albedo": "InfTerAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.1
+
+    },
+
+    
+    {
+      "Mesh": "CustomTerrain",
+      "Position": [0.0, 0.0,0.0 ],
+      "Rotation": [0.0,0.0,0.0],
+      "Scale": [ 1.0, 1.0, 1.0 ],
+      "Albedo": "CusTerAlbedo",
+      "Color": [0.0,0.0,0.0],
+      "Opacity" : 1.0,
+      "Metallic" : 0.1
+
+    },
 
 
 
