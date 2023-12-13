@@ -44,7 +44,7 @@ class GraphicsFinals : public Application
         AddTorchLight(Vector3(54.51f, 11.0f, -147.58f), radius, color, intensity);
 
         
-
+        SpawnBeholder(Vector3(76.0f, 14.0f, -199.0f), Vector3(0.0f, 180.0f, 0.0f), Vector3(3.0f, 3.0f, 3.0f));
     }
 
 
@@ -229,8 +229,53 @@ class GraphicsFinals : public Application
 
 
 
+
+
     }
 
+
+
+    void SpawnBeholder(const Vector3& position, const Vector3& rotation, const Vector3& scale)
+    {
+        Entity beholder = m_currentScene->CreateEntity("Beholder");
+
+        SharedPtr<Mesh> mesh = GetModelLibrary()->GetResource("Beholder")->GetMeshes()[0];
+
+        beholder.AddComponent<MeshComponent>(mesh);
+
+        SharedPtr<Material> mat = beholder.AddComponent<MeshRenderer>().GetMaterial();
+
+        mat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("BeholderAlbedo");
+        mat->metallic = 0.0f;
+        mat->roughness = 0.0f;
+
+
+        Transform* beholderTrans = &beholder.AddComponent<Transform>();
+        beholderTrans->SetPosition(position);
+        beholderTrans->SetRotation(Quaternion(Radians(rotation)));
+        beholderTrans->SetScale(scale);
+        
+
+    }
+
+
+    void SpawnSpotLight(const Vector3& position, const Vector3& rotation, const Vector3& color)
+    {
+        Entity dirLight = m_currentScene->CreateEntity("DirectionalLight");
+
+        Transform& transform = dirLight.AddComponent<Transform>();
+        transform.SetPosition(position);
+        transform.SetRotation(Quaternion(Radians(rotation)));
+
+        Light& light = dirLight.AddComponent<Light>();
+        light.type = LightType::SpotLight;
+        light.color = color;
+        light.intensity = 40.0f;
+        light.innerAngle = 5.0f;
+        light.outerAngle = 5.5f;
+
+        light.direction = Normalize(transform.GetForwardVector());
+    }
 
 
 private:

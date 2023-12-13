@@ -123,6 +123,13 @@
       "Name": "Fire",
       "Path": "Assets\\Models\\FireImposter.fbx"
     }
+    ,
+
+     
+    {
+      "Name": "Beholder",
+      "Path": "Assets\\Models\\Beholder.ply"
+    }
     
     
     
@@ -181,7 +188,13 @@
     {
       "Name": "FireAlbedo",
       "Path": "Assets\\Textures\\fire.tga"
+    },
+
+    {
+      "Name": "BeholderAlbedo",
+      "Path": "Assets\\Textures\\beholder.png"
     }
+
 
       
 
@@ -216,7 +229,7 @@
 
     },   {
       "Mesh": "CrystalClusterOne",
-      "Position": [82.36, 10.0, -180.63 ],
+      "Position": [47.36, 10.0, -204.63 ],
       "Rotation": [0.0,0.0,0.0],
       "Scale": [ 0.02, 0.02, 0.02 ],
       "Albedo": "DefaultAlbedo",
@@ -230,7 +243,7 @@
 
     {
       "Mesh": "CrystalClusterOne",
-      "Position": [70.36, 10.0, -178.63 ],
+      "Position": [50.36, 10.0, -186.63 ],
       "Rotation": [0.0,60.0,0.0],
       "Scale": [ 0.04, 0.04, 0.04 ],
       "Albedo": "DefaultAlbedo",
@@ -242,7 +255,7 @@
     },
     {
       "Mesh": "CrystalClusterOne",
-      "Position": [82.00, 10.0, -166.00 ],
+      "Position": [101.79, 10.0, -178.60 ],
       "Rotation": [0.0,-30.0,0.0],
       "Scale": [ 0.03, 0.03, 0.03 ],
       "Albedo": "DefaultAlbedo",
