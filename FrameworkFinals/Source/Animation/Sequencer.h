@@ -101,6 +101,15 @@ namespace FanshaweGameEngine
 					play = false;
 					playComplete = true;
 					seekTime = 0.0f;
+
+
+					if (!curve)
+					{
+						objectTransform->SetPosition(waypointList[1].position);
+						objectTransform->SetEularRotation((waypointList[1].rotation));
+					}
+
+
 				}
 
 				

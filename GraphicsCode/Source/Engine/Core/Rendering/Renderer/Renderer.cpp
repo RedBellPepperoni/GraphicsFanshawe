@@ -654,7 +654,7 @@ namespace FanshaweGameEngine
 
 
             lightElement.color = light.color;
-            lightElement.direction = light.direction;
+            lightElement.direction = light.direction = Normalize(transform.GetForwardVector());
             lightElement.innerAngle = light.innerAngle;
             lightElement.outerAngle = light.outerAngle;
             lightElement.intensity = light.intensity;
