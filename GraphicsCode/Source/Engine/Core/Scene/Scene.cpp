@@ -42,19 +42,7 @@ namespace FanshaweGameEngine
 	}
 	void Scene::Init()
 	{
-		Entity cameraEntity = GetEntityManager()->Create("MainCamera");
-		Camera* camera = &cameraEntity.AddComponent<Camera>();
-		Transform* transform = &cameraEntity.AddComponent<Transform>();
-
 		
-
-		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
-
-
-		transform->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-		transform->SetEularRotation(Vector3(0.0f, 0.27f, 0.0f));
-
-		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		//cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::Orbital);
 		
 
@@ -117,6 +105,8 @@ namespace FanshaweGameEngine
 				std::string position = "Position X : " + std::to_string(pos.x) + " Y : " + std::to_string(pos.y) + " Z : " + std::to_string(pos.z) + "Rotation X : " + std::to_string(rot.x) + " Y : " + std::to_string(rot.y) + " Z : " + std::to_string(rot.z);
 
 				Application::GetCurrent().SetWindowTitle(position);
+
+				
 
 			}
 

@@ -29,7 +29,8 @@ namespace FanshaweGameEngine
 
 			std::vector<Waypoint> waypointList;
 			Transform* objectTransform;
-
+			
+			bool curve = false;
 
 			bool objectVisible = true;
 			bool play = false;
@@ -73,11 +74,21 @@ namespace FanshaweGameEngine
 				// will always be between 0 and 1
 				float lerp = seekTime / duration;
 
-				//Vector3 nextPosition = Lerp(waypointList[0].position, waypointList[1].position, lerp);
-				Vector3 nextPosition = Bezier(lerp, waypointList[0].position, waypointList[1].position, waypointList[2].position, waypointList[3].position);
-				Vector3 nextRotation = Bezier(lerp, waypointList[0].rotation, waypointList[1].rotation, waypointList[2].rotation, waypointList[3].rotation);
+				Vector3 nextPosition = Vector3(0.0f);
+				Vector3 nextRotation = Vector3(0.0f);
 
+				if (!curve)
+				{
+					nextPosition = Lerp(waypointList[0].position, waypointList[1].position, lerp);
+					nextRotation = Lerp(waypointList[0].rotation, waypointList[1].rotation, lerp);
+				}
+				else
+				{
+					nextPosition = Bezier(lerp, waypointList[0].position, waypointList[1].position, waypointList[2].position, waypointList[3].position);
+					nextRotation = Bezier(lerp, waypointList[0].rotation, waypointList[1].rotation, waypointList[2].rotation, waypointList[3].rotation);
 
+				}
+				
 				objectTransform->SetPosition(nextPosition);
 				objectTransform->SetEularRotation((nextRotation));
 
@@ -111,6 +122,8 @@ namespace FanshaweGameEngine
 
 
 			void Update(float deltaTime);
+
+			void SetTotalDuration(float duration);
 
 		private:
 

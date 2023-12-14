@@ -10,7 +10,7 @@ namespace FanshaweGameEngine
 		{
 
 			m_SequenceList.push_back(data);
-			totalDuration += data.duration;
+			//totalDuration += (data.duration);
 
 		}
 
@@ -25,6 +25,10 @@ namespace FanshaweGameEngine
 			}
 
 
+		}
+		void Sequencer::SetTotalDuration(float duration)
+		{
+			totalDuration = duration;
 		}
 	}
 }

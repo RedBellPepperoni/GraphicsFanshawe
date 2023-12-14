@@ -16,6 +16,7 @@ class FrameworkFinals : public Application
 
         sequencer = Factory<Sequencer>::Create();
         SetupTestFloor();
+        AddMainCamera();
         SetUpSequenceOne();
 
     }
@@ -46,7 +47,22 @@ class FrameworkFinals : public Application
         GetModelLibrary()->LoadModel("Floor", "Assets\\Models\\TestFloor.fbx");
     }
 
+    void AddMainCamera()
+    {
+        Entity cameraEntity = GetCurrentScene()->GetEntityManager()->Create("MainCamera");
+        Camera* camera = &cameraEntity.AddComponent<Camera>();
+        Transform* transform = &cameraEntity.AddComponent<Transform>();
 
+        //AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
+
+        transform->SetPosition(Vector3(-37.0f, 5.0f, -1.6f));
+        transform->SetEularRotation(Vector3(-47.0f, -88.27f, 39.0f));
+
+        cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
+        
+        mainCameraTransform = transform;
+    
+    }
 
     void AddDirLight(const Vector3& position, const Vector3& rotation, const Vector3& color, const float intensity)
     {
@@ -92,7 +108,8 @@ class FrameworkFinals : public Application
         
         Entity sphereEntity = GetCurrentScene()->CreateEntity("Falcon");
         Transform* transform = &sphereEntity.AddComponent<Transform>();
-        transform->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+        transform->SetPosition(Vector3(0.0f, 5.0f, -24.0f));
+        transform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
         transform->SetScale(Vector3(0.05f));
         
 
@@ -104,48 +121,90 @@ class FrameworkFinals : public Application
         mat->roughness = 0.0f;
 
 
-
+        // ===================== Initial fly Sequence ===============================
         Sequence seqOne;
-        seqOne.name = "SphereFly";
-        seqOne.startTime = 2.0f;
-        seqOne.duration = 5.0f;
+        seqOne.name = "FalconInitFly";
+        seqOne.startTime = 0.0f;
+        seqOne.duration = 2.0f;
         seqOne.objectTransform = transform;
-
+        seqOne.curve = false;
         seqOne.play = false;
 
         Waypoint waypoint;
-     /*   waypoint.position = Vector3(10.0f, 5.0f, 0.0f);
-        waypoint.rotation = Quaternion(Radians(Vector3(0.0f, 0.0f, 0.0f)));
 
+        waypoint.position = Vector3(0.0f, 5.0f, 50.0f);
+        waypoint.rotation = Vector3(0.0f,0.0f, 0.0f);
         seqOne.waypointList.push_back(waypoint);
-        waypoint.position = Vector3(30.0f, 0.0f, 0.0f);
-        waypoint.rotation = Quaternion(Radians(Vector3(0.0f, 0.0f, 0.0f)));
 
-        seqOne.waypointList.push_back(waypoint);*/
-
-        waypoint.position = Vector3(0.0f, 5.0f, 0.0f);
+        waypoint.position = Vector3(0.0f, 5.0f, 24.0f);
         waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
-        seqOne.waypointList.push_back(waypoint);
-
-        waypoint.position = Vector3(5.5f, 5.0f, -3.5f);
-        waypoint.rotation = Vector3(0.0f, -55.0f, 0.0f);
-        seqOne.waypointList.push_back(waypoint);
-
-        waypoint.position = Vector3(30.0f, 5.0f, -15.0f);
-        waypoint.rotation = Vector3(0.0f, -179.0f, 0.0f);
-        seqOne.waypointList.push_back(waypoint);
-
-        waypoint.position = Vector3(30.0f, 5.0f, 0.0f);
-        waypoint.rotation = Vector3(0.0f, -179.0f, 0.0f);
         seqOne.waypointList.push_back(waypoint);
 
         sequencer->AddSequence(seqOne);
 
+
+        // ===================== DODGE Sequence ===============================
+        Sequence seqDodge;
+        seqDodge.name = "FalconDodge";
+        seqDodge.startTime = 2.0f;
+        seqDodge.duration = 5.0f;
+        seqDodge.objectTransform = transform;
+        seqDodge.curve = true;
+        seqDodge.play = false; 
+   
+        waypoint.position = Vector3(0.0f, 5.0f, 24.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqDodge.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(0.0f,7.0f, -7.5f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqDodge.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(-32.0f, 8.0f, 14.0f);
+        waypoint.rotation = Vector3(0.0f,0.0f, 0.0f);
+        seqDodge.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(0.0f, 5.0f, -48.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqDodge.waypointList.push_back(waypoint);
+
+        sequencer->AddSequence(seqDodge);
+
+
+
+
+
+
+
+
+
+
+        sequencer->SetTotalDuration(7.0f);
+
+   /*     Sequence seqOneCamera;
+
+        seqOneCamera.name = "FalconFlyCamera";
+        seqOneCamera.startTime = 0.0f;
+        seqOneCamera.duration = 5.0f;
+        seqOneCamera.objectTransform = mainCameraTransform;
+        seqOneCamera.curve = false;
+        seqOneCamera.play = false;
+
+        waypoint.position = Vector3(30.05f, -6.0f, -43.44f);
+        waypoint.rotation = Vector3(170.0f, -5.0f, 180.0f);
+        seqOneCamera.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(60.05f, -6.0f, -43.44f);
+        waypoint.rotation = Vector3(170.0f, -6.0f, 180.0f);
+        seqOneCamera.waypointList.push_back(waypoint);
+
+        sequencer->AddSequence(seqOneCamera);*/
     }
 
 
     SharedPtr<Sequencer> sequencer;
     bool playSequencer;
+    Transform* mainCameraTransform = nullptr;
 
 };
 
