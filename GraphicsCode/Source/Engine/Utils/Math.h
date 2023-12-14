@@ -94,10 +94,16 @@ namespace FanshaweGameEngine
             return glm::distance2(v1, v2);
         }
 
-
-        inline float Square(float value)
+        template<typename T>
+        inline float Square(T value)
         {
             return value * value;
+        }
+
+        template<typename T>
+        inline float Cube(T value)
+        {
+            return value * value * value;
         }
 
         template<typename T>

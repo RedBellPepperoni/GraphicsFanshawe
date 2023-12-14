@@ -88,6 +88,19 @@ namespace FanshaweGameEngine
 		{
 
 			m_rotation = Quaternion(Vector3(Radians(eularRot.x), Radians(eularRot.y), Radians(eularRot.z)));
+
+	/*		Quaternion quat;
+
+			Quaternion X = glm::angleAxis(eularRot.x, Vector3(1.0f, 0.0f, 0.0f));
+			Quaternion Y = glm::angleAxis(eularRot.y, Vector3(0.0f, 1.0f, 0.0f));
+			Quaternion Z = glm::angleAxis(eularRot.z, Vector3(0.0f, 0.0f, 1.0f));
+
+			quat = X * quat;
+			quat = quat * Y;
+			quat = Z * quat;
+
+
+			m_rotation = quat;*/
 		}
 
 		
