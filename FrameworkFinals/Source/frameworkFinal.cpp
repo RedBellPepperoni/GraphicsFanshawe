@@ -20,9 +20,11 @@ class FrameworkFinals : public Application
         SetUpSequenceOne();
 
         SetUpSequenceTwo();
+        SetUpSequenceThree();
 
 
-        sequencer->SetTotalDuration(17.0f);
+        sequencer->SetTotalDuration(23.0f);
+        //sequencer->SetSeek(14.0f);
     }
 
 
@@ -46,6 +48,7 @@ class FrameworkFinals : public Application
         GetTextureLibrary()->LoadTexture("Grass", "Assets\\Textures\\grass.png", TextureFormat::RGB);
         GetTextureLibrary()->LoadTexture("AsteroidOneAlbedo", "Assets\\Textures\\asteroidone.png", TextureFormat::RGB);
         GetTextureLibrary()->LoadTexture("AsteroidTwoAlbedo", "Assets\\Textures\\asteroidtwo.png", TextureFormat::RGB);
+        GetTextureLibrary()->LoadTexture("BlastAlbedo", "Assets\\Textures\\Blast.tga", TextureFormat::RGBA);
 
 
         GetModelLibrary()->LoadModel("Sphere", "Assets\\Models\\Sphere.fbx");
@@ -54,6 +57,8 @@ class FrameworkFinals : public Application
         GetModelLibrary()->LoadModel("AsteroidOne", "Assets\\Models\\AsteroidOne.fbx");
         GetModelLibrary()->LoadModel("AsteroidTwo", "Assets\\Models\\AsteroidTwo.fbx");
         GetModelLibrary()->LoadModel("TieFighter", "Assets\\Models\\TieFighter.fbx");
+        GetModelLibrary()->LoadModel("Blast", "Assets\\Models\\BlastPlane.fbx");
+
     }
 
     void AddMainCamera()
@@ -260,6 +265,26 @@ class FrameworkFinals : public Application
         sequencer->AddSequence(seqAsteroidRotate);
 
 
+        Sequence seqAsteroidEnd;
+        seqAsteroidEnd.name = "Asteroidrotate";
+        seqAsteroidEnd.startTime = 8.0f;
+        seqAsteroidEnd.duration = 0.5f;
+        seqAsteroidEnd.objectTransform = BigAsteroidOneTransform;
+        seqAsteroidEnd.curve = false;
+        seqAsteroidEnd.play = false;
+
+        waypoint.position = Vector3(0.0f, 5000.0f, 00.5f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqAsteroidEnd.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(0.0f, 5000.0f, 00.5f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqAsteroidEnd.waypointList.push_back(waypoint);
+
+
+        sequencer->AddSequence(seqAsteroidEnd);
+
+
      
         Sequence seqOneCamera;
 
@@ -426,7 +451,7 @@ class FrameworkFinals : public Application
 
         seqTwoCamera.name = "FalconFlyCamera";
         seqTwoCamera.startTime = 6.98f;
-        seqTwoCamera.duration = 11.0f;
+        seqTwoCamera.duration = 8.0f;
         seqTwoCamera.objectTransform = mainCameraTransform;
         seqTwoCamera.curve = false;
         seqTwoCamera.play = false;
@@ -674,6 +699,268 @@ class FrameworkFinals : public Application
 
     void SetUpSequenceThree()
     {
+
+        Entity blastEntity = GetCurrentScene()->CreateEntity("Blast");
+        Transform* blastTransform = &blastEntity.AddComponent<Transform>();
+        // asteroidtransform->SetPosition(Vector3(1.2f, 5.0f, -9.5f));
+        blastTransform->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+        blastTransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
+        blastTransform->SetScale(Vector3(0.0f));
+
+
+        SharedPtr<Mesh>mesh = GetModelLibrary()->GetResource("Blast")->GetMeshes()[0];
+        blastEntity.AddComponent<MeshComponent>(mesh);
+
+        SharedPtr<Material> albedoMat = blastEntity.AddComponent<MeshRenderer>().GetMaterial();
+        albedoMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("BlastAlbedo");
+        albedoMat->type = MaterialType::Opaque;
+        albedoMat->roughness = 0.0f;
+
+
+
+
+
+
+
+
+
+        Waypoint waypoint;
+
+
+        Sequence seqThreeCamera;
+
+        seqThreeCamera.name = "FalconFlyCamera";
+        seqThreeCamera.startTime = 15.0f;
+        seqThreeCamera.duration = 6.0f;
+        seqThreeCamera.objectTransform = mainCameraTransform;
+        seqThreeCamera.curve = false;
+        seqThreeCamera.play = false;
+        waypoint.position = Vector3(0.34f, 6.51f, -13.0f);
+        waypoint.rotation = Vector3(-178.31f, 2.3f, 178.2);
+        seqThreeCamera.waypointList.push_back(waypoint);
+        waypoint.position = Vector3 (0.34f, 6.51f, -13.0f);
+        waypoint.rotation = Vector3(-178.31f, 2.31f, 178.2);
+        seqThreeCamera.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqThreeCamera);
+
+
+
+
+        Sequence seqDirectionalLight;
+
+        seqDirectionalLight.name = "Directional";
+        seqDirectionalLight.startTime = 14.9f;
+        seqDirectionalLight.duration = 0.1f;
+        seqDirectionalLight.objectTransform = directionLightTransform;
+        seqDirectionalLight.curve = false;
+        seqDirectionalLight.play = false;
+
+        waypoint.position = Vector3(-29.0f, 6.0f, -1.6f);
+        waypoint.rotation = Vector3(-171.0f, -78.27f, 174.0f);
+        seqDirectionalLight.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(-29.0f, 6.0f, -1.6f);
+        waypoint.rotation = Vector3(179.0f, -5.27f, 178.0);
+        seqDirectionalLight.waypointList.push_back(waypoint);
+
+        sequencer->AddSequence(seqDirectionalLight);
+
+
+        // Colliding asteroid
+
+
+
+        Sequence seqAsteroidRotate;
+        seqAsteroidRotate.name = "Asteroidrotate";
+        seqAsteroidRotate.startTime = 15.0f;
+        seqAsteroidRotate.duration = 5.6f;
+        seqAsteroidRotate.objectTransform = filleOneTransform;
+        seqAsteroidRotate.curve = false;
+        seqAsteroidRotate.play = false;
+
+        waypoint.position = Vector3(30.2f, 62.0f, 29.5f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqAsteroidRotate.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(-14.0f, -20.0f, 0.0f);
+        waypoint.rotation = Vector3(0.0f, 10.0f, 80.0f);
+        seqAsteroidRotate.waypointList.push_back(waypoint);
+
+
+        sequencer->AddSequence(seqAsteroidRotate);
+
+        //Tie one Sequence
+
+        Sequence seqTieOne;
+        seqTieOne.name = "FalconDodgeTwo";
+        seqTieOne.startTime = 14.8f;
+        seqTieOne.duration = 3.0f;
+        seqTieOne.objectTransform = tieOneTransform;
+        seqTieOne.curve = true;
+        seqTieOne.play = false;
+        waypoint.position = Vector3(-10.24f, 15.0f, 20.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-8.78f, 1.0f, 19.62f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(8.6f, 1.0f, 2.2f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(40.81f, -2.0f, -12.0f);
+        waypoint.rotation = Vector3(0.0f, 40.0f, 0.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieOne);
+
+
+
+
+        // Tie Two sequence
+
+
+        Sequence seqTieTwo;
+        seqTieTwo.name = "TieTwoStart";
+        seqTieTwo.startTime = 15.0f;
+        seqTieTwo.duration = 3.0f;
+        seqTieTwo.objectTransform = tieTwoTransform;
+        seqTieTwo.curve = true;
+        seqTieTwo.play = false;
+        waypoint.position = Vector3(0.0f, 25.0f, 20.97f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-2.30f, 1.0f, 19.6f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(3.60f, 0.0f, 2.2f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(7.0f, 0.0f, -19.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieTwo);
+
+
+
+        // Seq Tie Three
+
+        Sequence seqTieThree;
+        seqTieThree.name = "TieThreeStart";
+        seqTieThree.startTime = 16.0f;
+        seqTieThree.duration = 2.3f;
+        seqTieThree.objectTransform = tieThreeTransform;
+        seqTieThree.curve = true;
+        seqTieThree.play = false;
+        waypoint.position = Vector3(5.5f, 30.0f, 30.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(3.18f, 1.5f, 19.62f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-1.13f, 8.0f, 14.9f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-0.49f, 8.0f, 10.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieThree);
+
+
+        Sequence seqTieThreeEnd;
+        seqTieThreeEnd.name = "TieThreeStart";
+        seqTieThreeEnd.startTime = 18.4f;
+        seqTieThreeEnd.duration = 0.2f;
+        seqTieThreeEnd.objectTransform = tieThreeTransform;
+        seqTieThreeEnd.curve = true;
+        seqTieThreeEnd.play = false;
+        waypoint.position = Vector3(0.f, -5000.0f, 0.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThreeEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(0.f, -5000.0f, 0.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieThreeEnd.waypointList.push_back(waypoint);
+ 
+        sequencer->AddSequence(seqTieThreeEnd);
+
+
+        // Tie Four Start
+
+        Sequence seqTieFour;
+        seqTieFour.name = "TieFourStart";
+        seqTieFour.startTime = 15.0f;
+        seqTieFour.duration = 3.0f;
+        seqTieFour.objectTransform = tieFourTransform;
+        seqTieFour.curve = true;
+        seqTieFour.play = false;
+        waypoint.position = Vector3(-16.0f, 20.0f, 20.97f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-18.30f, 4.0f, 19.6f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-9.1f, 8.0f, -7.2f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-8.0f, 7.0f, -11.0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieFour);
+
+        // ====================== BLAST SEQ =================================
+        Sequence seqBlast;
+        seqBlast.name = "BlastSeq";
+        seqBlast.startTime = 18.3f;
+        seqBlast.duration = 0.7f;
+        seqBlast.objectTransform = blastTransform;
+        seqBlast.curve = false;
+        seqBlast.play = false;
+        seqBlast.changeScale = true;
+        waypoint.position = Vector3(0.35f, 9.55f, 15.0f);
+        waypoint.rotation = Vector3(-90.0f, 0.0f, 0.0f);
+        waypoint.scale = Vector3(0.0f);
+        seqBlast.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-0.49f, 8.0f, 10.0f);
+        waypoint.rotation = Vector3(-90.0f, 00.0f, 030.0f);
+        waypoint.scale = Vector3(7.0f);
+
+        seqBlast.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqBlast);
+
+        Sequence seqBlastEnd;
+        seqBlastEnd.name = "BlastSeq";
+        seqBlastEnd.startTime = 19.0f;
+        seqBlastEnd.duration = 0.55f;
+        seqBlastEnd.objectTransform = blastTransform;
+        seqBlastEnd.curve = false;
+        seqBlastEnd.play = false;
+        seqBlastEnd.changeScale = true;
+        waypoint.position = Vector3(0.35f, 9.55f, 15.0f);
+        waypoint.rotation = Vector3(-90.0f, 0.0f, 0.0f);
+        waypoint.scale = Vector3(7.0f);
+        seqBlastEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-0.49f, 8.0f, 10.0f);
+        waypoint.rotation = Vector3(-90.0f, 00.0f, 030.0f);
+        waypoint.scale = Vector3(0.0f);
+
+        seqBlastEnd.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqBlastEnd);
+
+        Sequence seqBlastClean;
+        seqBlastClean.name = "BlastSeqClean";
+        seqBlastClean.startTime = 19.0f;
+        seqBlastClean.duration = 0.55f;
+        seqBlastClean.objectTransform = blastTransform;
+        seqBlastClean.curve = false;
+        seqBlastClean.play = false;
+        waypoint.position = Vector3(0.0f, 5000.0f, .0f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqBlastClean.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(0.0f, 85000.0f, 00.0f);
+        waypoint.rotation = Vector3((0.0f, 0.0f, 0.0f));
+        seqBlastClean.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqBlastClean);
+
+
+
 
     }
 

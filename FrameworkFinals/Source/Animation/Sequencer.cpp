@@ -14,6 +14,11 @@ namespace FanshaweGameEngine
 
 		}
 
+		void Sequencer::SetSeek(float seek)
+		{
+			 currentSeek = seek;
+		}
+
 		void Sequencer::Update(float deltaTime)
 		{
 

@@ -17,9 +17,11 @@ namespace FanshaweGameEngine
 		struct Waypoint
 		{
 
-			Vector3 position;
+			Vector3 position=  Vector3(0.0f);
 			//Quaternion rotation;
-			Vector3 rotation;
+			Vector3 rotation = Vector3(1.0f);;
+
+			Vector3 scale = Vector3(1.0f);
 
 		};
 
@@ -35,6 +37,7 @@ namespace FanshaweGameEngine
 			bool objectVisible = true;
 			bool play = false;
 			bool playComplete = false;
+			bool changeScale = false;
 
 			//float startTime = 0.0f;
 			float duration = 1.0f;
@@ -57,10 +60,20 @@ namespace FanshaweGameEngine
 					return;
 				}
 
+
+				if (animTime >= (startTime + duration))
+				{
+					playComplete = true;
+					return;
+				}
+
+
 				if (animTime >= startTime)
 				{
 					play = true;
 				}
+
+				
 
 				//Dont update
 				if (!play)
@@ -76,21 +89,30 @@ namespace FanshaweGameEngine
 
 				Vector3 nextPosition = Vector3(0.0f);
 				Vector3 nextRotation = Vector3(0.0f);
+				Vector3 nextScale = Vector3(0.0f);
 
 				if (!curve)
 				{
 					nextPosition = Lerp(waypointList[0].position, waypointList[1].position, lerp);
 					nextRotation = Lerp(waypointList[0].rotation, waypointList[1].rotation, lerp);
+
+					nextScale = Lerp(waypointList[0].scale, waypointList[1].scale, lerp);
 				}
 				else
 				{
 					nextPosition = Bezier(lerp, waypointList[0].position, waypointList[1].position, waypointList[2].position, waypointList[3].position);
 					nextRotation = Bezier(lerp, waypointList[0].rotation, waypointList[1].rotation, waypointList[2].rotation, waypointList[3].rotation);
+					nextScale = Bezier(lerp, waypointList[0].scale, waypointList[1].scale, waypointList[2].scale, waypointList[3].scale);
 
 				}
 				
 				objectTransform->SetPosition(nextPosition);
 				objectTransform->SetEularRotation((nextRotation));
+
+				if (changeScale)
+				{
+					objectTransform->SetScale(nextScale);
+				}
 
 				seekTime = seekTime + deltaTime;
 
@@ -107,6 +129,22 @@ namespace FanshaweGameEngine
 					{
 						objectTransform->SetPosition(waypointList[1].position);
 						objectTransform->SetEularRotation((waypointList[1].rotation));
+
+						if (changeScale)
+						{
+							objectTransform->SetScale(waypointList[1].scale);
+						}
+					}
+
+					else
+					{/*
+						objectTransform->SetPosition(waypointList[3].position);
+						objectTransform->SetEularRotation((waypointList[3].rotation));
+
+						if (changeScale)
+						{
+							objectTransform->SetScale(waypointList[3].scale);
+						}*/
 					}
 
 
@@ -129,7 +167,7 @@ namespace FanshaweGameEngine
 
 			void AddSequence(Sequence data);
 
-
+			void SetSeek(float seek);
 			void Update(float deltaTime);
 
 			void SetTotalDuration(float duration);
