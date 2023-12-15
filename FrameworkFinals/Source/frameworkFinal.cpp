@@ -137,11 +137,11 @@ class FrameworkFinals : public Application
         // =================Spawning the BIG asteroid ====================================
 
         Entity asteroidOneEntity = GetCurrentScene()->CreateEntity("AsteroidBigOne");
-        Transform* asteroidtransform = &asteroidOneEntity.AddComponent<Transform>();
+        BigAsteroidOneTransform = &asteroidOneEntity.AddComponent<Transform>();
        // asteroidtransform->SetPosition(Vector3(1.2f, 5.0f, -9.5f));
-        asteroidtransform->SetPosition(Vector3(-1.2f, 5.0f, -30.5f));
-        asteroidtransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
-        asteroidtransform->SetScale(Vector3(1.0f));
+        BigAsteroidOneTransform->SetPosition(Vector3(-1.2f, 5.0f, -30.5f));
+        BigAsteroidOneTransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
+        BigAsteroidOneTransform->SetScale(Vector3(1.0f));
 
 
         mesh = GetModelLibrary()->GetResource("AsteroidOne")->GetMeshes()[0];
@@ -158,11 +158,11 @@ class FrameworkFinals : public Application
 
 
        Entity asteroidTwo = GetCurrentScene()->CreateEntity("AsteroidFiller");
-       Transform* asteroidTwotransform = &asteroidTwo.AddComponent<Transform>();
+       filleOneTransform = &asteroidTwo.AddComponent<Transform>();
        // asteroidtransform->SetPosition(Vector3(1.2f, 5.0f, -9.5f));
-       asteroidTwotransform->SetPosition(Vector3(23.2f, 10.0f, -46.5f));
-       asteroidTwotransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
-       asteroidTwotransform->SetScale(Vector3(0.5f));
+       filleOneTransform->SetPosition(Vector3(23.2f, 10.0f, -46.5f));
+       filleOneTransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
+       filleOneTransform->SetScale(Vector3(0.5f));
        asteroidTwo.AddComponent<MeshComponent>(mesh);
        albedoMat = asteroidTwo.AddComponent<MeshRenderer>().GetMaterial();
        albedoMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("AsteroidOneAlbedo");
@@ -171,10 +171,10 @@ class FrameworkFinals : public Application
 
 
        Entity asteroidThrree = GetCurrentScene()->CreateEntity("AsteroidFiller2");
-       Transform* asteroidThreetransform = &asteroidThrree.AddComponent<Transform>();
-       asteroidThreetransform->SetPosition(Vector3(23.2f, 20.0f, -50.5f));
-       asteroidThreetransform->SetEularRotation(Vector3(00.0f, 0.0f, 60.0f));
-       asteroidThreetransform->SetScale(Vector3(0.5f));
+       filleTwoTransform = &asteroidThrree.AddComponent<Transform>();
+       filleTwoTransform->SetPosition(Vector3(23.2f, 20.0f, -50.5f));
+       filleTwoTransform->SetEularRotation(Vector3(00.0f, 0.0f, 60.0f));
+       filleTwoTransform->SetScale(Vector3(0.5f));
        asteroidThrree.AddComponent<MeshComponent>(mesh);
        albedoMat = asteroidThrree.AddComponent<MeshRenderer>().GetMaterial();
        albedoMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("AsteroidOneAlbedo");
@@ -244,7 +244,7 @@ class FrameworkFinals : public Application
         seqAsteroidRotate.name = "Asteroidrotate";
         seqAsteroidRotate.startTime = 0.0f;
         seqAsteroidRotate.duration = 8.0f;
-        seqAsteroidRotate.objectTransform = asteroidtransform;
+        seqAsteroidRotate.objectTransform = BigAsteroidOneTransform;
         seqAsteroidRotate.curve = false;
         seqAsteroidRotate.play = false;
 
@@ -261,29 +261,25 @@ class FrameworkFinals : public Application
 
 
      
-
-
-       
-    
-
-        Sequence seqOneCamera; 
+        Sequence seqOneCamera;
 
         seqOneCamera.name = "FalconFlyCamera";
-        seqOneCamera.startTime = 6.98f;
-        seqOneCamera.duration = 0.02f;
+        seqOneCamera.startTime = 0.0f;
+        seqOneCamera.duration = 6.5f;
         seqOneCamera.objectTransform = mainCameraTransform;
         seqOneCamera.curve = false;
         seqOneCamera.play = false;
 
         waypoint.position = Vector3(-29.0f, 6.0f, -1.6f);
-        waypoint.rotation = Vector3(-171.0f, -78.27f, 174.0);
+        waypoint.rotation = Vector3(-171.0f, -78.27f, 174.0f);
         seqOneCamera.waypointList.push_back(waypoint);
 
-        waypoint.position = Vector3(-117.6f, 13.51f, -46.0f);
-        waypoint.rotation = Vector3(-178.31f, 8.3f, 167.2);
+        waypoint.position = Vector3(-29.0f, 6.1f, -1.6f);
+        waypoint.rotation = Vector3(-171.0f, -78.27f, 174.0f);
         seqOneCamera.waypointList.push_back(waypoint);
 
         sequencer->AddSequence(seqOneCamera);
+
 
 
         Sequence seqDirectionalLight;
@@ -310,7 +306,7 @@ class FrameworkFinals : public Application
         seqFillerAsteroindOne.name = "Directional";
         seqFillerAsteroindOne.startTime = 0.98f;
         seqFillerAsteroindOne.duration = 6.0f;
-        seqFillerAsteroindOne.objectTransform = asteroidTwotransform;
+        seqFillerAsteroindOne.objectTransform = filleOneTransform;
         seqFillerAsteroindOne.curve = false;
         seqFillerAsteroindOne.play = false;
         waypoint.position = Vector3(23.2f, 10.0f, -46.5f);
@@ -326,7 +322,7 @@ class FrameworkFinals : public Application
         seqFillerAsteroindtwo.name = "Directional";
         seqFillerAsteroindtwo.startTime = 0.0f;
         seqFillerAsteroindtwo.duration = 7.0f;
-        seqFillerAsteroindtwo.objectTransform = asteroidThreetransform;
+        seqFillerAsteroindtwo.objectTransform = filleTwoTransform;
         seqFillerAsteroindtwo.curve = false;
         seqFillerAsteroindtwo.play = false;
         waypoint.position = Vector3(23.2f, -5.0f, -50.5f);
@@ -372,10 +368,10 @@ class FrameworkFinals : public Application
 
 
         Entity tieOne = GetCurrentScene()->CreateEntity("TieOne");
-        Transform* tieOnetransform = &tieOne.AddComponent<Transform>();
-        tieOnetransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
-        tieOnetransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
-        tieOnetransform->SetScale(Vector3(0.6f));
+        tieOneTransform = &tieOne.AddComponent<Transform>();
+        tieOneTransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
+        tieOneTransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieOneTransform->SetScale(Vector3(0.6f));
         mesh = GetModelLibrary()->GetResource("TieFighter")->GetMeshes()[0];
         tieOne.AddComponent<MeshComponent>(mesh);
         albedoMat = tieOne.AddComponent<MeshRenderer>().GetMaterial();
@@ -385,10 +381,10 @@ class FrameworkFinals : public Application
 
 
         Entity tieTwo = GetCurrentScene()->CreateEntity("TieTwo");
-        Transform* tieTwotransform = &tieTwo.AddComponent<Transform>();
-        tieTwotransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
-        tieTwotransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
-        tieTwotransform->SetScale(Vector3(0.6f));
+        tieTwoTransform = &tieTwo.AddComponent<Transform>();
+        tieTwoTransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
+        tieTwoTransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieTwoTransform->SetScale(Vector3(0.6f));
         tieTwo.AddComponent<MeshComponent>(mesh);
         albedoMat = tieTwo.AddComponent<MeshRenderer>().GetMaterial();
         albedoMat->type = MaterialType::Opaque;
@@ -397,10 +393,10 @@ class FrameworkFinals : public Application
 
 
         Entity tieThree = GetCurrentScene()->CreateEntity("TieThree");
-        Transform* tieThreetransform = &tieThree.AddComponent<Transform>();
-        tieThreetransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
-        tieThreetransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
-        tieThreetransform->SetScale(Vector3(0.6f));
+        tieThreeTransform = &tieThree.AddComponent<Transform>();
+        tieThreeTransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
+        tieThreeTransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieThreeTransform->SetScale(Vector3(0.6f));
         tieThree.AddComponent<MeshComponent>(mesh);
         albedoMat = tieThree.AddComponent<MeshRenderer>().GetMaterial();
         albedoMat->type = MaterialType::Opaque;
@@ -409,10 +405,10 @@ class FrameworkFinals : public Application
 
         // Tie 4 spawn
         Entity tieFour = GetCurrentScene()->CreateEntity("TieThree");
-        Transform* tieFourtransform = &tieFour.AddComponent<Transform>();
-        tieFourtransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
-        tieFourtransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
-        tieFourtransform->SetScale(Vector3(0.6f));
+        tieFourTransform = &tieFour.AddComponent<Transform>();
+        tieFourTransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
+        tieFourTransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieFourTransform->SetScale(Vector3(0.6f));
         tieFour.AddComponent<MeshComponent>(mesh);
         albedoMat = tieFour.AddComponent<MeshRenderer>().GetMaterial();
         albedoMat->type = MaterialType::Opaque;
@@ -424,6 +420,29 @@ class FrameworkFinals : public Application
 
 
         Waypoint waypoint;
+
+
+        Sequence seqTwoCamera;
+
+        seqTwoCamera.name = "FalconFlyCamera";
+        seqTwoCamera.startTime = 6.98f;
+        seqTwoCamera.duration = 11.0f;
+        seqTwoCamera.objectTransform = mainCameraTransform;
+        seqTwoCamera.curve = false;
+        seqTwoCamera.play = false;
+
+        waypoint.position = Vector3(-117.6f, 13.51f, -46.0f);
+        waypoint.rotation = Vector3(-178.31f, 8.3f, 167.2);
+        seqTwoCamera.waypointList.push_back(waypoint);
+
+        waypoint.position = Vector3(-117.6f, 13.5f, -46.0f);
+        waypoint.rotation = Vector3(-178.31f, 8.3f, 167.2);
+        seqTwoCamera.waypointList.push_back(waypoint);
+
+        sequencer->AddSequence(seqTwoCamera);
+
+
+
 
 
         Sequence seqDodge;
@@ -490,7 +509,7 @@ class FrameworkFinals : public Application
         seqTieOne.name = "FalconDodgeTwo";
         seqTieOne.startTime = 9.0f;
         seqTieOne.duration = 4.0f;
-        seqTieOne.objectTransform = tieOnetransform;
+        seqTieOne.objectTransform = tieOneTransform;
         seqTieOne.curve = true;
         seqTieOne.play = false;
         waypoint.position = Vector3(-121.24f, 15.0f, 26.32f);
@@ -513,7 +532,7 @@ class FrameworkFinals : public Application
         seqTieOneEnd.name = "FalconDodgeTwo";
         seqTieOneEnd.startTime = 13.00f;
         seqTieOneEnd.duration = 2.0f;
-        seqTieOneEnd.objectTransform = tieOnetransform;
+        seqTieOneEnd.objectTransform = tieOneTransform;
         seqTieOneEnd.curve = false;
         seqTieOneEnd.play = false;
         waypoint.position = Vector3(-122.81f, 10.0f, -23.0f);
@@ -533,7 +552,7 @@ class FrameworkFinals : public Application
         seqTieTwo.name = "TieTwoStart";
         seqTieTwo.startTime = 9.5f;
         seqTieTwo.duration = 4.0f;
-        seqTieTwo.objectTransform = tieTwotransform;
+        seqTieTwo.objectTransform = tieTwoTransform;
         seqTieTwo.curve = true;
         seqTieTwo.play = false;
         waypoint.position = Vector3(-118.24f, -5.0f, 25.32f);
@@ -556,7 +575,7 @@ class FrameworkFinals : public Application
         seqTieTwoEnd.name = "TieTwoEnd";
         seqTieTwoEnd.startTime = 13.50f;
         seqTieTwoEnd.duration = 2.0f;
-        seqTieTwoEnd.objectTransform = tieTwotransform;
+        seqTieTwoEnd.objectTransform = tieTwoTransform;
         seqTieTwoEnd.curve = false;
         seqTieTwoEnd.play = false;
         waypoint.position = Vector3(-122.81f, -1.0f, -23.0f);
@@ -576,7 +595,7 @@ class FrameworkFinals : public Application
         seqTieThree.name = "TieTwoStart";
         seqTieThree.startTime = 10.0f;
         seqTieThree.duration = 4.0f;
-        seqTieThree.objectTransform = tieThreetransform;
+        seqTieThree.objectTransform = tieThreeTransform;
         seqTieThree.curve = true;
         seqTieThree.play = false;
         waypoint.position = Vector3(-118.24f, 10.0f, 25.32f);
@@ -598,7 +617,7 @@ class FrameworkFinals : public Application
         seqTieThreeEnd.name = "TieTwoEnd";
         seqTieThreeEnd.startTime = 14.00f;
         seqTieThreeEnd.duration = 2.0f;
-        seqTieThreeEnd.objectTransform = tieThreetransform;
+        seqTieThreeEnd.objectTransform = tieThreeTransform;
         seqTieThreeEnd.curve = false;
         seqTieThreeEnd.play = false;
         waypoint.position = Vector3(-122.81f, -1.0f, -22.0f);
@@ -616,7 +635,7 @@ class FrameworkFinals : public Application
         seqTieFour.name = "TieTwoStart";
         seqTieFour.startTime = 10.0f;
         seqTieFour.duration = 4.0f;
-        seqTieFour.objectTransform = tieFourtransform;
+        seqTieFour.objectTransform = tieFourTransform;
         seqTieFour.curve = true;
         seqTieFour.play = false;
         waypoint.position = Vector3(-121.24f, 10.0f, 26.32f);
@@ -638,7 +657,7 @@ class FrameworkFinals : public Application
         seqTieFourEnd.name = "TieTwoEnd";
         seqTieFourEnd.startTime = 14.00f;
         seqTieFourEnd.duration = 2.0f;
-        seqTieFourEnd.objectTransform = tieFourtransform;
+        seqTieFourEnd.objectTransform = tieFourTransform;
         seqTieFourEnd.curve = false;
         seqTieFourEnd.play = false;
         waypoint.position = Vector3(-123.81f, 9.0f, -22.0f);
@@ -652,10 +671,30 @@ class FrameworkFinals : public Application
      
     }
 
+
+    void SetUpSequenceThree()
+    {
+
+    }
+
+
+
     SharedPtr<Sequencer> sequencer;
     bool playSequencer;
     Transform* mainCameraTransform = nullptr;
     Transform* falconTransform = nullptr;
+    Transform* tieOneTransform = nullptr;
+    Transform* tieTwoTransform = nullptr;
+    Transform* tieThreeTransform = nullptr;
+    Transform* tieFourTransform = nullptr;
+
+
+
+    Transform* BigAsteroidOneTransform = nullptr;
+    Transform* filleOneTransform = nullptr;
+    Transform* filleTwoTransform = nullptr;
+
+
     Transform* directionLightTransform = nullptr;
 };
 
