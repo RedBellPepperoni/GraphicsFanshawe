@@ -25,7 +25,7 @@ class FrameworkFinals : public Application
 
 
         sequencer->SetTotalDuration(23.0f);
-        sequencer->SetSeek(20.0f);
+        //sequencer->SetSeek(20.0f);
     }
 
 
