@@ -21,6 +21,8 @@ class FrameworkFinals : public Application
 
         SetUpSequenceTwo();
 
+
+        sequencer->SetTotalDuration(17.0f);
     }
 
 
@@ -51,6 +53,7 @@ class FrameworkFinals : public Application
         GetModelLibrary()->LoadModel("Floor", "Assets\\Models\\TestFloor.fbx");
         GetModelLibrary()->LoadModel("AsteroidOne", "Assets\\Models\\AsteroidOne.fbx");
         GetModelLibrary()->LoadModel("AsteroidTwo", "Assets\\Models\\AsteroidTwo.fbx");
+        GetModelLibrary()->LoadModel("TieFighter", "Assets\\Models\\TieFighter.fbx");
     }
 
     void AddMainCamera()
@@ -269,7 +272,7 @@ class FrameworkFinals : public Application
 
 
 
-        sequencer->SetTotalDuration(14.0f);
+    
     }
 
 
@@ -297,6 +300,61 @@ class FrameworkFinals : public Application
         albedoMat->type = MaterialType::Opaque;
         albedoMat->roughness = 0.0f;
 
+
+
+
+        Entity tieOne = GetCurrentScene()->CreateEntity("TieOne");
+        Transform* tieOnetransform = &tieOne.AddComponent<Transform>();
+        tieOnetransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
+        tieOnetransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieOnetransform->SetScale(Vector3(0.6f));
+        mesh = GetModelLibrary()->GetResource("TieFighter")->GetMeshes()[0];
+        tieOne.AddComponent<MeshComponent>(mesh);
+        albedoMat = tieOne.AddComponent<MeshRenderer>().GetMaterial();
+        albedoMat->type = MaterialType::Opaque;
+        albedoMat->roughness = 0.0f;
+
+
+
+        Entity tieTwo = GetCurrentScene()->CreateEntity("TieTwo");
+        Transform* tieTwotransform = &tieTwo.AddComponent<Transform>();
+        tieTwotransform->SetPosition(Vector3(-121.24f, 15.0f, 26.32f));
+        tieTwotransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieTwotransform->SetScale(Vector3(0.6f));
+        tieTwo.AddComponent<MeshComponent>(mesh);
+        albedoMat = tieTwo.AddComponent<MeshRenderer>().GetMaterial();
+        albedoMat->type = MaterialType::Opaque;
+        albedoMat->roughness = 0.0f;
+
+
+
+        Entity tieThree = GetCurrentScene()->CreateEntity("TieThree");
+        Transform* tieThreetransform = &tieThree.AddComponent<Transform>();
+        tieThreetransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
+        tieThreetransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieThreetransform->SetScale(Vector3(0.6f));
+        tieThree.AddComponent<MeshComponent>(mesh);
+        albedoMat = tieThree.AddComponent<MeshRenderer>().GetMaterial();
+        albedoMat->type = MaterialType::Opaque;
+        albedoMat->roughness = 0.0f;
+
+
+        // Tie 4 spawn
+        Entity tieFour = GetCurrentScene()->CreateEntity("TieThree");
+        Transform* tieFourtransform = &tieFour.AddComponent<Transform>();
+        tieFourtransform->SetPosition(Vector3(-118.24f, -10.0f, 25.32f));
+        tieFourtransform->SetEularRotation(Vector3(0.0f, 0.0f, 00.0f));
+        tieFourtransform->SetScale(Vector3(0.6f));
+        tieFour.AddComponent<MeshComponent>(mesh);
+        albedoMat = tieFour.AddComponent<MeshRenderer>().GetMaterial();
+        albedoMat->type = MaterialType::Opaque;
+        albedoMat->roughness = 0.0f;
+
+
+
+
+
+
         Waypoint waypoint;
 
 
@@ -307,23 +365,18 @@ class FrameworkFinals : public Application
         seqDodge.objectTransform = falconTransform;
         seqDodge.curve = true;
         seqDodge.play = false;
-
         waypoint.position = Vector3(-118.24f, 15.0f, 21.32f);
         waypoint.rotation = Vector3(0.0f, 0.0f, -50.0f);
         seqDodge.waypointList.push_back(waypoint);
-
         waypoint.position = Vector3(-136.78f, 10.0f, -0.62f);
         waypoint.rotation = Vector3(20.0f, 0.0f, -89.0f);
         seqDodge.waypointList.push_back(waypoint);
-
         waypoint.position = Vector3(-140.6f, 15.0f, 7.5f);
         waypoint.rotation = Vector3(-10.0f, 0.0f, 60.0f);
         seqDodge.waypointList.push_back(waypoint);
-
         waypoint.position = Vector3(-122.81f, 10.0f, -23.0f);
         waypoint.rotation = Vector3(-30.0f, 0.0f, 80.0f);
         seqDodge.waypointList.push_back(waypoint);
-
         sequencer->AddSequence(seqDodge);
 
 
@@ -333,21 +386,14 @@ class FrameworkFinals : public Application
         seqDodgeTwo.startTime = 11.00f;
         seqDodgeTwo.duration = 2.0f;
         seqDodgeTwo.objectTransform = falconTransform;
-
         seqDodgeTwo.curve = false;
         seqDodgeTwo.play = false;
-
-
-      
-
         waypoint.position = Vector3(-122.81f, 10.0f, -23.0f);
         waypoint.rotation = Vector3(-30.0f, 00.0f, 80.0f);
         seqDodgeTwo.waypointList.push_back(waypoint);
-
         waypoint.position = Vector3(-97.6f, 15.0f, -66.0f);
         waypoint.rotation = Vector3(-30.0f, 0.0f, 80.0f);
         seqDodgeTwo.waypointList.push_back(waypoint);
-
         sequencer->AddSequence(seqDodgeTwo);
 
 
@@ -359,20 +405,183 @@ class FrameworkFinals : public Application
         seqAsteroidRotate.objectTransform = transform;
         seqAsteroidRotate.curve = false;
         seqAsteroidRotate.play = false;
-
         waypoint.position = Vector3(-102.84f, 16.0f, -12.5f);
         waypoint.rotation = Vector3(-40.0f, 0.0f, 0.0f);
         seqAsteroidRotate.waypointList.push_back(waypoint);
-
         waypoint.position = Vector3(-112.0f, 10.0f, 12.0f);
-       // waypoint.position = Vector3(-107.0f, 10.0f, 23.0f));
         waypoint.rotation = Vector3(0.0f, 20.0f, 0.0f);
         seqAsteroidRotate.waypointList.push_back(waypoint);
-
-
         sequencer->AddSequence(seqAsteroidRotate);
 
 
+
+
+        // Tie fighter One 
+
+        Sequence seqTieOne;
+        seqTieOne.name = "FalconDodgeTwo";
+        seqTieOne.startTime = 9.0f;
+        seqTieOne.duration = 4.0f;
+        seqTieOne.objectTransform = tieOnetransform;
+        seqTieOne.curve = true;
+        seqTieOne.play = false;
+        waypoint.position = Vector3(-121.24f, 15.0f, 26.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, -50.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-134.78f, 25.0f, 3.62f);
+        waypoint.rotation = Vector3(20.0f, 0.0f, -60.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-138.6f, 15.0f, 7.9f);
+        waypoint.rotation = Vector3(-10.0f, 0.0f, 40.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-122.81f, 10.0f, -23.0f);
+        waypoint.rotation = Vector3(-30.0f, 0.0f, 70.0f);
+        seqTieOne.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieOne);
+
+
+
+        Sequence seqTieOneEnd;
+        seqTieOneEnd.name = "FalconDodgeTwo";
+        seqTieOneEnd.startTime = 13.00f;
+        seqTieOneEnd.duration = 2.0f;
+        seqTieOneEnd.objectTransform = tieOnetransform;
+        seqTieOneEnd.curve = false;
+        seqTieOneEnd.play = false;
+        waypoint.position = Vector3(-122.81f, 10.0f, -23.0f);
+        waypoint.rotation = Vector3(-30.0f, 00.0f, 70.0f);
+        seqTieOneEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-99.6f, 15.0f, -66.0f);
+        waypoint.rotation = Vector3(-30.0f, 0.0f, 150.0f);
+        seqTieOneEnd.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieOneEnd);
+
+
+
+        // Tie fighter Two
+
+
+        Sequence seqTieTwo;
+        seqTieTwo.name = "TieTwoStart";
+        seqTieTwo.startTime = 9.5f;
+        seqTieTwo.duration = 4.0f;
+        seqTieTwo.objectTransform = tieTwotransform;
+        seqTieTwo.curve = true;
+        seqTieTwo.play = false;
+        waypoint.position = Vector3(-118.24f, -5.0f, 25.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 50.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-143.78f, 0.0f, -4.62f);
+        waypoint.rotation = Vector3(20.0f, 0.0f, 60.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-139.6f, 10.0f, 8.9f);
+        waypoint.rotation = Vector3(-10.0f, 0.0f, -40.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-122.81f, -1.0f, -23.0f);
+        waypoint.rotation = Vector3(30.0f, 0.0f, -70.0f);
+        seqTieTwo.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieTwo);
+
+
+
+        Sequence seqTieTwoEnd;
+        seqTieTwoEnd.name = "TieTwoEnd";
+        seqTieTwoEnd.startTime = 13.50f;
+        seqTieTwoEnd.duration = 2.0f;
+        seqTieTwoEnd.objectTransform = tieTwotransform;
+        seqTieTwoEnd.curve = false;
+        seqTieTwoEnd.play = false;
+        waypoint.position = Vector3(-122.81f, -1.0f, -23.0f);
+        waypoint.rotation = Vector3(30.0f, 00.0f, -70.0f);
+        seqTieTwoEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-99.6f, -10.0f, -66.0f);
+        waypoint.rotation = Vector3(30.0f, 0.0f, -85.0f);
+        seqTieTwoEnd.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieTwoEnd);
+
+
+
+
+        // ==================================== =Seq tie three
+
+        Sequence seqTieThree;
+        seqTieThree.name = "TieTwoStart";
+        seqTieThree.startTime = 10.0f;
+        seqTieThree.duration = 4.0f;
+        seqTieThree.objectTransform = tieThreetransform;
+        seqTieThree.curve = true;
+        seqTieThree.play = false;
+        waypoint.position = Vector3(-118.24f, 10.0f, 25.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 50.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-146.78f, 0.0f, 0.62f);
+        waypoint.rotation = Vector3(20.0f, 0.0f, 60.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-157.44f, -6.0f, -4.9f);
+        waypoint.rotation = Vector3(-10.0f, 0.0f, -40.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-122.81f, -1.0f, -22.0f);
+        waypoint.rotation = Vector3(30.0f, 0.0f, -70.0f);
+        seqTieThree.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieThree);
+
+
+        Sequence seqTieThreeEnd;
+        seqTieThreeEnd.name = "TieTwoEnd";
+        seqTieThreeEnd.startTime = 14.00f;
+        seqTieThreeEnd.duration = 2.0f;
+        seqTieThreeEnd.objectTransform = tieThreetransform;
+        seqTieThreeEnd.curve = false;
+        seqTieThreeEnd.play = false;
+        waypoint.position = Vector3(-122.81f, -1.0f, -22.0f);
+        waypoint.rotation = Vector3(30.0f, 00.0f, -70.0f);
+        seqTieThreeEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-82.6f, 17.0f, -44.0f);
+        waypoint.rotation = Vector3(30.0f, 0.0f, -85.0f);
+        seqTieThreeEnd.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieThreeEnd);
+
+
+
+        // Seq TIE FOUR ========================================================
+        Sequence seqTieFour;
+        seqTieFour.name = "TieTwoStart";
+        seqTieFour.startTime = 10.0f;
+        seqTieFour.duration = 4.0f;
+        seqTieFour.objectTransform = tieFourtransform;
+        seqTieFour.curve = true;
+        seqTieFour.play = false;
+        waypoint.position = Vector3(-121.24f, 10.0f, 26.32f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, -50.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-136.78f, 43.0f, 3.62f);
+        waypoint.rotation = Vector3(-20.0f, 0.0f, -60.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-138.44f, 19.0f, 7.9f);
+        waypoint.rotation = Vector3(10.0f, 0.0f, 40.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-123.81f, 9.0f, -22.0f);
+        waypoint.rotation = Vector3(30.0f, 0.0f, 70.0f);
+        seqTieFour.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieFour);
+
+
+        Sequence seqTieFourEnd;
+        seqTieFourEnd.name = "TieTwoEnd";
+        seqTieFourEnd.startTime = 14.00f;
+        seqTieFourEnd.duration = 2.0f;
+        seqTieFourEnd.objectTransform = tieFourtransform;
+        seqTieFourEnd.curve = false;
+        seqTieFourEnd.play = false;
+        waypoint.position = Vector3(-123.81f, 9.0f, -22.0f);
+        waypoint.rotation = Vector3(-30.0f, 00.0f, 70.0f);
+        seqTieFourEnd.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(-98.6f, 0.0f, -66.0f);
+        waypoint.rotation = Vector3(-30.0f, 0.0f, 85.0f);
+        seqTieFourEnd.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqTieFourEnd);
+
+     
     }
 
     SharedPtr<Sequencer> sequencer;
