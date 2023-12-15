@@ -152,6 +152,41 @@ class FrameworkFinals : public Application
        albedoMat->type = MaterialType::Opaque;
        albedoMat->roughness = 0.0f;
 
+
+
+
+
+
+       Entity asteroidTwo = GetCurrentScene()->CreateEntity("AsteroidFiller");
+       Transform* asteroidTwotransform = &asteroidTwo.AddComponent<Transform>();
+       // asteroidtransform->SetPosition(Vector3(1.2f, 5.0f, -9.5f));
+       asteroidTwotransform->SetPosition(Vector3(23.2f, 10.0f, -46.5f));
+       asteroidTwotransform->SetEularRotation(Vector3(00.0f, 0.0f, 00.0f));
+       asteroidTwotransform->SetScale(Vector3(0.5f));
+       asteroidTwo.AddComponent<MeshComponent>(mesh);
+       albedoMat = asteroidTwo.AddComponent<MeshRenderer>().GetMaterial();
+       albedoMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("AsteroidOneAlbedo");
+       albedoMat->type = MaterialType::Opaque;
+       albedoMat->roughness = 0.0f;
+
+
+       Entity asteroidThrree = GetCurrentScene()->CreateEntity("AsteroidFiller2");
+       Transform* asteroidThreetransform = &asteroidThrree.AddComponent<Transform>();
+       asteroidThreetransform->SetPosition(Vector3(23.2f, 20.0f, -50.5f));
+       asteroidThreetransform->SetEularRotation(Vector3(00.0f, 0.0f, 60.0f));
+       asteroidThreetransform->SetScale(Vector3(0.5f));
+       asteroidThrree.AddComponent<MeshComponent>(mesh);
+       albedoMat = asteroidThrree.AddComponent<MeshRenderer>().GetMaterial();
+       albedoMat->textureMaps.albedoMap = GetTextureLibrary()->GetResource("AsteroidOneAlbedo");
+       albedoMat->type = MaterialType::Opaque;
+       albedoMat->roughness = 0.0f;
+
+
+
+
+
+     
+
         // ===================== Initial fly Sequence ===============================
         Sequence seqOne;
         seqOne.name = "FalconInitFly";
@@ -269,6 +304,39 @@ class FrameworkFinals : public Application
         seqDirectionalLight.waypointList.push_back(waypoint);
 
         sequencer->AddSequence(seqDirectionalLight);
+
+
+        Sequence seqFillerAsteroindOne;
+        seqFillerAsteroindOne.name = "Directional";
+        seqFillerAsteroindOne.startTime = 0.98f;
+        seqFillerAsteroindOne.duration = 6.0f;
+        seqFillerAsteroindOne.objectTransform = asteroidTwotransform;
+        seqFillerAsteroindOne.curve = false;
+        seqFillerAsteroindOne.play = false;
+        waypoint.position = Vector3(23.2f, 10.0f, -46.5f);
+        waypoint.rotation = Vector3(0.0f, 0.0f, 0.0f);
+        seqFillerAsteroindOne.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(23.0f, 6.0f, 62.6f);
+        waypoint.rotation = Vector3((30.0f, 60.0f, 0.0f));
+        seqFillerAsteroindOne.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqFillerAsteroindOne);
+
+
+        Sequence seqFillerAsteroindtwo;
+        seqFillerAsteroindtwo.name = "Directional";
+        seqFillerAsteroindtwo.startTime = 0.0f;
+        seqFillerAsteroindtwo.duration = 7.0f;
+        seqFillerAsteroindtwo.objectTransform = asteroidThreetransform;
+        seqFillerAsteroindtwo.curve = false;
+        seqFillerAsteroindtwo.play = false;
+        waypoint.position = Vector3(23.2f, -5.0f, -50.5f);
+        waypoint.rotation = Vector3(60.0f, 00.0f, 0.0f);
+        seqFillerAsteroindtwo.waypointList.push_back(waypoint);
+        waypoint.position = Vector3(23.0f, -8.0f, 50.6f);
+        waypoint.rotation = Vector3((-60.0f, 0.0f, 0.0f));
+        seqFillerAsteroindtwo.waypointList.push_back(waypoint);
+        sequencer->AddSequence(seqFillerAsteroindtwo);
+
 
 
 
