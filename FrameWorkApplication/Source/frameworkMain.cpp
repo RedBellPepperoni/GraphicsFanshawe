@@ -7,6 +7,17 @@ class FrameworkProject : public Application
 {
     void OnInit()
     {
+
+
+
+        Entity mainController = GetCurrentScene()->CreateEntity("Controller");
+        Transform& controllerTransform = mainController.AddComponent<Transform>();
+
+        LuaScriptComponent& mainluaComp = mainController.AddComponent<LuaScriptComponent>();
+        mainluaComp.LoadScript("Assets\\Scripts\\commandmain.lua");
+
+ 
+
         GetModelLibrary()->LoadModel("Drone", "Assets\\Models\\Drone.fbx");
 
         Entity entity = GetCurrentScene()->CreateEntity("Drone");
@@ -19,10 +30,17 @@ class FrameworkProject : public Application
         entity.AddComponent<MeshComponent>(mesh);
         entity.AddComponent<MeshRenderer>();
 
-        LuaScriptComponent& luaComp =  entity.AddComponent<LuaScriptComponent>();
+     
+
+        LuaScriptComponent& luaComp = entity.AddComponent<LuaScriptComponent>();
 
         luaComp.LoadScript("Assets\\Scripts\\Test.lua");
 
+
+
+
+
+     
 
     }
 

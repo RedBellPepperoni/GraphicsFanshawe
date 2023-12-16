@@ -13,12 +13,25 @@
 #include "Engine/Core/ECS/Components/LuaScriptComponent.h"
 #include "Engine/Utils/Math/Random.h"
 #include "Engine/Core/Rendering/Lights/Light.h"
+#include "Engine/Core/ECS/Components/MeshRenderer.h"
+#include "Engine/Core/Rendering/Essentials/Material.h"
+#include "Engine/Core/Rendering/Essentials/Mesh.h"
+#include "Engine/Core/ECS/Components/MeshComponent.h"
+#include "Engine/Utils/Loading/Model.h"
+
+
+
+
 #include <sol/sol.hpp>
+
 
 
 
 namespace FanshaweGameEngine
 {
+
+    using namespace Rendering;
+
     template <typename, typename>
     struct _ECS_export_view;
 
@@ -128,9 +141,13 @@ namespace FanshaweGameEngine
             return;
         }
 
-       
+      
+
         for (auto entity : view)
         {
+
+
+
             auto& luaScript = registry.get<LuaScriptComponent>(entity);
             luaScript.SetThisComponent();
             luaScript.OnInit();
@@ -211,30 +228,40 @@ namespace FanshaweGameEngine
 
         REGISTER_COMPONENT_WITH_ECS(state, Light, static_cast<Light & (Entity::*)()>(&Entity::AddComponent<Light>));
 
+     /*   
+        state.new_usertype<Material>(
+            "Material",
+            "albedoColour", &Material::albedoColour); 
+
+        state.new_usertype<MeshRenderer>(
+            "MeshRenderer",
+            "GetMaterial", &MeshRenderer::GetMaterial);
+
+
+
+        REGISTER_COMPONENT_WITH_ECS(state, MeshRenderer, static_cast<MeshRenderer & (Entity::*)()>(&Entity::AddComponent<MeshRenderer>));
+
+
+        state.new_usertype<Mesh>(
+            "Mesh"
+            );
+
+        state.new_usertype<MeshComponent>(
+            "MeshComponent",
+            "MeshRed", &MeshComponent::m_handle);
+
+        REGISTER_COMPONENT_WITH_ECS(state, MeshRenderer, static_cast<MeshRenderer & (Entity::*)()>(&Entity::AddComponent<MeshRenderer>));
+
+
+
+        state.new_usertype<Model>(
+            "Model",
+            "GetMesh", &Model::GetFirstMesh
+
+        );*/
+
+
         
-       /* sol::usertype<RigidBody3D> RigidBody3DComponent_type = state.new_usertype<RigidBody3D>("RigidBody3DComponent", sol::constructors<sol::types<RigidBody3D*>>());
-        RigidBody3DComponent_type.set_function("GetRigidBody", &RigidBody3D::GetRigidBody);
-
-        REGISTER_COMPONENT_WITH_ECS(state, RigidBody3DComponent, static_cast<RigidBody3DComponent & (Entity::*)(const RigidBody3DProperties&)>(&Entity::AddComponent<RigidBody3D, const RigidBody3DProperties&>));*/
-
-        //sol::usertype<Transform> transform = state.new_usertype<Transform>("Transform");
-        //transform.set_function("GetPosition", &Transform::GetPosition);
-        //transform.set_function("SetPosition", &Transform::SetPosition);
-        //
-       
-
-        //entityManagerType.set_function("Create", static_cast<Entity(EntityManager::*)()>(&EntityManager::Create));
-        //entityManagerType.set_function("GetRegistry", &EntityManager::GetRegistry);
-        
-        /*sol::usertype<entt::registry> enttRegistry = state.new_usertype<entt::registry>("enttRegistry");
-
-        sol::usertype<Entity> entityType = state.new_usertype<Entity>("Entity", sol::constructors<sol::types<entt::entity, Scene*>>());
-       
-        
-        entityType.set_function("Destroy", &Entity::Destroy);
-        
-
-        */
 
     }
 
@@ -287,8 +314,8 @@ namespace FanshaweGameEngine
             { "D", Input::Key::D },
             { "E", Input::Key::E },
             { "F", Input::Key::F },
-            { "H", Input::Key::G },
-            { "G", Input::Key::H },
+            { "G", Input::Key::G },
+            { "H", Input::Key::H },
             { "I", Input::Key::I },
             { "J", Input::Key::J },
             { "K", Input::Key::K },
@@ -373,7 +400,7 @@ namespace FanshaweGameEngine
         sol::usertype<Scene> scene_type = state.new_usertype<Scene>("Scene");
      
         scene_type.set_function("GetEntityManager", &Scene::GetEntityManager);
-
+        scene_type.set_function("CreateEntity", &Scene::CreateEntity);
   
         state.set_function("Rand", &LuaRand);
 

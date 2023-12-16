@@ -23,6 +23,7 @@ namespace FanshaweGameEngine
 		Model(const FilePath& filepath);
 
 		std::vector<SharedPtr<Mesh>>& GetMeshes();
+		SharedPtr<Mesh>& GetFirstMesh();
 		
 		void Load(const FilePath& filepath);
 

@@ -68,6 +68,11 @@ namespace FanshaweGameEngine
                 return m_env != nullptr;
             }
 
+            Scene* GetScene()
+            {
+                return m_scene;
+            }
+
 		private:
 
             Scene* m_scene = nullptr;

@@ -41,7 +41,7 @@ namespace FanshaweGameEngine
 		}
 
 
-		MeshRenderer::MaterialRef MeshRenderer::GetMaterial(int index) const
+		/*MeshRenderer::MaterialRef MeshRenderer::GetMaterial(int index) const
 		{
 			if (m_Materials.empty())
 			{
@@ -56,6 +56,6 @@ namespace FanshaweGameEngine
 			}
 
 			return m_Materials[index];
-		}
+		}*/
 	}
 }

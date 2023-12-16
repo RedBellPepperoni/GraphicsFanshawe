@@ -8,33 +8,50 @@ namespace sol
 	class state;
 }
 
+
+
+
 namespace FanshaweGameEngine
 {
 
-	//class LuaCommands : public Singleton<LuaCommands>
-	//{
-	//	static void MoveTo(const Vector3& position, const float time);
-	//	static void MoveTo(const Vector3& position, const float speed);
+	enum CommandType
+	{
+		MoveTo,
+		MoveTowards
+	};
+
+	class LuaCommands : public Singleton<LuaCommands>
+	{
+	public:
+
+		//static void AddMoveCommand();
 
 
-	//	static void OrientTo(const Vector3& rotation, const float time);
-	//	static void OrientTo(const Vector3& rotation, const float speed);
-
-	//	static void AddWaypoint(const Vector3& position);
-
-	//	static void FollowCurve(bool loop);
+	private:
 
 
-	//	static void OrientDirLight(const Vector3 rotation);
-	//	static void ChangeDirLightIntensity(const float intensity);
+		static void MoveTo(const Vector3& position, const float time);
+		static void MoveTowards(const Vector3& position, const float speed);
+
+
+		static void OrientTo(const Vector3& rotation, const float time);
+		static void OrientTowards(const Vector3& rotation, const float speed);
+
+		static void AddWaypoint(const Vector3& position);
+
+		static void FollowCurve(std::vector<Vector3> waypoints);
+
+
+		static void OrientDirLight(const Vector3 rotation);
+		static void ChangeDirLightIntensity(const float intensity);
 
 
 
-	//private:
+	private:
 
-	//	std::vector<Vector3> waypoints;
+		
 
-	//};
+	};
 
 	
 

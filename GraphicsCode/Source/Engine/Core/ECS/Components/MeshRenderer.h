@@ -35,7 +35,7 @@ namespace FanshaweGameEngine
 			MaterialRef GetMaterial();
 			MaterialList GetMaterials() const;
 
-			MaterialRef GetMaterial(int index) const;
+			//MaterialRef GetMaterial(int index) const;
 			
 		private:
 

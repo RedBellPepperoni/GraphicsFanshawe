@@ -182,6 +182,9 @@ namespace FanshaweGameEngine
 
 		// Calling Init on the child applications
 		OnInit();
+
+		LuaManager::GetInstance().OnInit(GetCurrentScene());
+
 	}
 
 	void Application::Run()

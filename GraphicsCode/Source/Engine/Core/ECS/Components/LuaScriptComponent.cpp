@@ -43,8 +43,13 @@ namespace FanshaweGameEngine
 
 		void LuaScriptComponent::OnInit()
 		{
+			
+
 			if (m_OnInitFunc)
 			{
+
+			
+
 				sol::protected_function_result result = m_OnInitFunc->call();
 				if (!result.valid())
 				{
@@ -194,6 +199,8 @@ namespace FanshaweGameEngine
 
 			if (!m_OnInitFunc->valid())
 			{
+
+				LOG_ERROR("Lua : Invalid On Init");
 				delete m_OnInitFunc;
 			}
 

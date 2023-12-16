@@ -79,7 +79,7 @@ namespace FanshaweGameEngine
 		entt::registry& GetRegistry();
 
 		// Creates and returns a new entity
-		Entity CreateEntity();
+		/*Entity CreateEntity();*/
 
 		// Create a new entity with the provided name and return it
 		Entity CreateEntity(const std::string& name);

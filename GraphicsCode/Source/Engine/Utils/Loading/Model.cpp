@@ -14,6 +14,11 @@ namespace FanshaweGameEngine
         return m_meshes;
     }
 
+    SharedPtr<Mesh>& Model::GetFirstMesh()
+    {
+        return m_meshes[0];
+    }
+
     void Model::Load(const FilePath& filepath)
     {
         // fetching the model details from the given filepath

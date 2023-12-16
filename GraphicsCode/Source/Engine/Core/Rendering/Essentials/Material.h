@@ -46,8 +46,8 @@ namespace FanshaweGameEngine
             Vector2 uvMultiplier{ 1.0f };
 
             Vector4 albedoColour{ 0.0f,0.0f,0.0f,1.0f };
-            float roughness = 0.8f;
-            float metallic = 0.1f;
+            float roughness = 0.0f;
+            float metallic = 0.0f;
             float emissive = 0.0f;
             float ao = 1.0f;
             float normalMultiplier = 1.0f;

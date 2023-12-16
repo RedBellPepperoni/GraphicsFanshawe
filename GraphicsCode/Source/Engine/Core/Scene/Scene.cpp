@@ -32,6 +32,7 @@ namespace FanshaweGameEngine
 		// Cleanup the manager
 		m_EntityManager->Clear();
 	}
+
 	void Scene::Init()
 	{
 		Entity cameraEntity = GetEntityManager()->Create("MainCamera");
@@ -47,7 +48,7 @@ namespace FanshaweGameEngine
 		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		
 
-		LuaManager::GetInstance().OnInit(this);
+		
 		
 
 		// Setup systems here
@@ -149,12 +150,14 @@ namespace FanshaweGameEngine
 	}
 
 
-	Entity Scene::CreateEntity()
+	/*Entity Scene::CreateEntity()
 	{
 		return m_EntityManager->Create();
-	}
+	}*/
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		LOG_CRITICAL("Created Entity : [ {0} ]",name);
+
 		return m_EntityManager->Create(name);
 	}
 	Entity Scene::GetEntitybyId(const uint64_t id)

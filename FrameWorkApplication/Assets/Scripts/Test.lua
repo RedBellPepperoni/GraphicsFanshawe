@@ -1,8 +1,34 @@
 --Default Lua Script
+local CommandManager = require("commandmanager")
+local Command = require("command")
 
+local entity = {}
+local transform = {}
+local scene = {}
+local otherEntity = {}
 
 function OnInit()
+   
+    entity = LuaComponent:GetCurrentEntity()
+    transform = LuaComponent:GetCurrentEntity():GetTransform()
 
+
+    CommandManager = require("commandmanager")
+
+
+
+
+    local targetPosition = { x = 20, y = 10, z = 0 }
+    local timeToMove = 4
+    local moveCommand = Command.executeMoveTowards(transform, targetPosition, timeToMove)
+    moveCommand.isDone = false  
+
+
+   CommandManager.AddCommandToSequencer(1, moveCommand)
+   
+
+
+ 
 
 end
 
@@ -11,16 +37,14 @@ end
 
 function OnUpdate(dt)
 
-   
 
-   -- local position = LuaComponent:Position()
+    local position = transform:GetPosition()
 
-   -- position.x = position.x + 10*dt 
 
-   -- LuaComponent:SetPosition(position)
+    local nextposition =  position.x + 10 * dt
 
-   -- Log.Info(tostring(position.x))
-    Log.Warn("Warn")
+ -- transform:SetPosition(Vector3.new(nextposition,0,0))
+
 
 end
 
