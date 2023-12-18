@@ -20,14 +20,6 @@
 namespace FanshaweGameEngine
 {
 
-	enum MyEnum
-	{
-		TWO,
-		Forty,
-		Six
-
-	};
-
 	Scene::Scene(const std::string& name)
 	{
 		// Setting up a new Entity Manager with the current scene's Reference
@@ -51,8 +43,8 @@ namespace FanshaweGameEngine
 		//AudioListener* listener = &cameraEntity.AddComponent<Audio::AudioListener>(transform);
 
 
-		transform->SetPosition(Vector3(61.34f, 191.5f, -27.0f));
-		transform->SetEularRotation(Vector3(-69.66f, 0.27f, 0.0f));
+		transform->SetPosition(Vector3(2.2f, 28.97f, 18.65f));
+		transform->SetEularRotation(Vector3(-45.0f, 3.6f, 0.0f));
 
 		cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::FlyCam);
 		//cameraEntity.AddComponent<DefaultCameraController>(DefaultCameraController::CameraType::Orbital);

@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Externals\glad\src\glad.c" />
+    <ClCompile Include="Source\Engine\Core\Network\NetworkComponent.cpp" />
+    <ClCompile Include="Source\Engine\Core\Network\NetworkManager.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\OrbitalCameraController.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\PlayerController.cpp" />
     <ClCompile Include="PyramidCollider.cpp" />
@@ -184,6 +186,8 @@
     <ClCompile Include="Source\Engine\Core\Rendering\Buffers\VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Core\Network\NetworkComponent.h" />
+    <ClInclude Include="Source\Engine\Core\Network\NetworkManager.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\OrbitalCameraController.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\PlayerController.h" />
     <ClInclude Include="PyramidCollider.h" />

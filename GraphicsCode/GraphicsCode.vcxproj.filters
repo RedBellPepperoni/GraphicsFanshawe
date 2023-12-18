@@ -83,6 +83,8 @@
     <ClCompile Include="PyramidCollider.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\PlayerController.cpp" />
     <ClCompile Include="Source\Engine\Core\System\Input\OrbitalCameraController.cpp" />
+    <ClCompile Include="Source\Engine\Core\Network\NetworkManager.cpp" />
+    <ClCompile Include="Source\Engine\Core\Network\NetworkComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\Core\Audio\AudioSource.h" />
@@ -467,6 +469,8 @@
     <ClInclude Include="PyramidCollider.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\PlayerController.h" />
     <ClInclude Include="Source\Engine\Core\System\Input\OrbitalCameraController.h" />
+    <ClInclude Include="Source\Engine\Core\Network\NetworkManager.h" />
+    <ClInclude Include="Source\Engine\Core\Network\NetworkComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\glm\detail\func_common.inl" />
