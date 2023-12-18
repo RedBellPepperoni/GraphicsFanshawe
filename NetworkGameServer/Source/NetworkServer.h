@@ -21,13 +21,18 @@
 
 	const int NUM_PLAYERS = 4;
 
-	struct PlayerPosition
+	struct PlayerData
 	{
-		float x;
-		float z;
+		int32_t positionX = 0;
+		int32_t positionZ = 0;
+
+		int8_t directionX = 0;
+		int8_t directionZ = 0;
+
 	};
 
-	struct ClientInfo : public PlayerPosition
+
+	struct ClientInfo : public PlayerData
 	{
 		sockaddr_in addr;
 		int addrLen;

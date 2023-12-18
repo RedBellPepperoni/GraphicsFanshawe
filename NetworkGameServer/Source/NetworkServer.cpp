@@ -121,7 +121,7 @@ void NetworkServer::HandleRECV()
 	sockaddr_in addr;
 	int addrLen = sizeof(addr);
 
-	const int bufLen = 8;	// recving 2 floats only
+	const int bufLen = sizeof(PlayerData);	// recving 2 floats only
 	char buffer[bufLen];
 	int result = recvfrom(m_ListenSocket, buffer, bufLen, 0, (SOCKADDR*)&addr, &addrLen);
 	if (result == SOCKET_ERROR) {
@@ -170,10 +170,17 @@ void NetworkServer::HandleRECV()
 
 	ClientInfo& client = m_ConnectedClients[clientId];
 
-	memcpy(&client.x, (const void*)&(buffer[0]), sizeof(float));
-	memcpy(&client.z, (const void*)&(buffer[4]), sizeof(float));
+	memcpy(&client.positionX, (const void*)&(buffer[0]), sizeof(int32_t));
+	memcpy(&client.positionZ, (const void*)&(buffer[4]), sizeof(int32_t));
+	memcpy(&client.directionX, (const void*)&(buffer[8]), sizeof(int8_t));
+	memcpy(&client.directionZ, (const void*)&(buffer[9]), sizeof(int8_t));
 
-	printf("From: %s:%d: {%.2f, %.2f}\n", inet_ntoa(client.addr.sin_addr), client.addr.sin_port, client.x, client.z);
+
+	
+
+
+
+	printf("From: %s:%d: {%d, %d}\n", inet_ntoa(client.addr.sin_addr), client.addr.sin_port, client.positionX, client.positionZ);
 }
 
 void NetworkServer::BroadcastUpdatesToClients()
@@ -191,16 +198,32 @@ void NetworkServer::BroadcastUpdatesToClients()
 	// Add 20 ms to the next broadcast time from now()
 	//m_NextBroadcastTime 
 
-	const int length = sizeof(PlayerPosition) * 4;
+	const int length = 10 * 4;
 	char data[length];
 
 
-	PlayerPosition positions[4];
+	PlayerData positions[4];
+
+	int size = 10;
 
 	for (int i = 0; i < m_ConnectedClients.size(); i++)
 	{
-		memcpy(&data[i * sizeof(PlayerPosition)], &m_ConnectedClients[i].x, sizeof(float));
-		memcpy(&data[i * sizeof(PlayerPosition) + sizeof(float)], &m_ConnectedClients[i].z, sizeof(float));
+
+		/*std::copy(&m_ConnectedClients[i].positionX, &m_ConnectedClients[i].positionX + 4, &data[i * sizeof(PlayerData)]);
+		std::copy(&m_ConnectedClients[i].positionZ, &m_ConnectedClients[i].positionZ + 4, &data[i * sizeof(PlayerData) + 4]);
+		std::copy(&m_ConnectedClients[i].directionX, &m_ConnectedClients[i].directionX + 1, &data[i * sizeof(PlayerData) + 8]);
+		std::copy(&m_ConnectedClients[i].directionZ, &m_ConnectedClients[i].directionZ + 1, &data[i * sizeof(PlayerData) + 9]);*/
+
+
+		memcpy(&data[i * size], &m_ConnectedClients[i].positionX, 4);
+		memcpy(&data[i * size + 4], &m_ConnectedClients[i].positionZ, 4);
+		memcpy(&data[i * size + 2 * 4], &m_ConnectedClients[i].directionX, 1);
+		memcpy(&data[i * size + 2 * 4 + 1], &m_ConnectedClients[i].directionZ, 1);
+
+
+
+		printf("%d", sizeof(data));
+
 	}
 
 	// Write

@@ -21,9 +21,9 @@ class NetworkFinalProject : public Application
 
         GetTextureLibrary()->LoadTexture("CharacterAlbedo", "Assets\\Textures\\amonguspink.png",TextureFormat::RGB);
 
-      
+        networkManager = MakeShared<NetworkManager>();
 
-        networkManager.Initialize();
+        networkManager->Initialize();
 
         CreateNetworkPlayer();
 
@@ -77,7 +77,21 @@ class NetworkFinalProject : public Application
         }
 
         lastdirection.y = 0.0f;
-        
+
+
+        if (LengthSquared(lastdirection) < 0.5f)
+        {
+            lastdirection = Vector3(0.0f, 0.0f, -1.0f);
+        }
+
+        playerPosition = playerTransform->GetPosition();
+
+        Vector3 position = Vector3(playerPosition.x, 0.0f, playerPosition.z);
+
+        networkManager->SendPlayerData(position, lastdirection);
+
+        networkManager->Update(deltaTime);
+   
         lastdirection = Normalize(lastdirection);
 
        // Vector3 lookAtDirection = playerPosition + lastdirection * 10.0f;
@@ -86,29 +100,73 @@ class NetworkFinalProject : public Application
 
         playerTransform->SetRotation(rotation);
       
-        playerPosition = playerTransform->GetPosition();
+       
 
-        networkManager.SendPlayerPositionToServer(playerPosition.x,playerPosition.z);
-
-        networkManager.Update(deltaTime);
-
-
-
-
-
-
-        ComponentView view = GetCurrentScene()->GetEntityManager()->GetComponentsOfType<NetworkComponent>();
-
-        int count = 0;
-        for (Entity entity : view)
+        for (int index = 0; index < networkEntityTransforms.size(); index++)
         {
-            Transform& transform = entity.GetComponent<Transform>();
+               
 
-            float positionX = networkManager.m_NetworkedPositions[0].x;
-            float positionZ = networkManager.m_NetworkedPositions[0].z;
+                float positionX = networkManager->m_NetworkedPositions[index].positionX / 100.0f;
+                float positionZ = networkManager->m_NetworkedPositions[index].positionZ/ 100.0f;
 
-            transform.SetPosition(Vector3(positionX, 0.0f, positionZ));
+                float directionX = networkManager->m_NetworkedPositions[index].directionX / 100.0f;
+                float directionZ = networkManager->m_NetworkedPositions[index].directionZ / 100.0f;
+                networkEntityTransforms[index]->SetPosition(Vector3(positionX, 0.0f, positionZ));
+
+
+
+                Vector3 newDirection = (Vector3(directionX, 0.0f, directionZ));
+
+                if (LengthSquared(newDirection) < 0.5f)
+                {
+                    newDirection = Vector3(0.0f, 0.0f, -1.0f);
+                }
+
+
+                Quaternion rotation = LookAtRotation(Normalize(newDirection), Vector3(0.0f, 1.0f, 0.0f));
+                networkEntityTransforms[index]->SetRotation(rotation);
+
+              
         }
+
+
+
+
+        //ComponentView view = GetCurrentScene()->GetEntityManager()->GetComponentsOfType<NetworkComponent>();
+
+        //int count = 0;
+        //for (Entity entity : view)
+        //{
+        //    Transform& transform = entity.GetComponent<Transform>();
+
+        //    float positionX = networkManager.m_NetworkedPositions[count].positionX / 100.0f;
+        //    float positionZ = networkManager.m_NetworkedPositions[count].positionZ/ 100.0f;
+
+        //    float directionX = networkManager.m_NetworkedPositions[count].directionX / 100.0f;
+        //    float directionZ = networkManager.m_NetworkedPositions[count].directionZ / 100.0f;
+        //    transform.SetPosition(Vector3(positionX, 0.0f, positionZ));
+
+
+
+        //    Vector3 newDirection = (Vector3(directionX, 0.0f, directionZ));
+
+        //    if (LengthSquared(newDirection) < 0.5f)
+        //    {
+        //        newDirection = Vector3(0.0f, 0.0f, -1.0f);
+        //    }
+
+
+        //    Quaternion rotation = LookAtRotation(Normalize(newDirection), Vector3(0.0f, 1.0f, 0.0f));
+        //    transform.SetRotation(rotation);
+
+        //  
+        //   // LOG_INFO("Position : {0} , {1} ________________", positionX, positionZ);
+
+        //    count++;
+
+        //    
+        //}
+       
 
 
     }
@@ -138,6 +196,9 @@ class NetworkFinalProject : public Application
 
         material->type = MaterialType::Opaque;
 
+
+
+
     }
 
 
@@ -148,9 +209,9 @@ class NetworkFinalProject : public Application
 
         Entity networkEntity = GetCurrentScene()->CreateEntity(name);
 
-        Transform& transform = networkEntity.AddComponent<Transform>();
-        transform.SetPosition(Vector3(0.0f));
-        transform.SetRotation(Quaternion(Radians(Vector3(0.0f))));
+        Transform* transform = &networkEntity.AddComponent<Transform>();
+        transform->SetPosition(Vector3(0.0f));
+        transform->SetRotation(Quaternion(Radians(Vector3(0.0f))));
 
 
         networkEntity.AddComponent<NetworkComponent>();
@@ -170,6 +231,9 @@ class NetworkFinalProject : public Application
         material->roughness = 0.02f;
 
         material->type = MaterialType::Opaque;
+
+
+        networkEntityTransforms.push_back(transform);
 
     }
 
@@ -193,7 +257,7 @@ class NetworkFinalProject : public Application
 
 
 
-    NetworkManager networkManager;
+    SharedPtr<NetworkManager> networkManager;
 
     Transform* playerTransform = nullptr;
 
@@ -201,7 +265,7 @@ class NetworkFinalProject : public Application
 
 private:
 
-
+    std::vector<Transform*> networkEntityTransforms;
 };
 
 

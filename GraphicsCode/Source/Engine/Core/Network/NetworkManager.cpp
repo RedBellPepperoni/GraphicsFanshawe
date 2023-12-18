@@ -110,23 +110,37 @@ namespace FanshaweGameEngine {
 
 			// Process everything
 
+		/*	LOG_INFO("Sizw : {0}, ", sizeof(PlayerData));
+			LOG_INFO("Size INT32 : {0} || Size int8 : {1} ", sizeof(int32_t), sizeof(int8_t));*/
 
 			
 
 
 		}
 
-		void NetworkManager::SendPlayerPositionToServer(float x, float z)
+		void NetworkManager::SendPlayerData(Vector3 position,Vector3 direction)
 		{
-			m_PlayerPosition.x = x;
-			m_PlayerPosition.z = z;
+			int32_t XPosition = (position.x * 100.0f);
+			int32_t ZPosition = (position.z * 100.0f);
+
+			uint8_t XDirection = (direction.x * 100.0f);
+			uint8_t ZDirection = (direction.z * 100.0f);
+
+
+			m_playerData.positionX = XPosition;
+			m_playerData.positionZ = ZPosition;
+
+			m_playerData.directionX = XDirection;
+			m_playerData.directionZ = ZDirection;
+
+
 		}
 
 		void NetworkManager::HandleRECV()
 		{
 
 			// Read
-			const int bufLen = sizeof(float) * 2 * NUM_PLAYERS;
+			const int bufLen = 10 * 2 * NUM_PLAYERS;
 			char buffer[bufLen];
 			int result = recvfrom(m_ServerSocket, buffer, bufLen, 0, (sockaddr*)&m_ServerAddr, &m_ServerAddrLen);
 			if (result == SOCKET_ERROR) {
@@ -142,14 +156,30 @@ namespace FanshaweGameEngine {
 			}
 
 
-			memcpy(&m_NetworkedPositions[0].x, (const void*)&(buffer[0]), sizeof(float));
-			memcpy(&m_NetworkedPositions[0].z, (const void*)&(buffer[4]), sizeof(float));
-			memcpy(&m_NetworkedPositions[1].x, (const void*)&(buffer[8]), sizeof(float));
-			memcpy(&m_NetworkedPositions[1].z, (const void*)&(buffer[12]), sizeof(float));
-			memcpy(&m_NetworkedPositions[2].x, (const void*)&(buffer[16]), sizeof(float));
-			memcpy(&m_NetworkedPositions[2].z, (const void*)&(buffer[20]), sizeof(float));
-			memcpy(&m_NetworkedPositions[3].x, (const void*)&(buffer[24]), sizeof(float));
-			memcpy(&m_NetworkedPositions[3].z, (const void*)&(buffer[28]), sizeof(float));
+			memcpy(&m_NetworkedPositions[0].positionX, (int32_t*)&(buffer[0]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[0].positionZ, (int32_t*)&(buffer[4]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[0].directionX, (int8_t*)&(buffer[8]), sizeof(int8_t));
+			memcpy(&m_NetworkedPositions[0].directionZ, (int8_t*)&(buffer[9]), sizeof(int8_t));
+
+
+			memcpy(&m_NetworkedPositions[1].positionX, &(buffer[10]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[1].positionZ, &(buffer[14]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[1].directionX, &(buffer[18]), sizeof(int8_t));
+			memcpy(&m_NetworkedPositions[1].directionZ, &(buffer[19]), sizeof(int8_t));
+
+
+			LOG_INFO("Position : {0}, {1}", m_NetworkedPositions[1].positionX, m_NetworkedPositions[1].positionZ);
+			
+
+			memcpy(&m_NetworkedPositions[2].positionX, (int32_t*)&(buffer[20]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[2].positionZ, (int32_t*)&(buffer[24]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[2].directionX, (int8_t * )&(buffer[28]), sizeof(int8_t));
+			memcpy(&m_NetworkedPositions[2].directionZ, (int8_t * )&(buffer[29]), sizeof(int8_t));
+			
+			memcpy(&m_NetworkedPositions[3].positionX, (int32_t*)&(buffer[30]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[3].positionZ, (int32_t*)&(buffer[34]), sizeof(int32_t));
+			memcpy(&m_NetworkedPositions[3].directionX, (int8_t * )&(buffer[38]), sizeof(int8_t));
+			memcpy(&m_NetworkedPositions[3].directionZ, (int8_t * )&(buffer[39]), sizeof(int8_t));;
 		}
 
 		void NetworkManager::SendDataToServer(float deltatime)
@@ -175,10 +205,14 @@ namespace FanshaweGameEngine {
 
 			currenttime = 0.0f;
 
+
+		
+
+
 			// MessageQueue, loop through and send all messages
 			// You may multiple servers, you are sending data to
-			int result = sendto(m_ServerSocket, (const char*)&m_PlayerPosition,
-				sizeof(m_PlayerPosition), 0, (SOCKADDR*)&m_ServerAddr, m_ServerAddrLen);
+			int result = sendto(m_ServerSocket, (const char*)&m_playerData,
+				sizeof(m_playerData), 0, (SOCKADDR*)&m_ServerAddr, m_ServerAddrLen);
 			if (result == SOCKET_ERROR) {
 				// TODO: We want to handle this differently.
 				printf("send failed with error %d\n", WSAGetLastError());

@@ -22,11 +22,16 @@ namespace FanshaweGameEngine
 	namespace Network
 	{
 
-		struct PlayerPosition
+		struct PlayerData
 		{
-			float x;
-			float z;
+			int32_t positionX = 0;
+			int32_t positionZ = 0;
+
+			int8_t directionX = 0;
+			int8_t directionZ = 0;
+		
 		};
+
 
 		struct ClientInfo
 		{
@@ -45,11 +50,11 @@ namespace FanshaweGameEngine
 
 			void Update(float deltatime);
 
-			void SendPlayerPositionToServer(float x, float z);
+			void SendPlayerData(Vector3 position,Vector3 direction);
 
 			// 
 			// Positions of players
-			std::vector<PlayerPosition> m_NetworkedPositions;
+			std::vector<PlayerData> m_NetworkedPositions;
 
 		private:
 			void HandleRECV();
@@ -57,14 +62,14 @@ namespace FanshaweGameEngine
 
 			bool m_Initialized = false;
 			bool m_Connected = false;
-			float m_Wait = 0.5f;
+			float m_Wait = 0.1f;
 
 			SOCKET m_ServerSocket;
 			sockaddr_in m_ServerAddr;
 			int m_ServerAddrLen = 0;
 
 
-			PlayerPosition m_PlayerPosition;
+			PlayerData m_playerData;
 
 
 
