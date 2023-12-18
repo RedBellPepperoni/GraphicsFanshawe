@@ -168,7 +168,7 @@ namespace FanshaweGameEngine {
 			memcpy(&m_NetworkedPositions[1].directionZ, &(buffer[19]), sizeof(int8_t));
 
 
-			LOG_INFO("Position : {0}, {1}", m_NetworkedPositions[1].positionX, m_NetworkedPositions[1].positionZ);
+			/*LOG_INFO("Position : {0}, {1}", m_NetworkedPositions[1].positionX, m_NetworkedPositions[1].positionZ);*/
 			
 
 			memcpy(&m_NetworkedPositions[2].positionX, (int32_t*)&(buffer[20]), sizeof(int32_t));

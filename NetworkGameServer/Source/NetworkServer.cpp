@@ -136,9 +136,40 @@ void NetworkServer::HandleRECV()
 		{
 			// TODO: We want to handle this differently.
 			printf("recvfrom failed with error %d\n", WSAGetLastError());
-			Destroy();
-			//closesocket(m_ListenSocket);
-			//WSACleanup();
+			//Destroy();
+		
+			for (int i = 0; i < m_ConnectedClients.size(); i++)
+			{
+			
+				
+				size_t last = m_ConnectedClients.size() - 1;
+
+
+				if (addr.sin_addr.S_un.S_addr != m_ConnectedClients[i].addr.sin_addr.S_un.S_addr)
+				{
+					return;
+				}
+
+				if (i == last)
+				{
+					m_ConnectedClients.pop_back();
+				}
+				else
+				{
+					ClientInfo info = m_ConnectedClients[last];
+					m_ConnectedClients[last] = m_ConnectedClients[i];
+					m_ConnectedClients[i] = info;
+
+					m_ConnectedClients.pop_back();
+				}
+
+
+				
+			}
+
+
+
+
 			return;
 		}
 	}
@@ -232,10 +263,12 @@ void NetworkServer::BroadcastUpdatesToClients()
 		ClientInfo& client = m_ConnectedClients[i];
 		int result = sendto(m_ListenSocket, &data[0], length, 0, (SOCKADDR*)&client.addr, client.addrLen);
 		if (result == SOCKET_ERROR) {
-			// TODO: We want to handle this differently.
-			printf("send failed with error %d\n", WSAGetLastError());
+			
+			
+
+			/*printf("send failed with error %d\n", WSAGetLastError());
 			closesocket(m_ListenSocket);
-			WSACleanup();
+			WSACleanup();*/
 			return;
 		}
 	}

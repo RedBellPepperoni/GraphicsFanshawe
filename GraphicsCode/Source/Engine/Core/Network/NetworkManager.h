@@ -29,8 +29,24 @@ namespace FanshaweGameEngine
 
 			int8_t directionX = 0;
 			int8_t directionZ = 0;
+
+			bool ShotBullet = false;
 		
 		};
+
+
+		struct BulletData
+		{
+			int32_t positionX = 0;
+			int32_t positionZ = 0;
+
+			int8_t directionX = 0;
+			int8_t directionZ = 0;
+
+			bool canShoot = true;
+		};
+
+		
 
 
 		struct ClientInfo
@@ -69,7 +85,7 @@ namespace FanshaweGameEngine
 			int m_ServerAddrLen = 0;
 
 
-			PlayerData m_playerData;
+			PlayerData m_playerData; 
 
 
 
